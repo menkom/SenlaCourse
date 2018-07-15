@@ -1,6 +1,5 @@
 package com.senla;
 
-import com.senla.datahelp.DataFiller;
 import com.senla.hotel.Hotel;
 import com.senla.util.DispayOperator;
 
@@ -9,9 +8,9 @@ public class Executive {
 	public static void main(String[] args) throws Throwable {
 		Hotel hotel = new Hotel();
 
-//		 hotel.load();
+		 hotel.load();
 
-		new DataFiller(hotel).runDataIO();
+//		new DataFiller(hotel).runDataIO();
 
 		new DispayOperator().printService(hotel.getClientService());
 		new DispayOperator().printService(hotel.getRoomService());

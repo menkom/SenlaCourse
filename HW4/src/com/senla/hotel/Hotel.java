@@ -17,7 +17,6 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
-import com.senla.util.DispayOperator;
 
 public class Hotel extends AHotel {
 
@@ -32,7 +31,6 @@ public class Hotel extends AHotel {
 		getRoomService().loadFromDB();
 		getServiceService().loadFromDB();
 		getOrderService().loadFromDB();
-		new DispayOperator().printMessage("loaded orders.");
 
 	}
 
