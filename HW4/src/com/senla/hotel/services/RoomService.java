@@ -5,11 +5,11 @@ import java.text.ParseException;
 import java.util.Date;
 
 import com.senla.base.BaseObject;
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.IBaseArray;
-import com.senla.hotel.array.OrderArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.IBaseRepository;
+import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
@@ -19,13 +19,13 @@ import com.senla.util.FileOperator;
 
 public class RoomService implements IService {
 
-	private ClientArray clientRepository;
-	private RoomArray roomRepository;
-	private ServiceArray serviceRepository;
-	private OrderArray orderRepository;
+	private ClientRepository clientRepository;
+	private RoomRepository roomRepository;
+	private ServiceRepository serviceRepository;
+	private OrderRepository orderRepository;
 
-	public RoomService(ClientArray clientRepository, RoomArray roomRepository, ServiceArray serviceRepository,
-			OrderArray orderRepository) {
+	public RoomService(ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository, OrderRepository orderRepository) {
 		super();
 		this.clientRepository = clientRepository;
 		this.roomRepository = roomRepository;
@@ -37,19 +37,19 @@ public class RoomService implements IService {
 		return "room.db";
 	}
 
-	public ClientArray getClientRepository() {
+	public ClientRepository getClientRepository() {
 		return clientRepository;
 	}
 
-	public RoomArray getRoomRepository() {
+	public RoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public ServiceArray getServiceRepository() {
+	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public OrderArray getOrderRepository() {
+	public OrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
@@ -63,12 +63,12 @@ public class RoomService implements IService {
 	}
 
 	public Room[] getAllRooms() {
-		return (Room[]) getRoomRepository().getArray();
+		return (Room[]) getRoomRepository().getRepository();
 	}
 
 	public int getNumberOfFreeRooms() {
 		int result = 0;
-		for (Room room : (Room[]) getRoomRepository().getArray()) {
+		for (Room room : (Room[]) getRoomRepository().getRepository()) {
 			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
 				result++;
 			}
@@ -81,7 +81,7 @@ public class RoomService implements IService {
 		// getFreeRooms(Date))
 		Room[] result = new Room[getNumberOfFreeRooms()];
 
-		for (Room room : (Room[]) getRoomRepository().getArray()) {
+		for (Room room : (Room[]) getRoomRepository().getRepository()) {
 			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
 				result[new ArrayOperator().getFreeIndex(result)] = room;
 			}
@@ -119,7 +119,7 @@ public class RoomService implements IService {
 		//
 		Room[] resultExclude = new Room[0];
 
-		for (Order order : (Order[]) getOrderRepository().getArray()) {
+		for (Order order : (Order[]) getOrderRepository().getRepository()) {
 			if ((date.after(order.getStartDate())
 					&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
 
@@ -127,7 +127,7 @@ public class RoomService implements IService {
 			}
 		}
 
-		for (Room room : (Room[]) getRoomRepository().getArray()) {
+		for (Room room : (Room[]) getRoomRepository().getRepository()) {
 			if (!isRoomInArray(room, resultExclude)) {
 				result = (Room[]) new ArrayOperator().add(result, room);
 			}
@@ -147,19 +147,19 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public void loadFromDB() throws IOException, NumberFormatException, ParseException {
-		RoomService service = new FileOperator().getRoomService(getFileName(), getClientRepository(),
+	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
+		RoomService service = new FileOperator().getRoomService(dbPath + getFileName(), getClientRepository(),
 				getRoomRepository(), getServiceRepository(), getOrderRepository());
 
-		getRepository().setArray(((RoomArray) service.getRepository()).getArray());
+		getRepository().setRepository(((RoomRepository) service.getRepository()).getRepository());
 	}
 
-	public void saveToDB() {
-		new FileOperator().saveToDB(getFileName(), getStringToSave());
+	public void saveToDB(String dbPath) {
+		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 	@Override
-	public IBaseArray getRepository() {
+	public IBaseRepository getRepository() {
 		return getRoomRepository();
 	}
 

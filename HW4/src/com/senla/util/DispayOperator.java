@@ -2,7 +2,7 @@ package com.senla.util;
 
 import java.util.Arrays;
 
-import com.senla.hotel.array.IBaseArray;
+import com.senla.hotel.repository.IBaseRepository;
 import com.senla.hotel.services.IService;
 
 public class DispayOperator {
@@ -11,7 +11,7 @@ public class DispayOperator {
 		System.out.println(message);
 	}
 
-	public void printRepository(IBaseArray array) {
+	public void printRepository(IBaseRepository array) {
 		printMessage(Arrays.toString(array.toStringArray()));
 	}
 

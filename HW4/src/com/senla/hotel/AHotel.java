@@ -1,9 +1,9 @@
 package com.senla.hotel;
 
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.OrderArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.services.ClientService;
 import com.senla.hotel.services.OrderService;
 import com.senla.hotel.services.RoomService;
@@ -17,10 +17,10 @@ public abstract class AHotel {
 	private OrderService orderService;
 
 	public AHotel() {
-		ClientArray clientRepository = new ClientArray();
-		RoomArray roomRepository = new RoomArray();
-		ServiceArray serviceRepository = new ServiceArray();
-		OrderArray orderRepository = new OrderArray();
+		ClientRepository clientRepository = new ClientRepository();
+		RoomRepository roomRepository = new RoomRepository();
+		ServiceRepository serviceRepository = new ServiceRepository();
+		OrderRepository orderRepository = new OrderRepository();
 
 		clientService = new ClientService(clientRepository, roomRepository, serviceRepository, orderRepository);
 		roomService = new RoomService(clientRepository, roomRepository, serviceRepository, orderRepository);

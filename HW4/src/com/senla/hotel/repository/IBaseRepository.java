@@ -1,8 +1,8 @@
-package com.senla.hotel.array;
+package com.senla.hotel.repository;
 
 import com.senla.base.BaseObject;
 
-public interface IBaseArray {
+public interface IBaseRepository {
 
 	public void add(BaseObject element);
 
@@ -10,6 +10,6 @@ public interface IBaseArray {
 
 	public String[] toStringArray();
 
-	public void setArray(BaseObject[] array) ;
+	public void setRepository(BaseObject[] array) ;
 
 }

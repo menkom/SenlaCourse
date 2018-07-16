@@ -7,9 +7,9 @@ import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 
@@ -92,8 +92,8 @@ public class ObjectSerializer {
 		return result;
 	}
 
-	public Order getOrderFromArray(String[] array, ClientArray clientRepository, RoomArray roomRepository,
-			ServiceArray serviceRepository) throws NumberFormatException, ParseException {
+	public Order getOrderFromArray(String[] array, ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository) throws NumberFormatException, ParseException {
 
 		Client client = clientRepository.getClientByName(array[1]);
 
@@ -109,13 +109,13 @@ public class ObjectSerializer {
 		return result;
 	}
 
-	public Order getOrderFromString(String line, ClientArray clientRepository, RoomArray roomRepository,
-			ServiceArray serviceRepository) throws NumberFormatException, ParseException {
+	public Order getOrderFromString(String line, ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository) throws NumberFormatException, ParseException {
 		return getOrderFromArray(stringToArray(line), clientRepository, roomRepository, serviceRepository);
 	}
 
-	public Order[] getOrdersFromArray(String[] array, ClientArray clientRepository, RoomArray roomRepository,
-			ServiceArray serviceRepository) throws NumberFormatException, ParseException {
+	public Order[] getOrdersFromArray(String[] array, ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository) throws NumberFormatException, ParseException {
 		Order[] result = new Order[array.length];
 
 		for (int i = 0; i < array.length; i++) {

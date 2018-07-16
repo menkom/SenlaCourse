@@ -25,20 +25,18 @@ public class Hotel extends AHotel {
 
 	}
 
-	public void load() throws NumberFormatException, IOException, ParseException {
-
-		getClientService().loadFromDB();
-		getRoomService().loadFromDB();
-		getServiceService().loadFromDB();
-		getOrderService().loadFromDB();
-
+	public void load(String dbPath) throws NumberFormatException, IOException, ParseException {
+		getClientService().loadFromDB(dbPath);
+		getRoomService().loadFromDB(dbPath);
+		getServiceService().loadFromDB(dbPath);
+		getOrderService().loadFromDB(dbPath);
 	}
 
-	public void save() throws Throwable {
-		getClientService().saveToDB();
-		getRoomService().saveToDB();
-		getServiceService().saveToDB();
-		getOrderService().saveToDB();
+	public void save(String dbPath) throws Throwable {
+		getClientService().saveToDB(dbPath);
+		getRoomService().saveToDB(dbPath);
+		getServiceService().saveToDB(dbPath);
+		getOrderService().saveToDB(dbPath);
 	}
 
 	public void addClient(String name) {

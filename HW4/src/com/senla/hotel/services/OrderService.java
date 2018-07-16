@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import com.senla.base.BaseObject;
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.IBaseArray;
-import com.senla.hotel.array.OrderArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.IBaseRepository;
+import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
@@ -20,14 +20,14 @@ import com.senla.util.FileOperator;
 
 public class OrderService implements IService {
 
-	private ClientArray clientRepository;
-	private RoomArray roomRepository;
-	private ServiceArray serviceRepository;
-	private OrderArray orderRepository;
+	private ClientRepository clientRepository;
+	private RoomRepository roomRepository;
+	private ServiceRepository serviceRepository;
+	private OrderRepository orderRepository;
 	private int nextNum;
 
-	public OrderService(ClientArray clientRepository, RoomArray roomRepository, ServiceArray serviceRepository,
-			OrderArray orderRepository) {
+	public OrderService(ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository, OrderRepository orderRepository) {
 		super();
 		this.clientRepository = clientRepository;
 		this.roomRepository = roomRepository;
@@ -41,19 +41,19 @@ public class OrderService implements IService {
 		return "order.db";
 	}
 
-	public ClientArray getClientRepository() {
+	public ClientRepository getClientRepository() {
 		return clientRepository;
 	}
 
-	public RoomArray getRoomRepository() {
+	public RoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public ServiceArray getServiceRepository() {
+	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public OrderArray getOrderRepository() {
+	public OrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
@@ -82,7 +82,7 @@ public class OrderService implements IService {
 	}
 
 	public void freeRoom(int orderNum) {
-		Order order = ((OrderArray) getRepository()).getOrderByNum(orderNum);
+		Order order = ((OrderRepository) getRepository()).getOrderByNum(orderNum);
 
 		if (order != null) {
 			order.setFinishDate(new Date());
@@ -114,7 +114,7 @@ public class OrderService implements IService {
 	public Order[] getClientRoom() {
 		Order[] result = new Order[0];
 
-		for (Order order : (Order[]) getOrderRepository().getArray()) {
+		for (Order order : (Order[]) getOrderRepository().getRepository()) {
 			Date currentDate = new Date();
 			if (currentDate.after(order.getStartDate())
 					&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
@@ -126,11 +126,11 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public OrderArray getOrdersByRoom(int num) {
+	public OrderRepository getOrdersByRoom(int num) {
 
-		OrderArray result = new OrderArray();
+		OrderRepository result = new OrderRepository();
 
-		for (Order order : (Order[]) getOrderRepository().getArray()) {
+		for (Order order : (Order[]) getOrderRepository().getRepository()) {
 			if (order.getRoom().getNumber() == num) {
 				result.add(order);
 			}
@@ -139,15 +139,15 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public void loadFromDB() throws IOException, NumberFormatException, ParseException {
-		OrderService service = new FileOperator().getOrderService(getFileName(), getClientRepository(),
+	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
+		OrderService service = new FileOperator().getOrderService(dbPath + getFileName(), getClientRepository(),
 				getRoomRepository(), getServiceRepository(), getOrderRepository());
 
-		getRepository().setArray(((OrderArray) service.getRepository()).getArray());
+		getRepository().setRepository(((OrderRepository) service.getRepository()).getRepository());
 	}
 
-	public void saveToDB() {
-		new FileOperator().saveToDB(getFileName(), getStringToSave());
+	public void saveToDB(String dbPath) {
+		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 	public String[] getStringToSave() {
@@ -161,7 +161,7 @@ public class OrderService implements IService {
 	}
 
 	@Override
-	public IBaseArray getRepository() {
+	public IBaseRepository getRepository() {
 		return getOrderRepository();
 	}
 

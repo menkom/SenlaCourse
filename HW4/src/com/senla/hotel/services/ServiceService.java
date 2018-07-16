@@ -4,23 +4,23 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import com.senla.base.BaseObject;
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.IBaseArray;
-import com.senla.hotel.array.OrderArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.IBaseRepository;
+import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.model.Service;
 import com.senla.util.FileOperator;
 
 public class ServiceService implements IService {
 
-	private ClientArray clientRepository;
-	private RoomArray roomRepository;
-	private ServiceArray serviceRepository;
-	private OrderArray orderRepository;
+	private ClientRepository clientRepository;
+	private RoomRepository roomRepository;
+	private ServiceRepository serviceRepository;
+	private OrderRepository orderRepository;
 
-	public ServiceService(ClientArray clientRepository, RoomArray roomRepository, ServiceArray serviceRepository,
-			OrderArray orderRepository) {
+	public ServiceService(ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository, OrderRepository orderRepository) {
 		super();
 		this.clientRepository = clientRepository;
 		this.roomRepository = roomRepository;
@@ -32,19 +32,19 @@ public class ServiceService implements IService {
 		return "service.db";
 	}
 
-	public ClientArray getClientRepository() {
+	public ClientRepository getClientRepository() {
 		return clientRepository;
 	}
 
-	public RoomArray getRoomRepository() {
+	public RoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public ServiceArray getServiceRepository() {
+	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public OrderArray getOrderRepository() {
+	public OrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
@@ -61,19 +61,19 @@ public class ServiceService implements IService {
 		return getServiceRepository().getServiceByCode(code);
 	}
 
-	public void loadFromDB() throws IOException, NumberFormatException, ParseException {
-		ServiceService service = new FileOperator().getServiceService(getFileName(), getClientRepository(),
+	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
+		ServiceService service = new FileOperator().getServiceService(dbPath + getFileName(), getClientRepository(),
 				getRoomRepository(), getServiceRepository(), getOrderRepository());
 
-		getRepository().setArray(((ServiceArray) service.getRepository()).getArray());
+		getRepository().setRepository(((ServiceRepository) service.getRepository()).getRepository());
 	}
 
-	public void saveToDB() throws IOException {
-		new FileOperator().saveToDB(getFileName(), getStringToSave());
+	public void saveToDB(String dbPath) throws IOException {
+		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 	@Override
-	public IBaseArray getRepository() {
+	public IBaseRepository getRepository() {
 		return getServiceRepository();
 	}
 

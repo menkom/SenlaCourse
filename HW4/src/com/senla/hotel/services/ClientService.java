@@ -4,23 +4,23 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import com.senla.base.BaseObject;
-import com.senla.hotel.array.ClientArray;
-import com.senla.hotel.array.IBaseArray;
-import com.senla.hotel.array.OrderArray;
-import com.senla.hotel.array.RoomArray;
-import com.senla.hotel.array.ServiceArray;
+import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.IBaseRepository;
+import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.model.Client;
 import com.senla.util.FileOperator;
 
 public class ClientService implements IService {
 
-	private ClientArray clientRepository;
-	private RoomArray roomRepository;
-	private ServiceArray serviceRepository;
-	private OrderArray orderRepository;
+	private ClientRepository clientRepository;
+	private RoomRepository roomRepository;
+	private ServiceRepository serviceRepository;
+	private OrderRepository orderRepository;
 
-	public ClientService(ClientArray clientRepository, RoomArray roomRepository, ServiceArray serviceRepository,
-			OrderArray orderRepository) {
+	public ClientService(ClientRepository clientRepository, RoomRepository roomRepository,
+			ServiceRepository serviceRepository, OrderRepository orderRepository) {
 		super();
 		this.clientRepository = clientRepository;
 		this.roomRepository = roomRepository;
@@ -40,40 +40,40 @@ public class ClientService implements IService {
 		return getClientRepository().getClientByName(name);
 	}
 
-	public ClientArray getClientRepository() {
+	public ClientRepository getClientRepository() {
 		return clientRepository;
 	}
 
-	public RoomArray getRoomRepository() {
+	public RoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public ServiceArray getServiceRepository() {
+	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public OrderArray getOrderRepository() {
+	public OrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
-	public void loadFromDB() throws IOException, NumberFormatException, ParseException {
+	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
 		// We need to add information from file or replace all with new info from
 		// file?
 		// Answer: As we load and save only once at the beginning and at the end we
 		// expect that OUR repository is empty
 
-		ClientService service = new FileOperator().getClientService(getFileName(), getClientRepository(),
+		ClientService service = new FileOperator().getClientService(dbPath + getFileName(), getClientRepository(),
 				getRoomRepository(), getServiceRepository(), getOrderRepository());
 
-		getRepository().setArray(((ClientArray) service.getRepository()).getArray());
+		getRepository().setRepository(((ClientRepository) service.getRepository()).getRepository());
 	}
 
-	public void saveToDB() throws IOException {
-		new FileOperator().saveToDB(getFileName(), getStringToSave());
+	public void saveToDB(String dbPath) throws IOException {
+		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 	@Override
-	public IBaseArray getRepository() {
+	public IBaseRepository getRepository() {
 		return getClientRepository();
 	}
 
@@ -83,7 +83,7 @@ public class ClientService implements IService {
 
 	public int getNumberOfClients() {
 		int result = 0;
-		for (Client client : (Client[]) getClientRepository().getArray()) {
+		for (Client client : (Client[]) getClientRepository().getRepository()) {
 			if (client != null) {
 				result++;
 			}
