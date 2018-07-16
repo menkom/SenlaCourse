@@ -6,9 +6,9 @@ import com.senla.base.BaseObject;
 
 public class ArrayOperator {
 
-	public static final int MINIMUM_ARRAY_LENGTH = 0;
+	public static final int MINIMUM_ARRAY_LENGTH = 10;
 
-	public boolean isFreeSpace(Object[] array) {
+	public static boolean isFreeSpace(Object[] array) {
 		boolean result = false;
 
 		for (Object obj : array) {
@@ -21,7 +21,7 @@ public class ArrayOperator {
 		return result;
 	}
 
-	public int getFreeIndex(Object[] array) {
+	public static int getFreeIndex(Object[] array) {
 		int result = -1;
 		for (int i = 0; i < array.length; i++)
 			if (array[i] == null) {
@@ -31,20 +31,30 @@ public class ArrayOperator {
 		return result;
 	}
 
-	public Object[] add(Object[] array, Object element) {
+	public static Object[] add(Object[] array, Object element) {
 		Object[] result;
 
 		if (!isFreeSpace(array)) {
-			result = Arrays.copyOf(array, array.length + 1);
+
+			// arraycopy what_copy, what_copy_from_index, where_copy, where_copy_from_index,
+			// what_copy_needed_length
+
+			// TODO Change to System.arraycopy
+			// answer: after arraycopy we receive Object[] instead of BaseObject[]
+
+			int newLength = array.length != 0 ? array.length * 2 : 1;
+
+			result = Arrays.copyOf(array, newLength);
 		} else {
 			result = array;
 		}
+
 		result[getFreeIndex(result)] = element;
 
 		return result;
 	}
 
-	public int getElementsCount(Object[] array) {
+	public static int getElementsCount(Object[] array) {
 		int result = 0;
 		for (Object element : array) {
 			if (element != null) {
@@ -54,7 +64,7 @@ public class ArrayOperator {
 		return result;
 	}
 
-	public String[] toStringArray(BaseObject[] array) {
+	public static String[] toStringArray(BaseObject[] array) {
 
 		String[] result = new String[getElementsCount(array)];
 

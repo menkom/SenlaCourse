@@ -1,7 +1,7 @@
 package com.senla;
 
 import com.senla.hotel.Hotel;
-import com.senla.util.DispayOperator;
+import com.senla.util.DisplayOperator;
 
 public class Executive {
 
@@ -17,12 +17,12 @@ public class Executive {
 
 		hotel.load(dbPath);
 
-		// new DataFiller(hotel).runDataIO();
+//		 new DataFiller(hotel).runDataIO();
 
-		new DispayOperator().printService(hotel.getClientService());
-		new DispayOperator().printService(hotel.getRoomService());
-		new DispayOperator().printService(hotel.getServiceService());
-		new DispayOperator().printService(hotel.getOrderService());
+		DisplayOperator.printService(hotel.getClientService());
+		DisplayOperator.printService(hotel.getRoomService());
+		DisplayOperator.printService(hotel.getServiceService());
+		DisplayOperator.printService(hotel.getOrderService());
 
 		hotel.save(dbPath);
 

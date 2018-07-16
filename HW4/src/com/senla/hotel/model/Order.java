@@ -74,7 +74,7 @@ public class Order extends BaseObject {
 	}
 
 	public void addService(Service service) {
-		setServices((Service[]) new ArrayOperator().add(getServices(), service));
+		setServices((Service[]) ArrayOperator.add(getServices(), service));
 	}
 
 	public String toString() {

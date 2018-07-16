@@ -83,7 +83,7 @@ public class RoomService implements IService {
 
 		for (Room room : (Room[]) getRoomRepository().getRepository()) {
 			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
-				result[new ArrayOperator().getFreeIndex(result)] = room;
+				result[ArrayOperator.getFreeIndex(result)] = room;
 			}
 		}
 		return result;
@@ -123,13 +123,13 @@ public class RoomService implements IService {
 			if ((date.after(order.getStartDate())
 					&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
 
-				resultExclude = (Room[]) new ArrayOperator().add(resultExclude, order.getRoom());
+				resultExclude = (Room[]) ArrayOperator.add(resultExclude, order.getRoom());
 			}
 		}
 
 		for (Room room : (Room[]) getRoomRepository().getRepository()) {
 			if (!isRoomInArray(room, resultExclude)) {
-				result = (Room[]) new ArrayOperator().add(result, room);
+				result = (Room[]) ArrayOperator.add(result, room);
 			}
 		}
 

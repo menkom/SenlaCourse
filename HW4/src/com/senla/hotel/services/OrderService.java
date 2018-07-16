@@ -118,7 +118,7 @@ public class OrderService implements IService {
 			Date currentDate = new Date();
 			if (currentDate.after(order.getStartDate())
 					&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
-				result = (Order[]) new ArrayOperator().add(result, order);
+				result = (Order[]) ArrayOperator.add(result, order);
 			}
 
 		}

@@ -23,7 +23,7 @@ public class OrderRepository implements IBaseRepository {
 	}
 
 	public void add(BaseObject element) {
-		setRepository((BaseObject[]) new ArrayOperator().add(getRepository(), element));
+		setRepository((BaseObject[]) ArrayOperator.add(getRepository(), element));
 	}
 
 	public void delete(BaseObject element) {
@@ -48,7 +48,7 @@ public class OrderRepository implements IBaseRepository {
 	}
 
 	public String[] toStringArray() {
-		return new ArrayOperator().toStringArray(getRepository());
+		return ArrayOperator.toStringArray(getRepository());
 	}
 
 }
