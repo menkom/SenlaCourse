@@ -101,8 +101,7 @@ public class OrderService implements IService {
 		if (order.getFinishDate() == null) {
 			result = 0;
 		} else {
-			result = new DateOperator().daysBetween(order.getStartDate(), order.getFinishDate())
-					* order.getRoom().getPrice();
+			result = DateOperator.daysBetween(order.getStartDate(), order.getFinishDate()) * order.getRoom().getPrice();
 
 			for (Service service : order.getServices()) {
 				result += service.getPrice();
@@ -111,6 +110,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	// Get all active orders
 	public Order[] getClientRoom() {
 		Order[] result = new Order[0];
 
@@ -120,9 +120,7 @@ public class OrderService implements IService {
 					&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
 				result = (Order[]) ArrayOperator.add(result, order);
 			}
-
 		}
-
 		return result;
 	}
 
@@ -137,17 +135,6 @@ public class OrderService implements IService {
 		}
 
 		return result;
-	}
-
-	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		OrderService service = new FileOperator().getOrderService(dbPath + getFileName(), getClientRepository(),
-				getRoomRepository(), getServiceRepository(), getOrderRepository());
-
-		getRepository().setRepository(((OrderRepository) service.getRepository()).getRepository());
-	}
-
-	public void saveToDB(String dbPath) {
-		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 	public String[] getStringToSave() {
@@ -173,6 +160,17 @@ public class OrderService implements IService {
 
 	public void setNextNum(int nextNum) {
 		this.nextNum = nextNum;
+	}
+
+	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
+		OrderService service = new FileOperator().getOrderService(dbPath + getFileName(), getClientRepository(),
+				getRoomRepository(), getServiceRepository(), getOrderRepository());
+
+		getRepository().setRepository(((OrderRepository) service.getRepository()).getRepository());
+	}
+
+	public void saveToDB(String dbPath) {
+		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
 	}
 
 }

@@ -122,6 +122,24 @@ public class Hotel extends AHotel {
 		return result;
 	}
 
+	public Room[] getFreeRoomsByDateSortByPrice(Date date) {
+		Room[] result = getRoomService().getFreeRooms(date);
+		Arrays.sort(result, new RoomSortByPrice());
+		return result;
+	}
+
+	public Room[] getFreeRoomsByDateSortByCapacity(Date date) {
+		Room[] result = getRoomService().getFreeRooms(date);
+		Arrays.sort(result, new RoomSortByCapacity());
+		return result;
+	}
+
+	public Room[] getFreeRoomsByDateSortByStar(Date date) {
+		Room[] result = getRoomService().getFreeRooms(date);
+		Arrays.sort(result, new RoomSortByStar());
+		return result;
+	}
+
 	public void changeRoomStatus(int roomNum, RoomStatus roomStatus) {
 		getRoomService().changeRoomStatus(roomNum, roomStatus);
 	}
