@@ -15,6 +15,7 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
+import com.senla.util.DisplayOperator;
 
 public class Hotel extends AHotel {
 
@@ -136,7 +137,10 @@ public class Hotel extends AHotel {
 
 	public Room[] getFreeRoomsByDateSortByStar(Date date) {
 		Room[] result = getRoomService().getFreeRooms(date);
-		Arrays.sort(result, new RoomSortByStar());
+		DisplayOperator.printArray(result);
+		if (result.length > 1) {
+			Arrays.sort(result, new RoomSortByStar());
+		}
 		return result;
 	}
 

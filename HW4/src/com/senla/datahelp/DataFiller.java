@@ -58,16 +58,16 @@ public class DataFiller {
 
 	public void addOrders() throws ParseException {
 
-		hotel.addOrder(1, "Customer One", 11, new DateOperator().getStringToDate("10/07/2018"),
-				new DateOperator().getStringToDate("14/07/2018"));
+		hotel.addOrder(1, "Customer One", 11, DateOperator.getStringToDate("10/07/2018"),
+				DateOperator.getStringToDate("14/07/2018"));
 
-		hotel.addOrder(2, "John", 22, new DateOperator().getStringToDate("11/07/2018"),
-				new DateOperator().getStringToDate("12/07/2018"));
+		hotel.addOrder(2, "John", 22, DateOperator.getStringToDate("11/07/2018"),
+				DateOperator.getStringToDate("12/07/2018"));
 
-		hotel.addOrder(3, "Mike", 33, new DateOperator().getStringToDate("08/07/2018"),
-				new DateOperator().getStringToDate("10/07/2018"));
+		hotel.addOrder(3, "Mike", 33, DateOperator.getStringToDate("08/07/2018"),
+				DateOperator.getStringToDate("10/07/2018"));
 
-		hotel.orderRoom("Tim", 44, new DateOperator().getStringToDate("14/07/2018"), new Date());
+		hotel.orderRoom("Tim", 44, DateOperator.getStringToDate("14/07/2018"), new Date());
 
 		hotel.orderRoom("Alex", 44, new Date(), null);
 

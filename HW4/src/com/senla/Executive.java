@@ -45,7 +45,7 @@ public class Executive {
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Rooms free at 16/07/2018 date" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getFreeRoomsByDateSortByPrice(DateOperator.getStringToDate("16/07/2018")));
+		DisplayOperator.printArray(hotel.getFreeRoomsByDateSortByCapacity(DateOperator.getStringToDate("16/07/2018")));
 
 		hotel.save(dbPath);
 

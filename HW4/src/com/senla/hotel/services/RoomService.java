@@ -122,7 +122,6 @@ public class RoomService implements IService {
 		for (Order order : (Order[]) getOrderRepository().getRepository()) {
 			if ((date.after(order.getStartDate())
 					&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
-
 				resultExclude = (Room[]) ArrayOperator.add(resultExclude, order.getRoom());
 			}
 		}

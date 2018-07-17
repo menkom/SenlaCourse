@@ -99,8 +99,8 @@ public class ObjectSerializer {
 
 		Room room = roomRepository.getRoomByNum(Integer.parseInt(array[2]));
 
-		Order result = new Order(Integer.parseInt(array[0]), client, room, new DateOperator().getStringToDate(array[3]),
-				new DateOperator().getStringToDate(array[4]));
+		Order result = new Order(Integer.parseInt(array[0]), client, room, DateOperator.getStringToDate(array[3]),
+				DateOperator.getStringToDate(array[4]));
 
 		for (int i = 5; i < array.length; i++) {
 			Service service = serviceRepository.getServiceByCode(Integer.parseInt(array[i]));

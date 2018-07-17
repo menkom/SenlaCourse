@@ -83,11 +83,11 @@ public class Order extends BaseObject {
 		result = result.concat(getNum() + BaseObject.SEPARATOR);
 		result = result.concat(getClient().getName() + BaseObject.SEPARATOR);
 		result = result.concat(getRoom().getNumber() + BaseObject.SEPARATOR);
-		result = result.concat(new DateOperator().getDateToString(getStartDate()) + BaseObject.SEPARATOR);
+		result = result.concat(DateOperator.getDateToString(getStartDate()) + BaseObject.SEPARATOR);
 		if (getFinishDate() == null) {
 			result = result.concat("null");
 		} else {
-			result = result.concat(new DateOperator().getDateToString(getFinishDate()) + BaseObject.SEPARATOR);
+			result = result.concat(DateOperator.getDateToString(getFinishDate()) + BaseObject.SEPARATOR);
 		}
 		for (Service service : getServices()) {
 			if (service != null) {
