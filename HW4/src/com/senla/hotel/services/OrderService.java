@@ -2,6 +2,7 @@ package com.senla.hotel.services;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import com.senla.base.BaseObject;
 import com.senla.hotel.repository.ClientRepository;
@@ -9,6 +10,7 @@ import com.senla.hotel.repository.IBaseRepository;
 import com.senla.hotel.repository.OrderRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;
+import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
@@ -64,6 +66,7 @@ public class OrderService implements IService {
 	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
 		Client client = getClientRepository().getClientByName(clientName);
 		Room room = getRoomRepository().getRoomByNum(roomNum);
+
 		Order element = new Order(num, client, room, startDate, finishDate);
 		getRepository().add(element);
 	}
@@ -95,7 +98,7 @@ public class OrderService implements IService {
 		getOrderRepository().addOrderService(orderNum, service);
 	}
 
-	public int getPrice(int orderNum) {
+	public int getOrderPrice(int orderNum) {
 		Order order = getOrderByNum(orderNum);
 		int result;
 		if (order.getFinishDate() == null) {
@@ -111,29 +114,52 @@ public class OrderService implements IService {
 	}
 
 	// Get all active orders
-	public Order[] getClientRoom() {
+	public Order[] getActiveOrders() {
 		Order[] result = new Order[0];
 
 		for (Order order : (Order[]) getOrderRepository().getRepository()) {
 			Date currentDate = new Date();
-			if (currentDate.after(order.getStartDate())
-					&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
-				result = (Order[]) ArrayOperator.add(result, order);
+			if (order != null) {
+				if (currentDate.after(order.getStartDate())
+						&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
+					result = (Order[]) ArrayOperator.add(result, order);
+				}
 			}
 		}
 		return result;
 	}
 
-	public OrderRepository getOrdersByRoom(int num) {
+	public Order[] getOrdersByRoom(int num) {
 
-		OrderRepository result = new OrderRepository();
+		Order[] result = new Order[ArrayOperator.MINIMUM_ARRAY_LENGTH];
 
 		for (Order order : (Order[]) getOrderRepository().getRepository()) {
-			if (order.getRoom().getNumber() == num) {
-				result.add(order);
+			if (order != null) {
+				if (order.getRoom().getNumber() == num) {
+					result = (Order[]) ArrayOperator.add(result, order);
+				}
 			}
 		}
+		return result;
+	}
 
+	public Order[] getLastThreeOrdersByRoom(int num) {
+
+		Order[] result = new Order[3];
+		Order[] orders = getOrdersByRoom(num);
+		Arrays.sort(orders, new OrderSortByFinishDate());
+
+		int j = 0;
+		for (int i = orders.length - 1; i >= 0; i--) {
+			if (orders[i] != null) {
+				result = (Order[]) ArrayOperator.add(result, orders[i]);
+				if (j == 2) {
+					break;
+				} else {
+					j++;
+				}
+			}
+		}
 		return result;
 	}
 

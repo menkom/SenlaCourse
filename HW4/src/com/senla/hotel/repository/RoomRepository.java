@@ -35,7 +35,9 @@ public class RoomRepository implements IBaseRepository {
 
 	public Room getRoomByNum(int number) {
 		for (Room room : (Room[]) getRepository()) {
-			return room;
+			if ((room != null) && (room.getNumber() == number)) {
+				return room;
+			}
 		}
 		return null;
 	}

@@ -35,7 +35,9 @@ public class ServiceRepository implements IBaseRepository {
 
 	public Service getServiceByCode(int number) {
 		for (Service service : (Service[]) getRepository()) {
-			return service;
+			if ((service != null) && (service.getCode() == number)) {
+				return service;
+			}
 		}
 		return null;
 	}

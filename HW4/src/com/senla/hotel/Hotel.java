@@ -10,11 +10,13 @@ import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
 import com.senla.hotel.comparator.RoomSortByPrice;
 import com.senla.hotel.comparator.RoomSortByStar;
+import com.senla.hotel.comparator.ServiceSortByPrice;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
+import com.senla.hotel.model.Service;
 import com.senla.util.DisplayOperator;
 
 public class Hotel extends AHotel {
@@ -112,13 +114,13 @@ public class Hotel extends AHotel {
 	}
 
 	public Order[] getClientRoomSortByName() {
-		Order[] result = getOrderService().getClientRoom();
+		Order[] result = getOrderService().getActiveOrders();
 		Arrays.sort(result, new OrderSortByClientName());
 		return result;
 	}
 
 	public Order[] getClientRoomSortByFinishDate() {
-		Order[] result = getOrderService().getClientRoom();
+		Order[] result = getOrderService().getActiveOrders();
 		Arrays.sort(result, new OrderSortByFinishDate());
 		return result;
 	}
@@ -141,6 +143,25 @@ public class Hotel extends AHotel {
 		if (result.length > 1) {
 			Arrays.sort(result, new RoomSortByStar());
 		}
+		return result;
+	}
+
+	public int getOrderPrice(int orderNum) {
+		return getOrderService().getOrderPrice(orderNum);
+	}
+
+	public Room getRoomByNum(int roomNum) {
+		// TODO Do I need to print here using Printer or send info and print after
+		return getRoomService().getRoomByNum(roomNum);
+	}
+
+	public Order[] getLastThreeOrdersByRoom(int roomNum) {
+		return getOrderService().getLastThreeOrdersByRoom(roomNum);
+	}
+
+	public Service[] getOrderServices(int orderNum) {
+		Service[] result = getOrderService().getOrderByNum(orderNum).getServices();
+		Arrays.sort(result, new ServiceSortByPrice());
 		return result;
 	}
 

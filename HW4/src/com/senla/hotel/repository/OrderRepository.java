@@ -36,7 +36,7 @@ public class OrderRepository implements IBaseRepository {
 
 	public Order getOrderByNum(int num) {
 		for (Order order : (Order[]) getRepository()) {
-			if (order.getNum() == num) {
+			if ((order != null) && (order.getNum() == num)) {
 				return order;
 			}
 		}

@@ -93,10 +93,6 @@ public class RoomService implements IService {
 		return getRoomRepository().getRoomByNum(number);
 	}
 
-	public String getRoomInfo(int number) {
-		return getRoomByNum(number).toString();
-	}
-
 	public void changeRoomStatus(int number, RoomStatus roomStatus) {
 		Room room = getRoomByNum(number);
 		if (room != null) {
@@ -120,15 +116,19 @@ public class RoomService implements IService {
 		Room[] resultExclude = new Room[0];
 
 		for (Order order : (Order[]) getOrderRepository().getRepository()) {
-			if ((date.after(order.getStartDate())
-					&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
-				resultExclude = (Room[]) ArrayOperator.add(resultExclude, order.getRoom());
+			if (order != null) {
+				if ((date.after(order.getStartDate())
+						&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
+					resultExclude = (Room[]) ArrayOperator.add(resultExclude, order.getRoom());
+				}
 			}
 		}
 
 		for (Room room : (Room[]) getRoomRepository().getRepository()) {
-			if (!isRoomInArray(room, resultExclude)) {
-				result = (Room[]) ArrayOperator.add(result, room);
+			if (room != null) {
+				if (!isRoomInArray(room, resultExclude)) {
+					result = (Room[]) ArrayOperator.add(result, room);
+				}
 			}
 		}
 
@@ -138,9 +138,11 @@ public class RoomService implements IService {
 	public boolean isRoomInArray(Room room, Room[] rooms) {
 		boolean result = false;
 		for (Room forRoom : rooms) {
-			if (room.getNumber() == forRoom.getNumber()) {
-				result = true;
-				break;
+			if (forRoom != null) {
+				if (room.getNumber() == forRoom.getNumber()) {
+					result = true;
+					break;
+				}
 			}
 		}
 		return result;

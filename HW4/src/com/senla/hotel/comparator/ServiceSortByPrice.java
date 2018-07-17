@@ -8,7 +8,13 @@ public class ServiceSortByPrice implements Comparator<Service> {
 
 	@Override
 	public int compare(Service o1, Service o2) {
-		return Integer.compare(o1.getPrice(), o2.getPrice());
+		if (o1 == null) {
+			return 1;
+		} else if (o2 == null) {
+			return -1;
+		} else {
+			return Integer.compare(o1.getPrice(), o2.getPrice());
+		}
 	}
 
 }

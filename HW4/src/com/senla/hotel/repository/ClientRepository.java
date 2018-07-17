@@ -35,7 +35,7 @@ public class ClientRepository implements IBaseRepository {
 
 	public Client getClientByName(String name) {
 		for (Client client : (Client[]) getRepository()) {
-			if (client.getName().equals(name)) {
+			if ((client!=null)&&(client.getName().equals(name))) {
 				return client;
 			}
 		}

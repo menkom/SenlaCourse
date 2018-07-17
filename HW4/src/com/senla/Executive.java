@@ -1,5 +1,6 @@
 package com.senla;
 
+import com.senla.datahelp.DataFiller;
 import com.senla.hotel.Hotel;
 import com.senla.util.DateOperator;
 import com.senla.util.DisplayOperator;
@@ -16,9 +17,9 @@ public class Executive {
 
 		Hotel hotel = new Hotel();
 
-		hotel.load(dbPath);
+		// hotel.load(dbPath);
 
-		// new DataFiller(hotel).runDataIO();
+		new DataFiller(hotel).runDataIO();
 
 		DisplayOperator.printService(hotel.getClientService());
 		DisplayOperator.printService(hotel.getRoomService());
@@ -46,6 +47,22 @@ public class Executive {
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Rooms free at 16/07/2018 date" + DisplayOperator.SEPARATOR_LINE);
 		DisplayOperator.printArray(hotel.getFreeRoomsByDateSortByCapacity(DateOperator.getStringToDate("16/07/2018")));
+
+		DisplayOperator
+				.printMessage(DisplayOperator.SEPARATOR_LINE + "Price for order #3" + DisplayOperator.SEPARATOR_LINE);
+		DisplayOperator.printMessage(Integer.toString(hotel.getOrderPrice(3)));
+
+		DisplayOperator
+				.printMessage(DisplayOperator.SEPARATOR_LINE + "Info about Room #44" + DisplayOperator.SEPARATOR_LINE);
+		DisplayOperator.printRoomInfo(hotel.getRoomByNum(44));
+
+		DisplayOperator
+				.printMessage(DisplayOperator.SEPARATOR_LINE + "Last three orders" + DisplayOperator.SEPARATOR_LINE);
+		DisplayOperator.printArray(hotel.getLastThreeOrdersByRoom(44));
+
+		DisplayOperator
+				.printMessage(DisplayOperator.SEPARATOR_LINE + "Services to Order #1" + DisplayOperator.SEPARATOR_LINE);
+		DisplayOperator.printArray(hotel.getOrderServices(1));
 
 		hotel.save(dbPath);
 
