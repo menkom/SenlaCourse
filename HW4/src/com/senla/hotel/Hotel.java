@@ -10,8 +10,6 @@ import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
 import com.senla.hotel.comparator.RoomSortByPrice;
 import com.senla.hotel.comparator.RoomSortByStar;
-import com.senla.hotel.enums.EnumOrderSort;
-import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
@@ -68,29 +66,39 @@ public class Hotel extends AHotel {
 		getOrderService().freeRoom(orderNum);
 	}
 
-	public Room[] getAllRooms(EnumRoomSort sortType) {
+	public Room[] getAllRoomsSortByPrice() {
 		Room[] result = getRoomService().getAllRooms();
-		switch (sortType) {
-		case BY_PRICE:
-			Arrays.sort(getRoomService().getAllRooms(), new RoomSortByPrice());
-		case BY_CAPACITY:
-			Arrays.sort(getRoomService().getAllRooms(), new RoomSortByCapacity());
-		case BY_STAR:
-			Arrays.sort(getRoomService().getAllRooms(), new RoomSortByStar());
-		}
+		Arrays.sort(result, new RoomSortByPrice());
 		return result;
 	}
 
-	public Room[] getFreeRooms(EnumRoomSort sortType) {
+	public Room[] getAllRoomsSortByCapacity() {
+		Room[] result = getRoomService().getAllRooms();
+		Arrays.sort(result, new RoomSortByCapacity());
+		return result;
+	}
+
+	public Room[] getAllRoomsSortByStar() {
+		Room[] result = getRoomService().getAllRooms();
+		Arrays.sort(result, new RoomSortByStar());
+		return result;
+	}
+
+	public Room[] getFreeRoomsSortByPrice() {
 		Room[] result = getRoomService().getFreeRooms();
-		switch (sortType) {
-		case BY_PRICE:
-			Arrays.sort(result, new RoomSortByPrice());
-		case BY_CAPACITY:
-			Arrays.sort(result, new RoomSortByCapacity());
-		case BY_STAR:
-			Arrays.sort(result, new RoomSortByStar());
-		}
+		Arrays.sort(result, new RoomSortByPrice());
+		return result;
+	}
+
+	public Room[] getFreeRoomsSortByCapacity() {
+		Room[] result = getRoomService().getFreeRooms();
+		Arrays.sort(result, new RoomSortByCapacity());
+		return result;
+	}
+
+	public Room[] getFreeRoomsSortByStar() {
+		Room[] result = getRoomService().getFreeRooms();
+		Arrays.sort(result, new RoomSortByStar());
 		return result;
 	}
 
@@ -102,16 +110,15 @@ public class Hotel extends AHotel {
 		return getClientService().getNumberOfClients();
 	}
 
-	public Order[] getClientRoom(EnumOrderSort sortType) {
+	public Order[] getClientRoomSortByName() {
 		Order[] result = getOrderService().getClientRoom();
+		Arrays.sort(result, new OrderSortByClientName());
+		return result;
+	}
 
-		switch (sortType) {
-		case BY_NAME:
-			Arrays.sort(result, new OrderSortByClientName());
-		case BY_FINISH_DATE:
-			Arrays.sort(result, new OrderSortByFinishDate());
-		}
-
+	public Order[] getClientRoomSortByFinishDate() {
+		Order[] result = getOrderService().getClientRoom();
+		Arrays.sort(result, new OrderSortByFinishDate());
 		return result;
 	}
 
