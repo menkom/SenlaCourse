@@ -57,6 +57,10 @@ public class ServiceService implements IService {
 		getRepository().add(element);
 	}
 
+	public Service[] getAllServices() {
+		return (Service[]) getServiceRepository().getRepository();
+	}
+
 	public Service getServiceByCode(int code) {
 		return getServiceRepository().getServiceByCode(code);
 	}

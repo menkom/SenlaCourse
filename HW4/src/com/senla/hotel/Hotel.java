@@ -40,35 +40,6 @@ public class Hotel extends AHotel {
 		getOrderService().saveToDB(dbPath);
 	}
 
-	public void addClient(String name) {
-		getClientService().add(new Client(name));
-	}
-
-	public void addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
-		getRoomService().addRoom(number, capacity, star, status, price);
-	}
-
-	public void addService(int code, String name, int price) {
-		getServiceService().addService(code, name, price);
-	}
-
-	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
-
-		getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
-	}
-
-	public void orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
-		getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
-	}
-
-	public void addOrderService(int orderNum, int serviceCode) {
-		getOrderService().addOrderService(orderNum, serviceCode);
-	}
-
-	public void freeRoom(int orderNum) {
-		getOrderService().freeRoom(orderNum);
-	}
-
 	public Room[] getAllRoomsSortByPrice() {
 		Room[] result = getRoomService().getAllRooms();
 		Arrays.sort(result, new RoomSortByPrice());
@@ -163,6 +134,41 @@ public class Hotel extends AHotel {
 		Service[] result = getOrderService().getOrderByNum(orderNum).getServices();
 		Arrays.sort(result, new ServiceSortByPrice());
 		return result;
+	}
+
+	public Service[] getAllServicesSortByPrice() {
+		Service[] result = getServiceService().getAllServices();
+		Arrays.sort(result, new ServiceSortByPrice());
+		return result;
+	}
+
+	public void addClient(String name) {
+		getClientService().add(new Client(name));
+	}
+
+	public void addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
+		getRoomService().addRoom(number, capacity, star, status, price);
+	}
+
+	public void addService(int code, String name, int price) {
+		getServiceService().addService(code, name, price);
+	}
+
+	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
+
+		getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
+	}
+
+	public void orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
+		getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+	}
+
+	public void addOrderService(int orderNum, int serviceCode) {
+		getOrderService().addOrderService(orderNum, serviceCode);
+	}
+
+	public void freeRoom(int orderNum) {
+		getOrderService().freeRoom(orderNum);
 	}
 
 	public void changeRoomStatus(int roomNum, RoomStatus roomStatus) {

@@ -64,6 +64,9 @@ public class Executive {
 				.printMessage(DisplayOperator.SEPARATOR_LINE + "Services to Order #1" + DisplayOperator.SEPARATOR_LINE);
 		DisplayOperator.printArray(hotel.getOrderServices(1));
 
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE + "All services" + DisplayOperator.SEPARATOR_LINE);
+		DisplayOperator.printArray(hotel.getAllServicesSortByPrice());
+
 		hotel.save(dbPath);
 
 	}
