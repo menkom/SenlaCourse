@@ -10,6 +10,7 @@ import com.senla.hotel.repository.OrderRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;
 import com.senla.hotel.model.Client;
+import com.senla.util.ArrayOperator;
 import com.senla.util.FileOperator;
 
 public class ClientService implements IService {
@@ -82,14 +83,7 @@ public class ClientService implements IService {
 	}
 
 	public int getNumberOfClients() {
-		int result = 0;
-		for (Client client : (Client[]) getClientRepository().getRepository()) {
-			if (client != null) {
-				result++;
-			}
-		}
-		return result;
-
+		return ArrayOperator.getElementsCount(getClientRepository().getRepository());
 	}
 
 }
