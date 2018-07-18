@@ -84,13 +84,13 @@ public class Hotel extends AHotel {
 		return getClientService().getNumberOfClients();
 	}
 
-	public Order[] getClientRoomSortByName() {
+	public Order[] getActiveOrdersSortByName() {
 		Order[] result = getOrderService().getActiveOrders();
 		Arrays.sort(result, new OrderSortByClientName());
 		return result;
 	}
 
-	public Order[] getClientRoomSortByFinishDate() {
+	public Order[] getActiveOrdersSortByFinishDate() {
 		Order[] result = getOrderService().getActiveOrders();
 		Arrays.sort(result, new OrderSortByFinishDate());
 		return result;
@@ -110,10 +110,7 @@ public class Hotel extends AHotel {
 
 	public Room[] getFreeRoomsByDateSortByStar(Date date) {
 		Room[] result = getRoomService().getFreeRooms(date);
-		DisplayOperator.printArray(result);
-		if (result.length > 1) {
-			Arrays.sort(result, new RoomSortByStar());
-		}
+		Arrays.sort(result, new RoomSortByStar());
 		return result;
 	}
 

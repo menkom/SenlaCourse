@@ -32,11 +32,11 @@ public class Executive {
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Free rooms sort by star" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getFreeRoomsSortByStar());
+		DisplayOperator.printRooms(hotel.getFreeRoomsSortByStar());
 
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE + "List of current orders (clients and rooms)"
 				+ DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getClientRoomSortByName());
+		DisplayOperator.printOrders(hotel.getActiveOrdersSortByName());
 
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		DisplayOperator.printMessage("Number of free rooms : " + hotel.getNumberOfFreeRooms());
@@ -46,7 +46,7 @@ public class Executive {
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Rooms free at 16/07/2018 date" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getFreeRoomsByDateSortByCapacity(DateOperator.getStringToDate("16/07/2018")));
+		DisplayOperator.printRooms(hotel.getFreeRoomsByDateSortByCapacity(DateOperator.getStringToDate("16/07/2018")));
 
 		DisplayOperator
 				.printMessage(DisplayOperator.SEPARATOR_LINE + "Price for order #3" + DisplayOperator.SEPARATOR_LINE);
@@ -58,14 +58,14 @@ public class Executive {
 
 		DisplayOperator
 				.printMessage(DisplayOperator.SEPARATOR_LINE + "Last three orders" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getLastThreeOrdersByRoom(44));
+		DisplayOperator.printOrders(hotel.getLastThreeOrdersByRoom(44));
 
 		DisplayOperator
 				.printMessage(DisplayOperator.SEPARATOR_LINE + "Services to Order #1" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getOrderServices(1));
+		DisplayOperator.printServices(hotel.getOrderServices(1));
 
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE + "All services" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getAllServicesSortByPrice());
+		DisplayOperator.printServices(hotel.getAllServicesSortByPrice());
 
 		hotel.save(dbPath);
 

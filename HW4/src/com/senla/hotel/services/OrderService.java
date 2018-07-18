@@ -81,7 +81,9 @@ public class OrderService implements IService {
 		Order order = new Order(getNexNum(), getClientRepository().getClientByName(clientName),
 				getRoomRepository().getRoomByNum(roomNum), dateStart, dateFinish);
 		add(order);
-		order.getRoom().setStatus(RoomStatus.OCCUPIED);
+		if (order.getStartDate() == new Date()) {
+			order.getRoom().setStatus(RoomStatus.OCCUPIED);
+		}
 	}
 
 	public void freeRoom(int orderNum) {

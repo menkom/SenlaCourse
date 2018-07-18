@@ -3,7 +3,9 @@ package com.senla.util;
 import java.util.Arrays;
 
 import com.senla.base.BaseObject;
+import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
+import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.IBaseRepository;
 import com.senla.hotel.services.IService;
 
@@ -42,6 +44,26 @@ public class DisplayOperator {
 			if (room != null) {
 				printMessage(room.getNumber() + "-------" + room.getCapacity() + "------" + room.getStar() + "----"
 						+ room.getStatus() + "---" + room.getPrice());
+			}
+		}
+	}
+
+	public static void printOrders(Order[] array) {
+		printMessage("Client  --  Room  --  Start Date -- Finish Date");
+		for (Order order : array) {
+			if (order != null) {
+				printMessage(order.getClient().getName() + "-------" + order.getRoom().getNumber() + "------"
+						+ DateOperator.getDateToString(order.getStartDate()) + "----"
+						+ DateOperator.getDateToString(order.getFinishDate()));
+			}
+		}
+	}
+
+	public static void printServices(Service[] array) {
+		printMessage("Code --- Name  --------  Price");
+		for (Service service : array) {
+			if (service != null) {
+				printMessage(service.getCode() + "-------" + service.getName() + "------" + service.getPrice());
 			}
 		}
 	}
