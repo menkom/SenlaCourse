@@ -28,7 +28,7 @@ public class Executive {
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "All rooms sorted by capacity" + DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printArray(hotel.getAllRoomsSortByCapacity());
+		hotel.getAllRoomsSortByCapacity();
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Free rooms sort by star" + DisplayOperator.SEPARATOR_LINE);
@@ -42,7 +42,7 @@ public class Executive {
 		DisplayOperator.printMessage("Number of free rooms : " + hotel.getNumberOfFreeRooms());
 
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
-		DisplayOperator.printMessage("Number of clients : " + hotel.getNumberOfFreeRooms());
+		DisplayOperator.printMessage("Number of clients : " + hotel.getNumberOfClients());
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "Rooms free at 16/07/2018 date" + DisplayOperator.SEPARATOR_LINE);

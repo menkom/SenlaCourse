@@ -46,10 +46,10 @@ public class Hotel extends AHotel {
 		return result;
 	}
 
-	public Room[] getAllRoomsSortByCapacity() {
+	public void getAllRoomsSortByCapacity() {
 		Room[] result = getRoomService().getAllRooms();
 		Arrays.sort(result, new RoomSortByCapacity());
-		return result;
+		DisplayOperator.printRooms(result);
 	}
 
 	public Room[] getAllRoomsSortByStar() {

@@ -35,4 +35,15 @@ public class DisplayOperator {
 					+ room.getStar() + ", Status=" + room.getStatus() + ", Price=" + room.getPrice());
 		}
 	}
+
+	public static void printRooms(Room[] array) {
+		printMessage("Number Capacity Star   Status    Price");
+		for (Room room : array) {
+			if (room != null) {
+				printMessage(room.getNumber() + "-------" + room.getCapacity() + "------" + room.getStar() + "----"
+						+ room.getStatus() + "---" + room.getPrice());
+			}
+		}
+	}
+
 }
