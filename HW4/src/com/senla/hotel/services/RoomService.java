@@ -59,7 +59,7 @@ public class RoomService implements IService {
 
 	public void addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
 		Room element = new Room(number, capacity, star, status, price);
-		getRepository().add(element);
+		add(element);
 	}
 
 	public Room[] getAllRooms() {

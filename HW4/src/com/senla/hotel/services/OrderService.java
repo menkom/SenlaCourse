@@ -68,7 +68,7 @@ public class OrderService implements IService {
 		Room room = getRoomRepository().getRoomByNum(roomNum);
 
 		Order element = new Order(num, client, room, startDate, finishDate);
-		getRepository().add(element);
+		add(element);
 	}
 
 	public Order getOrderByNum(int num) {
