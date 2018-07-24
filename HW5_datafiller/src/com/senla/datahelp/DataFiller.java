@@ -2,20 +2,20 @@ package com.senla.datahelp;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.senla.hotel.Hotel;
+import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.util.DateOperator;
 
 public class DataFiller {
 
 	private Hotel hotel;
 
-	public DataFiller(Hotel hotel) {
+	public DataFiller() {
 		super();
-		this.hotel = hotel;
+		this.hotel = Hotel.getInstance();
 	}
 
 	public void runDataIO() throws IOException, ParseException {
@@ -58,20 +58,21 @@ public class DataFiller {
 
 	public void addOrders() throws ParseException {
 
-		hotel.addOrder(1, "Customer One", 11, DateOperator.getStringToDate("10/07/2018"),
-				DateOperator.getStringToDate("14/07/2018"));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		hotel.addOrder(2, "John", 22, DateOperator.getStringToDate("11/07/2018"),
-				DateOperator.getStringToDate("12/07/2018"));
+		hotel.addOrder(1, "Customer One", 11, formatter.parse("10/07/2018"), formatter.parse("14/07/2018"));
 
-		hotel.addOrder(3, "Mike", 33, DateOperator.getStringToDate("08/07/2018"),
-				DateOperator.getStringToDate("10/07/2018"));
+		hotel.addOrder(2, "John", 22, formatter.parse("11/07/2018"), formatter.parse("12/07/2018"));
 
-		hotel.orderRoom("Tim", 44, DateOperator.getStringToDate("14/07/2018"), new Date());
+		hotel.addOrder(3, "Mike", 33, formatter.parse("08/07/2018"), formatter.parse("10/07/2018"));
 
-		hotel.orderRoom("Alex", 44, new Date(), null);
+		hotel.orderRoom("Tim", 44, formatter.parse("14/07/2018"), formatter.parse("16/07/2018"));
 
-		hotel.freeRoom(5);
+		hotel.orderRoom("Customer One", 44, formatter.parse("10/07/2018"), formatter.parse("12/07/2018"));
+
+		hotel.orderRoom("Alex", 55, new Date(), null);
+
+		hotel.freeRoom(6);
 	}
 
 	public void addOrderServices() {

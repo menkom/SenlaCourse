@@ -1,6 +1,7 @@
 package com.senla.util;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import com.senla.base.BaseObject;
 import com.senla.hotel.model.Client;
@@ -23,7 +24,6 @@ public class ObjectSerializer {
 
 	public String[] arrayToStringArray(BaseObject[] array) {
 		String[] result = new String[array.length];
-		// TODO Check how will it work without one element inside of array
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] != null) {
 				result[i] = array[i].toString();
@@ -99,8 +99,10 @@ public class ObjectSerializer {
 
 		Room room = roomRepository.getRoomByNum(Integer.parseInt(array[2]));
 
-		Order result = new Order(Integer.parseInt(array[0]), client, room, DateOperator.getStringToDate(array[3]),
-				DateOperator.getStringToDate(array[4]));
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+		Order result = new Order(Integer.parseInt(array[0]), client, room, formatter.parse(array[3]),
+				formatter.parse(array[4]));
 
 		for (int i = 5; i < array.length; i++) {
 			Service service = serviceRepository.getServiceByCode(Integer.parseInt(array[i]));

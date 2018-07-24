@@ -1,10 +1,11 @@
 package com.senla.hotel.model;
 
+import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.senla.base.BaseObject;
-import com.senla.util.ArrayOperator;
-import com.senla.util.DateOperator;
 
 public class Order extends BaseObject {
 
@@ -13,7 +14,7 @@ public class Order extends BaseObject {
 	private Room room;
 	private Date startDate;
 	private Date finishDate;
-	private Service[] services;
+	private List<Service> services;
 
 	public Order(int num, Client client, Room room, Date startDate, Date finishDate) {
 		super();
@@ -22,7 +23,7 @@ public class Order extends BaseObject {
 		this.room = room;
 		this.startDate = startDate;
 		this.finishDate = finishDate;
-		services = new Service[0];
+		services = new ArrayList<Service>();
 	}
 
 	public Date getStartDate() {
@@ -57,13 +58,13 @@ public class Order extends BaseObject {
 		this.room = room;
 	}
 
-	public Service[] getServices() {
+	public List<Service> getServices() {
 		return services;
 	}
 
-	public void setServices(Service[] services) {
-		this.services = services;
-	}
+	// public void setServices(Service[] services) {
+	// this.services = services;
+	// }
 
 	public int getNum() {
 		return num;
@@ -74,7 +75,7 @@ public class Order extends BaseObject {
 	}
 
 	public void addService(Service service) {
-		setServices((Service[]) ArrayOperator.add(getServices(), service));
+		services.add(service);
 	}
 
 	public String toString() {
@@ -83,11 +84,15 @@ public class Order extends BaseObject {
 		result = result.concat(getNum() + BaseObject.SEPARATOR);
 		result = result.concat(getClient().getName() + BaseObject.SEPARATOR);
 		result = result.concat(getRoom().getNumber() + BaseObject.SEPARATOR);
-		result = result.concat(DateOperator.getDateToString(getStartDate()) + BaseObject.SEPARATOR);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+		result = result.concat(formatter.format(getStartDate()) + BaseObject.SEPARATOR);
+
 		if (getFinishDate() == null) {
 			result = result.concat("null");
 		} else {
-			result = result.concat(DateOperator.getDateToString(getFinishDate()) + BaseObject.SEPARATOR);
+			result = result.concat(formatter.format(getFinishDate()) + BaseObject.SEPARATOR);
 		}
 		for (Service service : getServices()) {
 			if (service != null) {

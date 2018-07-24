@@ -1,13 +1,13 @@
 package com.senla.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.List;
 
 import com.senla.base.BaseObject;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.IBaseRepository;
-import com.senla.hotel.services.IService;
 
 public class DisplayOperator {
 
@@ -21,14 +21,6 @@ public class DisplayOperator {
 		printMessage(Arrays.toString(array));
 	}
 
-	public static void printRepository(IBaseRepository repository) {
-		printMessage(Arrays.toString(repository.toStringArray()));
-	}
-
-	public static void printService(IService service) {
-		printRepository(service.getRepository());
-	}
-
 	public static void printRoomInfo(Room room) {
 		if (room == null) {
 			printMessage("Room: Number= -, Capacity= -, Star= -, Status= -, Price= -");
@@ -38,7 +30,7 @@ public class DisplayOperator {
 		}
 	}
 
-	public static void printRooms(Room[] array) {
+	public static void printRooms(List<Room> array) {
 		printMessage("Number Capacity Star   Status    Price");
 		for (Room room : array) {
 			if (room != null) {
@@ -48,18 +40,19 @@ public class DisplayOperator {
 		}
 	}
 
-	public static void printOrders(Order[] array) {
+	public static void printOrders(List<Order> array) {
 		printMessage("Client  --  Room  --  Start Date -- Finish Date");
 		for (Order order : array) {
 			if (order != null) {
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
 				printMessage(order.getClient().getName() + "-------" + order.getRoom().getNumber() + "------"
-						+ DateOperator.getDateToString(order.getStartDate()) + "----"
-						+ DateOperator.getDateToString(order.getFinishDate()));
+						+ formatter.format(order.getStartDate()) + "----" + formatter.format(order.getFinishDate()));
 			}
 		}
 	}
 
-	public static void printServices(Service[] array) {
+	public static void printServices(List<Service> array) {
 		printMessage("Code --- Name  --------  Price");
 		for (Service service : array) {
 			if (service != null) {
