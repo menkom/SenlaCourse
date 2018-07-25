@@ -134,12 +134,9 @@ public class RoomService implements IService {
 	}
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		// RoomService service = new FileOperator().getRoomService(dbPath +
-		// getFileName(), getClientRepository(),
-		// getRoomRepository(), getServiceRepository(), getOrderRepository());
-		//
-		// getRepository().setRepository(((RoomRepository)
-		// service.getRepository()).getRepository());
+		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+
+		roomRepository.setRooms(ListConverter.getRooms(array));
 	}
 
 	public void saveToDB(String dbPath) {

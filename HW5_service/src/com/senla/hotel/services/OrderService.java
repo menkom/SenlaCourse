@@ -3,6 +3,7 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -168,11 +169,11 @@ public class OrderService implements IService {
 	}
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		// OrderService service = new FileOperator().getOrderService(dbPath +
-		// getFileName());
-		//
-		// getRepository().setRepository(((OrderRepository)
-		// service.getRepository()).getRepository());
+		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+
+		setNextNum(Integer.parseInt(array[0]));
+
+		orderRepository.setOrders(ListConverter.getOrders(Arrays.copyOfRange(array, 1, array.length)));
 	}
 
 	public void saveToDB(String dbPath) {

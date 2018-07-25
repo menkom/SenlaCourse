@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.senla.base.BaseObject;
+import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
@@ -61,4 +62,12 @@ public class DisplayOperator {
 		}
 	}
 
+	public static void printClients(List<Client> array) {
+		printMessage("Name");
+		for (Client client : array) {
+			if (client != null) {
+				printMessage(client.getName());
+			}
+		}
+	}
 }

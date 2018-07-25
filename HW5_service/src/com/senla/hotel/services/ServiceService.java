@@ -53,12 +53,9 @@ public class ServiceService implements IService {
 	}
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		// ServiceService service = new FileOperator().getServiceService(dbPath +
-		// getFileName(), getClientRepository(),
-		// getRoomRepository(), getServiceRepository(), getOrderRepository());
-		//
-		// getRepository().setRepository(((ServiceRepository)
-		// service.getRepository()).getRepository());
+		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+
+		serviceRepository.setServices(ListConverter.getServices(array));
 	}
 
 	public void saveToDB(String dbPath) throws IOException {

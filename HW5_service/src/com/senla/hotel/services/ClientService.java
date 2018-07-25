@@ -2,6 +2,7 @@ package com.senla.hotel.services;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 import com.danco.training.TextFileWorker;
 import com.senla.converter.ListConverter;
@@ -34,16 +35,18 @@ public class ClientService implements IService {
 		clientRepository.add(element);
 	}
 
+	public List<Client> getAllClients() {
+		return clientRepository.getClients();
+	}
+
 	public Client getClientByName(String name) {
 		return clientRepository.getClientByName(name);
 	}
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		// ClientService service = new FileOperator().getClientService(dbPath +
-		// getFileName());
-		//
-		// getRepository().setRepository(((ClientRepository)
-		// service.getRepository()).getRepository());
+		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+
+		clientRepository.setClients(ListConverter.getClients(array));
 	}
 
 	public void saveToDB(String dbPath) {

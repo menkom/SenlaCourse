@@ -48,4 +48,8 @@ public class ClientRepository {
 		return clients;
 	}
 
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
 }

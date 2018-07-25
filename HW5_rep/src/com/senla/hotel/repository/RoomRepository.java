@@ -48,4 +48,8 @@ public class RoomRepository {
 		return roomRepository;
 	}
 
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
+	}
+
 }

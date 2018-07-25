@@ -16,14 +16,12 @@ public class Executive {
 			dbPath = args[0];
 		}
 
-		// hotel.load(dbPath);
+		Hotel.getInstance().load(dbPath);
 
-		new DataFiller().runDataIO();
+		// new DataFiller().runDataIO();
 
-		// DisplayOperator.printService(hotel.getClientService());
-		// DisplayOperator.printService(hotel.getRoomService());
-		// DisplayOperator.printService(hotel.getServiceService());
-		// DisplayOperator.printService(hotel.getOrderService());
+		DisplayOperator.printClients(Hotel.getInstance().getAllClients());
+		DisplayOperator.printRooms(Hotel.getInstance().getAllRoomsSortByPrice());
 
 		DisplayOperator.printMessage(
 				DisplayOperator.SEPARATOR_LINE + "All rooms sorted by capacity" + DisplayOperator.SEPARATOR_LINE);
@@ -68,7 +66,7 @@ public class Executive {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE + "All services" + DisplayOperator.SEPARATOR_LINE);
 		DisplayOperator.printServices(Hotel.getInstance().getAllServicesSortByPrice());
 
-		Hotel.getInstance().save(dbPath);
+		// Hotel.getInstance().save(dbPath);
 
 	}
 

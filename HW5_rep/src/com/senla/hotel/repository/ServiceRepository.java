@@ -48,4 +48,8 @@ public class ServiceRepository {
 		return serviceRepository;
 	}
 
+	public void setServices(List<Service> services) {
+		this.services = services;
+	}
+
 }

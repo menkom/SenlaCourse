@@ -217,4 +217,8 @@ public class Hotel {
 	public OrderService getOrderService() {
 		return orderService;
 	}
+
+	public List<Client> getAllClients() {
+		return getClientService().getAllClients();
+	}
 }
