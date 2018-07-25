@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
+import com.danco.training.TextFileWorker;
+import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
 //import com.senla.util.FileOperator;
@@ -60,12 +62,12 @@ public class ServiceService implements IService {
 	}
 
 	public void saveToDB(String dbPath) throws IOException {
-//		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
+		new TextFileWorker(dbPath + getFileName())
+				.writeToFile(ListConverter.getArrayFromList(serviceRepository.getServices()));
 	}
 
-	@Override
 	public String[] getStringToSave() {
-		return getServiceRepository().toStringArray();
+		return null;// getServiceRepository().toStringArray();
 	}
 
 	public void changeServicePrice(int code, int price) {

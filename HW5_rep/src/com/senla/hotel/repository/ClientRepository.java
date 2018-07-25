@@ -37,19 +37,6 @@ public class ClientRepository {
 		return null;
 	}
 
-	public String[] toStringArray() {
-		String[] result = new String[clients.size()];
-
-		int i = 0;
-		for (Client element : clients) {
-			if (element != null) {
-				result[i] = element.toString();
-				i++;
-			}
-		}
-		return result;
-	}
-
 	public static ClientRepository getInstance() {
 		if (clientRepository == null) {
 			clientRepository = new ClientRepository();

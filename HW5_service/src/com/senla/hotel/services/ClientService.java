@@ -3,9 +3,10 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.text.ParseException;
 
+import com.danco.training.TextFileWorker;
+import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.repository.ClientRepository;
-//import com.senla.util.FileOperator;
 
 public class ClientService implements IService {
 
@@ -45,17 +46,13 @@ public class ClientService implements IService {
 		// service.getRepository()).getRepository());
 	}
 
-	public void saveToDB(String dbPath) throws IOException {
-//		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
-	}
-
-	public String[] getStringToSave() {
-		return clientRepository.toStringArray();
+	public void saveToDB(String dbPath) {
+		new TextFileWorker(dbPath + getFileName())
+				.writeToFile(ListConverter.getArrayFromList(clientRepository.getClients()));
 	}
 
 	public int getNumberOfClients() {
 		return clientRepository.getClients().size();
 	}
-
 
 }

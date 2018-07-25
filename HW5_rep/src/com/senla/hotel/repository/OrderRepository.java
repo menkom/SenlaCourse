@@ -46,19 +46,6 @@ public class OrderRepository {
 		getOrderByNum(num).addService(service);
 	}
 
-	public String[] toStringArray() {
-		String[] result = new String[getOrders().size()];
-
-		int i = 0;
-		for (Order element : getOrders()) {
-			if (element != null) {
-				result[i] = element.toString();
-				i++;
-			}
-		}
-		return result;
-	}
-
 	public static OrderRepository getInstance() {
 		if (orderRepository == null) {
 			orderRepository = new OrderRepository();

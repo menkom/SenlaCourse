@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.danco.training.TextFileWorker;
+import com.senla.converter.ListConverter;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
@@ -62,8 +64,9 @@ public class OrderService implements IService {
 	public void orderRoom(int roomNum, String clientName, Date dateStart, Date dateFinish) {
 		// We have to create Order to change room status. By adding order you don't have
 		// access to order and in information to change room status.
-		Order order = new Order(getNexNum(), ClientService.getInstance().getClientByName(clientName),
-				RoomService.getInstance().getRoomByNum(roomNum), dateStart, dateFinish);
+		Room room = RoomService.getInstance().getRoomByNum(roomNum);
+		Order order = new Order(getNextNum(), ClientService.getInstance().getClientByName(clientName), room, dateStart,
+				dateFinish);
 		this.add(order);
 		if (order.getStartDate() == new Date()) {
 			order.getRoom().setStatus(RoomStatus.OCCUPIED);
@@ -154,17 +157,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public String[] getStringToSave() {
-		String[] repositoryToStr = getOrderRepository().toStringArray();
-		String[] result = new String[repositoryToStr.length + 1];
-
-		result[0] = Integer.toString(nextNum);
-
-		System.arraycopy(repositoryToStr, 0, result, 1, repositoryToStr.length);
-		return result;
-	}
-
-	public int getNexNum() {
+	public int getNextNum() {
 		int result = nextNum;
 		nextNum++;
 		return result;
@@ -176,15 +169,22 @@ public class OrderService implements IService {
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
 		// OrderService service = new FileOperator().getOrderService(dbPath +
-		// getFileName(), getClientRepository(),
-		// getRoomRepository(), getServiceRepository(), getOrderRepository());
+		// getFileName());
 		//
 		// getRepository().setRepository(((OrderRepository)
 		// service.getRepository()).getRepository());
 	}
 
 	public void saveToDB(String dbPath) {
-//		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
+		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
+
+		String[] result = new String[repositoryToStr.length + 1];
+
+		result[0] = Integer.toString(nextNum);
+
+		System.arraycopy(repositoryToStr, 0, result, 1, repositoryToStr.length);
+
+		new TextFileWorker(dbPath + getFileName()).writeToFile(result);
 	}
 
 	public static OrderService getOrderService() {

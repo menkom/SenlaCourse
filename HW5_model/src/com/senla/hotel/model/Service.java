@@ -48,5 +48,4 @@ public class Service extends BaseObject {
 
 		return result;
 	}
-
 }

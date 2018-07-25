@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.danco.training.TextFileWorker;
+import com.senla.converter.ListConverter;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
@@ -141,10 +143,12 @@ public class RoomService implements IService {
 	}
 
 	public void saveToDB(String dbPath) {
-//		new FileOperator().saveToDB(dbPath + getFileName(), getStringToSave());
+		new TextFileWorker(dbPath + getFileName())
+				.writeToFile(ListConverter.getArrayFromList(roomRepository.getRooms()));
 	}
 
 	public String[] getStringToSave() {
-		return getRoomRepository().toStringArray();
+
+		return null;// getRoomRepository().toStringArray();
 	}
 }

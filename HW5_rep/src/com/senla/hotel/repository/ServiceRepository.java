@@ -41,19 +41,6 @@ public class ServiceRepository {
 		return null;
 	}
 
-	public String[] toStringArray() {
-		String[] result = new String[getServices().size()];
-
-		int i = 0;
-		for (Service element : getServices()) {
-			if (element != null) {
-				result[i] = element.toString();
-				i++;
-			}
-		}
-		return result;
-	}
-
 	public static ServiceRepository getInstance() {
 		if (serviceRepository == null) {
 			serviceRepository = new ServiceRepository();

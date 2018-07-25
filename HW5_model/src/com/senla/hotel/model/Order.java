@@ -62,10 +62,6 @@ public class Order extends BaseObject {
 		return services;
 	}
 
-	// public void setServices(Service[] services) {
-	// this.services = services;
-	// }
-
 	public int getNum() {
 		return num;
 	}

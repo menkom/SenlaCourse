@@ -41,19 +41,6 @@ public class RoomRepository {
 		return null;
 	}
 
-	public String[] toStringArray() {
-		String[] result = new String[getRooms().size()];
-
-		int i = 0;
-		for (Room element : getRooms()) {
-			if (element != null) {
-				result[i] = element.toString();
-				i++;
-			}
-		}
-		return result;
-	}
-
 	public static RoomRepository getInstance() {
 		if (roomRepository == null) {
 			roomRepository = new RoomRepository();
