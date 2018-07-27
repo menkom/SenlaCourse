@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.senla.exception.NoEntryException;
 import com.senla.hotel.comparator.OrderSortByClientName;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
@@ -23,6 +24,7 @@ import com.senla.hotel.services.ClientService;
 import com.senla.hotel.services.OrderService;
 import com.senla.hotel.services.RoomService;
 import com.senla.hotel.services.ServiceService;
+import com.senla.util.DisplayOperator;
 
 public class Hotel {
 
@@ -182,11 +184,21 @@ public class Hotel {
 
 	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
 
-		getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
+		try {
+			getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
+		} catch (NoEntryException e) {
+			DisplayOperator.printMessage(e.toString());
+			logger.error(e);
+		}
 	}
 
 	public void orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
-		getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+		try {
+			getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+		} catch (NoEntryException e) {
+			DisplayOperator.printMessage(e.toString());
+			logger.error(e);
+		}
 	}
 
 	public void addOrderService(int orderNum, int serviceCode) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.danco.training.TextFileWorker;
 import com.senla.converter.ListConverter;
+import com.senla.exception.NoEntryException;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.repository.ClientRepository;
 
@@ -39,8 +40,11 @@ public class ClientService implements IService {
 		return clientRepository.getClients();
 	}
 
-	public Client getClientByName(String name) {
-		return clientRepository.getClientByName(name);
+	public Client getClientByName(String name) throws NoEntryException {
+		Client result = clientRepository.getClientByName(name);
+		if (result == null)
+			throw new NoEntryException(name);
+		return result;
 	}
 
 	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {

@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.danco.training.TextFileWorker;
 import com.senla.converter.ListConverter;
+import com.senla.exception.NoEntryException;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
@@ -50,7 +51,7 @@ public class OrderService implements IService {
 		orderRepository.add(element);
 	}
 
-	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
+	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) throws NoEntryException {
 		Client client = ClientService.getInstance().getClientByName(clientName);
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 
@@ -62,7 +63,7 @@ public class OrderService implements IService {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
-	public void orderRoom(int roomNum, String clientName, Date dateStart, Date dateFinish) {
+	public void orderRoom(int roomNum, String clientName, Date dateStart, Date dateFinish) throws NoEntryException {
 		// We have to create Order to change room status. By adding order you don't have
 		// access to order and in information to change room status.
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
