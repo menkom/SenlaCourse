@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/HW5_model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/HW5_service"/>
+	<classpathentry kind="lib" path="C:/Users/netlynx/eclipse-workspace/hotel_lib/log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

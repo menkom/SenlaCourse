@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.senla.hotel.comparator.OrderSortByClientName;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
@@ -31,6 +33,8 @@ public class Hotel {
 
 	private static Hotel hotel;
 
+	private static final Logger logger = Logger.getLogger(Hotel.class);
+
 	private Hotel() {
 		super();
 		clientService = ClientService.getInstance();
@@ -42,6 +46,7 @@ public class Hotel {
 	public static Hotel getInstance() {
 		if (hotel == null) {
 			hotel = new Hotel();
+			logger.info("Hotel was created.");
 		}
 		return hotel;
 	}
@@ -51,6 +56,7 @@ public class Hotel {
 		getRoomService().loadFromDB(dbPath);
 		getServiceService().loadFromDB(dbPath);
 		getOrderService().loadFromDB(dbPath);
+		logger.info("Info loaded");
 	}
 
 	public void save(String dbPath) throws Throwable {
@@ -58,6 +64,7 @@ public class Hotel {
 		getRoomService().saveToDB(dbPath);
 		getServiceService().saveToDB(dbPath);
 		getOrderService().saveToDB(dbPath);
+		logger.info("Info saved");
 	}
 
 	public List<Room> getAllRoomsSortByPrice() {
