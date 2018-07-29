@@ -8,7 +8,7 @@ public class ExitAction implements IAction {
 	@Override
 	public void execute() {
 		DisplayOperator.printMessage("Thank you for using application \"Hotel\". Bye!");
-		System.exit(0);
+		break;
 	}
 
 }

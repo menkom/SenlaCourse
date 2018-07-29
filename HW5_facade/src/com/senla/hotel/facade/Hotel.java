@@ -206,8 +206,8 @@ public class Hotel {
 		getOrderService().addOrderService(orderNum, serviceCode);
 	}
 
-	public void freeRoom(int orderNum) {
-		getOrderService().freeRoom(orderNum);
+	public boolean freeRoom(int orderNum) {
+		return getOrderService().freeRoom(orderNum);
 	}
 
 	public void changeRoomStatus(int roomNum, RoomStatus roomStatus) {

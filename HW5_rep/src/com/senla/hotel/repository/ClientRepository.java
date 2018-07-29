@@ -30,7 +30,7 @@ public class ClientRepository {
 
 	public Client getClientByName(String name) {
 		for (Client client : clients) {
-			if ((client != null) && (client.getName().equals(name))) {
+			if ((client != null) && (client.getName().toLowerCase().equals(name.toLowerCase()))) {
 				return client;
 			}
 		}

@@ -77,13 +77,16 @@ public class OrderService implements IService {
 		return order;
 	}
 
-	public void freeRoom(int orderNum) {
+	public boolean freeRoom(int orderNum) {
+		boolean result = false;
 		Order order = orderRepository.getOrderByNum(orderNum);
 
 		if (order != null) {
 			order.setFinishDate(new Date());
 			order.getRoom().setStatus(RoomStatus.AVAILABLE);
+			result = true;
 		}
+		return result;
 	}
 
 	public void addOrderService(int orderNum, int serviceCode) {

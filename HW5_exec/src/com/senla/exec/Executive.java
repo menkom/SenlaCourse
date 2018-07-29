@@ -42,7 +42,12 @@ public class Executive {
 		MenuController menuController = new MenuController();
 		menuController.run();
 
-		// Hotel.getInstance().save(dbPath);
+		try {
+			Hotel.getInstance().save(dbPath);
+		} catch (Throwable e) {
+			DisplayOperator.printMessage("Error during saving.");
+			logger.error(e);
+		}
 
 	}
 
