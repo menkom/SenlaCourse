@@ -23,6 +23,7 @@ public class DisplayOperator {
 	}
 
 	public static void printRoomInfo(Room room) {
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		if (room == null) {
 			printMessage("Room: Number= -, Capacity= -, Star= -, Status= -, Price= -");
 		} else {
@@ -31,7 +32,27 @@ public class DisplayOperator {
 		}
 	}
 
+	public static void printOrderInfo(Order order) {
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
+		if (order == null) {
+			printMessage("Order: Num= -, Client= -, Room= -, StartDate= -, FinishDate= -");
+		} else {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			String dateStart = "";
+			String dateFinish = "";
+			if (order.getStartDate() != null) {
+				dateStart = formatter.format(order.getStartDate());
+			}
+			if (order.getFinishDate() != null) {
+				dateStart = formatter.format(order.getFinishDate());
+			}
+			printMessage("Order: Num=" + order.getNum() + ", Client=" + order.getClient().getName() + ", Room="
+					+ order.getRoom().getNumber() + ", StartDate=" + dateStart + ", FinishDate=" + dateFinish);
+		}
+	}
+
 	public static void printRooms(List<Room> array) {
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		printMessage("Number Capacity Star   Status    Price");
 		for (Room room : array) {
 			if (room != null) {
@@ -42,6 +63,7 @@ public class DisplayOperator {
 	}
 
 	public static void printOrders(List<Order> array) {
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		printMessage("Client  --  Room  --  Start Date -- Finish Date");
 		for (Order order : array) {
 			if (order != null) {
@@ -54,6 +76,7 @@ public class DisplayOperator {
 	}
 
 	public static void printServices(List<Service> array) {
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		printMessage("Code --- Name  --------  Price");
 		for (Service service : array) {
 			if (service != null) {
@@ -63,7 +86,8 @@ public class DisplayOperator {
 	}
 
 	public static void printClients(List<Client> array) {
-		printMessage("Name");
+		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
+		printMessage("--Name--");
 		for (Client client : array) {
 			if (client != null) {
 				printMessage(client.getName());

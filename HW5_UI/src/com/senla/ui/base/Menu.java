@@ -1,15 +1,16 @@
 package com.senla.ui.base;
 
-import com.senla.util.ArrayOperator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Menu {
 
 	private String name;
-	private MenuItem[] menuItems;
+	private List<MenuItem> menuItems;
 
 	public Menu(String menuName) {
 		this.name = menuName;
-		menuItems = new MenuItem[0];
+		menuItems = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -20,15 +21,15 @@ public class Menu {
 		this.name = name;
 	}
 
-	public MenuItem[] getMenuItems() {
+	public List<MenuItem> getMenuItems() {
 		return menuItems;
 	}
 
-	public void setMenuItems(MenuItem[] menuItems) {
+	public void setMenuItems(List<MenuItem> menuItems) {
 		this.menuItems = menuItems;
 	}
 
 	public void addMenuItem(MenuItem menuItem) {
-		menuItems = (MenuItem[]) ArrayOperator.add(menuItems, menuItem);
+		menuItems.add(menuItem);
 	}
 }

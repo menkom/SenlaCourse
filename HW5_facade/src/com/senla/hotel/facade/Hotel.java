@@ -148,7 +148,6 @@ public class Hotel {
 	}
 
 	public Room getRoomByNum(int roomNum) {
-		// TODO Do I need to print here using Printer or send info and print after
 		return getRoomService().getRoomByNum(roomNum);
 	}
 
@@ -192,13 +191,15 @@ public class Hotel {
 		}
 	}
 
-	public void orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
+	public Order orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
+		Order order = null;
 		try {
-			getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+			order = getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
 		} catch (NoEntryException e) {
 			DisplayOperator.printMessage(e.toString());
 			logger.error(e);
 		}
+		return order;
 	}
 
 	public void addOrderService(int orderNum, int serviceCode) {
