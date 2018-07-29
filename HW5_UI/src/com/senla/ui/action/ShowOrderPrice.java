@@ -18,7 +18,7 @@ public class ShowOrderPrice implements IAction {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
-		System.out.print("Enter order num: ");
+		DisplayOperator.printMessage("Enter order num: ");
 		try {
 			orderNum = scanner.nextInt();
 

@@ -6,12 +6,13 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowLastThreeOrdersByRoom implements IAction {
+public class ShowRoomInfo implements IAction {
 
-	private static final Logger logger = Logger.getLogger(ShowLastThreeOrdersByRoom.class);
+	private static final Logger logger = Logger.getLogger(ShowRoomInfo.class);
 
 	@Override
 	public void execute() {
@@ -21,16 +22,17 @@ public class ShowLastThreeOrdersByRoom implements IAction {
 		DisplayOperator.printMessage("Enter room num: ");
 		try {
 			roomNum = scanner.nextInt();
-
-			DisplayOperator.printOrders(Hotel.getInstance().getLastThreeOrdersByRoom(roomNum));
+			Room room = Hotel.getInstance().getRoomByNum(roomNum);
+			if (room == null) {
+				DisplayOperator.printMessage("Room #" + Integer.toString(roomNum) + " not found.");
+				logger.error("Null room");
+			} else {
+				DisplayOperator.printRoomInfo(room);
+			}
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage("You need to enter room number.");
 			logger.error(e.toString());
-		} catch (NullPointerException e) {
-			DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
-			logger.error(e.toString());
 		}
-
 	}
 
 }

@@ -13,7 +13,7 @@ import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowFreeRoomsByDateSortByPrice implements IAction {
+public class ShowFreeRoomsByDateSortByCapacity implements IAction {
 
 	private static final Logger logger = Logger.getLogger(ShowFreeRoomsByDateSortByPrice.class);
 
@@ -29,7 +29,7 @@ public class ShowFreeRoomsByDateSortByPrice implements IAction {
 		try {
 			Date date = formatter.parse(dateInString);
 
-			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByPrice(date);
+			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByCapacity(date);
 			if (rooms.size() > 0) {
 				DisplayOperator.printRooms(rooms);
 			} else {

@@ -20,18 +20,17 @@ public class OrderRoom implements IAction {
 	public void execute() {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		// orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish)
 		int roomNum = 0;
 		String clientName = "";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
-			System.out.print("Enter client name: ");
-			clientName = scanner.next();
-			System.out.print("Enter room number: ");
+			DisplayOperator.printMessage("Enter client name: ");
+			clientName = scanner.nextLine();
+			DisplayOperator.printMessage("Enter room number: ");
 			roomNum = scanner.nextInt();
-			System.out.print("Enter start date (format dd/MM/yyyy) (current date if empty): ");
+			DisplayOperator.printMessage("Enter start date (format dd/MM/yyyy) (current date if empty): ");
 			String dateStartInString = scanner.next();
-			System.out.print("Enter finish date (format dd/MM/yyyy) (no date if empty): ");
+			DisplayOperator.printMessage("Enter finish date (format dd/MM/yyyy) (no date if empty): ");
 			String dateFinishInString = scanner.next();
 
 			Date dateStart = new Date();
