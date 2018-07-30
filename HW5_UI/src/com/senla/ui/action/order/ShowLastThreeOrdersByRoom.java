@@ -15,20 +15,20 @@ public class ShowLastThreeOrdersByRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		int roomNum = 0;
-		DisplayOperator.printMessage("Enter room num: ");
-		try {
-			roomNum = scanner.nextInt();
+		try (Scanner scanner = new Scanner(System.in)) {
+			int roomNum = 0;
+			DisplayOperator.printMessage("Enter room num: ");
+			try {
+				roomNum = scanner.nextInt();
 
-			DisplayOperator.printOrders(Hotel.getInstance().getLastThreeOrdersByRoom(roomNum));
-		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("You need to enter room number.");
-			logger.error(e.toString());
-		} catch (NullPointerException e) {
-			DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
-			logger.error(e.toString());
+				DisplayOperator.printOrders(Hotel.getInstance().getLastThreeOrdersByRoom(roomNum));
+			} catch (InputMismatchException e) {
+				DisplayOperator.printMessage("You need to enter room number.");
+				logger.error(e.toString());
+			} catch (NullPointerException e) {
+				DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
+				logger.error(e.toString());
+			}
 		}
 
 	}

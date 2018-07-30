@@ -9,7 +9,6 @@ public class ShowNumberOfClients implements IAction {
 	@Override
 	public void execute() {
 		DisplayOperator.printMessage("Number of clients : " + Hotel.getInstance().getNumberOfClients());
-
 	}
 
 }

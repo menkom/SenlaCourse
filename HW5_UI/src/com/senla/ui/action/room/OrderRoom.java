@@ -18,44 +18,44 @@ public class OrderRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		int roomNum = 0;
-		String clientName = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		try {
-			DisplayOperator.printMessage("Enter client name: ");
-			clientName = scanner.nextLine();
-			DisplayOperator.printMessage("Enter room number: ");
-			roomNum = scanner.nextInt();
-			DisplayOperator.printMessage("Enter start date (format dd/MM/yyyy) (current date if empty): ");
-			String dateStartInString = scanner.next();
-			DisplayOperator.printMessage("Enter finish date (format dd/MM/yyyy) (no date if empty): ");
-			String dateFinishInString = scanner.next();
+		try (Scanner scanner = new Scanner(System.in)) {
+			int roomNum = 0;
+			String clientName = "";
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				DisplayOperator.printMessage("Enter client name: ");
+				clientName = scanner.nextLine();
+				DisplayOperator.printMessage("Enter room number: ");
+				roomNum = scanner.nextInt();
+				DisplayOperator.printMessage("Enter start date (format dd/MM/yyyy) (current date if empty): ");
+				String dateStartInString = scanner.next();
+				DisplayOperator.printMessage("Enter finish date (format dd/MM/yyyy) (no date if empty): ");
+				String dateFinishInString = scanner.next();
 
-			Date dateStart = new Date();
-			Date dateFinish = null;
+				Date dateStart = new Date();
+				Date dateFinish = null;
 
-			if (!dateStartInString.equals("")) {
-				dateStart = formatter.parse(dateStartInString);
+				if (!dateStartInString.equals("")) {
+					dateStart = formatter.parse(dateStartInString);
+				}
+
+				if (!dateFinishInString.equals("")) {
+					dateFinish = formatter.parse(dateFinishInString);
+				}
+
+				DisplayOperator
+						.printOrderInfo(Hotel.getInstance().orderRoom(clientName, roomNum, dateStart, dateFinish));
+			} catch (InputMismatchException e) {
+				DisplayOperator.printMessage("Wrong input data.");
+				logger.error(e.toString());
+			} catch (NullPointerException e) {
+				DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
+				logger.error(e.toString());
+			} catch (ParseException e) {
+				DisplayOperator.printMessage("Wrong date format.");
+				logger.error(e.toString());
 			}
-
-			if (!dateFinishInString.equals("")) {
-				dateFinish = formatter.parse(dateFinishInString);
-			}
-
-			DisplayOperator.printOrderInfo(Hotel.getInstance().orderRoom(clientName, roomNum, dateStart, dateFinish));
-		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("Wrong input data.");
-			logger.error(e.toString());
-		} catch (NullPointerException e) {
-			DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
-			logger.error(e.toString());
-		} catch (ParseException e) {
-			DisplayOperator.printMessage("Wrong date format.");
-			logger.error(e.toString());
 		}
-
 	}
 
 }

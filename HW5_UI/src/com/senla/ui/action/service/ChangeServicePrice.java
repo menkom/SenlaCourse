@@ -15,23 +15,22 @@ public class ChangeServicePrice implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		int serviceCode = -1;
-		int price = -1;
+		try (Scanner scanner = new Scanner(System.in)) {
+			int serviceCode = -1;
+			int price = -1;
 
-		try {
-			DisplayOperator.printMessage("Enter service code: ");
-			serviceCode = scanner.nextInt();
-			DisplayOperator.printMessage("Enter new price: ");
-			price = scanner.nextInt();
+			try {
+				DisplayOperator.printMessage("Enter service code: ");
+				serviceCode = scanner.nextInt();
+				DisplayOperator.printMessage("Enter new price: ");
+				price = scanner.nextInt();
 
-			Hotel.getInstance().changeServicePrice(serviceCode, price);
-		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("Input correct field types.");
-			logger.error(e);
+				Hotel.getInstance().changeServicePrice(serviceCode, price);
+			} catch (InputMismatchException e) {
+				DisplayOperator.printMessage("Input correct field types.");
+				logger.error(e);
+			}
 		}
-
 	}
 
 }

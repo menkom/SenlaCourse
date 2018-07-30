@@ -16,22 +16,22 @@ public class ShowRoomInfo implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		int roomNum = 0;
-		DisplayOperator.printMessage("Enter room num: ");
-		try {
-			roomNum = scanner.nextInt();
-			Room room = Hotel.getInstance().getRoomByNum(roomNum);
-			if (room == null) {
-				DisplayOperator.printMessage("Room #" + Integer.toString(roomNum) + " not found.");
-				logger.error("Null room");
-			} else {
-				DisplayOperator.printRoomInfo(room);
+		try (Scanner scanner = new Scanner(System.in)) {
+			int roomNum = 0;
+			DisplayOperator.printMessage("Enter room num: ");
+			try {
+				roomNum = scanner.nextInt();
+				Room room = Hotel.getInstance().getRoomByNum(roomNum);
+				if (room == null) {
+					DisplayOperator.printMessage("Room #" + Integer.toString(roomNum) + " not found.");
+					logger.error("Null room");
+				} else {
+					DisplayOperator.printRoomInfo(room);
+				}
+			} catch (InputMismatchException e) {
+				DisplayOperator.printMessage("You need to enter room number.");
+				logger.error(e.toString());
 			}
-		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("You need to enter room number.");
-			logger.error(e.toString());
 		}
 	}
 

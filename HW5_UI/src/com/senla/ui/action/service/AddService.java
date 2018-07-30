@@ -14,24 +14,25 @@ public class AddService implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		int serviceCode = -1;
-		String serviceName = "";
-		int price = -1;
 
-		try {
-			DisplayOperator.printMessage("Enter service code: ");
-			serviceCode = scanner.nextInt();
-			DisplayOperator.printMessage("Enter service name: ");
-			serviceName = scanner.nextLine();
-			DisplayOperator.printMessage("Enter service price: ");
-			price = scanner.nextInt();
+		try (Scanner scanner = new Scanner(System.in)) {
+			int serviceCode = -1;
+			String serviceName = "";
+			int price = -1;
 
-			Hotel.getInstance().addService(serviceCode, serviceName, price);
-		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("Input correct field types.");
-			logger.error(e);
+			try {
+				DisplayOperator.printMessage("Enter service code: ");
+				serviceCode = scanner.nextInt();
+				DisplayOperator.printMessage("Enter service name: ");
+				serviceName = scanner.nextLine();
+				DisplayOperator.printMessage("Enter service price: ");
+				price = scanner.nextInt();
+
+				Hotel.getInstance().addService(serviceCode, serviceName, price);
+			} catch (InputMismatchException e) {
+				DisplayOperator.printMessage("Input correct field types.");
+				logger.error(e);
+			}
 		}
 	}
 

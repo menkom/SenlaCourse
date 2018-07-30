@@ -10,12 +10,12 @@ public class AddClient implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		DisplayOperator.printMessage("Enter new client name: ");
-		String clientName = scanner.nextLine();
+		try (Scanner scanner = new Scanner(System.in);) {
+			DisplayOperator.printMessage("Enter new client name: ");
+			String clientName = scanner.nextLine();
 
-		Hotel.getInstance().addClient(clientName);
+			Hotel.getInstance().addClient(clientName);
+		}
 	}
 
 }
