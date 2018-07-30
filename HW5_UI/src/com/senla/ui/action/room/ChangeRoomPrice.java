@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.room;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

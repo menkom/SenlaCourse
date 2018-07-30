@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.room;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowFreeRoomsByDateSortByPrice implements IAction {
+public class ShowFreeRoomsByDateSortByStar implements IAction {
 
 	private static final Logger logger = Logger.getLogger(ShowFreeRoomsByDateSortByPrice.class);
 
@@ -29,7 +29,7 @@ public class ShowFreeRoomsByDateSortByPrice implements IAction {
 		try {
 			Date date = formatter.parse(dateInString);
 
-			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByPrice(date);
+			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByStar(date);
 			if (rooms.size() > 0) {
 				DisplayOperator.printRooms(rooms);
 			} else {

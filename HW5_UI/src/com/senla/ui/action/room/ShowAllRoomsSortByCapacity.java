@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.room;
 
 import java.util.List;
 
@@ -7,15 +7,16 @@ import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowFreeRoomsSortByPrice implements IAction {
+public class ShowAllRoomsSortByCapacity implements IAction {
 
 	@Override
 	public void execute() {
-		List<Room> rooms = Hotel.getInstance().getFreeRoomsSortByPrice();
+		List<Room> rooms = Hotel.getInstance().getAllRoomsSortByCapacity();
 		if (rooms.size() > 0) {
 			DisplayOperator.printRooms(rooms);
 		} else {
 			DisplayOperator.printMessage("No rooms found.");
+
 		}
 	}
 

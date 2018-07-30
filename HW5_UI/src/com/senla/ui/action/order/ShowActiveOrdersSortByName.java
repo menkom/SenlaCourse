@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.order;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.senla.hotel.model.Order;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowActiveOrdersSortByFinishDate implements IAction {
+public class ShowActiveOrdersSortByName implements IAction {
 
 	@Override
 	public void execute() {

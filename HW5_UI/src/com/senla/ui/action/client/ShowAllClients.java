@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.client;
 
 import java.util.List;
 

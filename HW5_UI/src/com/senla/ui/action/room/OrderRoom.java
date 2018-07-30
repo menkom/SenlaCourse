@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.room;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

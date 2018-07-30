@@ -1,4 +1,4 @@
-package com.senla.ui.action;
+package com.senla.ui.action.room;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,9 +9,9 @@ import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowOrderPrice implements IAction {
+public class FreeRoom implements IAction {
 
-	private static final Logger logger = Logger.getLogger(ShowOrderPrice.class);
+	private static final Logger logger = Logger.getLogger(FreeRoom.class);
 
 	@Override
 	public void execute() {
@@ -22,8 +22,13 @@ public class ShowOrderPrice implements IAction {
 		try {
 			orderNum = scanner.nextInt();
 
-			DisplayOperator.printMessage("Price for order #" + orderNum + " "
-					+ Integer.toString(Hotel.getInstance().getOrderPrice(orderNum)));
+			boolean result = Hotel.getInstance().freeRoom(orderNum);
+
+			if (result) {
+				DisplayOperator.printMessage("Order #" + orderNum + " was succesfully closed.");
+			} else {
+				DisplayOperator.printMessage("Error accured during closing Order #" + orderNum + ".");
+			}
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage("You need to enter order number.");
 			logger.error(e.toString());
