@@ -40,8 +40,8 @@ public class Navigator {
 				}
 			}
 		} catch (IndexOutOfBoundsException e) {
-
-			DisplayOperator.printMessage("There is no menu item with number " + index);
+			DisplayOperator.printMessage("There is no menu item with number " + index + ". It have to be from 0 to "
+					+ (currentMenu.getMenuItems().size() - 1) + ".");
 		}
 
 	}
