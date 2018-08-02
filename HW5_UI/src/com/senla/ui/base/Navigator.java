@@ -1,8 +1,14 @@
 package com.senla.ui.base;
 
+//import java.util.NoSuchElementException;
+
+import org.apache.log4j.Logger;
+
 import com.senla.util.DisplayOperator;
 
 public class Navigator {
+
+	private static final Logger logger = Logger.getLogger(Navigator.class);
 
 	private Menu currentMenu;
 
@@ -42,7 +48,12 @@ public class Navigator {
 		} catch (IndexOutOfBoundsException e) {
 			DisplayOperator.printMessage("There is no menu item with number " + index + ". It have to be from 0 to "
 					+ (currentMenu.getMenuItems().size() - 1) + ".");
+			logger.error(e);
 		}
+//		catch (NoSuchElementException e) {
+//			DisplayOperator.printMessage("Wrong menu number.");
+//			logger.error(e);
+//		}
 
 	}
 }

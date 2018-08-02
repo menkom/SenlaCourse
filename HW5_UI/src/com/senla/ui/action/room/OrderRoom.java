@@ -26,11 +26,11 @@ public class OrderRoom implements IAction {
 				DisplayOperator.printMessage("Enter client name: ");
 				clientName = scanner.nextLine();
 				DisplayOperator.printMessage("Enter room number: ");
-				roomNum = scanner.nextInt();
+				roomNum = Integer.parseInt(scanner.nextLine());
 				DisplayOperator.printMessage("Enter start date (format dd/MM/yyyy) (current date if empty): ");
-				String dateStartInString = scanner.next();
+				String dateStartInString = scanner.nextLine();
 				DisplayOperator.printMessage("Enter finish date (format dd/MM/yyyy) (no date if empty): ");
-				String dateFinishInString = scanner.next();
+				String dateFinishInString = scanner.nextLine();
 
 				Date dateStart = new Date();
 				Date dateFinish = null;

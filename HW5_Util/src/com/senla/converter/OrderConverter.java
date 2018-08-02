@@ -11,6 +11,7 @@ import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ClientRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;
+import com.senla.util.DisplayOperator;
 
 public class OrderConverter {
 
@@ -32,8 +33,7 @@ public class OrderConverter {
 			try {
 				dateStart = formatter.parse(array[3]);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DisplayOperator.printMessage("Error in Date format during loading the Order.");
 			}
 		}
 
@@ -41,8 +41,7 @@ public class OrderConverter {
 			try {
 				dateFinish = formatter.parse(array[4]);
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DisplayOperator.printMessage("Error in Date format during loading the Order.");
 			}
 		}
 		Order result = new Order(Integer.parseInt(array[0]), client, room, dateStart, dateFinish);
