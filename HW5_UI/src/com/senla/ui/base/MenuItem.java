@@ -5,6 +5,27 @@ public class MenuItem {
 	private IAction action;
 	private Menu nextMenu;
 
+	public MenuItem() {
+		super();
+		this.title = "";
+		this.action = null;
+		this.nextMenu = null;
+	}
+
+	public MenuItem(String title, Menu nextMenu) {
+		super();
+		this.title = title;
+		this.action = null;
+		this.nextMenu = nextMenu;
+	}
+
+	public MenuItem(String title, IAction action) {
+		super();
+		this.title = title;
+		this.action = action;
+		this.nextMenu = null;
+	}
+
 	public void doAction() {
 		if (getAction() != null) {
 			getAction().execute();

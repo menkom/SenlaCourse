@@ -36,89 +36,65 @@ public class Builder {
 
 		Menu roomsMenu = new Menu("Room options");
 
-		MenuItem roomsMenuItem = new MenuItem();
-		roomsMenuItem.setTitle("Room options");
-		roomsMenuItem.setNextMenu(roomsMenu);
+		MenuItem roomsMenuItem = new MenuItem("Room options", roomsMenu);
 		upLevelMenu.addMenuItem(roomsMenuItem);
 
-		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem();
-		showAllRoomsSortByPriceMenuItem.setTitle("Show all rooms sorted by price.");
-		showAllRoomsSortByPriceMenuItem.setAction(new ShowAllRoomsSortByPrice());
+		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem("Show all rooms sorted by price.",
+				new ShowAllRoomsSortByPrice());
 		roomsMenu.addMenuItem(showAllRoomsSortByPriceMenuItem);
 
-		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem();
-		showAllRoomsSortByCapacityMenuItem.setTitle("Show all rooms sorted by capacity.");
-		showAllRoomsSortByCapacityMenuItem.setAction(new ShowAllRoomsSortByCapacity());
+		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem("Show all rooms sorted by capacity.",
+				new ShowAllRoomsSortByCapacity());
 		roomsMenu.addMenuItem(showAllRoomsSortByCapacityMenuItem);
 
-		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem();
-		showAllRoomsSortByStarMenuItem.setTitle("Show all rooms sorted by star.");
-		showAllRoomsSortByStarMenuItem.setAction(new ShowAllRoomsSortByPrice());
+		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem("Show all rooms sorted by star.",
+				new ShowAllRoomsSortByPrice());
 		roomsMenu.addMenuItem(showAllRoomsSortByStarMenuItem);
 
-		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem();
-		showFreeRoomsSortByCapacityMenuItem.setTitle("Show free rooms sorted by capacity.");
-		showFreeRoomsSortByCapacityMenuItem.setAction(new ShowFreeRoomsSortByCapacity());
+		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem("Show free rooms sorted by capacity.",
+				new ShowFreeRoomsSortByCapacity());
 		roomsMenu.addMenuItem(showFreeRoomsSortByCapacityMenuItem);
 
-		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem();
-		showFreeRoomsSortByStarMenuItem.setTitle("Show free rooms sorted by star.");
-		showFreeRoomsSortByStarMenuItem.setAction(new ShowFreeRoomsSortByStar());
+		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem("Show free rooms sorted by star.",
+				new ShowFreeRoomsSortByStar());
 		roomsMenu.addMenuItem(showFreeRoomsSortByStarMenuItem);
 
-		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem();
-		showFreeRoomsSortByPriceMenuItem.setTitle("Show free rooms sorted by price.");
-		showFreeRoomsSortByPriceMenuItem.setAction(new ShowFreeRoomsSortByPrice());
+		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem("Show free rooms sorted by price.",
+				new ShowFreeRoomsSortByPrice());
 		roomsMenu.addMenuItem(showFreeRoomsSortByPriceMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem();
-		showFreeRoomsByDateSortByCapacityMenuItem.setTitle("Show free rooms by date sorted by capacity.");
-		showFreeRoomsByDateSortByCapacityMenuItem.setAction(new ShowFreeRoomsByDateSortByCapacity());
+		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem("Show free rooms by date sorted by capacity.",
+				new ShowFreeRoomsByDateSortByCapacity());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByCapacityMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem();
-		showFreeRoomsByDateSortByPriceMenuItem.setTitle("Show free rooms by date sorted by price.");
-		showFreeRoomsByDateSortByPriceMenuItem.setAction(new ShowFreeRoomsByDateSortByPrice());
+		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem("Show free rooms by date sorted by price.",
+				new ShowFreeRoomsByDateSortByPrice());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByPriceMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem();
-		showFreeRoomsByDateSortByStarMenuItem.setTitle("Show free rooms by date sorted by star.");
-		showFreeRoomsByDateSortByStarMenuItem.setAction(new ShowFreeRoomsByDateSortByStar());
+		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem("Show free rooms by date sorted by star.",
+				new ShowFreeRoomsByDateSortByStar());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByStarMenuItem);
 
-		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem();
-		showNumberOfFreeRoomsMenuItem.setTitle("Show number of free rooms at this moment.");
-		showNumberOfFreeRoomsMenuItem.setAction(new ShowNumberOfFreeRooms());
+		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem("Show number of free rooms at this moment.",
+				new ShowNumberOfFreeRooms());
 		roomsMenu.addMenuItem(showNumberOfFreeRoomsMenuItem);
 
-		MenuItem showRoomInfoMenuItem = new MenuItem();
-		showRoomInfoMenuItem.setTitle("Show room info.");
-		showRoomInfoMenuItem.setAction(new ShowRoomInfo());
+		MenuItem showRoomInfoMenuItem = new MenuItem("Show room info.", new ShowRoomInfo());
 		roomsMenu.addMenuItem(showRoomInfoMenuItem);
 
-		MenuItem orderRoomMenuItem = new MenuItem();
-		orderRoomMenuItem.setTitle("Order room.");
-		orderRoomMenuItem.setAction(new OrderRoom());
+		MenuItem orderRoomMenuItem = new MenuItem("Order room.", new OrderRoom());
 		roomsMenu.addMenuItem(orderRoomMenuItem);
 
-		MenuItem closeOrderMenuItem = new MenuItem();
-		closeOrderMenuItem.setTitle("Close order.");
-		closeOrderMenuItem.setAction(new FreeRoom());
+		MenuItem closeOrderMenuItem = new MenuItem("Close order.", new FreeRoom());
 		roomsMenu.addMenuItem(closeOrderMenuItem);
 
-		MenuItem addRoomMenuItem = new MenuItem();
-		addRoomMenuItem.setTitle("Add new room.");
-		addRoomMenuItem.setAction(new AddRoom());
+		MenuItem addRoomMenuItem = new MenuItem("Add new room.", new AddRoom());
 		roomsMenu.addMenuItem(addRoomMenuItem);
 
-		MenuItem changeRoomPriceMenuItem = new MenuItem();
-		changeRoomPriceMenuItem.setTitle("Change room price.");
-		changeRoomPriceMenuItem.setAction(new ChangeRoomPrice());
+		MenuItem changeRoomPriceMenuItem = new MenuItem("Change room price.", new ChangeRoomPrice());
 		roomsMenu.addMenuItem(changeRoomPriceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem();
-		backMenuItem.setTitle("Go back");
-		backMenuItem.setNextMenu(upLevelMenu);
+		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
 		roomsMenu.addMenuItem(backMenuItem);
 
 	}
@@ -127,29 +103,19 @@ public class Builder {
 
 		Menu clientsMenu = new Menu("Client options");
 
-		MenuItem clientsMenuItem = new MenuItem();
-		clientsMenuItem.setTitle("Client options");
-		clientsMenuItem.setNextMenu(clientsMenu);
+		MenuItem clientsMenuItem = new MenuItem("Client options", clientsMenu);
 		upLevelMenu.addMenuItem(clientsMenuItem);
 
-		MenuItem showAllClientsMenuItem = new MenuItem();
-		showAllClientsMenuItem.setTitle("Show all clients.");
-		showAllClientsMenuItem.setAction(new ShowAllClients());
+		MenuItem showAllClientsMenuItem = new MenuItem("Show all clients.", new ShowAllClients());
 		clientsMenu.addMenuItem(showAllClientsMenuItem);
 
-		MenuItem showNumberOfClientsMenuItem = new MenuItem();
-		showNumberOfClientsMenuItem.setTitle("Show number of clients.");
-		showNumberOfClientsMenuItem.setAction(new ShowNumberOfClients());
+		MenuItem showNumberOfClientsMenuItem = new MenuItem("Show number of clients.", new ShowNumberOfClients());
 		clientsMenu.addMenuItem(showNumberOfClientsMenuItem);
 
-		MenuItem addClientMenuItem = new MenuItem();
-		addClientMenuItem.setTitle("Add new client.");
-		addClientMenuItem.setAction(new AddClient());
+		MenuItem addClientMenuItem = new MenuItem("Add new client.", new AddClient());
 		clientsMenu.addMenuItem(addClientMenuItem);
 
-		MenuItem backMenuItem = new MenuItem();
-		backMenuItem.setTitle("Go back");
-		backMenuItem.setNextMenu(upLevelMenu);
+		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
 		clientsMenu.addMenuItem(backMenuItem);
 	}
 
@@ -157,29 +123,20 @@ public class Builder {
 
 		Menu servicesMenu = new Menu("Service options");
 
-		MenuItem servicesMenuItem = new MenuItem();
-		servicesMenuItem.setTitle("Service options");
-		servicesMenuItem.setNextMenu(servicesMenu);
+		MenuItem servicesMenuItem = new MenuItem("Service options", servicesMenu);
 		upLevelMenu.addMenuItem(servicesMenuItem);
 
-		MenuItem showAllServicesSortByPriceMenuItem = new MenuItem();
-		showAllServicesSortByPriceMenuItem.setTitle("Show all services.");
-		showAllServicesSortByPriceMenuItem.setAction(new ShowAllServicesSortByPrice());
+		MenuItem showAllServicesSortByPriceMenuItem = new MenuItem("Show all services.",
+				new ShowAllServicesSortByPrice());
 		servicesMenu.addMenuItem(showAllServicesSortByPriceMenuItem);
 
-		MenuItem addServiceMenuItem = new MenuItem();
-		addServiceMenuItem.setTitle("Add new service.");
-		addServiceMenuItem.setAction(new AddService());
+		MenuItem addServiceMenuItem = new MenuItem("Add new service.", new AddService());
 		servicesMenu.addMenuItem(addServiceMenuItem);
 
-		MenuItem changeServicePriceMenuItem = new MenuItem();
-		changeServicePriceMenuItem.setTitle("Change service price.");
-		changeServicePriceMenuItem.setAction(new ChangeServicePrice());
+		MenuItem changeServicePriceMenuItem = new MenuItem("Change service price.", new ChangeServicePrice());
 		servicesMenu.addMenuItem(changeServicePriceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem();
-		backMenuItem.setTitle("Go back");
-		backMenuItem.setNextMenu(upLevelMenu);
+		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
 		servicesMenu.addMenuItem(backMenuItem);
 	}
 
@@ -187,44 +144,31 @@ public class Builder {
 
 		Menu ordersMenu = new Menu("Order options");
 
-		MenuItem ordersMenuItem = new MenuItem();
-		ordersMenuItem.setTitle("Order options");
-		ordersMenuItem.setNextMenu(ordersMenu);
+		MenuItem ordersMenuItem = new MenuItem("Order options", ordersMenu);
 		upLevelMenu.addMenuItem(ordersMenuItem);
 
-		MenuItem showActiveOrdersSortByNameMenuItem = new MenuItem();
-		showActiveOrdersSortByNameMenuItem.setTitle("Show active orders sort by client name.");
-		showActiveOrdersSortByNameMenuItem.setAction(new ShowActiveOrdersSortByName());
+		MenuItem showActiveOrdersSortByNameMenuItem = new MenuItem("Show active orders sort by client name.",
+				new ShowActiveOrdersSortByName());
 		ordersMenu.addMenuItem(showActiveOrdersSortByNameMenuItem);
 
-		MenuItem showActiveOrdersSortByFinishDateMenuItem = new MenuItem();
-		showActiveOrdersSortByFinishDateMenuItem.setTitle("Show active orders sort by finish date.");
-		showActiveOrdersSortByFinishDateMenuItem.setAction(new ShowActiveOrdersSortByFinishDate());
+		MenuItem showActiveOrdersSortByFinishDateMenuItem = new MenuItem("Show active orders sort by finish date.",
+				new ShowActiveOrdersSortByFinishDate());
 		ordersMenu.addMenuItem(showActiveOrdersSortByFinishDateMenuItem);
 
-		MenuItem showOrderPriceMenuItem = new MenuItem();
-		showOrderPriceMenuItem.setTitle("Show order price.");
-		showOrderPriceMenuItem.setAction(new ShowOrderPrice());
+		MenuItem showOrderPriceMenuItem = new MenuItem("Show order price.", new ShowOrderPrice());
 		ordersMenu.addMenuItem(showOrderPriceMenuItem);
 
-		MenuItem showLastThreeOrdersByRoomMenuItem = new MenuItem();
-		showLastThreeOrdersByRoomMenuItem.setTitle("Show last three room orders.");
-		showLastThreeOrdersByRoomMenuItem.setAction(new ShowLastThreeOrdersByRoom());
+		MenuItem showLastThreeOrdersByRoomMenuItem = new MenuItem("Show last three room orders.",
+				new ShowLastThreeOrdersByRoom());
 		ordersMenu.addMenuItem(showLastThreeOrdersByRoomMenuItem);
 
-		MenuItem showOrderServicesMenuItem = new MenuItem();
-		showOrderServicesMenuItem.setTitle("Show order services.");
-		showOrderServicesMenuItem.setAction(new ShowOrderServices());
+		MenuItem showOrderServicesMenuItem = new MenuItem("Show order services.", new ShowOrderServices());
 		ordersMenu.addMenuItem(showOrderServicesMenuItem);
 
-		MenuItem addOrderServiceMenuItem = new MenuItem();
-		addOrderServiceMenuItem.setTitle("Add service to order.");
-		addOrderServiceMenuItem.setAction(new AddOrderService());
+		MenuItem addOrderServiceMenuItem = new MenuItem("Add service to order.", new AddOrderService());
 		ordersMenu.addMenuItem(addOrderServiceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem();
-		backMenuItem.setTitle("Go back");
-		backMenuItem.setNextMenu(upLevelMenu);
+		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
 		ordersMenu.addMenuItem(backMenuItem);
 	}
 
@@ -240,9 +184,7 @@ public class Builder {
 		buildServiceSubMenu(mainMenu);
 		buildOrderSubMenu(mainMenu);
 
-		MenuItem exit = new MenuItem();
-		exit.setTitle("Exit");
-		exit.setAction(new ExitAction());
+		MenuItem exit = new MenuItem("Exit", new ExitAction());
 		mainMenu.addMenuItem(exit);
 
 	}
