@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 import com.senla.util.DisplayOperator;
 
 public class MenuController {
+	private static final String NEED_MENU_NUMBER = "You have to enter menu number.";
+	private static final String WRONG_MENU_NUMBER = "Wrong menu number.";
+
 	private static final Logger logger = Logger.getLogger(MenuController.class);
 
 	private Builder builder;
@@ -29,10 +32,10 @@ public class MenuController {
 					index = Integer.parseInt(scanner.nextLine());
 					navigator.navigate(index);
 				} catch (InputMismatchException e) {
-					DisplayOperator.printMessage("You have to enter menu number.");
+					DisplayOperator.printMessage(NEED_MENU_NUMBER);
 					logger.error(e);
 				} catch (NoSuchElementException e) {
-					DisplayOperator.printMessage("Wrong menu number.");
+					DisplayOperator.printMessage(WRONG_MENU_NUMBER);
 					logger.error(e);
 				}
 			}

@@ -10,8 +10,8 @@ import com.senla.util.DisplayOperator;
 
 public class HotelProperty {
 
-	private static HotelProperty instance;
 	private static final Logger logger = Logger.getLogger(HotelProperty.class);
+	private static HotelProperty instance;
 
 	private String name;
 	private boolean isAbleChangeRoomStatus;

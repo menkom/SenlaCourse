@@ -17,8 +17,9 @@ import com.senla.hotel.repository.RoomRepository;
 
 public class RoomService implements IService {
 
-	private RoomRepository roomRepository;
 	private static RoomService roomService;
+
+	private RoomRepository roomRepository;
 
 	private RoomService() {
 		super();
@@ -30,6 +31,19 @@ public class RoomService implements IService {
 			roomService = new RoomService();
 		}
 		return roomService;
+	}
+
+	private boolean isRoomInArray(Room room, List<Room> rooms) {
+		boolean result = false;
+		for (Room forRoom : rooms) {
+			if (forRoom != null) {
+				if (room.getNumber() == forRoom.getNumber()) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 
 	public RoomRepository getRoomRepository() {
@@ -114,19 +128,6 @@ public class RoomService implements IService {
 			}
 		}
 		result.sort(comparator);
-		return result;
-	}
-
-	private boolean isRoomInArray(Room room, List<Room> rooms) {
-		boolean result = false;
-		for (Room forRoom : rooms) {
-			if (forRoom != null) {
-				if (room.getNumber() == forRoom.getNumber()) {
-					result = true;
-					break;
-				}
-			}
-		}
 		return result;
 	}
 

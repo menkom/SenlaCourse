@@ -12,8 +12,9 @@ import com.senla.hotel.repository.ServiceRepository;
 
 public class ServiceService implements IService {
 
-	private ServiceRepository serviceRepository;
 	private static ServiceService serviceService;
+
+	private ServiceRepository serviceRepository;
 
 	private ServiceService() {
 		super();

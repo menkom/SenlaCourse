@@ -21,9 +21,9 @@ import com.senla.hotel.repository.OrderRepository;
 
 public class OrderService implements IService {
 
-	private OrderRepository orderRepository;
-
 	private static OrderService orderService;
+
+	private OrderRepository orderRepository;
 	private int nextNum;
 
 	private OrderService() {
@@ -33,15 +33,15 @@ public class OrderService implements IService {
 		this.nextNum = 4;
 	}
 
-	public OrderRepository getOrderRepository() {
-		return orderRepository;
-	}
-
 	public static OrderService getInstance() {
 		if (orderService == null) {
 			orderService = new OrderService();
 		}
 		return orderService;
+	}
+
+	public OrderRepository getOrderRepository() {
+		return orderRepository;
 	}
 
 	public void add(Order order) {
@@ -191,11 +191,14 @@ public class OrderService implements IService {
 		new TextFileWorker(filePath + "order.db").writeToFile(result);
 	}
 
-	public static OrderService getOrderService() {
-		if (orderService == null) {
-			orderService = new OrderService();
+	public List<Service> getOrderServices(int orderNum, Comparator<Service> comparator) {
+		List<Service> result = null;
+		Order order = getOrderByNum(orderNum);
+		if ((order != null) && (order.getServices() != null)) {
+			result = order.getServices();
+			result.sort(comparator);
 		}
-		return orderService;
+		return result;
 	}
 
 }

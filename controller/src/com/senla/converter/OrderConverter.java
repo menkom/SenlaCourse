@@ -4,10 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
+import com.senla.hotel.property.HotelProperty;
 import com.senla.hotel.repository.ClientRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;
@@ -15,6 +18,8 @@ import com.senla.util.DisplayOperator;
 
 public class OrderConverter {
 
+	private static final Logger logger = Logger.getLogger(OrderConverter.class);
+	private static final String ERROR_DATE_FORMAT = "Error in Date format during loading the Order.";
 	public static final String SEPARATOR = ";";
 
 	public static Order getOrderFromString(String line) {
@@ -33,7 +38,8 @@ public class OrderConverter {
 			try {
 				dateStart = formatter.parse(array[3]);
 			} catch (ParseException e) {
-				DisplayOperator.printMessage("Error in Date format during loading the Order.");
+				DisplayOperator.printMessage(ERROR_DATE_FORMAT);
+				logger.error(e);
 			}
 		}
 
@@ -41,7 +47,8 @@ public class OrderConverter {
 			try {
 				dateFinish = formatter.parse(array[4]);
 			} catch (ParseException e) {
-				DisplayOperator.printMessage("Error in Date format during loading the Order.");
+				DisplayOperator.printMessage(ERROR_DATE_FORMAT);
+				logger.error(e);
 			}
 		}
 		Order result = new Order(Integer.parseInt(array[0]), client, room, dateStart, dateFinish);

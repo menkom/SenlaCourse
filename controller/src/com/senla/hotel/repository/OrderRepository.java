@@ -8,13 +8,20 @@ import com.senla.hotel.model.Service;
 
 public class OrderRepository {
 
-	private List<Order> orders;
-
 	private static OrderRepository orderRepository;
+
+	private List<Order> orders;
 
 	private OrderRepository() {
 		super();
 		this.orders = new ArrayList<Order>();
+	}
+
+	public static OrderRepository getInstance() {
+		if (orderRepository == null) {
+			orderRepository = new OrderRepository();
+		}
+		return orderRepository;
 	}
 
 	public List<Order> getOrders() {
@@ -47,10 +54,4 @@ public class OrderRepository {
 		getOrderByNum(num).addService(service);
 	}
 
-	public static OrderRepository getInstance() {
-		if (orderRepository == null) {
-			orderRepository = new OrderRepository();
-		}
-		return orderRepository;
-	}
 }

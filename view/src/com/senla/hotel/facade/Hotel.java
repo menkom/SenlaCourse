@@ -131,9 +131,7 @@ public class Hotel {
 	}
 
 	public List<Service> getOrderServices(int orderNum) {
-		List<Service> result = getOrderService().getOrderByNum(orderNum).getServices();
-		result.sort(new ServiceSortByPrice());
-		return result;
+		return getOrderService().getOrderServices(orderNum, new ServiceSortByPrice());
 	}
 
 	public List<Service> getAllServicesSortByPrice() {

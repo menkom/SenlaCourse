@@ -8,15 +8,15 @@ public class Service extends BaseObject {
 	private String name;
 	private Integer price;
 
-	public int getPrice() {
-		return price;
-	}
-
 	public Service(Integer code, String name, Integer price) {
 		super();
 		this.code = code;
 		this.name = name;
 		this.price = price;
+	}
+
+	public int getPrice() {
+		return price;
 	}
 
 	public void setPrice(Integer price) {

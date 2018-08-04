@@ -7,13 +7,20 @@ import com.senla.hotel.model.Room;
 
 public class RoomRepository {
 
-	private List<Room> rooms;
-
 	private static RoomRepository roomRepository;
+
+	private List<Room> rooms;
 
 	private RoomRepository() {
 		super();
 		this.rooms = new ArrayList<Room>();
+	}
+
+	public static RoomRepository getInstance() {
+		if (roomRepository == null) {
+			roomRepository = new RoomRepository();
+		}
+		return roomRepository;
 	}
 
 	public List<Room> getRooms() {
@@ -42,10 +49,4 @@ public class RoomRepository {
 		return null;
 	}
 
-	public static RoomRepository getInstance() {
-		if (roomRepository == null) {
-			roomRepository = new RoomRepository();
-		}
-		return roomRepository;
-	}
 }

@@ -7,13 +7,20 @@ import com.senla.hotel.model.Client;
 
 public class ClientRepository {
 
-	private List<Client> clients;
-
 	private static ClientRepository clientRepository;
+
+	private List<Client> clients;
 
 	private ClientRepository() {
 		super();
 		this.clients = new ArrayList<Client>();
+	}
+
+	public static ClientRepository getInstance() {
+		if (clientRepository == null) {
+			clientRepository = new ClientRepository();
+		}
+		return clientRepository;
 	}
 
 	public void add(Client client) {
@@ -36,13 +43,6 @@ public class ClientRepository {
 			}
 		}
 		return null;
-	}
-
-	public static ClientRepository getInstance() {
-		if (clientRepository == null) {
-			clientRepository = new ClientRepository();
-		}
-		return clientRepository;
 	}
 
 	public List<Client> getClients() {

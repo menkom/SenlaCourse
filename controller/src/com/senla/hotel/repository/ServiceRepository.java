@@ -7,13 +7,20 @@ import com.senla.hotel.model.Service;
 
 public class ServiceRepository {
 
-	private List<Service> services;
-
 	private static ServiceRepository serviceRepository;
+
+	private List<Service> services;
 
 	private ServiceRepository() {
 		super();
 		this.services = new ArrayList<Service>();
+	}
+
+	public static ServiceRepository getInstance() {
+		if (serviceRepository == null) {
+			serviceRepository = new ServiceRepository();
+		}
+		return serviceRepository;
 	}
 
 	public List<Service> getServices() {
@@ -40,13 +47,6 @@ public class ServiceRepository {
 			}
 		}
 		return null;
-	}
-
-	public static ServiceRepository getInstance() {
-		if (serviceRepository == null) {
-			serviceRepository = new ServiceRepository();
-		}
-		return serviceRepository;
 	}
 
 }
