@@ -61,15 +61,16 @@ public class Room extends BaseObject {
 	}
 
 	public String toString() {
-		String result = super.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append(super.toString());
 
-		result += getNumber() + SEPARATOR;
-		result += getCapacity() + SEPARATOR;
-		result += getStar() + SEPARATOR;
-		result += getStatus() + SEPARATOR;
-		result += getPrice() + SEPARATOR;
+		builder.append(getNumber() + SEPARATOR);
+		builder.append(getCapacity() + SEPARATOR);
+		builder.append(getStar() + SEPARATOR);
+		builder.append(getStatus() + SEPARATOR);
+		builder.append(getPrice() + SEPARATOR);
 
-		return result;
+		return builder.toString();
 	}
 
 }

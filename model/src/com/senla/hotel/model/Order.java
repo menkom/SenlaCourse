@@ -75,25 +75,34 @@ public class Order extends BaseObject {
 	}
 
 	public String toString() {
-		String result = super.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append(super.toString());
 
-		result += getNum() + SEPARATOR;
-		result += getClient().getName() + SEPARATOR;
-		result += getRoom().getNumber() + SEPARATOR;
+		builder.append(getNum() + SEPARATOR);
+		builder.append(getClient().getName() + SEPARATOR);
+		builder.append(getRoom().getNumber() + SEPARATOR);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		result += formatter.format(getStartDate()) + SEPARATOR;
+		if (getStartDate() == null) {
+			builder.append("null" + SEPARATOR);
+		} else {
+			builder.append(formatter.format(getStartDate()) + SEPARATOR);
+		}
 
-		result += formatter.format(getFinishDate() + SEPARATOR);
+		if (getFinishDate() == null) {
+			builder.append("null" + SEPARATOR);
+		} else {
+			builder.append(formatter.format(getFinishDate()) + SEPARATOR);
+		}
 
 		for (Service service : getServices()) {
 			if (service != null) {
-				result += service.getCode() + SEPARATOR;
+				builder.append(service.getCode() + SEPARATOR);
 			}
 		}
 
-		return result;
+		return builder.toString();
 	}
 
 }

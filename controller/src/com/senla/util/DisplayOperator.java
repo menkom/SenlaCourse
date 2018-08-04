@@ -69,8 +69,19 @@ public class DisplayOperator {
 			if (order != null) {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
+				String dateStart = "empty";
+				String dateFinish = "empty";
+
+				if (order.getStartDate() != null) {
+					dateStart = formatter.format(order.getStartDate());
+				}
+
+				if (order.getFinishDate() != null) {
+					dateFinish = formatter.format(order.getFinishDate());
+				}
+
 				printMessage(order.getClient().getName() + "-------" + order.getRoom().getNumber() + "------"
-						+ formatter.format(order.getStartDate()) + "----" + formatter.format(order.getFinishDate()));
+						+ dateStart + "----" + dateFinish);
 			}
 		}
 	}

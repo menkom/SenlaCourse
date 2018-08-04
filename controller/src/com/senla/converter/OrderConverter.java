@@ -10,7 +10,6 @@ import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.property.HotelProperty;
 import com.senla.hotel.repository.ClientRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;

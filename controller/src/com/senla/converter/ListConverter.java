@@ -12,8 +12,7 @@ import com.senla.hotel.model.Service;
 public class ListConverter {
 
 	public static String[] getArrayFromList(List<? extends BaseObject> list) {
-		List<String> result = new ArrayList<>();
-
+		List<String> result = new ArrayList<String>();
 		for (BaseObject baseObject : list) {
 			if (baseObject != null) {
 				result.add(baseObject.toString());

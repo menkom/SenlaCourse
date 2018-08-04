@@ -20,10 +20,10 @@ public class Client extends BaseObject {
 	}
 
 	public String toString() {
-		String result = super.toString();
+		StringBuilder builder = new StringBuilder();
 
-		result += getName() + SEPARATOR;
+		builder.append(super.toString()).append(getName() + SEPARATOR);
 
-		return result;
+		return builder.toString();
 	}
 }

@@ -117,7 +117,7 @@ public class OrderService implements IService {
 			Date currentDate = new Date();
 			if (order != null) {
 				if (currentDate.after(order.getStartDate())
-						&& ((currentDate.before(order.getFinishDate()) || order.getFinishDate() == null))) {
+						&& ((order.getFinishDate() == null) || (currentDate.before(order.getFinishDate())))) {
 					result.add(order);
 				}
 			}
@@ -181,11 +181,8 @@ public class OrderService implements IService {
 
 	public void saveToFile(String filePath) {
 		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
-
 		String[] result = new String[repositoryToStr.length + 1];
-
 		result[0] = Integer.toString(nextNum);
-
 		System.arraycopy(repositoryToStr, 0, result, 1, repositoryToStr.length);
 
 		new TextFileWorker(filePath + "order.db").writeToFile(result);

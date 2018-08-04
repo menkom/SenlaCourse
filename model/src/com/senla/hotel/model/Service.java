@@ -40,12 +40,13 @@ public class Service extends BaseObject {
 	}
 
 	public String toString() {
-		String result = super.toString();
+		StringBuilder builder = new StringBuilder();
+		builder.append(super.toString());
 
-		result += getCode() + SEPARATOR;
-		result += getName() + SEPARATOR;
-		result += getPrice() + SEPARATOR;
+		builder.append(getCode() + SEPARATOR);
+		builder.append(getName() + SEPARATOR);
+		builder.append(getPrice() + SEPARATOR);
 
-		return result;
+		return builder.toString();
 	}
 }
