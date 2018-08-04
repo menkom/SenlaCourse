@@ -7,7 +7,7 @@ import com.senla.ui.action.client.ShowNumberOfClients;
 import com.senla.ui.action.order.AddOrderService;
 import com.senla.ui.action.order.ShowActiveOrdersSortByFinishDate;
 import com.senla.ui.action.order.ShowActiveOrdersSortByName;
-import com.senla.ui.action.order.ShowLastThreeOrdersByRoom;
+import com.senla.ui.action.order.ShowLastOrdersByRoom;
 import com.senla.ui.action.order.ShowOrderPrice;
 import com.senla.ui.action.order.ShowOrderServices;
 import com.senla.ui.action.room.AddRoom;
@@ -29,162 +29,195 @@ import com.senla.ui.action.service.ChangeServicePrice;
 import com.senla.ui.action.service.ShowAllServicesSortByPrice;
 
 public class Builder {
+	private static final String MAIN_MENU_TEXT = "Main menu";
+
+	private static final String ROOM_OPTIONS = "Room options";
+	private static final String SHOW_ALL_ROOMS_SORT_PRICE = "Show all rooms sorted by price.";
+	private static final String SHOW_ALL_ROOMS_SORT_CAPACITY = "Show all rooms sorted by capacity.";
+	private static final String SHOW_ALL_ROOMS_SORT_STAR = "Show all rooms sorted by star.";
+	private static final String SHOW_FREE_ROOMS_SORT_CAPACITY = "Show free rooms sorted by capacity.";
+	private static final String SHOW_FREE_ROOMS_SORT_STAR = "Show free rooms sorted by star.";
+	private static final String SHOW_FREE_ROOMS_SORT_PRICE = "Show free rooms sorted by price.";
+	private static final String SHOW_FREE_ROOMS_BY_DATE_SORT_CAPACITY = "Show free rooms by date sorted by capacity.";
+	private static final String SHOW_FREE_ROOMS_BY_DATE_SORT_PRICE = "Show free rooms by date sorted by price.";
+	private static final String SHOW_FREE_ROOMS_BY_DATE_SORT_STAR = "Show free rooms by date sorted by star.";
+	private static final String SHOW_NUMBER_FREE_ROOMS = "Show number of free rooms at this moment.";
+	private static final String SHOW_ROOM_INFO = "Show room info.";
+	private static final String SHOW_ORDER_ROOM = "Order room.";
+	private static final String CLOSE_ORDER = "Close order.";
+	private static final String ADD_NEW_ROOM = "Add new room.";
+	private static final String CHANGE_ROOM_PRICE = "Change room price.";
+	private static final String BACK_MENU_TEXT = "Go back";
+
+	private static final String CLIENT_OPTIONS = "Client options";
+	private static final String SHOW_ALL_CLIENTS = "Show all clients.";
+	private static final String SHOW_NUMBER_OF_CLIENTS = "Show number of clients.";
+	private static final String ADD_NEW_CLIENT = "Add new client.";
+
+	private static final String SERVICE_OPTIONS = "Service options";
+	private static final String SHOW_ALL_SERVICES = "Show all services sort by price.";
+	private static final String ADD_SERVICE = "Add new service.";
+	private static final String CHANGE_SERVICE_PRICE = "Change service price.";
+
+	private static final String ORDER_OPTIONS = "Order options";
+	private static final String SHOW_ACTIVE_ORDERS_SORT_NAME = "Show active orders sort by client name.";
+	private static final String SHOW_ACTIVE_ORDERS_SORT_FINISH_DATE = "Show active orders sort by finish date.";
+	private static final String SHOW_ORDER_PRICE = "Show order price.";
+	private static final String SHOW_LAST_ROOM_ORDERS = "Show last room orders.";
+	private static final String SHOW_ORDER_SERVICES = "Show order services.";
+	private static final String ADD_SERVICE_ORDER = "Add service to order.";
+
+	private static final String EXIT_MENU_TEXT = "Exit";
 
 	private Menu rootMenu;
 
 	private void buildRoomSubMenu(Menu upLevelMenu) {
 
-		Menu roomsMenu = new Menu("Room options");
+		Menu roomsMenu = new Menu(ROOM_OPTIONS);
 
-		MenuItem roomsMenuItem = new MenuItem("Room options", roomsMenu);
+		MenuItem roomsMenuItem = new MenuItem(ROOM_OPTIONS, roomsMenu);
 		upLevelMenu.addMenuItem(roomsMenuItem);
 
-		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem("Show all rooms sorted by price.",
+		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_PRICE,
 				new ShowAllRoomsSortByPrice());
 		roomsMenu.addMenuItem(showAllRoomsSortByPriceMenuItem);
 
-		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem("Show all rooms sorted by capacity.",
+		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_CAPACITY,
 				new ShowAllRoomsSortByCapacity());
 		roomsMenu.addMenuItem(showAllRoomsSortByCapacityMenuItem);
 
-		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem("Show all rooms sorted by star.",
-				new ShowAllRoomsSortByPrice());
+		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_STAR, new ShowAllRoomsSortByPrice());
 		roomsMenu.addMenuItem(showAllRoomsSortByStarMenuItem);
 
-		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem("Show free rooms sorted by capacity.",
+		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_CAPACITY,
 				new ShowFreeRoomsSortByCapacity());
 		roomsMenu.addMenuItem(showFreeRoomsSortByCapacityMenuItem);
 
-		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem("Show free rooms sorted by star.",
+		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_STAR,
 				new ShowFreeRoomsSortByStar());
 		roomsMenu.addMenuItem(showFreeRoomsSortByStarMenuItem);
 
-		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem("Show free rooms sorted by price.",
+		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_PRICE,
 				new ShowFreeRoomsSortByPrice());
 		roomsMenu.addMenuItem(showFreeRoomsSortByPriceMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem("Show free rooms by date sorted by capacity.",
+		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_CAPACITY,
 				new ShowFreeRoomsByDateSortByCapacity());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByCapacityMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem("Show free rooms by date sorted by price.",
+		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_PRICE,
 				new ShowFreeRoomsByDateSortByPrice());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByPriceMenuItem);
 
-		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem("Show free rooms by date sorted by star.",
+		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_STAR,
 				new ShowFreeRoomsByDateSortByStar());
 		roomsMenu.addMenuItem(showFreeRoomsByDateSortByStarMenuItem);
 
-		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem("Show number of free rooms at this moment.",
-				new ShowNumberOfFreeRooms());
+		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem(SHOW_NUMBER_FREE_ROOMS, new ShowNumberOfFreeRooms());
 		roomsMenu.addMenuItem(showNumberOfFreeRoomsMenuItem);
 
-		MenuItem showRoomInfoMenuItem = new MenuItem("Show room info.", new ShowRoomInfo());
+		MenuItem showRoomInfoMenuItem = new MenuItem(SHOW_ROOM_INFO, new ShowRoomInfo());
 		roomsMenu.addMenuItem(showRoomInfoMenuItem);
 
-		MenuItem orderRoomMenuItem = new MenuItem("Order room.", new OrderRoom());
+		MenuItem orderRoomMenuItem = new MenuItem(SHOW_ORDER_ROOM, new OrderRoom());
 		roomsMenu.addMenuItem(orderRoomMenuItem);
 
-		MenuItem closeOrderMenuItem = new MenuItem("Close order.", new FreeRoom());
+		MenuItem closeOrderMenuItem = new MenuItem(CLOSE_ORDER, new FreeRoom());
 		roomsMenu.addMenuItem(closeOrderMenuItem);
 
-		MenuItem addRoomMenuItem = new MenuItem("Add new room.", new AddRoom());
+		MenuItem addRoomMenuItem = new MenuItem(ADD_NEW_ROOM, new AddRoom());
 		roomsMenu.addMenuItem(addRoomMenuItem);
 
-		MenuItem changeRoomPriceMenuItem = new MenuItem("Change room price.", new ChangeRoomPrice());
+		MenuItem changeRoomPriceMenuItem = new MenuItem(CHANGE_ROOM_PRICE, new ChangeRoomPrice());
 		roomsMenu.addMenuItem(changeRoomPriceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		roomsMenu.addMenuItem(backMenuItem);
 
 	}
 
 	private void buildClientSubMenu(Menu upLevelMenu) {
 
-		Menu clientsMenu = new Menu("Client options");
+		Menu clientsMenu = new Menu(CLIENT_OPTIONS);
 
-		MenuItem clientsMenuItem = new MenuItem("Client options", clientsMenu);
+		MenuItem clientsMenuItem = new MenuItem(CLIENT_OPTIONS, clientsMenu);
 		upLevelMenu.addMenuItem(clientsMenuItem);
 
-		MenuItem showAllClientsMenuItem = new MenuItem("Show all clients.", new ShowAllClients());
+		MenuItem showAllClientsMenuItem = new MenuItem(SHOW_ALL_CLIENTS, new ShowAllClients());
 		clientsMenu.addMenuItem(showAllClientsMenuItem);
 
-		MenuItem showNumberOfClientsMenuItem = new MenuItem("Show number of clients.", new ShowNumberOfClients());
+		MenuItem showNumberOfClientsMenuItem = new MenuItem(SHOW_NUMBER_OF_CLIENTS, new ShowNumberOfClients());
 		clientsMenu.addMenuItem(showNumberOfClientsMenuItem);
 
-		MenuItem addClientMenuItem = new MenuItem("Add new client.", new AddClient());
+		MenuItem addClientMenuItem = new MenuItem(ADD_NEW_CLIENT, new AddClient());
 		clientsMenu.addMenuItem(addClientMenuItem);
 
-		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		clientsMenu.addMenuItem(backMenuItem);
 	}
 
 	private void buildServiceSubMenu(Menu upLevelMenu) {
 
-		Menu servicesMenu = new Menu("Service options");
+		Menu servicesMenu = new Menu(SERVICE_OPTIONS);
 
-		MenuItem servicesMenuItem = new MenuItem("Service options", servicesMenu);
+		MenuItem servicesMenuItem = new MenuItem(SERVICE_OPTIONS, servicesMenu);
 		upLevelMenu.addMenuItem(servicesMenuItem);
 
-		MenuItem showAllServicesSortByPriceMenuItem = new MenuItem("Show all services.",
-				new ShowAllServicesSortByPrice());
+		MenuItem showAllServicesSortByPriceMenuItem = new MenuItem(SHOW_ALL_SERVICES, new ShowAllServicesSortByPrice());
 		servicesMenu.addMenuItem(showAllServicesSortByPriceMenuItem);
 
-		MenuItem addServiceMenuItem = new MenuItem("Add new service.", new AddService());
+		MenuItem addServiceMenuItem = new MenuItem(ADD_SERVICE, new AddService());
 		servicesMenu.addMenuItem(addServiceMenuItem);
 
-		MenuItem changeServicePriceMenuItem = new MenuItem("Change service price.", new ChangeServicePrice());
+		MenuItem changeServicePriceMenuItem = new MenuItem(CHANGE_SERVICE_PRICE, new ChangeServicePrice());
 		servicesMenu.addMenuItem(changeServicePriceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		servicesMenu.addMenuItem(backMenuItem);
 	}
 
 	private void buildOrderSubMenu(Menu upLevelMenu) {
 
-		Menu ordersMenu = new Menu("Order options");
+		Menu ordersMenu = new Menu(ORDER_OPTIONS);
 
-		MenuItem ordersMenuItem = new MenuItem("Order options", ordersMenu);
+		MenuItem ordersMenuItem = new MenuItem(ORDER_OPTIONS, ordersMenu);
 		upLevelMenu.addMenuItem(ordersMenuItem);
 
-		MenuItem showActiveOrdersSortByNameMenuItem = new MenuItem("Show active orders sort by client name.",
+		MenuItem showActiveOrdersSortByNameMenuItem = new MenuItem(SHOW_ACTIVE_ORDERS_SORT_NAME,
 				new ShowActiveOrdersSortByName());
 		ordersMenu.addMenuItem(showActiveOrdersSortByNameMenuItem);
 
-		MenuItem showActiveOrdersSortByFinishDateMenuItem = new MenuItem("Show active orders sort by finish date.",
+		MenuItem showActiveOrdersSortByFinishDateMenuItem = new MenuItem(SHOW_ACTIVE_ORDERS_SORT_FINISH_DATE,
 				new ShowActiveOrdersSortByFinishDate());
 		ordersMenu.addMenuItem(showActiveOrdersSortByFinishDateMenuItem);
 
-		MenuItem showOrderPriceMenuItem = new MenuItem("Show order price.", new ShowOrderPrice());
+		MenuItem showOrderPriceMenuItem = new MenuItem(SHOW_ORDER_PRICE, new ShowOrderPrice());
 		ordersMenu.addMenuItem(showOrderPriceMenuItem);
 
-		MenuItem showLastThreeOrdersByRoomMenuItem = new MenuItem("Show last three room orders.",
-				new ShowLastThreeOrdersByRoom());
-		ordersMenu.addMenuItem(showLastThreeOrdersByRoomMenuItem);
+		MenuItem showLastOrdersByRoomMenuItem = new MenuItem(SHOW_LAST_ROOM_ORDERS, new ShowLastOrdersByRoom());
+		ordersMenu.addMenuItem(showLastOrdersByRoomMenuItem);
 
-		MenuItem showOrderServicesMenuItem = new MenuItem("Show order services.", new ShowOrderServices());
+		MenuItem showOrderServicesMenuItem = new MenuItem(SHOW_ORDER_SERVICES, new ShowOrderServices());
 		ordersMenu.addMenuItem(showOrderServicesMenuItem);
 
-		MenuItem addOrderServiceMenuItem = new MenuItem("Add service to order.", new AddOrderService());
+		MenuItem addOrderServiceMenuItem = new MenuItem(ADD_SERVICE_ORDER, new AddOrderService());
 		ordersMenu.addMenuItem(addOrderServiceMenuItem);
 
-		MenuItem backMenuItem = new MenuItem("Go back", upLevelMenu);
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		ordersMenu.addMenuItem(backMenuItem);
 	}
 
 	public void buildMenu() {
-		Menu mainMenu = new Menu("Main menu");
+		Menu mainMenu = new Menu(MAIN_MENU_TEXT);
 
 		this.rootMenu = mainMenu;
-
-		// Main menu
 
 		buildRoomSubMenu(mainMenu);
 		buildClientSubMenu(mainMenu);
 		buildServiceSubMenu(mainMenu);
 		buildOrderSubMenu(mainMenu);
 
-		MenuItem exit = new MenuItem("Exit", new ExitAction());
+		MenuItem exit = new MenuItem(EXIT_MENU_TEXT, new ExitAction());
 		mainMenu.addMenuItem(exit);
 
 	}

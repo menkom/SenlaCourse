@@ -10,7 +10,7 @@ public class Menu {
 
 	public Menu(String menuName) {
 		this.name = menuName;
-		menuItems = new ArrayList<>();
+		this.menuItems = new ArrayList<>();
 	}
 
 	public String getName() {

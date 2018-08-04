@@ -19,25 +19,25 @@ public class ShowFreeRoomsByDateSortByStar implements IAction {
 
 	@Override
 	public void execute() {
-		try (Scanner scanner = new Scanner(System.in)) {
-			DisplayOperator.printMessage("Enter date (format dd/MM/yyyy): ");
-			String dateInString = scanner.next();
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		DisplayOperator.printMessage("Enter date (format dd/MM/yyyy): ");
+		String dateInString = scanner.next();
 
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-			try {
-				Date date = formatter.parse(dateInString);
+		try {
+			Date date = formatter.parse(dateInString);
 
-				List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByStar(date);
-				if (rooms.size() > 0) {
-					DisplayOperator.printRooms(rooms);
-				} else {
-					DisplayOperator.printMessage("No rooms found.");
-				}
-			} catch (ParseException e) {
-				DisplayOperator.printMessage("Date format error.");
-				logger.error(e);
+			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByStar(date);
+			if (rooms.size() > 0) {
+				DisplayOperator.printRooms(rooms);
+			} else {
+				DisplayOperator.printMessage("No rooms found.");
 			}
+		} catch (ParseException e) {
+			DisplayOperator.printMessage("Date format error.");
+			logger.error(e);
 		}
 	}
 

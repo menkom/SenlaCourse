@@ -22,7 +22,7 @@ public class Client extends BaseObject {
 	public String toString() {
 		String result = super.toString();
 
-		result = result.concat(getName() + BaseObject.SEPARATOR);
+		result += getName() + SEPARATOR;
 
 		return result;
 	}

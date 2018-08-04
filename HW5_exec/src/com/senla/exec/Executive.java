@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 //import com.senla.datahelp.DataFiller;
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.property.HotelProperty;
 import com.senla.ui.base.MenuController;
 import com.senla.util.DisplayOperator;
 
@@ -16,13 +17,12 @@ public class Executive {
 
 	public static void main(String[] args) {
 
+		HotelProperty.getInstance();
 		String dbPath = "./";
 
 		if (args.length > 0) {
 			dbPath = args[0];
 		}
-
-		logger.info("Path to DB: " + dbPath);
 
 		try {
 			Hotel.getInstance().load(dbPath);

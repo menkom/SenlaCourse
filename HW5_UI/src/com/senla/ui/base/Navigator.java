@@ -1,7 +1,5 @@
 package com.senla.ui.base;
 
-//import java.util.NoSuchElementException;
-
 import org.apache.log4j.Logger;
 
 import com.senla.util.DisplayOperator;
@@ -50,10 +48,5 @@ public class Navigator {
 					+ (currentMenu.getMenuItems().size() - 1) + ".");
 			logger.error(e);
 		}
-//		catch (NoSuchElementException e) {
-//			DisplayOperator.printMessage("Wrong menu number.");
-//			logger.error(e);
-//		}
-
 	}
 }

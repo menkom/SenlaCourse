@@ -28,12 +28,8 @@ public class ClientService implements IService {
 		return clientService;
 	}
 
-	public String getFileName() {
-		return "client.db";
-	}
-
-	public void add(Client element) {
-		clientRepository.add(element);
+	public void add(Client client) {
+		clientRepository.add(client);
 	}
 
 	public List<Client> getAllClients() {
@@ -47,14 +43,14 @@ public class ClientService implements IService {
 		return result;
 	}
 
-	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		String[] array = new TextFileWorker(filePath + "client.db").readFromFile();
 
-		clientRepository.setClients(ListConverter.getClients(array));
+		clientRepository.getClients().addAll(ListConverter.getClients(array));
 	}
 
-	public void saveToDB(String dbPath) {
-		new TextFileWorker(dbPath + getFileName())
+	public void saveToFile(String filePath) {
+		new TextFileWorker(filePath + "client.db")
 				.writeToFile(ListConverter.getArrayFromList(clientRepository.getClients()));
 	}
 

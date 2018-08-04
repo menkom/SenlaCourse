@@ -4,22 +4,22 @@ import com.senla.base.BaseObject;
 
 public class Service extends BaseObject {
 
-	private int code;
+	private Integer code;
 	private String name;
-	private int price;
+	private Integer price;
 
 	public int getPrice() {
 		return price;
 	}
 
-	public Service(int code, String name, int price) {
+	public Service(Integer code, String name, Integer price) {
 		super();
 		this.code = code;
 		this.name = name;
 		this.price = price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
@@ -35,16 +35,16 @@ public class Service extends BaseObject {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(Integer code) {
 		this.code = code;
 	}
 
 	public String toString() {
 		String result = super.toString();
 
-		result = result.concat(getCode() + BaseObject.SEPARATOR);
-		result = result.concat(getName() + BaseObject.SEPARATOR);
-		result = result.concat(getPrice() + BaseObject.SEPARATOR);
+		result += getCode() + SEPARATOR;
+		result += getName() + SEPARATOR;
+		result += getPrice() + SEPARATOR;
 
 		return result;
 	}

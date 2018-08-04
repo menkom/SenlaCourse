@@ -13,7 +13,6 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.repository.RoomRepository;
-//import com.senla.util.FileOperator;
 
 public class RoomService implements IService {
 
@@ -32,21 +31,17 @@ public class RoomService implements IService {
 		return roomService;
 	}
 
-	public String getFileName() {
-		return "room.db";
-	}
-
 	public RoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public void add(Room element) {
-		getRoomRepository().add(element);
+	public void add(Room room) {
+		getRoomRepository().add(room);
 	}
 
-	public void addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
-		Room element = new Room(number, capacity, star, status, price);
-		add(element);
+	public void addRoom(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
+		Room room = new Room(number, capacity, star, status, price);
+		add(room);
 	}
 
 	public List<Room> getAllRooms() {
@@ -96,8 +91,6 @@ public class RoomService implements IService {
 
 		List<Room> result = new ArrayList<>();
 
-		// We need to get a list of occupied rooms and exclude this from all rooms
-		//
 		List<Room> resultExclude = new ArrayList<>();
 
 		for (Order order : OrderService.getInstance().getOrderRepository().getOrders()) {
@@ -133,19 +126,15 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		String[] array = new TextFileWorker(filePath + "room.db").readFromFile();
 
-		roomRepository.setRooms(ListConverter.getRooms(array));
+		roomRepository.getRooms().addAll(ListConverter.getRooms(array));
 	}
 
-	public void saveToDB(String dbPath) {
-		new TextFileWorker(dbPath + getFileName())
+	public void saveToFile(String filePath) {
+		new TextFileWorker(filePath + "room.db")
 				.writeToFile(ListConverter.getArrayFromList(roomRepository.getRooms()));
 	}
 
-	public String[] getStringToSave() {
-
-		return null;// getRoomRepository().toStringArray();
-	}
 }

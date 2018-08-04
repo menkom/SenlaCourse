@@ -9,21 +9,21 @@ import com.senla.base.BaseObject;
 
 public class Order extends BaseObject {
 
-	private int num;
+	private Integer num;
 	private Client client;
 	private Room room;
 	private Date startDate;
 	private Date finishDate;
 	private List<Service> services;
 
-	public Order(int num, Client client, Room room, Date startDate, Date finishDate) {
+	public Order(Integer num, Client client, Room room, Date startDate, Date finishDate) {
 		super();
 		this.num = num;
 		this.client = client;
 		this.room = room;
 		this.startDate = startDate;
 		this.finishDate = finishDate;
-		services = new ArrayList<Service>();
+		this.services = new ArrayList<Service>();
 	}
 
 	public Date getStartDate() {
@@ -66,7 +66,7 @@ public class Order extends BaseObject {
 		return num;
 	}
 
-	public void setNum(int num) {
+	public void setNum(Integer num) {
 		this.num = num;
 	}
 
@@ -77,22 +77,19 @@ public class Order extends BaseObject {
 	public String toString() {
 		String result = super.toString();
 
-		result = result.concat(getNum() + BaseObject.SEPARATOR);
-		result = result.concat(getClient().getName() + BaseObject.SEPARATOR);
-		result = result.concat(getRoom().getNumber() + BaseObject.SEPARATOR);
+		result += getNum() + SEPARATOR;
+		result += getClient().getName() + SEPARATOR;
+		result += getRoom().getNumber() + SEPARATOR;
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		result = result.concat(formatter.format(getStartDate()) + BaseObject.SEPARATOR);
+		result += formatter.format(getStartDate()) + SEPARATOR;
 
-		if (getFinishDate() == null) {
-			result = result.concat("null");
-		} else {
-			result = result.concat(formatter.format(getFinishDate()) + BaseObject.SEPARATOR);
-		}
+		result += formatter.format(getFinishDate() + SEPARATOR);
+
 		for (Service service : getServices()) {
 			if (service != null) {
-				result = result.concat(service.getCode() + BaseObject.SEPARATOR);
+				result += service.getCode() + SEPARATOR;
 			}
 		}
 

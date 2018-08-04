@@ -13,21 +13,22 @@ public class RoomRepository {
 
 	private RoomRepository() {
 		super();
-		this.rooms = new ArrayList<>();
+		this.rooms = new ArrayList<Room>();
 	}
 
 	public List<Room> getRooms() {
 		return rooms;
 	}
 
-	public void add(Room element) {
-		getRooms().add(element);
+	public void add(Room room) {
+		getRooms().add(room);
 	}
 
-	public void delete(Room element) {
-		for (Room room : getRooms()) {
-			if (room == element) {
-				room = null;
+	public void delete(Integer roomNum) {
+		for (int i = 0; i < getRooms().size(); i++) {
+			if (getRooms().get(i).getNumber() == roomNum) {
+				getRooms().remove(i);
+				break;
 			}
 		}
 	}
@@ -47,9 +48,4 @@ public class RoomRepository {
 		}
 		return roomRepository;
 	}
-
-	public void setRooms(List<Room> rooms) {
-		this.rooms = rooms;
-	}
-
 }

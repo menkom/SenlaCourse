@@ -13,17 +13,18 @@ public class ClientRepository {
 
 	private ClientRepository() {
 		super();
-		clients = new ArrayList<>();
+		this.clients = new ArrayList<Client>();
 	}
 
-	public void add(Client element) {
-		clients.add(element);
+	public void add(Client client) {
+		clients.add(client);
 	}
 
-	public void delete(Client element) {
-		for (Client client : clients) {
-			if (client == element) {
-				client = null;
+	public void delete(String name) {
+		for (int i = 0; i < clients.size() - 1; i++) {
+			if (clients.get(i).getName().equals(name)) {
+				clients.remove(i);
+				break;
 			}
 		}
 	}
@@ -46,10 +47,6 @@ public class ClientRepository {
 
 	public List<Client> getClients() {
 		return clients;
-	}
-
-	public void setClients(List<Client> clients) {
-		this.clients = clients;
 	}
 
 }

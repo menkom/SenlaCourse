@@ -13,21 +13,22 @@ public class ServiceRepository {
 
 	private ServiceRepository() {
 		super();
-		services = new ArrayList<>();
+		this.services = new ArrayList<Service>();
 	}
 
 	public List<Service> getServices() {
 		return services;
 	}
 
-	public void add(Service element) {
-		getServices().add(element);
+	public void add(Service service) {
+		getServices().add(service);
 	}
 
-	public void delete(Service element) {
-		for (Service service : getServices()) {
-			if (service == element) {
-				service = null;
+	public void delete(Integer serviceCode) {
+		for (int i = 0; i < getServices().size(); i++) {
+			if (getServices().get(i).getCode() == serviceCode) {
+				getServices().remove(i);
+				break;
 			}
 		}
 	}
@@ -46,10 +47,6 @@ public class ServiceRepository {
 			serviceRepository = new ServiceRepository();
 		}
 		return serviceRepository;
-	}
-
-	public void setServices(List<Service> services) {
-		this.services = services;
 	}
 
 }

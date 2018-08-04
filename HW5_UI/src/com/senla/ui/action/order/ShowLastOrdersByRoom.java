@@ -1,4 +1,4 @@
-package com.senla.ui.action.room;
+package com.senla.ui.action.order;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -6,13 +6,13 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
-import com.senla.hotel.model.Room;
+import com.senla.hotel.property.HotelProperty;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
 
-public class ShowRoomInfo implements IAction {
+public class ShowLastOrdersByRoom implements IAction {
 
-	private static final Logger logger = Logger.getLogger(ShowRoomInfo.class);
+	private static final Logger logger = Logger.getLogger(ShowLastOrdersByRoom.class);
 
 	@Override
 	public void execute() {
@@ -22,17 +22,19 @@ public class ShowRoomInfo implements IAction {
 		DisplayOperator.printMessage("Enter room num: ");
 		try {
 			roomNum = scanner.nextInt();
-			Room room = Hotel.getInstance().getRoomByNum(roomNum);
-			if (room == null) {
-				DisplayOperator.printMessage("Room #" + Integer.toString(roomNum) + " not found.");
-				logger.error("Null room");
-			} else {
-				DisplayOperator.printRoomInfo(room);
-			}
+
+			DisplayOperator.printOrders(
+
+					Hotel.getInstance().getLastOrdersByRoom(roomNum,
+							HotelProperty.getInstance().getLastVisibleOrders()));
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage("You need to enter room number.");
 			logger.error(e.toString());
+		} catch (NullPointerException e) {
+			DisplayOperator.printMessage("Order #" + Integer.toString(roomNum) + " not found.");
+			logger.error(e.toString());
 		}
+
 	}
 
 }

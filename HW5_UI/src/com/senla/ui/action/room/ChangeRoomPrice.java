@@ -15,23 +15,23 @@ public class ChangeRoomPrice implements IAction {
 
 	@Override
 	public void execute() {
-		try (Scanner scanner = new Scanner(System.in)) {
-			int roomNum = -1;
-			int price = -1;
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		int roomNum = -1;
+		int price = -1;
 
-			try {
-				DisplayOperator.printMessage("Enter room number: ");
-				roomNum = scanner.nextInt();
-				DisplayOperator.printMessage("Enter new price: ");
-				price = scanner.nextInt();
+		try {
+			DisplayOperator.printMessage("Enter room number: ");
+			roomNum = scanner.nextInt();
+			DisplayOperator.printMessage("Enter new price: ");
+			price = scanner.nextInt();
 
-				Hotel.getInstance().changeRoomPrice(roomNum, price);
-			} catch (InputMismatchException e) {
-				DisplayOperator.printMessage("Input correct field types.");
-				logger.error(e);
-			}
-
+			Hotel.getInstance().changeRoomPrice(roomNum, price);
+		} catch (InputMismatchException e) {
+			DisplayOperator.printMessage("Input correct field types.");
+			logger.error(e);
 		}
+
 	}
 
 }

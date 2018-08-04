@@ -8,7 +8,6 @@ import com.danco.training.TextFileWorker;
 import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
-//import com.senla.util.FileOperator;
 
 public class ServiceService implements IService {
 
@@ -27,21 +26,17 @@ public class ServiceService implements IService {
 		return serviceService;
 	}
 
-	public String getFileName() {
-		return "service.db";
-	}
-
 	public ServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public void add(Service element) {
-		getServiceRepository().add(element);
+	public void add(Service service) {
+		getServiceRepository().add(service);
 	}
 
 	public void addService(int code, String name, int price) {
-		Service element = new Service(code, name, price);
-		getServiceRepository().add(element);
+		Service service = new Service(code, name, price);
+		getServiceRepository().add(service);
 	}
 
 	public List<Service> getAllServices() {
@@ -52,19 +47,15 @@ public class ServiceService implements IService {
 		return getServiceRepository().getServiceByCode(code);
 	}
 
-	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		String[] array = new TextFileWorker(filePath + "service.db").readFromFile();
 
-		serviceRepository.setServices(ListConverter.getServices(array));
+		serviceRepository.getServices().addAll(ListConverter.getServices(array));
 	}
 
-	public void saveToDB(String dbPath) throws IOException {
-		new TextFileWorker(dbPath + getFileName())
+	public void saveToFile(String filePath) throws IOException {
+		new TextFileWorker(filePath + "service.db")
 				.writeToFile(ListConverter.getArrayFromList(serviceRepository.getServices()));
-	}
-
-	public String[] getStringToSave() {
-		return null;// getServiceRepository().toStringArray();
 	}
 
 	public void changeServicePrice(int code, int price) {

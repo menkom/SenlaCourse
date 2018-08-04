@@ -14,21 +14,22 @@ public class OrderRepository {
 
 	private OrderRepository() {
 		super();
-		orders = new ArrayList<>();
+		this.orders = new ArrayList<Order>();
 	}
 
 	public List<Order> getOrders() {
 		return orders;
 	}
 
-	public void add(Order element) {
-		getOrders().add(element);
+	public void add(Order order) {
+		getOrders().add(order);
 	}
 
-	public void delete(Order element) {
-		for (Order order : getOrders()) {
-			if (order == element) {
-				order = null;
+	public void delete(Integer orderNum) {
+		for (int i = 0; i < getOrders().size(); i++) {
+			if (getOrders().get(i).getNum() == orderNum) {
+				getOrders().remove(i);
+				break;
 			}
 		}
 	}
@@ -52,9 +53,4 @@ public class OrderRepository {
 		}
 		return orderRepository;
 	}
-
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
-	}
-
 }

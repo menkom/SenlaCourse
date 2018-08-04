@@ -39,34 +39,31 @@ public class Hotel {
 
 	private Hotel() {
 		super();
-		clientService = ClientService.getInstance();
-		roomService = RoomService.getInstance();
-		serviceService = ServiceService.getInstance();
-		orderService = OrderService.getInstance();
+		this.clientService = ClientService.getInstance();
+		this.roomService = RoomService.getInstance();
+		this.serviceService = ServiceService.getInstance();
+		this.orderService = OrderService.getInstance();
 	}
 
 	public static Hotel getInstance() {
 		if (hotel == null) {
 			hotel = new Hotel();
-			logger.info("Hotel was created.");
 		}
 		return hotel;
 	}
 
-	public void load(String dbPath) throws NumberFormatException, IOException, ParseException {
-		getClientService().loadFromDB(dbPath);
-		getRoomService().loadFromDB(dbPath);
-		getServiceService().loadFromDB(dbPath);
-		getOrderService().loadFromDB(dbPath);
-		logger.info("Info loaded");
+	public void load(String filePath) throws NumberFormatException, IOException, ParseException {
+		getClientService().loadFromFile(filePath);
+		getRoomService().loadFromFile(filePath);
+		getServiceService().loadFromFile(filePath);
+		getOrderService().loadFromFile(filePath);
 	}
 
-	public void save(String dbPath) throws Throwable {
-		getClientService().saveToDB(dbPath);
-		getRoomService().saveToDB(dbPath);
-		getServiceService().saveToDB(dbPath);
-		getOrderService().saveToDB(dbPath);
-		logger.info("Info saved");
+	public void save(String filePath) throws Throwable {
+		getClientService().saveToFile(filePath);
+		getRoomService().saveToFile(filePath);
+		getServiceService().saveToFile(filePath);
+		getOrderService().saveToFile(filePath);
 	}
 
 	public List<Room> getAllRoomsSortByPrice() {
@@ -151,8 +148,8 @@ public class Hotel {
 		return getRoomService().getRoomByNum(roomNum);
 	}
 
-	public List<Order> getLastThreeOrdersByRoom(int roomNum) {
-		List<Order> result = getOrderService().getLastThreeOrdersByRoom(roomNum);
+	public List<Order> getLastOrdersByRoom(int roomNum, int maxOrders) {
+		List<Order> result = getOrderService().getLastOrdersByRoom(roomNum, maxOrders);
 		result.sort(new OrderSortByFinishDate());
 		return result;
 	}

@@ -15,20 +15,20 @@ public class ShowOrderServices implements IAction {
 
 	@Override
 	public void execute() {
-		try (Scanner scanner = new Scanner(System.in)) {
-			int orderNum = 0;
-			DisplayOperator.printMessage("Enter order num: ");
-			try {
-				orderNum = scanner.nextInt();
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		int orderNum = 0;
+		DisplayOperator.printMessage("Enter order num: ");
+		try {
+			orderNum = scanner.nextInt();
 
-				DisplayOperator.printServices(Hotel.getInstance().getOrderServices(orderNum));
-			} catch (InputMismatchException e) {
-				DisplayOperator.printMessage("You need to enter order number.");
-				logger.error(e.toString());
-			} catch (NullPointerException e) {
-				DisplayOperator.printMessage("Order #" + Integer.toString(orderNum) + " not found.");
-				logger.error(e.toString());
-			}
+			DisplayOperator.printServices(Hotel.getInstance().getOrderServices(orderNum));
+		} catch (InputMismatchException e) {
+			DisplayOperator.printMessage("You need to enter order number.");
+			logger.error(e.toString());
+		} catch (NullPointerException e) {
+			DisplayOperator.printMessage("Order #" + Integer.toString(orderNum) + " not found.");
+			logger.error(e.toString());
 		}
 	}
 

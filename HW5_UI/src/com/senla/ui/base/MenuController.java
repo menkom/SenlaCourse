@@ -15,9 +15,9 @@ public class MenuController {
 	private Navigator navigator;
 
 	public MenuController() {
-		builder = new Builder();
-		builder.buildMenu();
-		navigator = new Navigator(builder.getRootMenu());
+		this.builder = new Builder();
+		this.builder.buildMenu();
+		this.navigator = new Navigator(builder.getRootMenu());
 	}
 
 	public void run() {

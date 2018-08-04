@@ -32,10 +32,6 @@ public class OrderService implements IService {
 		this.nextNum = 4;
 	}
 
-	public String getFileName() {
-		return "order.db";
-	}
-
 	public OrderRepository getOrderRepository() {
 		return orderRepository;
 	}
@@ -47,26 +43,25 @@ public class OrderService implements IService {
 		return orderService;
 	}
 
-	public void add(Order element) {
-		orderRepository.add(element);
+	public void add(Order order) {
+		orderRepository.add(order);
 	}
 
-	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate)
+	public void addOrder(Integer num, String clientName, Integer roomNum, Date startDate, Date finishDate)
 			throws NoEntryException {
 		Client client = ClientService.getInstance().getClientByName(clientName);
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 
-		Order element = new Order(num, client, room, startDate, finishDate);
-		add(element);
+		Order order = new Order(num, client, room, startDate, finishDate);
+		add(order);
 	}
 
 	public Order getOrderByNum(int num) {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
-	public Order orderRoom(int roomNum, String clientName, Date dateStart, Date dateFinish) throws NoEntryException {
-		// We have to create Order to change room status. By adding order you don't have
-		// access to order and in information to change room status.
+	public Order orderRoom(Integer roomNum, String clientName, Date dateStart, Date dateFinish)
+			throws NoEntryException {
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 		Order order = new Order(getNextNum(), ClientService.getInstance().getClientByName(clientName), room, dateStart,
 				dateFinish);
@@ -77,7 +72,7 @@ public class OrderService implements IService {
 		return order;
 	}
 
-	public boolean freeRoom(int orderNum) {
+	public boolean freeRoom(Integer orderNum) {
 		boolean result = false;
 		Order order = orderRepository.getOrderByNum(orderNum);
 
@@ -89,12 +84,12 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public void addOrderService(int orderNum, int serviceCode) {
+	public void addOrderService(Integer orderNum, Integer serviceCode) {
 		Service service = ServiceService.getInstance().getServiceByCode(serviceCode);
 		getOrderRepository().addOrderService(orderNum, service);
 	}
 
-	public int getOrderPrice(int orderNum) {
+	public int getOrderPrice(Integer orderNum) {
 		Order order = getOrderByNum(orderNum);
 		int result;
 		if (order.getFinishDate() == null) {
@@ -114,7 +109,6 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	// Get all active orders
 	public List<Order> getActiveOrders() {
 		List<Order> result = new ArrayList<>();
 
@@ -144,7 +138,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public List<Order> getLastThreeOrdersByRoom(int num) {
+	public List<Order> getLastOrdersByRoom(int num, int maxOrders) {
 
 		List<Order> result = new ArrayList<>();
 		List<Order> orders = getOrdersByRoom(num);
@@ -154,7 +148,7 @@ public class OrderService implements IService {
 		for (int i = orders.size() - 1; i >= 0; i--) {
 			if (orders.get(i) != null) {
 				result.add(orders.get(i));
-				if (j == 2) {
+				if (j == maxOrders - 1) {
 					break;
 				} else {
 					j++;
@@ -174,15 +168,15 @@ public class OrderService implements IService {
 		this.nextNum = nextNum;
 	}
 
-	public void loadFromDB(String dbPath) throws IOException, NumberFormatException, ParseException {
-		String[] array = new TextFileWorker(dbPath + getFileName()).readFromFile();
+	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		String[] array = new TextFileWorker(filePath + "order.db").readFromFile();
 
 		setNextNum(Integer.parseInt(array[0]));
 
-		orderRepository.setOrders(ListConverter.getOrders(Arrays.copyOfRange(array, 1, array.length)));
+		orderRepository.getOrders().addAll(ListConverter.getOrders(Arrays.copyOfRange(array, 1, array.length)));
 	}
 
-	public void saveToDB(String dbPath) {
+	public void saveToFile(String filePath) {
 		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
 
 		String[] result = new String[repositoryToStr.length + 1];
@@ -191,7 +185,7 @@ public class OrderService implements IService {
 
 		System.arraycopy(repositoryToStr, 0, result, 1, repositoryToStr.length);
 
-		new TextFileWorker(dbPath + getFileName()).writeToFile(result);
+		new TextFileWorker(filePath + "order.db").writeToFile(result);
 	}
 
 	public static OrderService getOrderService() {

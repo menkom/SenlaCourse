@@ -5,13 +5,13 @@ import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 
 public class Room extends BaseObject {
-	private int number;
-	private int capacity;
+	private Integer number;
+	private Integer capacity;
 	private RoomStar star;
 	private RoomStatus status;
-	private int price;
+	private Integer price;
 
-	public Room(int number, int capacity, RoomStar star, RoomStatus status, int price) {
+	public Room(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
 		super();
 		this.number = number;
 		this.capacity = capacity;
@@ -20,19 +20,19 @@ public class Room extends BaseObject {
 		this.price = price;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Integer price) {
 		this.price = price;
 	}
 
@@ -48,7 +48,7 @@ public class Room extends BaseObject {
 		return capacity;
 	}
 
-	public void setCapacity(int capacity) {
+	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
 
@@ -63,11 +63,11 @@ public class Room extends BaseObject {
 	public String toString() {
 		String result = super.toString();
 
-		result = result.concat(getNumber() + BaseObject.SEPARATOR);
-		result = result.concat(getCapacity() + BaseObject.SEPARATOR);
-		result = result.concat(getStar() + BaseObject.SEPARATOR);
-		result = result.concat(getStatus() + BaseObject.SEPARATOR);
-		result = result.concat(getPrice() + BaseObject.SEPARATOR);
+		result += getNumber() + SEPARATOR;
+		result += getCapacity() + SEPARATOR;
+		result += getStar() + SEPARATOR;
+		result += getStatus() + SEPARATOR;
+		result += getPrice() + SEPARATOR;
 
 		return result;
 	}

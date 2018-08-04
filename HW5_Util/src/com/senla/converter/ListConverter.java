@@ -14,9 +14,9 @@ public class ListConverter {
 	public static String[] getArrayFromList(List<? extends BaseObject> list) {
 		List<String> result = new ArrayList<>();
 
-		for (BaseObject element : list) {
-			if (element != null) {
-				result.add(element.toString());
+		for (BaseObject baseObject : list) {
+			if (baseObject != null) {
+				result.add(baseObject.toString());
 			}
 		}
 
