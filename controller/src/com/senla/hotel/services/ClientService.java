@@ -28,8 +28,8 @@ public class ClientService implements IService {
 		return clientService;
 	}
 
-	public void add(Client client) {
-		getClientRepository().add(client);
+	public Boolean add(Client client) {
+		return getClientRepository().add(client);
 	}
 
 	public List<Client> getAllClients() {

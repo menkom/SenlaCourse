@@ -36,9 +36,9 @@ public class ServiceService implements IService {
 		getServiceRepository().add(service);
 	}
 
-	public void addService(int code, String name, int price) {
+	public Boolean addService(int code, String name, int price) {
 		Service service = new Service(code, name, price);
-		getServiceRepository().add(service);
+		return getServiceRepository().add(service);
 	}
 
 	public List<Service> getAllServices(Comparator<Service> comparator) {
@@ -57,16 +57,19 @@ public class ServiceService implements IService {
 		serviceRepository.getServices().addAll(ListConverter.getServices(array));
 	}
 
-	public void saveToFile(String filePath) throws IOException {
+	public void saveToFile(String filePath) {
 		new TextFileWorker(filePath + "service.db")
 				.writeToFile(ListConverter.getArrayFromList(serviceRepository.getServices()));
 	}
 
-	public void changeServicePrice(int code, int price) {
+	public Boolean changeServicePrice(int code, int price) {
+		Boolean result = false;
 		Service service = getServiceByCode(code);
 		if (service != null) {
 			service.setPrice(price);
+			result = true;
 		}
+		return result;
 	}
 
 }

@@ -28,6 +28,13 @@ import com.senla.util.DisplayOperator;
 
 public class Hotel {
 
+	private static final String ERROR_DURING = "Error during %s %s.";
+	private static final String OBJECT_CLIENTS = "clients";
+	private static final String OBJECT_ROOMS = "rooms";
+	private static final String OBJECT_SERVICES = "services";
+	private static final String OBJECT_ORDERS = "orders";
+	private static final String PROCESS_NAME_LOAD = "load";
+
 	private ClientService clientService;
 	private RoomService roomService;
 	private ServiceService serviceService;
@@ -52,14 +59,37 @@ public class Hotel {
 		return hotel;
 	}
 
-	public void load(String filePath) throws NumberFormatException, IOException, ParseException {
-		getClientService().loadFromFile(filePath);
-		getRoomService().loadFromFile(filePath);
-		getServiceService().loadFromFile(filePath);
-		getOrderService().loadFromFile(filePath);
+	public void load(String filePath) {
+		try {
+			getClientService().loadFromFile(filePath);
+		} catch (NumberFormatException | IOException | ParseException ex) {
+			logger.error(ex);
+			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_CLIENTS, PROCESS_NAME_LOAD));
+		}
+
+		try {
+			getRoomService().loadFromFile(filePath);
+		} catch (NumberFormatException | IOException | ParseException ex) {
+			logger.error(ex);
+			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_ROOMS, PROCESS_NAME_LOAD));
+		}
+
+		try {
+			getServiceService().loadFromFile(filePath);
+		} catch (NumberFormatException | IOException | ParseException ex) {
+			logger.error(ex);
+			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_SERVICES, PROCESS_NAME_LOAD));
+		}
+
+		try {
+			getOrderService().loadFromFile(filePath);
+		} catch (NumberFormatException | IOException | ParseException ex) {
+			logger.error(ex);
+			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_ORDERS, PROCESS_NAME_LOAD));
+		}
 	}
 
-	public void save(String filePath) throws Throwable {
+	public void save(String filePath) {
 		getClientService().saveToFile(filePath);
 		getRoomService().saveToFile(filePath);
 		getServiceService().saveToFile(filePath);
@@ -67,96 +97,205 @@ public class Hotel {
 	}
 
 	public List<Room> getAllRoomsSortByPrice() {
-		return getRoomService().getAllRooms(new RoomSortByPrice());
+		try {
+			return getRoomService().getAllRooms(new RoomSortByPrice());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getAllRoomsSortByCapacity() {
-		return getRoomService().getAllRooms(new RoomSortByCapacity());
+		try {
+			return getRoomService().getAllRooms(new RoomSortByCapacity());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getAllRoomsSortByStar() {
-		return getRoomService().getAllRooms(new RoomSortByStar());
+		try {
+			return getRoomService().getAllRooms(new RoomSortByStar());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getFreeRoomsSortByPrice() {
-		return getRoomService().getFreeRooms(new RoomSortByPrice());
+		try {
+			return getRoomService().getFreeRooms(new RoomSortByPrice());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+
 	}
 
 	public List<Room> getFreeRoomsSortByCapacity() {
-		return getRoomService().getFreeRooms(new RoomSortByCapacity());
+		try {
+			return getRoomService().getFreeRooms(new RoomSortByCapacity());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getFreeRoomsSortByStar() {
-		return getRoomService().getFreeRooms(new RoomSortByStar());
+		try {
+			return getRoomService().getFreeRooms(new RoomSortByStar());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getFreeRoomsByDateSortByPrice(Date date) {
-		return getRoomService().getFreeRooms(date, new RoomSortByPrice());
+		try {
+			return getRoomService().getFreeRooms(date, new RoomSortByPrice());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getFreeRoomsByDateSortByCapacity(Date date) {
-		return getRoomService().getFreeRooms(date, new RoomSortByCapacity());
+		try {
+			return getRoomService().getFreeRooms(date, new RoomSortByCapacity());
+		} catch (
+
+		Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Room> getFreeRoomsByDateSortByStar(Date date) {
-		return getRoomService().getFreeRooms(date, new RoomSortByStar());
+		try {
+			return getRoomService().getFreeRooms(date, new RoomSortByStar());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
-	public int getNumberOfFreeRooms() {
-		return getRoomService().getNumberOfFreeRooms();
+	public Integer getNumberOfFreeRooms() {
+		try {
+			return getRoomService().getNumberOfFreeRooms();
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
-	public int getNumberOfClients() {
-		return getClientService().getNumberOfClients();
+	public Integer getNumberOfClients() {
+		try {
+			return getClientService().getNumberOfClients();
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Order> getActiveOrdersSortByName() {
-		return getOrderService().getActiveOrders(new OrderSortByClientName());
+		try {
+			return getOrderService().getActiveOrders(new OrderSortByClientName());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Order> getActiveOrdersSortByFinishDate() {
-		return getOrderService().getActiveOrders(new OrderSortByFinishDate());
+		try {
+			return getOrderService().getActiveOrders(new OrderSortByFinishDate());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
-	public int getOrderPrice(int orderNum) {
-		return getOrderService().getOrderPrice(orderNum);
+	public Integer getOrderPrice(int orderNum) {
+		try {
+			return getOrderService().getOrderPrice(orderNum);
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public Room getRoomByNum(int roomNum) {
-		return getRoomService().getRoomByNum(roomNum);
+		try {
+			return getRoomService().getRoomByNum(roomNum);
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Order> getLastOrdersByRoom(int roomNum, int maxOrders) {
-		return getOrderService().getLastOrdersByRoom(roomNum, maxOrders, new OrderSortByFinishDate());
+		try {
+			return getOrderService().getLastOrdersByRoom(roomNum, maxOrders, new OrderSortByFinishDate());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Service> getOrderServices(int orderNum) {
-		return getOrderService().getOrderServices(orderNum, new ServiceSortByPrice());
+		try {
+			return getOrderService().getOrderServices(orderNum, new ServiceSortByPrice());
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
 	public List<Service> getAllServicesSortByPrice() {
-		return getServiceService().getAllServices(new ServiceSortByPrice());
-	}
-
-	public void addClient(String name) {
-		getClientService().add(new Client(name));
-	}
-
-	public void addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
-		getRoomService().addRoom(number, capacity, star, status, price);
-	}
-
-	public void addService(int code, String name, int price) {
-		getServiceService().addService(code, name, price);
-	}
-
-	public void addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
-
 		try {
-			getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
-		} catch (NoEntryException e) {
-			DisplayOperator.printMessage(e.toString());
+			return getServiceService().getAllServices(new ServiceSortByPrice());
+		} catch (Exception e) {
 			logger.error(e);
+			return null;
+		}
+	}
+
+	public Boolean addClient(String name) {
+		try {
+			return getClientService().add(new Client(name));
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+
+	}
+
+	public Boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
+		try {
+			return getRoomService().addRoom(number, capacity, star, status, price);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+	}
+
+	public Boolean addService(int code, String name, int price) {
+		try {
+			return getServiceService().addService(code, name, price);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+
+	}
+
+	public Boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
+		try {
+			return getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
+		} catch (NoEntryException e) {
+			logger.error(e);
+			return false;
 		}
 	}
 
@@ -171,24 +310,49 @@ public class Hotel {
 		return order;
 	}
 
-	public void addOrderService(int orderNum, int serviceCode) {
-		getOrderService().addOrderService(orderNum, serviceCode);
+	public Boolean addOrderService(int orderNum, int serviceCode) {
+		try {
+			return getOrderService().addOrderService(orderNum, serviceCode);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
-	public boolean freeRoom(int orderNum) {
-		return getOrderService().freeRoom(orderNum);
+	public Boolean freeRoom(int orderNum) {
+		try {
+			return getOrderService().freeRoom(orderNum);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
-	public void changeRoomStatus(int roomNum, RoomStatus roomStatus) {
-		getRoomService().changeRoomStatus(roomNum, roomStatus);
+	public Boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
+		try {
+			return getRoomService().changeRoomStatus(roomNum, roomStatus);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
-	public void changeRoomPrice(int roomNum, int newPrice) {
-		getRoomService().changeRoomPrice(roomNum, newPrice);
+	public Boolean changeRoomPrice(int roomNum, int newPrice) {
+		try {
+			return getRoomService().changeRoomPrice(roomNum, newPrice);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
-	public void changeServicePrice(int code, int price) {
-		getRoomService().changeRoomPrice(code, price);
+	public Boolean changeServicePrice(int code, int price) {
+		try {
+			return getServiceService().changeServicePrice(code, price);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
 	public ClientService getClientService() {
@@ -208,6 +372,11 @@ public class Hotel {
 	}
 
 	public List<Client> getAllClients() {
-		return getClientService().getAllClients();
+		try {
+			return getClientService().getAllClients();
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
 	}
 }

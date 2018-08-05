@@ -44,17 +44,17 @@ public class OrderService implements IService {
 		return orderRepository;
 	}
 
-	public void add(Order order) {
-		orderRepository.add(order);
+	public Boolean add(Order order) {
+		return orderRepository.add(order);
 	}
 
-	public void addOrder(Integer num, String clientName, Integer roomNum, Date startDate, Date finishDate)
+	public Boolean addOrder(Integer num, String clientName, Integer roomNum, Date startDate, Date finishDate)
 			throws NoEntryException {
 		Client client = ClientService.getInstance().getClientByName(clientName);
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 
 		Order order = new Order(num, client, room, startDate, finishDate);
-		add(order);
+		return add(order);
 	}
 
 	public Order getOrderByNum(int num) {
@@ -85,14 +85,14 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public void addOrderService(Integer orderNum, Integer serviceCode) {
+	public Boolean addOrderService(Integer orderNum, Integer serviceCode) {
 		Service service = ServiceService.getInstance().getServiceByCode(serviceCode);
-		getOrderRepository().addOrderService(orderNum, service);
+		return getOrderRepository().addOrderService(orderNum, service);
 	}
 
-	public int getOrderPrice(Integer orderNum) {
+	public Integer getOrderPrice(Integer orderNum) {
 		Order order = getOrderByNum(orderNum);
-		int result;
+		Integer result;
 		if (order.getFinishDate() == null) {
 			result = 0;
 		} else {

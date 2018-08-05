@@ -28,17 +28,20 @@ public class OrderRepository {
 		return orders;
 	}
 
-	public void add(Order order) {
-		getOrders().add(order);
+	public Boolean add(Order order) {
+		return getOrders().add(order);
 	}
 
-	public void delete(Integer orderNum) {
+	public Boolean delete(Integer orderNum) {
+		Boolean result = false;
 		for (int i = 0; i < getOrders().size(); i++) {
 			if (getOrders().get(i).getNum() == orderNum) {
 				getOrders().remove(i);
+				result = true;
 				break;
 			}
 		}
+		return result;
 	}
 
 	public Order getOrderByNum(int num) {
@@ -50,8 +53,8 @@ public class OrderRepository {
 		return null;
 	}
 
-	public void addOrderService(int num, Service service) {
-		getOrderByNum(num).addService(service);
+	public Boolean addOrderService(int num, Service service) {
+		return getOrderByNum(num).addService(service);
 	}
 
 }

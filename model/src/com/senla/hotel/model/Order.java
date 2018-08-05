@@ -70,8 +70,8 @@ public class Order extends BaseObject {
 		this.num = num;
 	}
 
-	public void addService(Service service) {
-		services.add(service);
+	public Boolean addService(Service service) {
+		return services.add(service);
 	}
 
 	public String toString() {

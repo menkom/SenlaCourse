@@ -27,8 +27,8 @@ public class ServiceRepository {
 		return services;
 	}
 
-	public void add(Service service) {
-		getServices().add(service);
+	public Boolean add(Service service) {
+		return getServices().add(service);
 	}
 
 	public void delete(Integer serviceCode) {

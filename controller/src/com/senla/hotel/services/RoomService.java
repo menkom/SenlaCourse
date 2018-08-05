@@ -50,13 +50,13 @@ public class RoomService implements IService {
 		return roomRepository;
 	}
 
-	public void add(Room room) {
-		getRoomRepository().add(room);
+	public Boolean add(Room room) {
+		return getRoomRepository().add(room);
 	}
 
-	public void addRoom(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
+	public Boolean addRoom(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
 		Room room = new Room(number, capacity, star, status, price);
-		add(room);
+		return add(room);
 	}
 
 	public List<Room> getAllRooms(Comparator<Room> comparator) {
@@ -91,18 +91,24 @@ public class RoomService implements IService {
 		return getRoomRepository().getRoomByNum(number);
 	}
 
-	public void changeRoomStatus(int number, RoomStatus roomStatus) {
+	public Boolean changeRoomStatus(int number, RoomStatus roomStatus) {
+		Boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
 			room.setStatus(roomStatus);
+			result = true;
 		}
+		return result;
 	}
 
-	public void changeRoomPrice(int number, int price) {
+	public Boolean changeRoomPrice(int number, int price) {
+		Boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
 			room.setPrice(price);
+			result = true;
 		}
+		return result;
 	}
 
 	public List<Room> getFreeRooms(Date date, Comparator<Room> comparator) {

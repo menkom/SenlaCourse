@@ -27,8 +27,8 @@ public class RoomRepository {
 		return rooms;
 	}
 
-	public void add(Room room) {
-		getRooms().add(room);
+	public Boolean add(Room room) {
+		return getRooms().add(room);
 	}
 
 	public void delete(Integer roomNum) {

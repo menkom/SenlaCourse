@@ -23,8 +23,8 @@ public class ClientRepository {
 		return clientRepository;
 	}
 
-	public void add(Client client) {
-		clients.add(client);
+	public Boolean add(Client client) {
+		return clients.add(client);
 	}
 
 	public void delete(String name) {
