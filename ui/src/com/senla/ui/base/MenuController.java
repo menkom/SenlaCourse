@@ -11,6 +11,7 @@ import com.senla.util.DisplayOperator;
 public class MenuController {
 	private static final String NEED_MENU_NUMBER = "You have to enter menu number.";
 	private static final String WRONG_MENU_NUMBER = "Wrong menu number.";
+	private static final String ERROR_NOT_NUMBER = "You have to enter number.";
 
 	private static final Logger logger = Logger.getLogger(MenuController.class);
 
@@ -36,6 +37,9 @@ public class MenuController {
 					logger.error(e);
 				} catch (NoSuchElementException e) {
 					DisplayOperator.printMessage(WRONG_MENU_NUMBER);
+					logger.error(e);
+				} catch (NumberFormatException e) {
+					DisplayOperator.printMessage(ERROR_NOT_NUMBER);
 					logger.error(e);
 				}
 			}

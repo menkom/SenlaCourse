@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.senla.exception.WrongPropertyRange;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
 import com.senla.util.DisplayOperator;
@@ -34,6 +35,9 @@ public class AddService implements IAction {
 			serviceName = scanner.nextLine();
 			DisplayOperator.printMessage(ENTER_SERVICE_PRICE);
 			price = Integer.parseInt(scanner.nextLine());
+			if (price < 0) {
+				throw new WrongPropertyRange(price);
+			}
 
 			Boolean result = Hotel.getInstance().addService(serviceCode, serviceName, price);
 			if (result) {
@@ -44,6 +48,9 @@ public class AddService implements IAction {
 
 		} catch (NumberFormatException | InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
+			logger.error(e);
+		} catch (WrongPropertyRange e) {
+			DisplayOperator.printMessage(e.toString());
 			logger.error(e);
 		}
 	}

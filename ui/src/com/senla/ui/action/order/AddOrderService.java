@@ -23,14 +23,12 @@ public class AddOrderService implements IAction {
 	public void execute() {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		int orderNum = -1;
-		int serviceCode = -1;
-
+		
 		try {
 			DisplayOperator.printMessage(ENTER_ORDER_NUM);
-			orderNum = Integer.parseInt(scanner.nextLine());
+			int orderNum = Integer.parseInt(scanner.nextLine());
 			DisplayOperator.printMessage(ENTER_SERVICE_CODE);
-			serviceCode = Integer.parseInt(scanner.nextLine());
+			int serviceCode = Integer.parseInt(scanner.nextLine());
 
 			Boolean result = Hotel.getInstance().addOrderService(orderNum, serviceCode);
 

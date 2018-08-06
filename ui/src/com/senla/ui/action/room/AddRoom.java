@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import com.senla.exception.WrongPropertyRange;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.Hotel;
@@ -36,6 +37,9 @@ public class AddRoom implements IAction {
 
 			DisplayOperator.printMessage(ENTER_ROOM_CAPACITY);
 			int capacity = Integer.parseInt(scanner.nextLine());
+			if (capacity < 1) {
+				throw new WrongPropertyRange(capacity);
+			}
 
 			DisplayOperator.printMessage(ENTER_ROOM_STAR);
 			RoomStar star = RoomStar.values()[Integer.parseInt(scanner.nextLine()) - 1];
@@ -45,6 +49,9 @@ public class AddRoom implements IAction {
 
 			DisplayOperator.printMessage(ENTER_ROOM_PRICE);
 			int price = Integer.parseInt(scanner.nextLine());
+			if (price < 0) {
+				throw new WrongPropertyRange(price);
+			}
 
 			Boolean result = Hotel.getInstance().addRoom(roomNum, capacity, star, status, price);
 			if (result) {
@@ -57,6 +64,9 @@ public class AddRoom implements IAction {
 			logger.error(e);
 		} catch (IndexOutOfBoundsException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_RANGE);
+			logger.error(e);
+		} catch (WrongPropertyRange e) {
+			DisplayOperator.printMessage(e.toString());
 			logger.error(e);
 		}
 	}
