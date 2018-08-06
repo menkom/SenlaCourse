@@ -293,9 +293,9 @@ public class Hotel {
 		}
 	}
 
-	public Boolean orderRoom(String clientName, Integer roomNum, Date dateStart, Date dateFinish) {
+	public Boolean orderRoom(Integer orderNum, String clientName, Integer roomNum, Date dateStart, Date dateFinish) {
 		try {
-			return getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+			return getOrderService().orderRoom(orderNum, roomNum, clientName, dateStart, dateFinish);
 		} catch (NoEntryException e) {
 			DisplayOperator.printMessage(e.toString());
 			logger.error(e);

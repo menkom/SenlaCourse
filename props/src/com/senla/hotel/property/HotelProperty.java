@@ -32,8 +32,6 @@ public class HotelProperty {
 		FileInputStream fileInputStream;
 		Properties prop = new Properties();
 
-		DisplayOperator.printMessage("Properties load started.");
-
 		try {
 
 			fileInputStream = new FileInputStream("hotel.properties");

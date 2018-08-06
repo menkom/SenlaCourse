@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
+import com.senla.util.IdGenerator;
 
 public class OrderRepository {
 
 	private static OrderRepository orderRepository;
 
+	private Integer lastId;
 	private List<Order> orders;
 
 	private OrderRepository() {
@@ -29,7 +31,14 @@ public class OrderRepository {
 	}
 
 	public Boolean add(Order order) {
-		return getOrders().add(order);
+		Integer id = IdGenerator.generateId(lastId);
+		order.setId(id);
+
+		Boolean result = getOrders().add(order);
+		if (result) {
+			lastId = id;
+		}
+		return result;
 	}
 
 	public Boolean delete(Integer orderNum) {
@@ -53,8 +62,25 @@ public class OrderRepository {
 		return null;
 	}
 
+	public Order getOrderById(int id) {
+		for (Order order : getOrders()) {
+			if ((order != null) && (order.getId() == id)) {
+				return order;
+			}
+		}
+		return null;
+	}
+
 	public Boolean addOrderService(int num, Service service) {
 		return getOrderByNum(num).addService(service);
+	}
+
+	public Integer getLastId() {
+		return lastId;
+	}
+
+	public void setLastId(Integer lastId) {
+		this.lastId = lastId;
 	}
 
 }

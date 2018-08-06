@@ -24,13 +24,10 @@ public class OrderService implements IService {
 	private static OrderService orderService;
 
 	private OrderRepository orderRepository;
-	private int nextNum;
 
 	private OrderService() {
 		super();
 		this.orderRepository = OrderRepository.getInstance();
-
-		this.nextNum = 4;
 	}
 
 	public static OrderService getInstance() {
@@ -61,11 +58,11 @@ public class OrderService implements IService {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
-	public Boolean orderRoom(Integer roomNum, String clientName, Date dateStart, Date dateFinish)
+	public Boolean orderRoom(Integer orderNum, Integer roomNum, String clientName, Date dateStart, Date dateFinish)
 			throws NoEntryException {
 		Boolean result = false;
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
-		Order order = new Order(getNextNum(), ClientService.getInstance().getClientByName(clientName), room, dateStart,
+		Order order = new Order(orderNum, ClientService.getInstance().getClientByName(clientName), room, dateStart,
 				dateFinish);
 		result = this.add(order);
 		if (order.getStartDate() == new Date()) {
@@ -162,21 +159,11 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public int getNextNum() {
-		int result = nextNum;
-		nextNum++;
-		return result;
-	}
-
-	public void setNextNum(int nextNum) {
-		this.nextNum = nextNum;
-	}
-
 	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
 		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "order.db").readFromFile();
 
-		setNextNum(Integer.parseInt(array[0]));
+		orderRepository.setLastId(Integer.parseInt(array[0]));
 
 		result = orderRepository.getOrders()
 				.addAll(ListConverter.getOrders(Arrays.copyOfRange(array, 1, array.length)));
@@ -187,7 +174,7 @@ public class OrderService implements IService {
 		Boolean result = false;
 		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
 		String[] array = new String[repositoryToStr.length + 1];
-		array[0] = Integer.toString(nextNum);
+		array[0] = Integer.toString(orderRepository.getLastId());
 		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
 
 		new TextFileWorker(filePath + "order.db").writeToFile(array);

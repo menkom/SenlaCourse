@@ -78,6 +78,7 @@ public class Order extends BaseObject {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 
+		builder.append(getId() + SEPARATOR);
 		builder.append(getNum() + SEPARATOR);
 		builder.append(getClient().getName() + SEPARATOR);
 		builder.append(getRoom().getNumber() + SEPARATOR);

@@ -35,7 +35,7 @@ public class DisplayOperator {
 	public static void printOrderInfo(Order order) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		if (order == null) {
-			printMessage("Order: Num= -, Client= -, Room= -, StartDate= -, FinishDate= -");
+			printMessage("Order: id= -, Num= -, Client= -, Room= -, StartDate= -, FinishDate= -");
 		} else {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			String dateStart = "";
@@ -46,8 +46,9 @@ public class DisplayOperator {
 			if (order.getFinishDate() != null) {
 				dateStart = formatter.format(order.getFinishDate());
 			}
-			printMessage("Order: Num=" + order.getNum() + ", Client=" + order.getClient().getName() + ", Room="
-					+ order.getRoom().getNumber() + ", StartDate=" + dateStart + ", FinishDate=" + dateFinish);
+			printMessage("Order:id= " + order.getId() + ", Num=" + order.getNum() + ", Client="
+					+ order.getClient().getName() + ", Room=" + order.getRoom().getNumber() + ", StartDate=" + dateStart
+					+ ", FinishDate=" + dateFinish);
 		}
 	}
 
@@ -64,7 +65,7 @@ public class DisplayOperator {
 
 	public static void printOrders(List<Order> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
-		printMessage("Client  --  Room  --  Start Date -- Finish Date");
+		printMessage("id -- Num -- Client  --  Room  --  Start Date -- Finish Date");
 		for (Order order : array) {
 			if (order != null) {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -80,8 +81,8 @@ public class DisplayOperator {
 					dateFinish = formatter.format(order.getFinishDate());
 				}
 
-				printMessage(order.getClient().getName() + "-------" + order.getRoom().getNumber() + "------"
-						+ dateStart + "----" + dateFinish);
+				printMessage(order.getId() + " --- " + order.getNum() + " --- " + order.getClient().getName() + "-------"
+						+ order.getRoom().getNumber() + "------" + dateStart + "----" + dateFinish);
 			}
 		}
 	}
