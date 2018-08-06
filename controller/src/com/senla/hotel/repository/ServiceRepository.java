@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.hotel.model.Service;
+import com.senla.util.IdGenerator;
 
 public class ServiceRepository {
 
 	private static ServiceRepository serviceRepository;
 
+	private Integer lastId;
 	private List<Service> services;
 
 	private ServiceRepository() {
@@ -28,7 +30,13 @@ public class ServiceRepository {
 	}
 
 	public Boolean add(Service service) {
-		return getServices().add(service);
+		Integer id = IdGenerator.generateId(lastId);
+		service.setId(id);
+		Boolean result = getServices().add(service);
+		if (result) {
+			lastId = id;
+		}
+		return result;
 	}
 
 	public void delete(Integer serviceCode) {
@@ -47,6 +55,14 @@ public class ServiceRepository {
 			}
 		}
 		return null;
+	}
+
+	public Integer getLastId() {
+		return lastId;
+	}
+
+	public void setLastId(Integer lastId) {
+		this.lastId = lastId;
 	}
 
 }

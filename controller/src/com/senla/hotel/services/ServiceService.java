@@ -2,6 +2,7 @@ package com.senla.hotel.services;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -55,14 +56,21 @@ public class ServiceService implements IService {
 		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "service.db").readFromFile();
 
-		result = serviceRepository.getServices().addAll(ListConverter.getServices(array));
+		serviceRepository.setLastId(Integer.parseInt(array[0]));
+
+		result = serviceRepository.getServices()
+				.addAll(ListConverter.getServices(Arrays.copyOfRange(array, 1, array.length)));
 		return result;
 	}
 
 	public Boolean saveToFile(String filePath) {
 		Boolean result = false;
-		new TextFileWorker(filePath + "service.db")
-				.writeToFile(ListConverter.getArrayFromList(serviceRepository.getServices()));
+		String[] repositoryToStr = ListConverter.getArrayFromList(serviceRepository.getServices());
+		String[] array = new String[repositoryToStr.length + 1];
+		array[0] = Integer.toString(serviceRepository.getLastId());
+		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
+
+		new TextFileWorker(filePath + "service.db").writeToFile(array);
 		result = true;
 		return result;
 	}

@@ -9,7 +9,9 @@ public class ClientConverter {
 	public static Client getClientFromString(String line) {
 		String[] array = line.split(SEPARATOR);
 
-		Client result = new Client(array[0]);
+		Client result = new Client(array[1]);
+
+		result.setId(Integer.parseInt(array[0]));
 
 		return result;
 	}

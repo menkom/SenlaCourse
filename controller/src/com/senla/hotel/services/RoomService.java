@@ -3,6 +3,7 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -140,13 +141,21 @@ public class RoomService implements IService {
 	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
 		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "room.db").readFromFile();
-		result = roomRepository.getRooms().addAll(ListConverter.getRooms(array));
+
+		roomRepository.setLastId(Integer.parseInt(array[0]));
+
+		result = roomRepository.getRooms().addAll(ListConverter.getRooms(Arrays.copyOfRange(array, 1, array.length)));
 		return result;
 	}
 
 	public Boolean saveToFile(String filePath) {
 		Boolean result = false;
-		new TextFileWorker(filePath + "room.db").writeToFile(ListConverter.getArrayFromList(roomRepository.getRooms()));
+		String[] repositoryToStr = ListConverter.getArrayFromList(roomRepository.getRooms());
+		String[] array = new String[repositoryToStr.length + 1];
+		array[0] = Integer.toString(roomRepository.getLastId());
+		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
+
+		new TextFileWorker(filePath + "room.db").writeToFile(array);
 		result = true;
 		return result;
 	}

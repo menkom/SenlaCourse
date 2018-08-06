@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.hotel.model.Client;
+import com.senla.util.IdGenerator;
 
 public class ClientRepository {
 
 	private static ClientRepository clientRepository;
 
+	private Integer lastId;
 	private List<Client> clients;
 
 	private ClientRepository() {
@@ -24,7 +26,13 @@ public class ClientRepository {
 	}
 
 	public Boolean add(Client client) {
-		return clients.add(client);
+		Integer id = IdGenerator.generateId(lastId);
+		client.setId(id);
+		Boolean result = clients.add(client);
+		if (result) {
+			lastId = id;
+		}
+		return result;
 	}
 
 	public void delete(String name) {
@@ -47,6 +55,14 @@ public class ClientRepository {
 
 	public List<Client> getClients() {
 		return clients;
+	}
+
+	public Integer getLastId() {
+		return lastId;
+	}
+
+	public void setLastId(Integer lastId) {
+		this.lastId = lastId;
 	}
 
 }

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.hotel.model.Room;
+import com.senla.util.IdGenerator;
 
 public class RoomRepository {
 
 	private static RoomRepository roomRepository;
 
+	private Integer lastId;
 	private List<Room> rooms;
 
 	private RoomRepository() {
@@ -28,7 +30,13 @@ public class RoomRepository {
 	}
 
 	public Boolean add(Room room) {
-		return getRooms().add(room);
+		Integer id = IdGenerator.generateId(lastId);
+		room.setId(id);
+		Boolean result = getRooms().add(room);
+		if (result) {
+			lastId = id;
+		}
+		return result;
 	}
 
 	public void delete(Integer roomNum) {
@@ -47,6 +55,14 @@ public class RoomRepository {
 			}
 		}
 		return null;
+	}
+
+	public Integer getLastId() {
+		return lastId;
+	}
+
+	public void setLastId(Integer lastId) {
+		this.lastId = lastId;
 	}
 
 }

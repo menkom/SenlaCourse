@@ -11,8 +11,11 @@ public class RoomConverter {
 	public static Room getRoomFromString(String line) {
 		String[] array = line.split(SEPARATOR);
 
-		return new Room(Integer.parseInt(array[0]), Integer.parseInt(array[1]), RoomStar.valueOf(array[2]),
-				RoomStatus.valueOf(array[3]), Integer.parseInt(array[4]));
+		Room result = new Room(Integer.parseInt(array[1]), Integer.parseInt(array[2]), RoomStar.valueOf(array[3]),
+				RoomStatus.valueOf(array[4]), Integer.parseInt(array[5]));
+
+		result.setId(Integer.parseInt(array[0]));
+		return result;
 	}
 
 }
