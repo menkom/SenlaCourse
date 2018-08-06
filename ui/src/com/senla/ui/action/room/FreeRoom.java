@@ -16,6 +16,7 @@ public class FreeRoom implements IAction {
 	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
 	private static final String ORDER_CLOSED = "Order #%s closed successfully.";
 	private static final String ERROR_CLOSING = "Error accured during closing Order #%s.";
+	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(FreeRoom.class);
 
@@ -41,6 +42,9 @@ public class FreeRoom implements IAction {
 		} catch (NullPointerException e) {
 			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
 			logger.error(e.toString());
+		} catch (NumberFormatException e) {
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
+			logger.error(e);
 		}
 	}
 

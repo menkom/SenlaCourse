@@ -52,7 +52,7 @@ public class AddRoom implements IAction {
 			} else {
 				DisplayOperator.printMessage(ERROR_CREATING_ORDER);
 			}
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException | NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
 			logger.error(e);
 		} catch (IndexOutOfBoundsException e) {

@@ -39,10 +39,10 @@ public class AddOrderService implements IAction {
 			} else {
 				DisplayOperator.printMessage(ERROR_ADDING_SERVICE);
 			}
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException|NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_IN_FIELDS);
 			logger.error(e);
-		}
+		} 
 
 	}
 

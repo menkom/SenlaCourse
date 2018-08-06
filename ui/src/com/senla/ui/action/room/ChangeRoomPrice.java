@@ -37,7 +37,7 @@ public class ChangeRoomPrice implements IAction {
 				DisplayOperator.printMessage(ERROR_CHANGING_PRICE);
 			}
 
-		} catch (InputMismatchException e) {
+		} catch (InputMismatchException|NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
 			logger.error(e);
 		}

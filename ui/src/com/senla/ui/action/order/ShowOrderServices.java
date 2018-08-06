@@ -18,6 +18,7 @@ public class ShowOrderServices implements IAction {
 	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
 	private static final String ERROR_SERVICES_SEARCH = "Error during services search.";
 	private static final String NO_SERVICES = "No services.";
+	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ShowOrderServices.class);
 
@@ -47,6 +48,9 @@ public class ShowOrderServices implements IAction {
 		} catch (NullPointerException e) {
 			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
 			logger.error(e.toString());
+		} catch (NumberFormatException e) {
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
+			logger.error(e);
 		}
 	}
 

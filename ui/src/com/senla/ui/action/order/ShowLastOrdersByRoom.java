@@ -19,6 +19,7 @@ public class ShowLastOrdersByRoom implements IAction {
 	private static final String NO_ORDERS = "No orders found.";
 	private static final String ERROR_NEED_ROOM = "You need to enter room number.";
 	private static final String ERROR_ROOM_NUM = "Room #%s not found.";
+	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ShowLastOrdersByRoom.class);
 
@@ -50,6 +51,9 @@ public class ShowLastOrdersByRoom implements IAction {
 		} catch (NullPointerException e) {
 			DisplayOperator.printMessage(String.format(ERROR_ROOM_NUM, roomNum));
 			logger.error(e.toString());
+		} catch (NumberFormatException e) {
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
+			logger.error(e);
 		}
 
 	}

@@ -14,6 +14,7 @@ public class ShowRoomInfo implements IAction {
 
 	private static final String ERROR_NEED_ROOM = "You need to enter room number.";
 	private static final String ERROR_ROOM_NUM = "Room #%s not found.";
+	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ShowRoomInfo.class);
 
@@ -34,6 +35,9 @@ public class ShowRoomInfo implements IAction {
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_NEED_ROOM);
 			logger.error(e.toString());
+		} catch (NumberFormatException e) {
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
+			logger.error(e);
 		}
 	}
 

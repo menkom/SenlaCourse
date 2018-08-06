@@ -39,7 +39,7 @@ public class ChangeServicePrice implements IAction {
 				DisplayOperator.printMessage(ERROR_CHANGING_PRICE);
 			}
 
-		} catch (InputMismatchException e) {
+		} catch (NumberFormatException | InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
 			logger.error(e);
 		}

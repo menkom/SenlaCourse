@@ -23,6 +23,7 @@ public class OrderRoom implements IAction {
 	private static final String ERROR_WRONG_DATE = "Wrong date format.";
 	private static final String ERROR_ORDERING = "Error ordering room.";
 	private static final String ROOM_ORDERED = "Room %s ordered by %s.";
+	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(OrderRoom.class);
 
@@ -71,6 +72,9 @@ public class OrderRoom implements IAction {
 		} catch (ParseException e) {
 			DisplayOperator.printMessage(ERROR_WRONG_DATE);
 			logger.error(e.toString());
+		} catch (NumberFormatException e) {
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
+			logger.error(e);
 		}
 	}
 
