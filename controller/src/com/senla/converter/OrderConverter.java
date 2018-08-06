@@ -25,9 +25,9 @@ public class OrderConverter {
 
 		String[] array = line.split(SEPARATOR);
 
-		Client client = ClientRepository.getInstance().getClientByName(array[2]);
+		Client client = ClientRepository.getInstance().getClientById(Integer.parseInt(array[2]));
 
-		Room room = RoomRepository.getInstance().getRoomByNum(Integer.parseInt(array[3]));
+		Room room = RoomRepository.getInstance().getRoomById(Integer.parseInt(array[3]));
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -55,7 +55,7 @@ public class OrderConverter {
 		result.setId(Integer.parseInt(array[0]));
 
 		for (int i = 6; i < array.length; i++) {
-			Service service = ServiceRepository.getInstance().getServiceByCode(Integer.parseInt(array[i]));
+			Service service = ServiceRepository.getInstance().getServiceById(Integer.parseInt(array[i]));
 			result.addService(service);
 		}
 		return result;

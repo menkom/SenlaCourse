@@ -57,6 +57,15 @@ public class RoomRepository {
 		return null;
 	}
 
+	public Room getRoomById(Integer id) {
+		for (Room room : getRooms()) {
+			if ((room != null) && (room.getId() == id)) {
+				return room;
+			}
+		}
+		return null;
+	}
+
 	public Integer getLastId() {
 		return lastId;
 	}

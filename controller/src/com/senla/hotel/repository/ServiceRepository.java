@@ -57,6 +57,15 @@ public class ServiceRepository {
 		return null;
 	}
 
+	public Service getServiceById(Integer id) {
+		for (Service service : getServices()) {
+			if ((service != null) && (service.getId() == id)) {
+				return service;
+			}
+		}
+		return null;
+	}
+
 	public Integer getLastId() {
 		return lastId;
 	}

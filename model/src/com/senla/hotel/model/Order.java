@@ -79,8 +79,8 @@ public class Order extends BaseObject {
 		builder.append(super.toString());
 
 		builder.append(getNum() + SEPARATOR);
-		builder.append(getClient().getName() + SEPARATOR);
-		builder.append(getRoom().getNumber() + SEPARATOR);
+		builder.append(getClient().getId() + SEPARATOR);
+		builder.append(getRoom().getId() + SEPARATOR);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -98,7 +98,7 @@ public class Order extends BaseObject {
 
 		for (Service service : getServices()) {
 			if (service != null) {
-				builder.append(service.getCode() + SEPARATOR);
+				builder.append(service.getId() + SEPARATOR);
 			}
 		}
 

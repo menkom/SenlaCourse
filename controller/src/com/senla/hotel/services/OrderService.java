@@ -58,6 +58,10 @@ public class OrderService implements IService {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
+	public Order getOrderById(Integer id) {
+		return getOrderRepository().getOrderById(id);
+	}
+
 	public Boolean orderRoom(Integer orderNum, Integer roomNum, String clientName, Date dateStart, Date dateFinish)
 			throws NoEntryException {
 		Boolean result = false;

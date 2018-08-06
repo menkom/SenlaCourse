@@ -53,6 +53,15 @@ public class ClientRepository {
 		return null;
 	}
 
+	public Client getClientById(Integer id) {
+		for (Client client : getClients()) {
+			if ((client != null) && (client.getId() == id)) {
+				return client;
+			}
+		}
+		return null;
+	}
+
 	public List<Client> getClients() {
 		return clients;
 	}

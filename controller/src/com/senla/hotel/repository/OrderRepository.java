@@ -62,7 +62,7 @@ public class OrderRepository {
 		return null;
 	}
 
-	public Order getOrderById(int id) {
+	public Order getOrderById(Integer id) {
 		for (Order order : getOrders()) {
 			if ((order != null) && (order.getId() == id)) {
 				return order;
