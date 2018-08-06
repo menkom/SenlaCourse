@@ -137,14 +137,17 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "room.db").readFromFile();
-
-		roomRepository.getRooms().addAll(ListConverter.getRooms(array));
+		result = roomRepository.getRooms().addAll(ListConverter.getRooms(array));
+		return result;
 	}
 
-	public void saveToFile(String filePath) {
+	public Boolean saveToFile(String filePath) {
+		Boolean result = false;
 		new TextFileWorker(filePath + "room.db").writeToFile(ListConverter.getArrayFromList(roomRepository.getRooms()));
+		result = true;
+		return result;
 	}
-
 }

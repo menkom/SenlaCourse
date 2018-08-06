@@ -11,6 +11,12 @@ import com.senla.util.DisplayOperator;
 
 public class AddOrderService implements IAction {
 
+	private static final String ENTER_ORDER_NUM = "Enter order num: ";
+	private static final String ENTER_SERVICE_CODE = "Enter service code: ";
+	private static final String SERVICE_ADDED = "Service with code %s added to order #%s.";
+	private static final String ERROR_ADDING_SERVICE = "Error during adding service to order.";
+	private static final String ERROR_IN_FIELDS = "Input correct field types.";
+
 	private static final Logger logger = Logger.getLogger(AddOrderService.class);
 
 	@Override
@@ -21,14 +27,20 @@ public class AddOrderService implements IAction {
 		int serviceCode = -1;
 
 		try {
-			DisplayOperator.printMessage("Enter order num: ");
-			orderNum = scanner.nextInt();
-			DisplayOperator.printMessage("Enter service code: ");
-			serviceCode = scanner.nextInt();
+			DisplayOperator.printMessage(ENTER_ORDER_NUM);
+			orderNum = Integer.parseInt(scanner.nextLine());
+			DisplayOperator.printMessage(ENTER_SERVICE_CODE);
+			serviceCode = Integer.parseInt(scanner.nextLine());
 
-			Hotel.getInstance().addOrderService(orderNum, serviceCode);
+			Boolean result = Hotel.getInstance().addOrderService(orderNum, serviceCode);
+
+			if (result) {
+				DisplayOperator.printMessage(String.format(SERVICE_ADDED, serviceCode, orderNum));
+			} else {
+				DisplayOperator.printMessage(ERROR_ADDING_SERVICE);
+			}
 		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("Input correct field types.");
+			DisplayOperator.printMessage(ERROR_IN_FIELDS);
 			logger.error(e);
 		}
 

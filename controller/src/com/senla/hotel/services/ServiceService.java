@@ -51,15 +51,20 @@ public class ServiceService implements IService {
 		return getServiceRepository().getServiceByCode(code);
 	}
 
-	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "service.db").readFromFile();
 
-		serviceRepository.getServices().addAll(ListConverter.getServices(array));
+		result = serviceRepository.getServices().addAll(ListConverter.getServices(array));
+		return result;
 	}
 
-	public void saveToFile(String filePath) {
+	public Boolean saveToFile(String filePath) {
+		Boolean result = false;
 		new TextFileWorker(filePath + "service.db")
 				.writeToFile(ListConverter.getArrayFromList(serviceRepository.getServices()));
+		result = true;
+		return result;
 	}
 
 	public Boolean changeServicePrice(int code, int price) {

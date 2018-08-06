@@ -9,14 +9,20 @@ import com.senla.util.DisplayOperator;
 
 public class ShowAllClients implements IAction {
 
+	private static final String CLIENT_SEARCH_FAILED = "Error during clients search.";
+	private static final String NO_CLIENTS = "No clients found.";
+
 	@Override
 	public void execute() {
 		List<Client> clients = Hotel.getInstance().getAllClients();
-		if (clients.size() > 0) {
-			DisplayOperator.printClients(clients);
+		if (clients == null) {
+			DisplayOperator.printMessage(CLIENT_SEARCH_FAILED);
 		} else {
-			DisplayOperator.printMessage("No clients found.");
+			if (clients.size() > 0) {
+				DisplayOperator.printClients(clients);
+			} else {
+				DisplayOperator.printMessage(NO_CLIENTS);
+			}
 		}
 	}
-
 }

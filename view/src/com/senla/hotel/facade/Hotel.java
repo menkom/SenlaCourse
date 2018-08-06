@@ -28,13 +28,6 @@ import com.senla.util.DisplayOperator;
 
 public class Hotel {
 
-	private static final String ERROR_DURING = "Error during %s %s.";
-	private static final String OBJECT_CLIENTS = "clients";
-	private static final String OBJECT_ROOMS = "rooms";
-	private static final String OBJECT_SERVICES = "services";
-	private static final String OBJECT_ORDERS = "orders";
-	private static final String PROCESS_NAME_LOAD = "load";
-
 	private ClientService clientService;
 	private RoomService roomService;
 	private ServiceService serviceService;
@@ -59,41 +52,44 @@ public class Hotel {
 		return hotel;
 	}
 
-	public void load(String filePath) {
+	public Boolean load(String filePath) {
+		Boolean result = true;
 		try {
-			getClientService().loadFromFile(filePath);
+			result = getClientService().loadFromFile(filePath);
+			if (result) {
+				result = getRoomService().loadFromFile(filePath);
+			}
+			if (result) {
+				result = getServiceService().loadFromFile(filePath);
+			}
+			if (result) {
+				result = getOrderService().loadFromFile(filePath);
+			}
 		} catch (NumberFormatException | IOException | ParseException ex) {
 			logger.error(ex);
-			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_CLIENTS, PROCESS_NAME_LOAD));
+			result = false;
 		}
-
-		try {
-			getRoomService().loadFromFile(filePath);
-		} catch (NumberFormatException | IOException | ParseException ex) {
-			logger.error(ex);
-			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_ROOMS, PROCESS_NAME_LOAD));
-		}
-
-		try {
-			getServiceService().loadFromFile(filePath);
-		} catch (NumberFormatException | IOException | ParseException ex) {
-			logger.error(ex);
-			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_SERVICES, PROCESS_NAME_LOAD));
-		}
-
-		try {
-			getOrderService().loadFromFile(filePath);
-		} catch (NumberFormatException | IOException | ParseException ex) {
-			logger.error(ex);
-			DisplayOperator.printMessage(String.format(ERROR_DURING, OBJECT_ORDERS, PROCESS_NAME_LOAD));
-		}
+		return result;
 	}
 
-	public void save(String filePath) {
-		getClientService().saveToFile(filePath);
-		getRoomService().saveToFile(filePath);
-		getServiceService().saveToFile(filePath);
-		getOrderService().saveToFile(filePath);
+	public Boolean save(String filePath) {
+		Boolean result = true;
+		try {
+			result = getClientService().saveToFile(filePath);
+			if (result) {
+				result = getRoomService().saveToFile(filePath);
+			}
+			if (result) {
+				result = getServiceService().saveToFile(filePath);
+			}
+			if (result) {
+			}
+			result = getOrderService().saveToFile(filePath);
+		} catch (Exception ex) {
+			logger.error(ex);
+			result = false;
+		}
+		return result;
 	}
 
 	public List<Room> getAllRoomsSortByPrice() {
@@ -163,9 +159,7 @@ public class Hotel {
 	public List<Room> getFreeRoomsByDateSortByCapacity(Date date) {
 		try {
 			return getRoomService().getFreeRooms(date, new RoomSortByCapacity());
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
@@ -299,15 +293,14 @@ public class Hotel {
 		}
 	}
 
-	public Order orderRoom(String clientName, int roomNum, Date dateStart, Date dateFinish) {
-		Order order = null;
+	public Boolean orderRoom(String clientName, Integer roomNum, Date dateStart, Date dateFinish) {
 		try {
-			order = getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
+			return getOrderService().orderRoom(roomNum, clientName, dateStart, dateFinish);
 		} catch (NoEntryException e) {
 			DisplayOperator.printMessage(e.toString());
 			logger.error(e);
+			return false;
 		}
-		return order;
 	}
 
 	public Boolean addOrderService(int orderNum, int serviceCode) {

@@ -11,6 +11,12 @@ import com.senla.util.DisplayOperator;
 
 public class FreeRoom implements IAction {
 
+	private static final String ENTER_ROOM_NUM = "Enter room num: ";
+	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
+	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
+	private static final String ORDER_CLOSED = "Order #%s closed successfully.";
+	private static final String ERROR_CLOSING = "Error accured during closing Order #%s.";
+
 	private static final Logger logger = Logger.getLogger(FreeRoom.class);
 
 	@Override
@@ -18,22 +24,22 @@ public class FreeRoom implements IAction {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
-		DisplayOperator.printMessage("Enter order num: ");
+		DisplayOperator.printMessage(ENTER_ROOM_NUM);
 		try {
-			orderNum = scanner.nextInt();
+			orderNum = Integer.parseInt(scanner.nextLine());
 
-			boolean result = Hotel.getInstance().freeRoom(orderNum);
+			Boolean result = Hotel.getInstance().freeRoom(orderNum);
 
 			if (result) {
-				DisplayOperator.printMessage("Order #" + orderNum + " was succesfully closed.");
+				DisplayOperator.printMessage(String.format(ORDER_CLOSED, orderNum));
 			} else {
-				DisplayOperator.printMessage("Error accured during closing Order #" + orderNum + ".");
+				DisplayOperator.printMessage(String.format(ERROR_CLOSING, orderNum));
 			}
 		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("You need to enter order number.");
+			DisplayOperator.printMessage(ERROR_NEED_ORDER);
 			logger.error(e.toString());
 		} catch (NullPointerException e) {
-			DisplayOperator.printMessage("Order #" + Integer.toString(orderNum) + " not found.");
+			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
 			logger.error(e.toString());
 		}
 	}

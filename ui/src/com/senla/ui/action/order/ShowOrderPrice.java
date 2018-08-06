@@ -11,6 +11,12 @@ import com.senla.util.DisplayOperator;
 
 public class ShowOrderPrice implements IAction {
 
+	private static final String ENTER_ORDER_NUM = "Enter order num: ";
+	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
+	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
+	private static final String ERROR_PRICE_CALC = "Error during price calculation.";
+	private static final String ORDER_PRICE = "Price for order #%s %s";
+
 	private static final Logger logger = Logger.getLogger(ShowOrderPrice.class);
 
 	@Override
@@ -18,17 +24,23 @@ public class ShowOrderPrice implements IAction {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
-		DisplayOperator.printMessage("Enter order num: ");
+		DisplayOperator.printMessage(ENTER_ORDER_NUM);
 		try {
-			orderNum = scanner.nextInt();
+			orderNum = Integer.parseInt(scanner.nextLine());
 
-			DisplayOperator.printMessage("Price for order #" + orderNum + " "
-					+ Integer.toString(Hotel.getInstance().getOrderPrice(orderNum)));
+			Integer orderPrice = Hotel.getInstance().getOrderPrice(orderNum);
+
+			if (orderPrice == null) {
+				DisplayOperator.printMessage(ERROR_PRICE_CALC);
+			} else {
+				DisplayOperator.printMessage(String.format(ORDER_PRICE, orderNum, orderPrice));
+			}
+
 		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("You need to enter order number.");
+			DisplayOperator.printMessage(ERROR_NEED_ORDER);
 			logger.error(e.toString());
 		} catch (NullPointerException e) {
-			DisplayOperator.printMessage("Order #" + Integer.toString(orderNum) + " not found.");
+			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
 			logger.error(e.toString());
 		}
 	}

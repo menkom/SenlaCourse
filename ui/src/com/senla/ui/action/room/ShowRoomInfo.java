@@ -12,6 +12,9 @@ import com.senla.util.DisplayOperator;
 
 public class ShowRoomInfo implements IAction {
 
+	private static final String ERROR_NEED_ROOM = "You need to enter room number.";
+	private static final String ERROR_ROOM_NUM = "Room #%s not found.";
+
 	private static final Logger logger = Logger.getLogger(ShowRoomInfo.class);
 
 	@Override
@@ -21,16 +24,15 @@ public class ShowRoomInfo implements IAction {
 		int roomNum = 0;
 		DisplayOperator.printMessage("Enter room num: ");
 		try {
-			roomNum = scanner.nextInt();
+			roomNum = Integer.parseInt(scanner.nextLine());
 			Room room = Hotel.getInstance().getRoomByNum(roomNum);
 			if (room == null) {
-				DisplayOperator.printMessage("Room #" + Integer.toString(roomNum) + " not found.");
-				logger.error("Null room");
+				DisplayOperator.printMessage(String.format(ERROR_ROOM_NUM, roomNum));
 			} else {
 				DisplayOperator.printRoomInfo(room);
 			}
 		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("You need to enter room number.");
+			DisplayOperator.printMessage(ERROR_NEED_ROOM);
 			logger.error(e.toString());
 		}
 	}

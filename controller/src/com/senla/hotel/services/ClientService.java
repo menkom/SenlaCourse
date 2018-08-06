@@ -43,15 +43,20 @@ public class ClientService implements IService {
 		return result;
 	}
 
-	public void loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
+		Boolean result = false;
 		String[] array = new TextFileWorker(filePath + "client.db").readFromFile();
 
-		getClientRepository().getClients().addAll(ListConverter.getClients(array));
+		result = getClientRepository().getClients().addAll(ListConverter.getClients(array));
+		return result;
 	}
 
-	public void saveToFile(String filePath) {
+	public Boolean saveToFile(String filePath) {
+		Boolean result = false;
 		new TextFileWorker(filePath + "client.db")
 				.writeToFile(ListConverter.getArrayFromList(clientRepository.getClients()));
+		result = true;
+		return result;
 	}
 
 	public int getNumberOfClients() {

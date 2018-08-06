@@ -3,8 +3,12 @@ package com.senla.exec;
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.property.HotelProperty;
 import com.senla.ui.base.MenuController;
+import com.senla.util.DisplayOperator;
 
 public class Executive {
+
+	private static final String ERROR_LOAD = "Error while data loading.";
+	private static final String ERROR_SAVE = "Error while data saving.";
 
 	public static void main(String[] args) {
 
@@ -15,12 +19,18 @@ public class Executive {
 			dbPath = args[0];
 		}
 
-		Hotel.getInstance().load(dbPath);
+		Boolean loaded = Hotel.getInstance().load(dbPath);
+		if (!loaded) {
+			DisplayOperator.printMessage(ERROR_LOAD);
+		}
 
 		MenuController menuController = new MenuController();
 		menuController.run();
 
-		Hotel.getInstance().save(dbPath);
+		Boolean saved = Hotel.getInstance().save(dbPath);
+		if (!saved) {
+			DisplayOperator.printMessage(ERROR_SAVE);
+		}
 
 	}
 

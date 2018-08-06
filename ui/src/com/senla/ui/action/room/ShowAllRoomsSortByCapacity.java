@@ -9,14 +9,20 @@ import com.senla.util.DisplayOperator;
 
 public class ShowAllRoomsSortByCapacity implements IAction {
 
+	private static final String ERROR_ROOMS_SEARCH = "Error during rooms search.";
+	private static final String NO_ROOMS = "No rooms found.";
+
 	@Override
 	public void execute() {
 		List<Room> rooms = Hotel.getInstance().getAllRoomsSortByCapacity();
-		if (rooms.size() > 0) {
-			DisplayOperator.printRooms(rooms);
+		if (rooms == null) {
+			DisplayOperator.printMessage(ERROR_ROOMS_SEARCH);
 		} else {
-			DisplayOperator.printMessage("No rooms found.");
-
+			if (rooms.size() > 0) {
+				DisplayOperator.printRooms(rooms);
+			} else {
+				DisplayOperator.printMessage(NO_ROOMS);
+			}
 		}
 	}
 

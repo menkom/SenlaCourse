@@ -11,24 +11,34 @@ import com.senla.util.DisplayOperator;
 
 public class ChangeRoomPrice implements IAction {
 
+	private static final String ENTER_ROOM_NUM = "Enter room num: ";
+	private static final String ENTER_ROOM_PRICE = "Enter room new price: ";
+	private static final String ROOM_PRICE_CHANGED = "Room #%s price changed to %s.";
+	private static final String ERROR_CHANGING_PRICE = "Error changing room price.";
+	private static final String ERROR_FIELDS_TYPE = "Input correct fields type.";
+
 	private static final Logger logger = Logger.getLogger(ChangeRoomPrice.class);
 
 	@Override
 	public void execute() {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		int roomNum = -1;
-		int price = -1;
 
 		try {
-			DisplayOperator.printMessage("Enter room number: ");
-			roomNum = scanner.nextInt();
-			DisplayOperator.printMessage("Enter new price: ");
-			price = scanner.nextInt();
+			DisplayOperator.printMessage(ENTER_ROOM_NUM);
+			int roomNum = Integer.parseInt(scanner.nextLine());
+			DisplayOperator.printMessage(ENTER_ROOM_PRICE);
+			int price = Integer.parseInt(scanner.nextLine());
 
-			Hotel.getInstance().changeRoomPrice(roomNum, price);
+			Boolean result = Hotel.getInstance().changeRoomPrice(roomNum, price);
+			if (result) {
+				DisplayOperator.printMessage(String.format(ROOM_PRICE_CHANGED, roomNum, price));
+			} else {
+				DisplayOperator.printMessage(ERROR_CHANGING_PRICE);
+			}
+
 		} catch (InputMismatchException e) {
-			DisplayOperator.printMessage("Input correct field types.");
+			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
 			logger.error(e);
 		}
 

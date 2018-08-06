@@ -6,9 +6,17 @@ import com.senla.util.DisplayOperator;
 
 public class ShowNumberOfClients implements IAction {
 
+	private static final String CLIENTS_COUNTING_FAILED = "Error during clients counting.";
+	private static final String NUMBER_OFCLIENTS = "Number of clients : ";
+
 	@Override
 	public void execute() {
-		DisplayOperator.printMessage("Number of clients : " + Hotel.getInstance().getNumberOfClients());
+		Integer numberClients = Hotel.getInstance().getNumberOfClients();
+		if (numberClients == null) {
+			DisplayOperator.printMessage(CLIENTS_COUNTING_FAILED);
+		} else {
+			DisplayOperator.printMessage(NUMBER_OFCLIENTS + numberClients);
+		}
 	}
 
 }

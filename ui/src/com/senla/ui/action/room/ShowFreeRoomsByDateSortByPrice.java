@@ -15,14 +15,19 @@ import com.senla.util.DisplayOperator;
 
 public class ShowFreeRoomsByDateSortByPrice implements IAction {
 
+	private static final String ENTER_DATE = "Enter date (format dd/MM/yyyy): ";
+	private static final String NO_ROOMS = "No rooms found.";
+	private static final String ERROR_ROOMS_SEARCH = "Error during rooms search.";
+	private static final String ERROR_DATE_FORMAT = "Date format error.";
+
 	private static final Logger logger = Logger.getLogger(ShowFreeRoomsByDateSortByPrice.class);
 
 	@Override
 	public void execute() {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
-		DisplayOperator.printMessage("Enter date (format dd/MM/yyyy): ");
-		String dateInString = scanner.next();
+		DisplayOperator.printMessage(ENTER_DATE);
+		String dateInString = scanner.nextLine();
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -30,13 +35,19 @@ public class ShowFreeRoomsByDateSortByPrice implements IAction {
 			Date date = formatter.parse(dateInString);
 
 			List<Room> rooms = Hotel.getInstance().getFreeRoomsByDateSortByPrice(date);
-			if (rooms.size() > 0) {
-				DisplayOperator.printRooms(rooms);
+
+			if (rooms == null) {
+				DisplayOperator.printMessage(ERROR_ROOMS_SEARCH);
 			} else {
-				DisplayOperator.printMessage("No rooms found.");
+				if (rooms.size() > 0) {
+					DisplayOperator.printRooms(rooms);
+				} else {
+					DisplayOperator.printMessage(NO_ROOMS);
+				}
 			}
+
 		} catch (ParseException e) {
-			DisplayOperator.printMessage("Date format error.");
+			DisplayOperator.printMessage(ERROR_DATE_FORMAT);
 			logger.error(e);
 		}
 	}
