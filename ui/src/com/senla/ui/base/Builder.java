@@ -12,6 +12,7 @@ import com.senla.ui.action.order.ShowOrderPrice;
 import com.senla.ui.action.order.ShowOrderServices;
 import com.senla.ui.action.room.AddRoom;
 import com.senla.ui.action.room.ChangeRoomPrice;
+import com.senla.ui.action.room.ChangeRoomStatus;
 import com.senla.ui.action.room.FreeRoom;
 import com.senla.ui.action.room.OrderRoom;
 import com.senla.ui.action.room.ShowAllRoomsSortByCapacity;
@@ -47,6 +48,7 @@ public class Builder {
 	private static final String CLOSE_ORDER = "Close order.";
 	private static final String ADD_NEW_ROOM = "Add new room.";
 	private static final String CHANGE_ROOM_PRICE = "Change room price.";
+	private static final String CHANGE_ROOM_STATUS = "Change room status.";
 	private static final String BACK_MENU_TEXT = "Go back";
 
 	private static final String CLIENT_OPTIONS = "Client options";
@@ -130,6 +132,9 @@ public class Builder {
 
 		MenuItem changeRoomPriceMenuItem = new MenuItem(CHANGE_ROOM_PRICE, new ChangeRoomPrice());
 		roomsMenu.addMenuItem(changeRoomPriceMenuItem);
+
+		MenuItem changeRoomStatusMenuItem = new MenuItem(CHANGE_ROOM_STATUS, new ChangeRoomStatus());
+		roomsMenu.addMenuItem(changeRoomStatusMenuItem);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		roomsMenu.addMenuItem(backMenuItem);
