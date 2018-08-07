@@ -19,7 +19,7 @@ public class OrderRoom implements IAction {
 	private static final String ENTER_ROOM_NUM = "Enter room number: ";
 	private static final String ENTER_DATE_START = "Enter start date (format dd/MM/yyyy) (current date if empty): ";
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy) (no date if empty): ";
-	private static final String ERROR_ROOM_NUM = "Room #%s not found.";
+	private static final String ERROR_ROOM_NUM_OR_CLIENT = "Room or Client not found.";
 	private static final String ERROR_WRONG_INPUT = "Wrong input data.";
 	private static final String ERROR_WRONG_DATE = "Wrong date format.";
 	private static final String ERROR_ORDERING = "Error ordering room.";
@@ -71,7 +71,7 @@ public class OrderRoom implements IAction {
 			DisplayOperator.printMessage(ERROR_WRONG_INPUT);
 			logger.error(e.toString());
 		} catch (NullPointerException e) {
-			DisplayOperator.printMessage(String.format(ERROR_ROOM_NUM, roomNum));
+			DisplayOperator.printMessage(ERROR_ROOM_NUM_OR_CLIENT);
 			logger.error(e.toString());
 		} catch (ParseException e) {
 			DisplayOperator.printMessage(ERROR_WRONG_DATE);

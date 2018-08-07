@@ -284,6 +284,15 @@ public class Hotel {
 
 	}
 
+	public Boolean addOrder(Order order) {
+		try {
+			return getOrderService().add(order);
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+	}
+
 	public Boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
 		try {
 			return getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
@@ -348,25 +357,70 @@ public class Hotel {
 		}
 	}
 
-	public ClientService getClientService() {
+	private ClientService getClientService() {
 		return clientService;
 	}
 
-	public RoomService getRoomService() {
+	private RoomService getRoomService() {
 		return roomService;
 	}
 
-	public ServiceService getServiceService() {
+	private ServiceService getServiceService() {
 		return serviceService;
 	}
 
-	public OrderService getOrderService() {
+	private OrderService getOrderService() {
 		return orderService;
 	}
 
 	public List<Client> getAllClients() {
 		try {
 			return getClientService().getAllClients();
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Order cloneOrder(Integer orderNum) {
+		try {
+			return getOrderService().cloneOrder(orderNum);
+		} catch (CloneNotSupportedException e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Order getOrderByNum(Integer orderNum) {
+		try {
+			return getOrderService().getOrderByNum(orderNum);
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Client getClientByName(String name) {
+		try {
+			return getClientService().getClientByName(name);
+		} catch (NoEntryException e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Room getRoomByNum(Integer num) {
+		try {
+			return getRoomService().getRoomByNum(num);
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Service getServiceByCode(Integer code) {
+		try {
+			return getServiceService().getServiceByCode(code);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;

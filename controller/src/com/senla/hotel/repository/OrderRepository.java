@@ -53,7 +53,7 @@ public class OrderRepository {
 		return result;
 	}
 
-	public Order getOrderByNum(int num) {
+	public Order getOrderByNum(Integer num) {
 		for (Order order : getOrders()) {
 			if ((order != null) && (order.getNum() == num)) {
 				return order;

@@ -196,4 +196,13 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	public Order cloneOrder(Integer orderNum) throws CloneNotSupportedException {
+		Order orderToClone = orderRepository.getOrderByNum(orderNum);
+		if (orderToClone == null) {
+			return null;
+		} else {
+			return orderToClone.clone();
+		}
+	}
+
 }

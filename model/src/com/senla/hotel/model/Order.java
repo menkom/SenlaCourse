@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.senla.base.BaseObject;
 
-public class Order extends BaseObject {
+public class Order extends BaseObject implements Cloneable {
 
 	private Integer num;
 	private Client client;
@@ -58,11 +58,7 @@ public class Order extends BaseObject {
 		this.room = room;
 	}
 
-	public List<Service> getServices() {
-		return services;
-	}
-
-	public int getNum() {
+	public Integer getNum() {
 		return num;
 	}
 
@@ -70,8 +66,25 @@ public class Order extends BaseObject {
 		this.num = num;
 	}
 
+	public List<Service> getServices() {
+		return services;
+	}
+
 	public Boolean addService(Service service) {
 		return services.add(service);
+	}
+
+	public Order clone() throws CloneNotSupportedException {
+		Order clone = (Order) super.clone();
+		clone.setId(null);
+		clone.setNum(null);
+		clone.setClient((Client) client.clone());
+		clone.setRoom((Room) room.clone());
+		clone.services = new ArrayList<Service>();
+		for (Service service : getServices()) {
+			clone.getServices().add((Service) service.clone());
+		}
+		return clone;
 	}
 
 	public String toString() {

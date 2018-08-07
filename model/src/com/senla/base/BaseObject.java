@@ -1,6 +1,6 @@
 package com.senla.base;
 
-public class BaseObject {
+public class BaseObject implements Cloneable {
 
 	private Integer id;
 
@@ -16,6 +16,11 @@ public class BaseObject {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
 	}
 
 }

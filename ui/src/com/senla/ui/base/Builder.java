@@ -5,6 +5,7 @@ import com.senla.ui.action.client.AddClient;
 import com.senla.ui.action.client.ShowAllClients;
 import com.senla.ui.action.client.ShowNumberOfClients;
 import com.senla.ui.action.order.AddOrderService;
+import com.senla.ui.action.order.CloneOrder;
 import com.senla.ui.action.order.ShowActiveOrdersSortByFinishDate;
 import com.senla.ui.action.order.ShowActiveOrdersSortByName;
 import com.senla.ui.action.order.ShowLastOrdersByRoom;
@@ -68,6 +69,7 @@ public class Builder {
 	private static final String SHOW_LAST_ROOM_ORDERS = "Show last room orders.";
 	private static final String SHOW_ORDER_SERVICES = "Show order services.";
 	private static final String ADD_SERVICE_ORDER = "Add service to order.";
+	private static final String CLONE_ORDER = "Clone order.";
 
 	private static final String EXIT_MENU_TEXT = "Exit";
 
@@ -207,6 +209,9 @@ public class Builder {
 
 		MenuItem addOrderServiceMenuItem = new MenuItem(ADD_SERVICE_ORDER, new AddOrderService());
 		ordersMenu.addMenuItem(addOrderServiceMenuItem);
+
+		MenuItem cloneOrderMenuItem = new MenuItem(CLONE_ORDER, new CloneOrder());
+		ordersMenu.addMenuItem(cloneOrderMenuItem);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		ordersMenu.addMenuItem(backMenuItem);
