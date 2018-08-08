@@ -1,6 +1,13 @@
 package com.senla.base;
 
-public class BaseObject implements Cloneable {
+import java.io.Serializable;
+
+public class BaseObject implements Cloneable, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6399139948319588392L;
 
 	private Integer id;
 

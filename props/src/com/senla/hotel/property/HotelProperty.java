@@ -16,6 +16,8 @@ public class HotelProperty {
 	private String name;
 	private boolean isAbleChangeRoomStatus;
 	private int lastVisibleOrders;
+	private String rawFilePath;
+	private String csvFilePath;
 
 	private HotelProperty() {
 		loadProperties();
@@ -40,6 +42,8 @@ public class HotelProperty {
 			this.name = prop.getProperty("name");
 			this.isAbleChangeRoomStatus = Boolean.parseBoolean(prop.getProperty("isAbleChangeRoomStatus"));
 			this.lastVisibleOrders = Integer.parseInt(prop.getProperty("lastVisibleOrders"));
+			this.rawFilePath = prop.getProperty("rawFilePath");
+			this.csvFilePath = prop.getProperty("csvFilePath");
 
 		} catch (IOException e) {
 			DisplayOperator.printMessage("Properties file error. File hotel.propeties not found.");
@@ -58,6 +62,14 @@ public class HotelProperty {
 
 	public int getLastVisibleOrders() {
 		return lastVisibleOrders;
+	}
+
+	public String getRawFilePath() {
+		return rawFilePath;
+	}
+
+	public String getCsvFilePath() {
+		return csvFilePath;
 	}
 
 }

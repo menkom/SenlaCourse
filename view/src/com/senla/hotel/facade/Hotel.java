@@ -55,18 +55,25 @@ public class Hotel {
 	public Boolean load(String filePath) {
 		Boolean result = true;
 		try {
-			result = getClientService().loadFromFile(filePath);
+//			result = getClientService().loadFromFile(filePath);
+			result = getClientService().loadFromRaw(filePath);
 			if (result) {
-				result = getRoomService().loadFromFile(filePath);
+//				result = getRoomService().loadFromFile(filePath);
+				result = getRoomService().loadFromRaw(filePath);
 			}
 			if (result) {
-				result = getServiceService().loadFromFile(filePath);
+//				result = getServiceService().loadFromFile(filePath);
+				result = getServiceService().loadFromRaw(filePath);
 			}
 			if (result) {
-				result = getOrderService().loadFromFile(filePath);
+//				result = getOrderService().loadFromFile(filePath);
+				result = getOrderService().loadFromRaw(filePath);
 			}
-		} catch (NumberFormatException | IOException | ParseException ex) {
-			logger.error(ex);
+		} catch (NumberFormatException | IOException | ParseException e) {
+			logger.error(e);
+			result = false;
+		} catch (ClassNotFoundException e) {
+			logger.error(e);
 			result = false;
 		}
 		return result;
@@ -77,14 +84,26 @@ public class Hotel {
 		try {
 			result = getClientService().saveToFile(filePath);
 			if (result) {
+				result = getClientService().saveToRaw(filePath);
+			}
+			if (result) {
 				result = getRoomService().saveToFile(filePath);
+			}
+			if (result) {
+				result = getRoomService().saveToRaw(filePath);
 			}
 			if (result) {
 				result = getServiceService().saveToFile(filePath);
 			}
 			if (result) {
+				result = getServiceService().saveToRaw(filePath);
 			}
-			result = getOrderService().saveToFile(filePath);
+			if (result) {
+				result = getOrderService().saveToFile(filePath);
+			}
+			if (result) {
+				result = getOrderService().saveToRaw(filePath);
+			}
 		} catch (Exception ex) {
 			logger.error(ex);
 			result = false;

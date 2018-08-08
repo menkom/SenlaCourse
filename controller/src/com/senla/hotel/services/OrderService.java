@@ -18,6 +18,7 @@ import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.OrderRepository;
+import com.senla.util.Serialization;
 
 public class OrderService implements IService {
 
@@ -174,6 +175,19 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	public Boolean loadFromRaw(String filePath)
+			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
+		Boolean result = false;
+		OrderRepository orders = Serialization.deserialize(filePath + "order.raw");
+
+		if (orders != null) {
+			orderRepository.setLastId(orders.getLastId());
+
+			result = orderRepository.getOrders().addAll(orders.getOrders());
+		}
+		return result;
+	}
+
 	public Boolean saveToFile(String filePath) {
 		Boolean result = false;
 		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
@@ -183,6 +197,12 @@ public class OrderService implements IService {
 
 		new TextFileWorker(filePath + "order.db").writeToFile(array);
 		result = true;
+		return result;
+	}
+
+	public Boolean saveToRaw(String filePath) throws IOException {
+		Boolean result = false;
+		result = Serialization.serialize(getOrderRepository(), filePath + "order.raw");
 		return result;
 	}
 

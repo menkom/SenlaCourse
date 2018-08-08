@@ -1,14 +1,19 @@
 package com.senla.hotel.model;
 
 import java.util.List;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.senla.base.BaseObject;
 
-public class Order extends BaseObject implements Cloneable {
+public class Order extends BaseObject implements Cloneable, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7566079556846351806L;
 	private Integer num;
 	private Client client;
 	private Room room;
@@ -92,8 +97,16 @@ public class Order extends BaseObject implements Cloneable {
 		builder.append(super.toString());
 
 		builder.append(getNum() + SEPARATOR);
-		builder.append(getClient().getId() + SEPARATOR);
-		builder.append(getRoom().getId() + SEPARATOR);
+		if (getClient() == null) {
+			builder.append("null" + SEPARATOR);
+		} else {
+			builder.append(getClient().getId() + SEPARATOR);
+		}
+		if (getRoom() == null) {
+			builder.append("null" + SEPARATOR);
+		} else {
+			builder.append(getRoom().getId() + SEPARATOR);
+		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 

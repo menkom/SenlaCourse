@@ -1,10 +1,17 @@
 package com.senla.hotel.model;
 
+import java.io.Serializable;
+
 import com.senla.base.BaseObject;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 
-public class Room extends BaseObject {
+public class Room extends BaseObject implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9218560100890176515L;
 	private Integer number;
 	private Integer capacity;
 	private RoomStar star;

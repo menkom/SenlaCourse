@@ -15,6 +15,7 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.repository.RoomRepository;
+import com.senla.util.Serialization;
 
 public class RoomService implements IService {
 
@@ -148,6 +149,18 @@ public class RoomService implements IService {
 		return result;
 	}
 
+	public Boolean loadFromRaw(String filePath)
+			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
+		Boolean result = false;
+		RoomRepository rooms = Serialization.deserialize(filePath + "room.raw");
+
+		if (rooms != null) {
+			roomRepository.setLastId(rooms.getLastId());
+			result = roomRepository.getRooms().addAll(rooms.getRooms());
+		}
+		return result;
+	}
+
 	public Boolean saveToFile(String filePath) {
 		Boolean result = false;
 		String[] repositoryToStr = ListConverter.getArrayFromList(roomRepository.getRooms());
@@ -157,6 +170,12 @@ public class RoomService implements IService {
 
 		new TextFileWorker(filePath + "room.db").writeToFile(array);
 		result = true;
+		return result;
+	}
+
+	public Boolean saveToRaw(String filePath) throws IOException {
+		Boolean result = false;
+		result = Serialization.serialize(getRoomRepository(), filePath + "room.raw");
 		return result;
 	}
 }

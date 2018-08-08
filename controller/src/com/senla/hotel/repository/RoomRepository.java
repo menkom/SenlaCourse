@@ -1,14 +1,20 @@
 package com.senla.hotel.repository;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.hotel.model.Room;
 import com.senla.util.IdGenerator;
 
-public class RoomRepository {
+public class RoomRepository implements Serializable {
 
-	private static RoomRepository roomRepository;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8325685493155801835L;
+
+	transient private static RoomRepository roomRepository;
 
 	private Integer lastId;
 	private List<Room> rooms;

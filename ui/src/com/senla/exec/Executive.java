@@ -11,15 +11,9 @@ public class Executive {
 	private static final String ERROR_SAVE = "Error while data saving.";
 
 	public static void main(String[] args) {
-
 		HotelProperty.getInstance();
-		String dbPath = "./";
 
-		if (args.length > 0) {
-			dbPath = args[0];
-		}
-
-		Boolean loaded = Hotel.getInstance().load(dbPath);
+		Boolean loaded = Hotel.getInstance().load(HotelProperty.getInstance().getRawFilePath());
 		if (!loaded) {
 			DisplayOperator.printMessage(ERROR_LOAD);
 		}
@@ -27,7 +21,7 @@ public class Executive {
 		MenuController menuController = new MenuController();
 		menuController.run();
 
-		Boolean saved = Hotel.getInstance().save(dbPath);
+		Boolean saved = Hotel.getInstance().save(HotelProperty.getInstance().getRawFilePath());
 		if (!saved) {
 			DisplayOperator.printMessage(ERROR_SAVE);
 		}

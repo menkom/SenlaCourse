@@ -1,8 +1,15 @@
 package com.senla.hotel.model;
 
+import java.io.Serializable;
+
 import com.senla.base.BaseObject;
 
-public class Service extends BaseObject {
+public class Service extends BaseObject implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7596450064115664493L;
 
 	private Integer code;
 	private String name;

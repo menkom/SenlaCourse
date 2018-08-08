@@ -10,6 +10,7 @@ import com.danco.training.TextFileWorker;
 import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
+import com.senla.util.Serialization;
 
 public class ServiceService implements IService {
 
@@ -63,6 +64,19 @@ public class ServiceService implements IService {
 		return result;
 	}
 
+	public Boolean loadFromRaw(String filePath)
+			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
+		Boolean result = false;
+		ServiceRepository services = Serialization.deserialize(filePath + "service.raw");
+
+		if (services != null) {
+			serviceRepository.setLastId(services.getLastId());
+
+			result = serviceRepository.getServices().addAll(services.getServices());
+		}
+		return result;
+	}
+
 	public Boolean saveToFile(String filePath) {
 		Boolean result = false;
 		String[] repositoryToStr = ListConverter.getArrayFromList(serviceRepository.getServices());
@@ -72,6 +86,12 @@ public class ServiceService implements IService {
 
 		new TextFileWorker(filePath + "service.db").writeToFile(array);
 		result = true;
+		return result;
+	}
+
+	public Boolean saveToRaw(String filePath) throws IOException {
+		Boolean result = false;
+		result = Serialization.serialize(getServiceRepository(), filePath + "service.raw");
 		return result;
 	}
 
