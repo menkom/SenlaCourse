@@ -7,7 +7,7 @@ import java.util.List;
 import com.senla.hotel.model.Service;
 import com.senla.util.IdGenerator;
 
-public class ServiceRepository implements Serializable{
+public class ServiceRepository implements Serializable {
 
 	/**
 	 * 
@@ -47,16 +47,16 @@ public class ServiceRepository implements Serializable{
 
 	public void delete(Integer serviceCode) {
 		for (int i = 0; i < getServices().size(); i++) {
-			if (getServices().get(i).getCode() == serviceCode) {
+			if (getServices().get(i).getCode().equals(serviceCode)) {
 				getServices().remove(i);
 				break;
 			}
 		}
 	}
 
-	public Service getServiceByCode(int number) {
+	public Service getServiceByCode(Integer number) {
 		for (Service service : getServices()) {
-			if ((service != null) && (service.getCode() == number)) {
+			if ((service != null) && (service.getCode().equals(number))) {
 				return service;
 			}
 		}
@@ -65,7 +65,7 @@ public class ServiceRepository implements Serializable{
 
 	public Service getServiceById(Integer id) {
 		for (Service service : getServices()) {
-			if ((service != null) && (service.getId() == id)) {
+			if ((service != null) && (service.getId().equals(id))) {
 				return service;
 			}
 		}

@@ -47,16 +47,16 @@ public class RoomRepository implements Serializable {
 
 	public void delete(Integer roomNum) {
 		for (int i = 0; i < getRooms().size(); i++) {
-			if (getRooms().get(i).getNumber() == roomNum) {
+			if (getRooms().get(i).getNumber().equals(roomNum)) {
 				getRooms().remove(i);
 				break;
 			}
 		}
 	}
 
-	public Room getRoomByNum(int number) {
+	public Room getRoomByNum(Integer number) {
 		for (Room room : getRooms()) {
-			if ((room != null) && (room.getNumber() == number)) {
+			if ((room != null) && (room.getNumber().equals(number))) {
 				return room;
 			}
 		}
@@ -65,7 +65,7 @@ public class RoomRepository implements Serializable {
 
 	public Room getRoomById(Integer id) {
 		for (Room room : getRooms()) {
-			if ((room != null) && (room.getId() == id)) {
+			if ((room != null) && (room.getId().equals(id))) {
 				return room;
 			}
 		}

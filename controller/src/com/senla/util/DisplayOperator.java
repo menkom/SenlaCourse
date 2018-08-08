@@ -27,8 +27,8 @@ public class DisplayOperator {
 		if (room == null) {
 			printMessage("Room: Number= -, Capacity= -, Star= -, Status= -, Price= -");
 		} else {
-			printMessage("Room: Number=" + room.getNumber() + ", Capacity=" + room.getCapacity() + ", Star="
-					+ room.getStar() + ", Status=" + room.getStatus() + ", Price=" + room.getPrice());
+			printMessage("Room:id=" + room.getId() + ", Number=" + room.getNumber() + ", Capacity=" + room.getCapacity()
+					+ ", Star=" + room.getStar() + ", Status=" + room.getStatus() + ", Price=" + room.getPrice());
 		}
 	}
 
@@ -54,11 +54,11 @@ public class DisplayOperator {
 
 	public static void printRooms(List<Room> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
-		printMessage("Number Capacity Star   Status    Price");
+		printMessage("id    Number Capacity Star   Status    Price");
 		for (Room room : array) {
 			if (room != null) {
-				printMessage(room.getNumber() + "-------" + room.getCapacity() + "------" + room.getStar() + "----"
-						+ room.getStatus() + "---" + room.getPrice());
+				printMessage(room.getId() + " --- " + room.getNumber() + "-------" + room.getCapacity() + "------"
+						+ room.getStar() + "----" + room.getStatus() + "---" + room.getPrice());
 			}
 		}
 	}
@@ -81,28 +81,29 @@ public class DisplayOperator {
 					dateFinish = formatter.format(order.getFinishDate());
 				}
 
-				printMessage(order.getId() + " --- " + order.getNum() + " --- " + order.getClient().getName() + "-------"
-						+ order.getRoom().getNumber() + "------" + dateStart + "----" + dateFinish);
+				printMessage(order.getId() + " --- " + order.getNum() + " --- " + order.getClient().getName()
+						+ "-------" + order.getRoom().getNumber() + "------" + dateStart + "----" + dateFinish);
 			}
 		}
 	}
 
 	public static void printServices(List<Service> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
-		printMessage("Code --- Name  --------  Price");
+		printMessage("id --- Code --- Name  --------  Price");
 		for (Service service : array) {
 			if (service != null) {
-				printMessage(service.getCode() + "-------" + service.getName() + "------" + service.getPrice());
+				printMessage(service.getId() + " ---- " + service.getCode() + "-------" + service.getName() + "------"
+						+ service.getPrice());
 			}
 		}
 	}
 
 	public static void printClients(List<Client> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
-		printMessage("--Name--");
+		printMessage("id -- Name ---");
 		for (Client client : array) {
 			if (client != null) {
-				printMessage(client.getName());
+				printMessage(client.getId() + " --- " + client.getName());
 			}
 		}
 	}

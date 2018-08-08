@@ -55,18 +55,14 @@ public class Hotel {
 	public Boolean load(String filePath) {
 		Boolean result = true;
 		try {
-//			result = getClientService().loadFromFile(filePath);
 			result = getClientService().loadFromRaw(filePath);
 			if (result) {
-//				result = getRoomService().loadFromFile(filePath);
 				result = getRoomService().loadFromRaw(filePath);
 			}
 			if (result) {
-//				result = getServiceService().loadFromFile(filePath);
 				result = getServiceService().loadFromRaw(filePath);
 			}
 			if (result) {
-//				result = getOrderService().loadFromFile(filePath);
 				result = getOrderService().loadFromRaw(filePath);
 			}
 		} catch (NumberFormatException | IOException | ParseException e) {
@@ -82,24 +78,12 @@ public class Hotel {
 	public Boolean save(String filePath) {
 		Boolean result = true;
 		try {
-			result = getClientService().saveToFile(filePath);
-			if (result) {
-				result = getClientService().saveToRaw(filePath);
-			}
-			if (result) {
-				result = getRoomService().saveToFile(filePath);
-			}
+			result = getClientService().saveToRaw(filePath);
 			if (result) {
 				result = getRoomService().saveToRaw(filePath);
 			}
 			if (result) {
-				result = getServiceService().saveToFile(filePath);
-			}
-			if (result) {
 				result = getServiceService().saveToRaw(filePath);
-			}
-			if (result) {
-				result = getOrderService().saveToFile(filePath);
 			}
 			if (result) {
 				result = getOrderService().saveToRaw(filePath);

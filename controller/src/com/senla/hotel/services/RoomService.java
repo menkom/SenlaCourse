@@ -3,13 +3,10 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.danco.training.TextFileWorker;
-import com.senla.converter.ListConverter;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
@@ -39,7 +36,7 @@ public class RoomService implements IService {
 		boolean result = false;
 		for (Room forRoom : rooms) {
 			if (forRoom != null) {
-				if (room.getNumber() == forRoom.getNumber()) {
+				if (room.getNumber().equals(forRoom.getNumber())) {
 					result = true;
 					break;
 				}
@@ -89,11 +86,11 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Room getRoomByNum(int number) {
+	public Room getRoomByNum(Integer number) {
 		return getRoomRepository().getRoomByNum(number);
 	}
 
-	public Boolean changeRoomStatus(int number, RoomStatus roomStatus) {
+	public Boolean changeRoomStatus(Integer number, RoomStatus roomStatus) {
 		Boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
@@ -103,7 +100,7 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Boolean changeRoomPrice(int number, int price) {
+	public Boolean changeRoomPrice(Integer number, Integer price) {
 		Boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
@@ -139,16 +136,6 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
-		Boolean result = false;
-		String[] array = new TextFileWorker(filePath + "room.db").readFromFile();
-
-		roomRepository.setLastId(Integer.parseInt(array[0]));
-
-		result = roomRepository.getRooms().addAll(ListConverter.getRooms(Arrays.copyOfRange(array, 1, array.length)));
-		return result;
-	}
-
 	public Boolean loadFromRaw(String filePath)
 			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
 		Boolean result = false;
@@ -158,18 +145,6 @@ public class RoomService implements IService {
 			roomRepository.setLastId(rooms.getLastId());
 			result = roomRepository.getRooms().addAll(rooms.getRooms());
 		}
-		return result;
-	}
-
-	public Boolean saveToFile(String filePath) {
-		Boolean result = false;
-		String[] repositoryToStr = ListConverter.getArrayFromList(roomRepository.getRooms());
-		String[] array = new String[repositoryToStr.length + 1];
-		array[0] = Integer.toString(roomRepository.getLastId());
-		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
-
-		new TextFileWorker(filePath + "room.db").writeToFile(array);
-		result = true;
 		return result;
 	}
 

@@ -3,13 +3,10 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.danco.training.TextFileWorker;
-import com.senla.converter.ListConverter;
 import com.senla.exception.NoEntryException;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.enums.RoomStatus;
@@ -55,7 +52,7 @@ public class OrderService implements IService {
 		return add(order);
 	}
 
-	public Order getOrderByNum(int num) {
+	public Order getOrderByNum(Integer num) {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
@@ -70,7 +67,7 @@ public class OrderService implements IService {
 		Order order = new Order(orderNum, ClientService.getInstance().getClientByName(clientName), room, dateStart,
 				dateFinish);
 		result = this.add(order);
-		if (order.getStartDate() == new Date()) {
+		if (order.getStartDate().equals(new Date())) {
 			order.getRoom().setStatus(RoomStatus.OCCUPIED);
 		}
 		return result;
@@ -164,17 +161,6 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
-		Boolean result = false;
-		String[] array = new TextFileWorker(filePath + "order.db").readFromFile();
-
-		orderRepository.setLastId(Integer.parseInt(array[0]));
-
-		result = orderRepository.getOrders()
-				.addAll(ListConverter.getOrders(Arrays.copyOfRange(array, 1, array.length)));
-		return result;
-	}
-
 	public Boolean loadFromRaw(String filePath)
 			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
 		Boolean result = false;
@@ -185,18 +171,6 @@ public class OrderService implements IService {
 
 			result = orderRepository.getOrders().addAll(orders.getOrders());
 		}
-		return result;
-	}
-
-	public Boolean saveToFile(String filePath) {
-		Boolean result = false;
-		String[] repositoryToStr = ListConverter.getArrayFromList(orderRepository.getOrders());
-		String[] array = new String[repositoryToStr.length + 1];
-		array[0] = Integer.toString(orderRepository.getLastId());
-		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
-
-		new TextFileWorker(filePath + "order.db").writeToFile(array);
-		result = true;
 		return result;
 	}
 

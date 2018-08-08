@@ -22,7 +22,7 @@ public class Service extends BaseObject implements Serializable {
 		this.price = price;
 	}
 
-	public int getPrice() {
+	public Integer getPrice() {
 		return price;
 	}
 
@@ -38,7 +38,7 @@ public class Service extends BaseObject implements Serializable {
 		this.name = name;
 	}
 
-	public int getCode() {
+	public Integer getCode() {
 		return code;
 	}
 

@@ -61,7 +61,7 @@ public class ClientRepository implements Serializable {
 
 	public Client getClientById(Integer id) {
 		for (Client client : getClients()) {
-			if ((client != null) && (client.getId() == id)) {
+			if ((client != null) && (client.getId().equals(id))) {
 				return client;
 			}
 		}

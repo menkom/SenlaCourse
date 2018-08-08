@@ -50,7 +50,7 @@ public class OrderRepository implements Serializable {
 	public Boolean delete(Integer orderNum) {
 		Boolean result = false;
 		for (int i = 0; i < getOrders().size(); i++) {
-			if (getOrders().get(i).getNum() == orderNum) {
+			if (getOrders().get(i).getNum().equals(orderNum)) {
 				getOrders().remove(i);
 				result = true;
 				break;
@@ -61,7 +61,7 @@ public class OrderRepository implements Serializable {
 
 	public Order getOrderByNum(Integer num) {
 		for (Order order : getOrders()) {
-			if ((order != null) && (order.getNum() == num)) {
+			if ((order != null) && (order.getNum().equals(num))) {
 				return order;
 			}
 		}
@@ -70,7 +70,7 @@ public class OrderRepository implements Serializable {
 
 	public Order getOrderById(Integer id) {
 		for (Order order : getOrders()) {
-			if ((order != null) && (order.getId() == id)) {
+			if ((order != null) && (order.getId().equals(id))) {
 				return order;
 			}
 		}

@@ -2,12 +2,9 @@ package com.senla.hotel.services;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import com.danco.training.TextFileWorker;
-import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
 import com.senla.util.Serialization;
@@ -49,19 +46,8 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public Service getServiceByCode(int code) {
+	public Service getServiceByCode(Integer code) {
 		return getServiceRepository().getServiceByCode(code);
-	}
-
-	public Boolean loadFromFile(String filePath) throws IOException, NumberFormatException, ParseException {
-		Boolean result = false;
-		String[] array = new TextFileWorker(filePath + "service.db").readFromFile();
-
-		serviceRepository.setLastId(Integer.parseInt(array[0]));
-
-		result = serviceRepository.getServices()
-				.addAll(ListConverter.getServices(Arrays.copyOfRange(array, 1, array.length)));
-		return result;
 	}
 
 	public Boolean loadFromRaw(String filePath)
@@ -77,25 +63,13 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public Boolean saveToFile(String filePath) {
-		Boolean result = false;
-		String[] repositoryToStr = ListConverter.getArrayFromList(serviceRepository.getServices());
-		String[] array = new String[repositoryToStr.length + 1];
-		array[0] = Integer.toString(serviceRepository.getLastId());
-		System.arraycopy(repositoryToStr, 0, array, 1, repositoryToStr.length);
-
-		new TextFileWorker(filePath + "service.db").writeToFile(array);
-		result = true;
-		return result;
-	}
-
 	public Boolean saveToRaw(String filePath) throws IOException {
 		Boolean result = false;
 		result = Serialization.serialize(getServiceRepository(), filePath + "service.raw");
 		return result;
 	}
 
-	public Boolean changeServicePrice(int code, int price) {
+	public Boolean changeServicePrice(Integer code, Integer price) {
 		Boolean result = false;
 		Service service = getServiceByCode(code);
 		if (service != null) {
