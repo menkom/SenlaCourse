@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import com.senla.base.BaseObject;
 
-public class Client extends BaseObject implements Serializable{
+public class Client extends BaseObject implements Serializable {
 
 	/**
 	 * 
@@ -29,7 +29,7 @@ public class Client extends BaseObject implements Serializable{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append(super.toString()).append(getName() + SEPARATOR);
+		builder.append(super.toString()).append(getName()).append(SEPARATOR);
 
 		return builder.toString();
 	}

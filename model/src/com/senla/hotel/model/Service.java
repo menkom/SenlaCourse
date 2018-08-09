@@ -50,9 +50,9 @@ public class Service extends BaseObject implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 
-		builder.append(getCode() + SEPARATOR);
-		builder.append(getName() + SEPARATOR);
-		builder.append(getPrice() + SEPARATOR);
+		builder.append(getCode()).append(SEPARATOR);
+		builder.append(getName()).append(SEPARATOR);
+		builder.append(getPrice()).append(SEPARATOR);
 
 		return builder.toString();
 	}

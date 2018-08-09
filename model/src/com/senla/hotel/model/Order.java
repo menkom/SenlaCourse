@@ -96,35 +96,35 @@ public class Order extends BaseObject implements Cloneable, Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 
-		builder.append(getNum() + SEPARATOR);
+		builder.append(getNum()).append(SEPARATOR);
 		if (getClient() == null) {
 			builder.append("null" + SEPARATOR);
 		} else {
-			builder.append(getClient().getId() + SEPARATOR);
+			builder.append(getClient().getId()).append(SEPARATOR);
 		}
 		if (getRoom() == null) {
-			builder.append("null" + SEPARATOR);
+			builder.append("null").append(SEPARATOR);
 		} else {
-			builder.append(getRoom().getId() + SEPARATOR);
+			builder.append(getRoom().getId()).append(SEPARATOR);
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 		if (getStartDate() == null) {
-			builder.append("null" + SEPARATOR);
+			builder.append("null").append(SEPARATOR);
 		} else {
-			builder.append(formatter.format(getStartDate()) + SEPARATOR);
+			builder.append(formatter.format(getStartDate())).append(SEPARATOR);
 		}
 
 		if (getFinishDate() == null) {
-			builder.append("null" + SEPARATOR);
+			builder.append("null").append(SEPARATOR);
 		} else {
-			builder.append(formatter.format(getFinishDate()) + SEPARATOR);
+			builder.append(formatter.format(getFinishDate())).append(SEPARATOR);
 		}
 
 		for (Service service : getServices()) {
 			if (service != null) {
-				builder.append(service.getId() + SEPARATOR);
+				builder.append(service.getId()).append(SEPARATOR);
 			}
 		}
 

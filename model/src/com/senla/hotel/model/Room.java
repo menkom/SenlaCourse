@@ -71,11 +71,11 @@ public class Room extends BaseObject implements Serializable {
 		StringBuilder builder = new StringBuilder();
 		builder.append(super.toString());
 
-		builder.append(getNumber() + SEPARATOR);
-		builder.append(getCapacity() + SEPARATOR);
-		builder.append(getStar() + SEPARATOR);
-		builder.append(getStatus() + SEPARATOR);
-		builder.append(getPrice() + SEPARATOR);
+		builder.append(getNumber()).append(SEPARATOR);
+		builder.append(getCapacity()).append(SEPARATOR);
+		builder.append(getStar()).append(SEPARATOR);
+		builder.append(getStatus()).append(SEPARATOR);
+		builder.append(getPrice()).append(SEPARATOR);
 
 		return builder.toString();
 	}
