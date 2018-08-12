@@ -1,13 +1,12 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 import com.senla.exception.NoEntryException;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.repository.ClientRepository;
-import com.senla.util.Serialization;
+import com.senla.util.ExportCSV;
 
 public class ClientService implements IService {
 
@@ -42,27 +41,17 @@ public class ClientService implements IService {
 		return result;
 	}
 
-	public Boolean loadFromRaw(String filePath)
-			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
-		Boolean result = false;
-		ClientRepository clients = Serialization.deserialize(filePath + "client.raw");
-
-		if (clients != null) {
-			clientRepository.setLastId(clients.getLastId());
-
-			result = clientRepository.getClients().addAll(clients.getClients());
-		}
-		return result;
-	}
-
-	public Boolean saveToRaw(String filePath) throws IOException {
-		Boolean result = false;
-		result = Serialization.serialize(getClientRepository(), filePath + "client.raw");
-		return result;
-	}
-
 	public int getNumberOfClients() {
 		return getClientRepository().getClients().size();
+	}
+
+	public Boolean exportClientCSV(String name) throws NoEntryException, IOException {
+		Client client = getClientByName(name);
+		if (client == null) {
+			return false;
+		} else {
+			return ExportCSV.saveCSV(client, "client_" + client.getId() + ".csv");
+		}
 	}
 
 	public ClientRepository getClientRepository() {

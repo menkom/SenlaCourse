@@ -1,7 +1,6 @@
 package com.senla.hotel.facade;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +24,8 @@ import com.senla.hotel.services.OrderService;
 import com.senla.hotel.services.RoomService;
 import com.senla.hotel.services.ServiceService;
 import com.senla.util.DisplayOperator;
+import com.senla.util.IdGenerator;
+import com.senla.util.ModelSerializer;
 
 public class Hotel {
 
@@ -54,18 +55,23 @@ public class Hotel {
 
 	public Boolean load(String filePath) {
 		Boolean result = true;
+		ModelSerializer serializer = new ModelSerializer();
 		try {
-			result = getClientService().loadFromRaw(filePath);
-			if (result) {
-				result = getRoomService().loadFromRaw(filePath);
-			}
-			if (result) {
-				result = getServiceService().loadFromRaw(filePath);
-			}
-			if (result) {
-				result = getOrderService().loadFromRaw(filePath);
-			}
-		} catch (NumberFormatException | IOException | ParseException e) {
+			result = serializer.deserialize(filePath + "hotel.raw");
+
+			getClientService().getClientRepository().setLastId(IdGenerator.getLastId(serializer.getClients()));
+			getClientService().getClientRepository().getClients().addAll(serializer.getClients());
+
+			getRoomService().getRoomRepository().getRooms().addAll(serializer.getRooms());
+			getRoomService().getRoomRepository().setLastId(IdGenerator.getLastId(serializer.getRooms()));
+
+			getServiceService().getServiceRepository().getServices().addAll(serializer.getServices());
+			getServiceService().getServiceRepository().setLastId(IdGenerator.getLastId(serializer.getServices()));
+
+			getOrderService().getOrderRepository().getOrders().addAll(serializer.getOrders());
+			getOrderService().getOrderRepository().setLastId(IdGenerator.getLastId(serializer.getOrders()));
+
+		} catch (IOException e) {
 			logger.error(e);
 			result = false;
 		} catch (ClassNotFoundException e) {
@@ -77,17 +83,17 @@ public class Hotel {
 
 	public Boolean save(String filePath) {
 		Boolean result = true;
+		ModelSerializer serializer = new ModelSerializer();
 		try {
-			result = getClientService().saveToRaw(filePath);
-			if (result) {
-				result = getRoomService().saveToRaw(filePath);
-			}
-			if (result) {
-				result = getServiceService().saveToRaw(filePath);
-			}
-			if (result) {
-				result = getOrderService().saveToRaw(filePath);
-			}
+			serializer.setClients(getClientService().getClientRepository().getClients());
+			serializer.setRooms(getRoomService().getRoomRepository().getRooms());
+			serializer.setServices(getServiceService().getServiceRepository().getServices());
+			serializer.setOrders(getOrderService().getOrderRepository().getOrders());
+
+			serializer.serialize(filePath + "hotel.raw");
+		} catch (IOException ex) {
+			logger.error(ex);
+			result = false;
 		} catch (Exception ex) {
 			logger.error(ex);
 			result = false;
@@ -425,6 +431,15 @@ public class Hotel {
 		try {
 			return getServiceService().getServiceByCode(code);
 		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Boolean exportClientCSV(String name) {
+		try {
+			return getClientService().exportClientCSV(name);
+		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return null;
 		}

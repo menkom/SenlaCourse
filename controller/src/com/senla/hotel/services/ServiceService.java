@@ -1,13 +1,10 @@
 package com.senla.hotel.services;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
 
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
-import com.senla.util.Serialization;
 
 public class ServiceService implements IService {
 
@@ -48,25 +45,6 @@ public class ServiceService implements IService {
 
 	public Service getServiceByCode(Integer code) {
 		return getServiceRepository().getServiceByCode(code);
-	}
-
-	public Boolean loadFromRaw(String filePath)
-			throws IOException, NumberFormatException, ParseException, ClassNotFoundException {
-		Boolean result = false;
-		ServiceRepository services = Serialization.deserialize(filePath + "service.raw");
-
-		if (services != null) {
-			serviceRepository.setLastId(services.getLastId());
-
-			result = serviceRepository.getServices().addAll(services.getServices());
-		}
-		return result;
-	}
-
-	public Boolean saveToRaw(String filePath) throws IOException {
-		Boolean result = false;
-		result = Serialization.serialize(getServiceRepository(), filePath + "service.raw");
-		return result;
 	}
 
 	public Boolean changeServicePrice(Integer code, Integer price) {

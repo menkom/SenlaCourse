@@ -1,6 +1,5 @@
 package com.senla.hotel.repository;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,14 +7,9 @@ import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
 import com.senla.util.IdGenerator;
 
-public class OrderRepository implements Serializable {
+public class OrderRepository {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 567255871891828802L;
-
-	transient private static OrderRepository orderRepository;
+	private static OrderRepository orderRepository;
 
 	private Integer lastId;
 	private List<Order> orders;
