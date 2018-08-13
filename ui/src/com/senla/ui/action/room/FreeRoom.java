@@ -1,12 +1,12 @@
 package com.senla.ui.action.room;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class FreeRoom implements IAction {
@@ -22,12 +22,10 @@ public class FreeRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
 		DisplayOperator.printMessage(ENTER_ROOM_NUM);
 		try {
-			orderNum = Integer.parseInt(scanner.nextLine());
+			orderNum = Input.inputInteger();
 
 			Boolean result = Hotel.getInstance().freeRoom(orderNum);
 

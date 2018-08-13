@@ -1,7 +1,6 @@
 package com.senla.ui.action.room;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
@@ -10,6 +9,7 @@ import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class AddRoom implements IAction {
@@ -28,27 +28,25 @@ public class AddRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 
 		try {
 			DisplayOperator.printMessage(ENTER_ROOM_NUM);
-			int roomNum = Integer.parseInt(scanner.nextLine());
+			int roomNum = Input.inputInteger();
 
 			DisplayOperator.printMessage(ENTER_ROOM_CAPACITY);
-			int capacity = Integer.parseInt(scanner.nextLine());
+			int capacity = Input.inputInteger();
 			if (capacity < 1) {
 				throw new WrongPropertyRange(capacity);
 			}
 
 			DisplayOperator.printMessage(ENTER_ROOM_STAR);
-			RoomStar star = RoomStar.values()[Integer.parseInt(scanner.nextLine()) - 1];
+			RoomStar star = RoomStar.values()[Input.inputInteger() - 1];
 
 			DisplayOperator.printMessage(ENTER_ROOM_STATUS);
-			RoomStatus status = RoomStatus.values()[Integer.parseInt(scanner.nextLine()) - 1];
+			RoomStatus status = RoomStatus.values()[Input.inputInteger() - 1];
 
 			DisplayOperator.printMessage(ENTER_ROOM_PRICE);
-			int price = Integer.parseInt(scanner.nextLine());
+			int price = Input.inputInteger();
 			if (price < 0) {
 				throw new WrongPropertyRange(price);
 			}

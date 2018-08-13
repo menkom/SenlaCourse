@@ -4,13 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class ShowFreeRoomsByDateSortByStar implements IAction {
@@ -24,10 +24,8 @@ public class ShowFreeRoomsByDateSortByStar implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		DisplayOperator.printMessage(ENTER_DATE);
-		String dateInString = scanner.nextLine();
+		String dateInString = Input.inputString();
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 

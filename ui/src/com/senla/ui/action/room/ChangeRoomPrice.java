@@ -1,13 +1,13 @@
 package com.senla.ui.action.room;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.exception.WrongPropertyRange;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class ChangeRoomPrice implements IAction {
@@ -22,14 +22,12 @@ public class ChangeRoomPrice implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 
 		try {
 			DisplayOperator.printMessage(ENTER_ROOM_NUM);
-			int roomNum = Integer.parseInt(scanner.nextLine());
+			int roomNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_ROOM_PRICE);
-			int price = Integer.parseInt(scanner.nextLine());
+			int price = Input.inputInteger();
 			if (price < 0) {
 				throw new WrongPropertyRange(price);
 			}

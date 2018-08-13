@@ -4,12 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class OrderRoom implements IAction {
@@ -30,23 +30,21 @@ public class OrderRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		Integer orderNum = 0;
 		Integer roomNum = 0;
 		String clientName = "";
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			DisplayOperator.printMessage(ENTER_ORDER_NUM);
-			orderNum = Integer.parseInt(scanner.nextLine());
+			orderNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_NAME);
-			clientName = scanner.nextLine();
+			clientName = Input.inputString();
 			DisplayOperator.printMessage(ENTER_ROOM_NUM);
-			roomNum = Integer.parseInt(scanner.nextLine());
+			roomNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_DATE_START);
-			String dateStartInString = scanner.nextLine();
+			String dateStartInString = Input.inputString();
 			DisplayOperator.printMessage(ENTER_DATE_FINISH);
-			String dateFinishInString = scanner.nextLine();
+			String dateFinishInString = Input.inputString();
 
 			Date dateStart = new Date();
 			Date dateFinish = null;

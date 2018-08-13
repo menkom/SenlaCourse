@@ -1,12 +1,12 @@
 package com.senla.ui.action.order;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class ShowOrderPrice implements IAction {
@@ -22,12 +22,10 @@ public class ShowOrderPrice implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
 		DisplayOperator.printMessage(ENTER_ORDER_NUM);
 		try {
-			orderNum = Integer.parseInt(scanner.nextLine());
+			orderNum = Input.inputInteger();
 
 			Integer orderPrice = Hotel.getInstance().getOrderPrice(orderNum);
 
