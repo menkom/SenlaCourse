@@ -18,6 +18,10 @@ public class Room extends BaseObject implements Serializable {
 	private RoomStatus status;
 	private Integer price;
 
+	public Room() {
+		super();
+	}
+
 	public Room(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
 		super();
 		this.number = number;

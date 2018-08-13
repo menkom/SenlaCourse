@@ -13,6 +13,10 @@ public class Client extends BaseObject implements Serializable {
 
 	private String name;
 
+	public Client() {
+		super();
+	}
+
 	public Client(String name) {
 		super();
 		this.name = name;

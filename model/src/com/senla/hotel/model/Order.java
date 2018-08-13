@@ -21,6 +21,10 @@ public class Order extends BaseObject implements Cloneable, Serializable {
 	private Date finishDate;
 	private List<Service> services;
 
+	public Order() {
+		super();
+	}
+
 	public Order(Integer num, Client client, Room room, Date startDate, Date finishDate) {
 		super();
 		this.num = num;

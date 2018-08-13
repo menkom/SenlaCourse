@@ -15,6 +15,10 @@ public class Service extends BaseObject implements Serializable {
 	private String name;
 	private Integer price;
 
+	public Service() {
+		super();
+	}
+
 	public Service(Integer code, String name, Integer price) {
 		super();
 		this.code = code;
