@@ -2,14 +2,13 @@ package com.senla.ui.action.order;
 
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Order;
-import com.senla.hotel.property.HotelProperty;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class ShowLastOrdersByRoom implements IAction {
@@ -25,15 +24,12 @@ public class ShowLastOrdersByRoom implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		int roomNum = 0;
 		DisplayOperator.printMessage(ENTER_ROOM_NUM);
 		try {
-			roomNum = Integer.parseInt(scanner.nextLine());
+			roomNum = Input.inputInteger();
 
-			List<Order> orders = Hotel.getInstance().getLastOrdersByRoom(roomNum,
-					HotelProperty.getInstance().getLastVisibleOrders());
+			List<Order> orders = Hotel.getInstance().getLastOrdersByRoom(roomNum);
 
 			if (orders == null) {
 				DisplayOperator.printMessage(ORDER_SEARCH_FAILED);

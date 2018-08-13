@@ -1,9 +1,8 @@
 package com.senla.ui.action.client;
 
-import java.util.Scanner;
-
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class AddClient implements IAction {
@@ -14,11 +13,9 @@ public class AddClient implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 
 		DisplayOperator.printMessage(ENTER_CLIENT_NAME);
-		String clientName = scanner.nextLine();
+		String clientName = Input.inputString();
 
 		Boolean result = Hotel.getInstance().addClient(clientName);
 		if (result) {

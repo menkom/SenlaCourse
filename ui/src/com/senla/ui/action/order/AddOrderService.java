@@ -1,12 +1,12 @@
 package com.senla.ui.action.order;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class AddOrderService implements IAction {
@@ -21,14 +21,12 @@ public class AddOrderService implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
-		
+
 		try {
 			DisplayOperator.printMessage(ENTER_ORDER_NUM);
-			int orderNum = Integer.parseInt(scanner.nextLine());
+			Integer orderNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_SERVICE_CODE);
-			int serviceCode = Integer.parseInt(scanner.nextLine());
+			Integer serviceCode = Input.inputInteger();
 
 			Boolean result = Hotel.getInstance().addOrderService(orderNum, serviceCode);
 
@@ -37,10 +35,10 @@ public class AddOrderService implements IAction {
 			} else {
 				DisplayOperator.printMessage(ERROR_ADDING_SERVICE);
 			}
-		} catch (InputMismatchException|NumberFormatException e) {
+		} catch (InputMismatchException | NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_IN_FIELDS);
 			logger.error(e);
-		} 
+		}
 
 	}
 

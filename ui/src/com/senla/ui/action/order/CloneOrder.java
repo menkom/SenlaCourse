@@ -3,13 +3,13 @@ package com.senla.ui.action.order;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Order;
 import com.senla.ui.base.IAction;
+import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
 public class CloneOrder implements IAction {
@@ -35,12 +35,10 @@ public class CloneOrder implements IAction {
 
 	@Override
 	public void execute() {
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(System.in);
 		int orderNum = 0;
 		DisplayOperator.printMessage(ENTER_ORDER_NUM);
 		try {
-			orderNum = Integer.parseInt(scanner.nextLine());
+			orderNum = Input.inputInteger();
 
 			Order clone = Hotel.getInstance().cloneOrder(orderNum);
 
@@ -55,30 +53,30 @@ public class CloneOrder implements IAction {
 
 				DisplayOperator.printMessage(WANT_CHANGE);
 
-				String change = scanner.nextLine();
+				String change = Input.inputString();
 				if (change.toLowerCase().equals("y") || change.toLowerCase().equals("yes")) {
 
 					DisplayOperator.printMessage(LEAVE_EMPTY_NO_CHANGE);
 					DisplayOperator.printMessage(ENTER_ORDER_NUM);
-					String newOrderNum = scanner.nextLine();
+					String newOrderNum = Input.inputString();
 					if (!newOrderNum.equals("")) {
 						clone.setNum(Integer.parseInt(newOrderNum));
 					}
 
 					DisplayOperator.printMessage(ENTER_NAME);
-					String clientName = scanner.nextLine();
+					String clientName = Input.inputString();
 					if (!clientName.equals("")) {
 						clone.setClient(Hotel.getInstance().getClientByName(clientName));
 					}
 
 					DisplayOperator.printMessage(ENTER_ROOM_NUM);
-					String roomNum = scanner.nextLine();
+					String roomNum = Input.inputString();
 					if (!roomNum.equals("")) {
 						clone.setRoom(Hotel.getInstance().getRoomByNum(Integer.parseInt(roomNum)));
 					}
 
 					DisplayOperator.printMessage(ENTER_DATE_START);
-					String dateStartInString = scanner.nextLine();
+					String dateStartInString = Input.inputString();
 
 					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 					if (!dateStartInString.equals("")) {
@@ -86,7 +84,7 @@ public class CloneOrder implements IAction {
 					}
 
 					DisplayOperator.printMessage(ENTER_DATE_FINISH);
-					String dateFinishInString = scanner.nextLine();
+					String dateFinishInString = Input.inputString();
 
 					if (!dateFinishInString.equals("")) {
 						clone.setFinishDate(formatter.parse(dateFinishInString));
@@ -96,7 +94,7 @@ public class CloneOrder implements IAction {
 
 				DisplayOperator.printMessage(WANT_SAVE);
 
-				String save = scanner.nextLine();
+				String save = Input.inputString();
 				if (save.toLowerCase().equals("y") || save.toLowerCase().equals("yes")) {
 					if (Hotel.getInstance().addOrder(clone)) {
 						DisplayOperator.printMessage(String.format(ORDER_SAVED, clone.getId()));

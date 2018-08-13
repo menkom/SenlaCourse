@@ -36,6 +36,9 @@ public class Builder {
 	private static final String MAIN_MENU_TEXT = "Main menu";
 
 	private static final String ROOM_OPTIONS = "Room options";
+	private static final String SHOW_MENU = "Show";
+	private static final String EDIT_MENU = "Edit";
+
 	private static final String SHOW_ALL_ROOMS_SORT_PRICE = "Show all rooms sorted by price.";
 	private static final String SHOW_ALL_ROOMS_SORT_CAPACITY = "Show all rooms sorted by capacity.";
 	private static final String SHOW_ALL_ROOMS_SORT_STAR = "Show all rooms sorted by star.";
@@ -85,65 +88,89 @@ public class Builder {
 		MenuItem roomsMenuItem = new MenuItem(ROOM_OPTIONS, roomsMenu);
 		upLevelMenu.addMenuItem(roomsMenuItem);
 
-		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_PRICE,
-				new ShowAllRoomsSortByPrice());
-		roomsMenu.addMenuItem(showAllRoomsSortByPriceMenuItem);
+		buildRoomShowSubMenu(roomsMenu);
 
-		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_CAPACITY,
-				new ShowAllRoomsSortByCapacity());
-		roomsMenu.addMenuItem(showAllRoomsSortByCapacityMenuItem);
-
-		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_STAR, new ShowAllRoomsSortByPrice());
-		roomsMenu.addMenuItem(showAllRoomsSortByStarMenuItem);
-
-		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_CAPACITY,
-				new ShowFreeRoomsSortByCapacity());
-		roomsMenu.addMenuItem(showFreeRoomsSortByCapacityMenuItem);
-
-		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_STAR,
-				new ShowFreeRoomsSortByStar());
-		roomsMenu.addMenuItem(showFreeRoomsSortByStarMenuItem);
-
-		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_PRICE,
-				new ShowFreeRoomsSortByPrice());
-		roomsMenu.addMenuItem(showFreeRoomsSortByPriceMenuItem);
-
-		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_CAPACITY,
-				new ShowFreeRoomsByDateSortByCapacity());
-		roomsMenu.addMenuItem(showFreeRoomsByDateSortByCapacityMenuItem);
-
-		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_PRICE,
-				new ShowFreeRoomsByDateSortByPrice());
-		roomsMenu.addMenuItem(showFreeRoomsByDateSortByPriceMenuItem);
-
-		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_STAR,
-				new ShowFreeRoomsByDateSortByStar());
-		roomsMenu.addMenuItem(showFreeRoomsByDateSortByStarMenuItem);
-
-		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem(SHOW_NUMBER_FREE_ROOMS, new ShowNumberOfFreeRooms());
-		roomsMenu.addMenuItem(showNumberOfFreeRoomsMenuItem);
-
-		MenuItem showRoomInfoMenuItem = new MenuItem(SHOW_ROOM_INFO, new ShowRoomInfo());
-		roomsMenu.addMenuItem(showRoomInfoMenuItem);
-
-		MenuItem orderRoomMenuItem = new MenuItem(SHOW_ORDER_ROOM, new OrderRoom());
-		roomsMenu.addMenuItem(orderRoomMenuItem);
-
-		MenuItem closeOrderMenuItem = new MenuItem(CLOSE_ORDER, new FreeRoom());
-		roomsMenu.addMenuItem(closeOrderMenuItem);
-
-		MenuItem addRoomMenuItem = new MenuItem(ADD_NEW_ROOM, new AddRoom());
-		roomsMenu.addMenuItem(addRoomMenuItem);
-
-		MenuItem changeRoomPriceMenuItem = new MenuItem(CHANGE_ROOM_PRICE, new ChangeRoomPrice());
-		roomsMenu.addMenuItem(changeRoomPriceMenuItem);
-
-		MenuItem changeRoomStatusMenuItem = new MenuItem(CHANGE_ROOM_STATUS, new ChangeRoomStatus());
-		roomsMenu.addMenuItem(changeRoomStatusMenuItem);
+		buildRoomEditSubMenu(roomsMenu);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		roomsMenu.addMenuItem(backMenuItem);
 
+	}
+
+	private void buildRoomShowSubMenu(Menu upLevelMenu) {
+		Menu roomsShowMenu = new Menu(SHOW_MENU);
+
+		MenuItem roomsMenuItem = new MenuItem(SHOW_MENU, roomsShowMenu);
+		upLevelMenu.addMenuItem(roomsMenuItem);
+
+		MenuItem showAllRoomsSortByPriceMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_PRICE,
+				new ShowAllRoomsSortByPrice());
+		roomsShowMenu.addMenuItem(showAllRoomsSortByPriceMenuItem);
+
+		MenuItem showAllRoomsSortByCapacityMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_CAPACITY,
+				new ShowAllRoomsSortByCapacity());
+		roomsShowMenu.addMenuItem(showAllRoomsSortByCapacityMenuItem);
+
+		MenuItem showAllRoomsSortByStarMenuItem = new MenuItem(SHOW_ALL_ROOMS_SORT_STAR, new ShowAllRoomsSortByPrice());
+		roomsShowMenu.addMenuItem(showAllRoomsSortByStarMenuItem);
+
+		MenuItem showFreeRoomsSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_CAPACITY,
+				new ShowFreeRoomsSortByCapacity());
+		roomsShowMenu.addMenuItem(showFreeRoomsSortByCapacityMenuItem);
+
+		MenuItem showFreeRoomsSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_STAR,
+				new ShowFreeRoomsSortByStar());
+		roomsShowMenu.addMenuItem(showFreeRoomsSortByStarMenuItem);
+
+		MenuItem showFreeRoomsSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_SORT_PRICE,
+				new ShowFreeRoomsSortByPrice());
+		roomsShowMenu.addMenuItem(showFreeRoomsSortByPriceMenuItem);
+
+		MenuItem showFreeRoomsByDateSortByCapacityMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_CAPACITY,
+				new ShowFreeRoomsByDateSortByCapacity());
+		roomsShowMenu.addMenuItem(showFreeRoomsByDateSortByCapacityMenuItem);
+
+		MenuItem showFreeRoomsByDateSortByPriceMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_PRICE,
+				new ShowFreeRoomsByDateSortByPrice());
+		roomsShowMenu.addMenuItem(showFreeRoomsByDateSortByPriceMenuItem);
+
+		MenuItem showFreeRoomsByDateSortByStarMenuItem = new MenuItem(SHOW_FREE_ROOMS_BY_DATE_SORT_STAR,
+				new ShowFreeRoomsByDateSortByStar());
+		roomsShowMenu.addMenuItem(showFreeRoomsByDateSortByStarMenuItem);
+
+		MenuItem showNumberOfFreeRoomsMenuItem = new MenuItem(SHOW_NUMBER_FREE_ROOMS, new ShowNumberOfFreeRooms());
+		roomsShowMenu.addMenuItem(showNumberOfFreeRoomsMenuItem);
+
+		MenuItem showRoomInfoMenuItem = new MenuItem(SHOW_ROOM_INFO, new ShowRoomInfo());
+		roomsShowMenu.addMenuItem(showRoomInfoMenuItem);
+
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
+		roomsShowMenu.addMenuItem(backMenuItem);
+	}
+
+	private void buildRoomEditSubMenu(Menu upLevelMenu) {
+		Menu roomsEditMenu = new Menu(EDIT_MENU);
+
+		MenuItem roomsMenuItem = new MenuItem(EDIT_MENU, roomsEditMenu);
+		upLevelMenu.addMenuItem(roomsMenuItem);
+
+		MenuItem orderRoomMenuItem = new MenuItem(SHOW_ORDER_ROOM, new OrderRoom());
+		roomsEditMenu.addMenuItem(orderRoomMenuItem);
+
+		MenuItem closeOrderMenuItem = new MenuItem(CLOSE_ORDER, new FreeRoom());
+		roomsEditMenu.addMenuItem(closeOrderMenuItem);
+
+		MenuItem addRoomMenuItem = new MenuItem(ADD_NEW_ROOM, new AddRoom());
+		roomsEditMenu.addMenuItem(addRoomMenuItem);
+
+		MenuItem changeRoomPriceMenuItem = new MenuItem(CHANGE_ROOM_PRICE, new ChangeRoomPrice());
+		roomsEditMenu.addMenuItem(changeRoomPriceMenuItem);
+
+		MenuItem changeRoomStatusMenuItem = new MenuItem(CHANGE_ROOM_STATUS, new ChangeRoomStatus());
+		roomsEditMenu.addMenuItem(changeRoomStatusMenuItem);
+
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
+		roomsEditMenu.addMenuItem(backMenuItem);
 	}
 
 	private void buildClientSubMenu(Menu upLevelMenu) {
@@ -153,20 +180,44 @@ public class Builder {
 		MenuItem clientsMenuItem = new MenuItem(CLIENT_OPTIONS, clientsMenu);
 		upLevelMenu.addMenuItem(clientsMenuItem);
 
-		MenuItem showAllClientsMenuItem = new MenuItem(SHOW_ALL_CLIENTS, new ShowAllClients());
-		clientsMenu.addMenuItem(showAllClientsMenuItem);
+		buildClientShowSubMenu(clientsMenu);
 
-		MenuItem showNumberOfClientsMenuItem = new MenuItem(SHOW_NUMBER_OF_CLIENTS, new ShowNumberOfClients());
-		clientsMenu.addMenuItem(showNumberOfClientsMenuItem);
-
-		MenuItem addClientMenuItem = new MenuItem(ADD_NEW_CLIENT, new AddClient());
-		clientsMenu.addMenuItem(addClientMenuItem);
-
-		MenuItem exportClientMenuItem = new MenuItem(EXPORT_CLIENT, new ExportClientAction());
-		clientsMenu.addMenuItem(exportClientMenuItem);
+		buildClientEditSubMenu(clientsMenu);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		clientsMenu.addMenuItem(backMenuItem);
+	}
+
+	private void buildClientShowSubMenu(Menu upLevelMenu) {
+		Menu clientsShowMenu = new Menu(SHOW_MENU);
+
+		MenuItem roomsMenuItem = new MenuItem(SHOW_MENU, clientsShowMenu);
+		upLevelMenu.addMenuItem(roomsMenuItem);
+
+		MenuItem showAllClientsMenuItem = new MenuItem(SHOW_ALL_CLIENTS, new ShowAllClients());
+		clientsShowMenu.addMenuItem(showAllClientsMenuItem);
+
+		MenuItem showNumberOfClientsMenuItem = new MenuItem(SHOW_NUMBER_OF_CLIENTS, new ShowNumberOfClients());
+		clientsShowMenu.addMenuItem(showNumberOfClientsMenuItem);
+
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
+		clientsShowMenu.addMenuItem(backMenuItem);
+	}
+
+	private void buildClientEditSubMenu(Menu upLevelMenu) {
+		Menu clientsEditMenu = new Menu(EDIT_MENU);
+
+		MenuItem roomsMenuItem = new MenuItem(EDIT_MENU, clientsEditMenu);
+		upLevelMenu.addMenuItem(roomsMenuItem);
+
+		MenuItem addClientMenuItem = new MenuItem(ADD_NEW_CLIENT, new AddClient());
+		clientsEditMenu.addMenuItem(addClientMenuItem);
+
+		MenuItem exportClientMenuItem = new MenuItem(EXPORT_CLIENT, new ExportClientAction());
+		clientsEditMenu.addMenuItem(exportClientMenuItem);
+
+		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
+		clientsEditMenu.addMenuItem(backMenuItem);
 	}
 
 	private void buildServiceSubMenu(Menu upLevelMenu) {

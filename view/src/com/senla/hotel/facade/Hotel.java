@@ -19,6 +19,7 @@ import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
+import com.senla.hotel.property.HotelProperty;
 import com.senla.hotel.services.ClientService;
 import com.senla.hotel.services.OrderService;
 import com.senla.hotel.services.RoomService;
@@ -53,8 +54,9 @@ public class Hotel {
 		return hotel;
 	}
 
-	public Boolean load(String filePath) {
+	public Boolean load() {
 		Boolean result = true;
+		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
 		try {
 			result = serializer.deserialize(filePath + "hotel.raw");
@@ -81,8 +83,9 @@ public class Hotel {
 		return result;
 	}
 
-	public Boolean save(String filePath) {
+	public Boolean save() {
 		Boolean result = true;
+		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
 		try {
 			serializer.setClients(getClientService().getClientRepository().getClients());
@@ -237,9 +240,10 @@ public class Hotel {
 		}
 	}
 
-	public List<Order> getLastOrdersByRoom(int roomNum, int maxOrders) {
+	public List<Order> getLastOrdersByRoom(int roomNum) {
 		try {
-			return getOrderService().getLastOrdersByRoom(roomNum, maxOrders, new OrderSortByFinishDate());
+			return getOrderService().getLastOrdersByRoom(roomNum, HotelProperty.getInstance().getLastVisibleOrders(),
+					new OrderSortByFinishDate());
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -341,7 +345,11 @@ public class Hotel {
 
 	public Boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
 		try {
-			return getRoomService().changeRoomStatus(roomNum, roomStatus);
+			if (HotelProperty.getInstance().isAbleChangeRoomStatus()) {
+				return getRoomService().changeRoomStatus(roomNum, roomStatus);
+			} else {
+				return false;
+			}
 		} catch (Exception e) {
 			logger.error(e);
 			return false;

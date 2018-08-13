@@ -8,7 +8,7 @@ public class ExitAction implements IAction {
 
 	@Override
 	public void execute() {
-		MenuController.inProgress = false;
+		MenuController.setInProgress(false);
 		DisplayOperator.printMessage("Thank you for using application \"Hotel\". Bye!");
 	}
 
