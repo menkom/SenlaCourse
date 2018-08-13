@@ -1,15 +1,18 @@
 package com.senla.hotel.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.senla.exception.NoEntryException;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.repository.RoomRepository;
+import com.senla.util.ExportCSV;
 
 public class RoomService implements IService {
 
@@ -131,6 +134,15 @@ public class RoomService implements IService {
 		}
 		result.sort(comparator);
 		return result;
+	}
+
+	public Boolean exportRoomCSV(Integer roomNum) throws NoEntryException, IOException {
+		Room room = getRoomByNum(roomNum);
+		if (room == null) {
+			return false;
+		} else {
+			return ExportCSV.saveCSV(room, "room_" + room.getId() + ".csv");
+		}
 	}
 
 }

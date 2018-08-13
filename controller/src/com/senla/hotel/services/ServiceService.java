@@ -1,10 +1,13 @@
 package com.senla.hotel.services;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
+import com.senla.exception.NoEntryException;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
+import com.senla.util.ExportCSV;
 
 public class ServiceService implements IService {
 
@@ -55,6 +58,15 @@ public class ServiceService implements IService {
 			result = true;
 		}
 		return result;
+	}
+
+	public Boolean exportServiceCSV(Integer code) throws NoEntryException, IOException {
+		Service service = getServiceByCode(code);
+		if (service == null) {
+			return false;
+		} else {
+			return ExportCSV.saveCSV(service, "service_" + service.getId() + ".csv");
+		}
 	}
 
 }

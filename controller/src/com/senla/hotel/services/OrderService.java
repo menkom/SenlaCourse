@@ -1,5 +1,6 @@
 package com.senla.hotel.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -13,6 +14,7 @@ import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.OrderRepository;
+import com.senla.util.ExportCSV;
 
 public class OrderService implements IService {
 
@@ -174,6 +176,15 @@ public class OrderService implements IService {
 			return null;
 		} else {
 			return orderToClone.clone();
+		}
+	}
+
+	public Boolean exportOrderCSV(Integer orderNum) throws NoEntryException, IOException {
+		Order order = getOrderByNum(orderNum);
+		if (order == null) {
+			return false;
+		} else {
+			return ExportCSV.saveCSV(order, "order_" + order.getId() + ".csv");
 		}
 	}
 
