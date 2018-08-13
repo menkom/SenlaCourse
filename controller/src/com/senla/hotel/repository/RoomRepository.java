@@ -74,4 +74,17 @@ public class RoomRepository {
 		this.lastId = lastId;
 	}
 
+	public Boolean update(Room room) {
+		Boolean result = false;
+		if (room != null) {
+			for (int i = 0; i < getRooms().size(); i++) {
+				if ((getRooms().get(i) != null) && (getRooms().get(i).getId().equals(room.getId()))) {
+					getRooms().set(i, room);
+				}
+			}
+		}
+		result = true;
+		return result;
+	}
+
 }

@@ -83,4 +83,17 @@ public class OrderRepository {
 		this.lastId = lastId;
 	}
 
+	public Boolean update(Order order) {
+		Boolean result = false;
+		if (order != null) {
+			for (int i = 0; i < getOrders().size(); i++) {
+				if ((getOrders().get(i) != null) && (getOrders().get(i).getId().equals(order.getId()))) {
+					getOrders().set(i, order);
+				}
+			}
+		}
+		result = true;
+		return result;
+	}
+
 }

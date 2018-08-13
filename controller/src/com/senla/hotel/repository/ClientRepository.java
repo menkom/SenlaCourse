@@ -62,6 +62,19 @@ public class ClientRepository {
 		return null;
 	}
 
+	public Boolean update(Client client) {
+		Boolean result = false;
+		if (client != null) {
+			for (int i = 0; i < getClients().size(); i++) {
+				if ((getClients().get(i) != null) && (getClients().get(i).getId().equals(client.getId()))) {
+					getClients().set(i, client);
+				}
+			}
+		}
+		result = true;
+		return result;
+	}
+
 	public List<Client> getClients() {
 		return clients;
 	}

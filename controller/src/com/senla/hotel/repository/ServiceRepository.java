@@ -74,4 +74,17 @@ public class ServiceRepository {
 		this.lastId = lastId;
 	}
 
+	public Boolean update(Service service) {
+		Boolean result = false;
+		if (service != null) {
+			for (int i = 0; i < getServices().size(); i++) {
+				if ((getServices().get(i) != null) && (getServices().get(i).getId().equals(service.getId()))) {
+					getServices().set(i, service);
+				}
+			}
+		}
+		result = true;
+		return result;
+	}
+
 }
