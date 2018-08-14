@@ -7,6 +7,7 @@ import com.senla.ui.action.client.ShowAllClients;
 import com.senla.ui.action.client.ShowNumberOfClients;
 import com.senla.ui.action.order.AddOrderService;
 import com.senla.ui.action.order.CloneOrder;
+import com.senla.ui.action.order.ExportOrderAction;
 import com.senla.ui.action.order.ShowActiveOrdersSortByFinishDate;
 import com.senla.ui.action.order.ShowActiveOrdersSortByName;
 import com.senla.ui.action.order.ShowLastOrdersByRoom;
@@ -15,6 +16,7 @@ import com.senla.ui.action.order.ShowOrderServices;
 import com.senla.ui.action.room.AddRoom;
 import com.senla.ui.action.room.ChangeRoomPrice;
 import com.senla.ui.action.room.ChangeRoomStatus;
+import com.senla.ui.action.room.ExportRoomAction;
 import com.senla.ui.action.room.FreeRoom;
 import com.senla.ui.action.room.OrderRoom;
 import com.senla.ui.action.room.ShowAllRoomsSortByCapacity;
@@ -29,6 +31,7 @@ import com.senla.ui.action.room.ShowNumberOfFreeRooms;
 import com.senla.ui.action.room.ShowRoomInfo;
 import com.senla.ui.action.service.AddService;
 import com.senla.ui.action.service.ChangeServicePrice;
+import com.senla.ui.action.service.ExportServiceAction;
 import com.senla.ui.action.service.ShowAllServicesSortByPrice;
 
 public class Builder {
@@ -56,6 +59,7 @@ public class Builder {
 	private static final String CHANGE_ROOM_PRICE = "Change room price.";
 	private static final String CHANGE_ROOM_STATUS = "Change room status.";
 	private static final String BACK_MENU_TEXT = "Go back";
+	private static final String EXPORT_ROOM = "Export room";
 
 	private static final String CLIENT_OPTIONS = "Client options";
 	private static final String SHOW_ALL_CLIENTS = "Show all clients.";
@@ -67,6 +71,7 @@ public class Builder {
 	private static final String SHOW_ALL_SERVICES = "Show all services sort by price.";
 	private static final String ADD_SERVICE = "Add new service.";
 	private static final String CHANGE_SERVICE_PRICE = "Change service price.";
+	private static final String EXPORT_SERVICE = "Export service";
 
 	private static final String ORDER_OPTIONS = "Order options";
 	private static final String SHOW_ACTIVE_ORDERS_SORT_NAME = "Show active orders sort by client name.";
@@ -76,6 +81,7 @@ public class Builder {
 	private static final String SHOW_ORDER_SERVICES = "Show order services.";
 	private static final String ADD_SERVICE_ORDER = "Add service to order.";
 	private static final String CLONE_ORDER = "Clone order.";
+	private static final String EXPORT_ORDER = "Export order";
 
 	private static final String EXIT_MENU_TEXT = "Exit";
 
@@ -169,6 +175,9 @@ public class Builder {
 		MenuItem changeRoomStatusMenuItem = new MenuItem(CHANGE_ROOM_STATUS, new ChangeRoomStatus());
 		roomsEditMenu.addMenuItem(changeRoomStatusMenuItem);
 
+		MenuItem exportRoomMenuItem = new MenuItem(EXPORT_ROOM, new ExportRoomAction());
+		roomsEditMenu.addMenuItem(exportRoomMenuItem);
+
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		roomsEditMenu.addMenuItem(backMenuItem);
 	}
@@ -236,6 +245,9 @@ public class Builder {
 		MenuItem changeServicePriceMenuItem = new MenuItem(CHANGE_SERVICE_PRICE, new ChangeServicePrice());
 		servicesMenu.addMenuItem(changeServicePriceMenuItem);
 
+		MenuItem exportServiceMenuItem = new MenuItem(EXPORT_SERVICE, new ExportServiceAction());
+		servicesMenu.addMenuItem(exportServiceMenuItem);
+
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		servicesMenu.addMenuItem(backMenuItem);
 	}
@@ -269,6 +281,9 @@ public class Builder {
 
 		MenuItem cloneOrderMenuItem = new MenuItem(CLONE_ORDER, new CloneOrder());
 		ordersMenu.addMenuItem(cloneOrderMenuItem);
+
+		MenuItem exportOrderMenuItem = new MenuItem(EXPORT_ORDER, new ExportOrderAction());
+		ordersMenu.addMenuItem(exportOrderMenuItem);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		ordersMenu.addMenuItem(backMenuItem);

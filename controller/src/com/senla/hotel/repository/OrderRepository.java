@@ -53,6 +53,18 @@ public class OrderRepository {
 		return result;
 	}
 
+	public Boolean deleteById(Integer id) {
+		Boolean result = false;
+		for (int i = 0; i < orders.size() - 1; i++) {
+			if (orders.get(i).getId().equals(id)) {
+				orders.remove(i);
+				result = true;
+				break;
+			}
+		}
+		return result;
+	}
+
 	public Order getOrderByNum(Integer num) {
 		for (Order order : getOrders()) {
 			if ((order != null) && (order.getNum().equals(num))) {

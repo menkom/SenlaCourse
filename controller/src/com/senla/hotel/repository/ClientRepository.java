@@ -35,13 +35,28 @@ public class ClientRepository {
 		return result;
 	}
 
-	public void delete(String name) {
+	public Boolean delete(String name) {
+		Boolean result = false;
 		for (int i = 0; i < clients.size() - 1; i++) {
 			if (clients.get(i).getName().equals(name)) {
 				clients.remove(i);
+				result = true;
 				break;
 			}
 		}
+		return result;
+	}
+
+	public Boolean deleteById(Integer id) {
+		Boolean result = false;
+		for (int i = 0; i < clients.size() - 1; i++) {
+			if (clients.get(i).getId().equals(id)) {
+				clients.remove(i);
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 
 	public Client getClientByName(String name) {

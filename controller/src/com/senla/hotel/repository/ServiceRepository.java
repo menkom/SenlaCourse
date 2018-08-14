@@ -39,13 +39,28 @@ public class ServiceRepository {
 		return result;
 	}
 
-	public void delete(Integer serviceCode) {
+	public Boolean delete(Integer serviceCode) {
+		Boolean result = false;
 		for (int i = 0; i < getServices().size(); i++) {
 			if (getServices().get(i).getCode().equals(serviceCode)) {
 				getServices().remove(i);
+				result = true;
 				break;
 			}
 		}
+		return result;
+	}
+
+	public Boolean deleteById(Integer id) {
+		Boolean result = false;
+		for (int i = 0; i < services.size() - 1; i++) {
+			if (services.get(i).getId().equals(id)) {
+				services.remove(i);
+				result = true;
+				break;
+			}
+		}
+		return result;
 	}
 
 	public Service getServiceByCode(Integer number) {

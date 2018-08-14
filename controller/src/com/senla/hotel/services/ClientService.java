@@ -45,6 +45,10 @@ public class ClientService implements IService {
 		return getClientRepository().getClients().size();
 	}
 
+	public ClientRepository getClientRepository() {
+		return clientRepository;
+	}
+
 	public Boolean exportClientCSV(String name) throws NoEntryException, IOException {
 		Client client = getClientByName(name);
 		if (client == null) {
@@ -54,8 +58,8 @@ public class ClientService implements IService {
 		}
 	}
 
-	public ClientRepository getClientRepository() {
-		return clientRepository;
+	public Boolean importClientCSV(String name) throws NoEntryException, IOException {
+		return false;
 	}
 
 }

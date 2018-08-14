@@ -54,6 +54,22 @@ public class Hotel {
 		return hotel;
 	}
 
+	private ClientService getClientService() {
+		return clientService;
+	}
+
+	private RoomService getRoomService() {
+		return roomService;
+	}
+
+	private ServiceService getServiceService() {
+		return serviceService;
+	}
+
+	private OrderService getOrderService() {
+		return orderService;
+	}
+
 	public Boolean load() {
 		Boolean result = true;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
@@ -374,22 +390,6 @@ public class Hotel {
 		}
 	}
 
-	private ClientService getClientService() {
-		return clientService;
-	}
-
-	private RoomService getRoomService() {
-		return roomService;
-	}
-
-	private ServiceService getServiceService() {
-		return serviceService;
-	}
-
-	private OrderService getOrderService() {
-		return orderService;
-	}
-
 	public List<Client> getAllClients() {
 		try {
 			return getClientService().getAllClients();
@@ -450,6 +450,46 @@ public class Hotel {
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return null;
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
 		}
 	}
+
+	public Boolean exportOrderCSV(Integer orderNum) {
+		try {
+			return getOrderService().exportOrderCSV(orderNum);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return null;
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Boolean exportRoomCSV(Integer roomNum) {
+		try {
+			return getRoomService().exportRoomCSV(roomNum);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return null;
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
+	public Boolean exportServiceCSV(Integer code) {
+		try {
+			return getServiceService().exportServiceCSV(code);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return null;
+		} catch (Exception e) {
+			logger.error(e);
+			return null;
+		}
+	}
+
 }
