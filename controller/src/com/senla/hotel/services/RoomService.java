@@ -144,12 +144,12 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Boolean exportRoomCSV(Integer roomNum) throws NoEntryException, IOException {
+	public Boolean exportRoomCSV(Integer roomNum, String fileName) throws NoEntryException, IOException {
 		Room room = getRoomByNum(roomNum);
 		if (room == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(room.toString(), "room_" + room.getId() + ".csv");
+			return ExportCSV.saveCSV(room.toString(), fileName);
 		}
 	}
 

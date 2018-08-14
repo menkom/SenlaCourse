@@ -8,6 +8,7 @@ import com.senla.util.DisplayOperator;
 public class ExportServiceAction implements IAction {
 
 	private static final String ENTER_SERVICE_CODE = "Enter service code to export: ";
+	private static final String ENTER_FILE_NAME = "Enter file name to export (service_ServiceCode.csv if empty by default): ";
 	private static final String SERVICE_EXPORTED = "Service with code %s exported.";
 	private static final String SERVICE_EXPORT_FAILED = "Error during service export.";
 
@@ -17,7 +18,10 @@ public class ExportServiceAction implements IAction {
 		DisplayOperator.printMessage(ENTER_SERVICE_CODE);
 		Integer serviceCode = Input.inputInteger();
 
-		Boolean result = Hotel.getInstance().exportServiceCSV(serviceCode);
+		DisplayOperator.printMessage(ENTER_FILE_NAME);
+		String fileName = Input.inputString();
+
+		Boolean result = Hotel.getInstance().exportServiceCSV(serviceCode, fileName);
 		if (result) {
 			DisplayOperator.printMessage(String.format(SERVICE_EXPORTED, serviceCode));
 		} else {

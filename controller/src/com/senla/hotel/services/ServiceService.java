@@ -68,12 +68,12 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public Boolean exportServiceCSV(Integer code) throws NoEntryException, IOException {
+	public Boolean exportServiceCSV(Integer code, String fileName) throws NoEntryException, IOException {
 		Service service = getServiceByCode(code);
 		if (service == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(service.toString(), "service_" + service.getId() + ".csv");
+			return ExportCSV.saveCSV(service.toString(), fileName);
 		}
 	}
 

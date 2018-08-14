@@ -8,6 +8,7 @@ import com.senla.util.DisplayOperator;
 public class ExportOrderAction implements IAction {
 
 	private static final String ENTER_ORDER_NUM = "Enter order num to export: ";
+	private static final String ENTER_FILE_NAME = "Enter file name to export (order_OrderNum.csv if empty by default): ";
 	private static final String ORDER_EXPORTED = "Order #%s exported.";
 	private static final String ORDER_EXPORT_FAILED = "Error during order export.";
 
@@ -17,7 +18,10 @@ public class ExportOrderAction implements IAction {
 		DisplayOperator.printMessage(ENTER_ORDER_NUM);
 		Integer orderNum = Input.inputInteger();
 
-		Boolean result = Hotel.getInstance().exportOrderCSV(orderNum);
+		DisplayOperator.printMessage(ENTER_FILE_NAME);
+		String fileName = Input.inputString();
+
+		Boolean result = Hotel.getInstance().exportOrderCSV(orderNum, fileName);
 		if (result) {
 			DisplayOperator.printMessage(String.format(ORDER_EXPORTED, orderNum));
 		} else {
