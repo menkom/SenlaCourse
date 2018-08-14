@@ -30,6 +30,10 @@ public class ClientService implements IService {
 		return getClientRepository().add(client);
 	}
 
+	public Boolean update(Client client) {
+		return getClientRepository().update(client);
+	}
+
 	public List<Client> getAllClients() {
 		return getClientRepository().getClients();
 	}
@@ -67,9 +71,9 @@ public class ClientService implements IService {
 		List<Client> clients = ExportCSV.getClientsFromCSV(file);
 		for (Client client : clients) {
 			if (getClientById(client.getId()) != null) {
-				getClientRepository().update(client);
+				update(client);
 			} else {
-				getClientRepository().add(client);
+				add(client);
 			}
 		}
 		result = true;

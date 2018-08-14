@@ -58,6 +58,10 @@ public class RoomService implements IService {
 		return add(room);
 	}
 
+	public Boolean update(Room room) {
+		return getRoomRepository().update(room);
+	}
+
 	public List<Room> getAllRooms(Comparator<Room> comparator) {
 		List<Room> result = getRoomRepository().getRooms();
 		result.sort(comparator);
@@ -86,8 +90,12 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Room getRoomByNum(Integer number) {
+	public Room getRoomByNum(int number) {
 		return getRoomRepository().getRoomByNum(number);
+	}
+
+	public Room getRoomById(int id) {
+		return getRoomRepository().getRoomById(id);
 	}
 
 	public Boolean changeRoomStatus(Integer number, RoomStatus roomStatus) {
@@ -143,6 +151,20 @@ public class RoomService implements IService {
 		} else {
 			return ExportCSV.saveCSV(room.toString(), "room_" + room.getId() + ".csv");
 		}
+	}
+
+	public Boolean importRoomsCSV(String file) throws NoEntryException, IOException {
+		Boolean result = false;
+		List<Room> rooms = ExportCSV.getRoomsFromCSV(file);
+		for (Room room : rooms) {
+			if (getRoomById(room.getId()) != null) {
+				update(room);
+			} else {
+				add(room);
+			}
+		}
+		result = true;
+		return result;
 	}
 
 }

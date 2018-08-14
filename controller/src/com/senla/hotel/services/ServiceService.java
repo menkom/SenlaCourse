@@ -31,13 +31,17 @@ public class ServiceService implements IService {
 		return serviceRepository;
 	}
 
-	public void add(Service service) {
-		getServiceRepository().add(service);
+	public Boolean add(Service service) {
+		return getServiceRepository().add(service);
 	}
 
 	public Boolean addService(int code, String name, int price) {
 		Service service = new Service(code, name, price);
-		return getServiceRepository().add(service);
+		return add(service);
+	}
+
+	public Boolean update(Service service) {
+		return getServiceRepository().update(service);
 	}
 
 	public List<Service> getAllServices(Comparator<Service> comparator) {
@@ -48,6 +52,10 @@ public class ServiceService implements IService {
 
 	public Service getServiceByCode(Integer code) {
 		return getServiceRepository().getServiceByCode(code);
+	}
+
+	public Service getServiceById(int id) {
+		return getServiceRepository().getServiceById(id);
 	}
 
 	public Boolean changeServicePrice(Integer code, Integer price) {
@@ -67,6 +75,20 @@ public class ServiceService implements IService {
 		} else {
 			return ExportCSV.saveCSV(service.toString(), "service_" + service.getId() + ".csv");
 		}
+	}
+
+	public Boolean importServicesCSV(String file) throws NoEntryException, IOException {
+		Boolean result = false;
+		List<Service> rooms = ExportCSV.getServicesFromCSV(file);
+		for (Service room : rooms) {
+			if (getServiceById(room.getId()) != null) {
+				update(room);
+			} else {
+				add(room);
+			}
+		}
+		result = true;
+		return result;
 	}
 
 }

@@ -51,6 +51,10 @@ public class OrderService implements IService {
 		return add(order);
 	}
 
+	public Boolean update(Order order) {
+		return orderRepository.update(order);
+	}
+
 	public Order getOrderByNum(Integer num) {
 		return getOrderRepository().getOrderByNum(num);
 	}
@@ -65,7 +69,7 @@ public class OrderService implements IService {
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 		Order order = new Order(orderNum, ClientService.getInstance().getClientByName(clientName), room, dateStart,
 				dateFinish);
-		result = this.add(order);
+		result = add(order);
 		if (order.getStartDate().equals(new Date())) {
 			order.getRoom().setStatus(RoomStatus.OCCUPIED);
 		}
@@ -193,9 +197,9 @@ public class OrderService implements IService {
 		List<Order> orders = ExportCSV.getOrdersFromCSV(file);
 		for (Order order : orders) {
 			if (getOrderById(order.getId()) != null) {
-				getOrderRepository().update(order);
+				update(order);
 			} else {
-				getOrderRepository().add(order);
+				add(order);
 			}
 		}
 		result = true;
