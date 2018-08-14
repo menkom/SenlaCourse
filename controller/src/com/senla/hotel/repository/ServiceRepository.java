@@ -30,11 +30,16 @@ public class ServiceRepository {
 	}
 
 	public Boolean add(Service service) {
-		Integer id = IdGenerator.generateId(lastId);
-		service.setId(id);
-		Boolean result = getServices().add(service);
-		if (result) {
-			lastId = id;
+		Boolean result = false;
+		if (service.getId() != null) {
+			result = services.add(service);
+		} else {
+			Integer id = IdGenerator.generateId(lastId);
+			service.setId(id);
+			result = getServices().add(service);
+			if (result) {
+				lastId = id;
+			}
 		}
 		return result;
 	}

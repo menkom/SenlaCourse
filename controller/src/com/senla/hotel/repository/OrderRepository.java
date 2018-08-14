@@ -31,12 +31,16 @@ public class OrderRepository {
 	}
 
 	public Boolean add(Order order) {
-		Integer id = IdGenerator.generateId(lastId);
-		order.setId(id);
-
-		Boolean result = getOrders().add(order);
-		if (result) {
-			lastId = id;
+		Boolean result = false;
+		if (order.getId() != null) {
+			result = orders.add(order);
+		} else {
+			Integer id = IdGenerator.generateId(lastId);
+			order.setId(id);
+			result = getOrders().add(order);
+			if (result) {
+				lastId = id;
+			}
 		}
 		return result;
 	}

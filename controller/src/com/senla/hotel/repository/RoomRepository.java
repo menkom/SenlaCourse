@@ -30,11 +30,17 @@ public class RoomRepository {
 	}
 
 	public Boolean add(Room room) {
-		Integer id = IdGenerator.generateId(lastId);
-		room.setId(id);
-		Boolean result = getRooms().add(room);
-		if (result) {
-			lastId = id;
+		Boolean result = false;
+		if (room.getId() != null) {
+			result = rooms.add(room);
+		} else {
+
+			Integer id = IdGenerator.generateId(lastId);
+			room.setId(id);
+			result = getRooms().add(room);
+			if (result) {
+				lastId = id;
+			}
 		}
 		return result;
 	}
