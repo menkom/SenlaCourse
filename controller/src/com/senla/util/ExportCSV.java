@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.senla.base.BaseObject;
 import com.senla.converter.ListConverter;
 import com.senla.exception.NoEntryException;
 import com.senla.hotel.model.Client;
@@ -22,6 +23,19 @@ public class ExportCSV {
 		try (FileWriter fileWriter = new FileWriter(path)) {
 			try (BufferedWriter br = new BufferedWriter(fileWriter);) {
 				br.write(line);
+			}
+		}
+		result = true;
+		return result;
+	}
+
+	public static <T extends BaseObject> Boolean saveCSV(List<T> list, String path) throws IOException {
+		Boolean result = false;
+		try (FileWriter fileWriter = new FileWriter(path)) {
+			try (BufferedWriter br = new BufferedWriter(fileWriter);) {
+				for (T element : list) {
+					br.write(element.toString());
+				}
 			}
 		}
 		result = true;
