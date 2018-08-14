@@ -1,6 +1,7 @@
 package com.senla.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +20,9 @@ public class ExportCSV {
 	public static Boolean saveCSV(String line, String path) throws IOException {
 		Boolean result = false;
 		try (FileWriter fileWriter = new FileWriter(path)) {
-			fileWriter.append(line);
+			try (BufferedWriter br = new BufferedWriter(fileWriter);) {
+				br.write(line);
+			}
 		}
 		result = true;
 		return result;
