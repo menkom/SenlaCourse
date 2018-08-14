@@ -449,10 +449,10 @@ public class Hotel {
 			return getClientService().exportClientCSV(name);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
-			return null;
+			return false;
 		} catch (Exception e) {
 			logger.error(e);
-			return null;
+			return false;
 		}
 	}
 
@@ -461,10 +461,10 @@ public class Hotel {
 			return getOrderService().exportOrderCSV(orderNum);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
-			return null;
+			return false;
 		} catch (Exception e) {
 			logger.error(e);
-			return null;
+			return false;
 		}
 	}
 
@@ -485,10 +485,25 @@ public class Hotel {
 			return getServiceService().exportServiceCSV(code);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
-			return null;
+			return false;
 		} catch (Exception e) {
 			logger.error(e);
-			return null;
+			return false;
+		}
+	}
+
+	public Boolean importClientCSV(String fileName) {
+		try {
+			return getClientService().importClientsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return false;
+		} catch (NullPointerException ex) {
+			logger.error(ex);
+			return false;
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
 		}
 	}
 

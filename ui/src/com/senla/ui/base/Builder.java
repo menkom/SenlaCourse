@@ -3,6 +3,7 @@ package com.senla.ui.base;
 import com.senla.ui.action.ExitAction;
 import com.senla.ui.action.client.AddClient;
 import com.senla.ui.action.client.ExportClientAction;
+import com.senla.ui.action.client.ImportClientAction;
 import com.senla.ui.action.client.ShowAllClients;
 import com.senla.ui.action.client.ShowNumberOfClients;
 import com.senla.ui.action.order.AddOrderService;
@@ -66,6 +67,7 @@ public class Builder {
 	private static final String SHOW_NUMBER_OF_CLIENTS = "Show number of clients.";
 	private static final String ADD_NEW_CLIENT = "Add new client.";
 	private static final String EXPORT_CLIENT = "Export client";
+	private static final String IMPORT_CLIENT = "Import client";
 
 	private static final String SERVICE_OPTIONS = "Service options";
 	private static final String SHOW_ALL_SERVICES = "Show all services sort by price.";
@@ -224,6 +226,9 @@ public class Builder {
 
 		MenuItem exportClientMenuItem = new MenuItem(EXPORT_CLIENT, new ExportClientAction());
 		clientsEditMenu.addMenuItem(exportClientMenuItem);
+
+		MenuItem importClientMenuItem = new MenuItem(IMPORT_CLIENT, new ImportClientAction());
+		clientsEditMenu.addMenuItem(importClientMenuItem);
 
 		MenuItem backMenuItem = new MenuItem(BACK_MENU_TEXT, upLevelMenu);
 		clientsEditMenu.addMenuItem(backMenuItem);

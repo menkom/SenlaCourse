@@ -7,28 +7,41 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.senla.base.BaseObject;
+import com.senla.converter.ListConverter;
+import com.senla.exception.NoEntryException;
+import com.senla.hotel.model.Client;
 
 public class ExportCSV {
 
-	public static <T extends BaseObject> Boolean saveCSV(T object, String path) throws IOException {
+	public static Boolean saveCSV(String line, String path) throws IOException {
 		Boolean result = false;
-
 		try (FileWriter fileWriter = new FileWriter(path)) {
-			fileWriter.append(object.toString());
+			fileWriter.append(line);
 		}
 		result = true;
 		return result;
 	}
 
-	public static <T extends BaseObject> List<T> loadCSV(String path) throws IOException {
-		List<T> result = new ArrayList<T>();
+	private static List<String> loadCSV(String path) throws IOException {
+		List<String> result = new ArrayList<>();
 		String line;
 		try (FileReader fileReader = new FileReader(path)) {
 			try (BufferedReader br = new BufferedReader(fileReader);) {
-				line = br.readLine();
+				while ((line = br.readLine()) != null) {
+					result.add(line);
+				}
 			}
 		}
 		return result;
 	}
+
+	public static List<Client> getClientsFromCSV(String file) throws NoEntryException, IOException {
+		List<Client> result = new ArrayList<>();
+		List<String> list = loadCSV(file);
+		if (list != null) {
+			result = ListConverter.getClients(list);
+		}
+		return result;
+	}
+
 }

@@ -184,7 +184,7 @@ public class OrderService implements IService {
 		if (order == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(order, "order_" + order.getId() + ".csv");
+			return ExportCSV.saveCSV(order.toString(), "order_" + order.getId() + ".csv");
 		}
 	}
 

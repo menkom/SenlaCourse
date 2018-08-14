@@ -65,7 +65,7 @@ public class ServiceService implements IService {
 		if (service == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(service, "service_" + service.getId() + ".csv");
+			return ExportCSV.saveCSV(service.toString(), "service_" + service.getId() + ".csv");
 		}
 	}
 

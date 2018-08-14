@@ -41,6 +41,10 @@ public class ClientService implements IService {
 		return result;
 	}
 
+	public Client getClientById(Integer id) throws NoEntryException {
+		return clientRepository.getClientById(id);
+	}
+
 	public int getNumberOfClients() {
 		return getClientRepository().getClients().size();
 	}
@@ -54,12 +58,22 @@ public class ClientService implements IService {
 		if (client == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(client, "client_" + client.getId() + ".csv");
+			return ExportCSV.saveCSV(client.toString(), "client_" + client.getId() + ".csv");
 		}
 	}
 
-	public Boolean importClientCSV(String name) throws NoEntryException, IOException {
-		return false;
+	public Boolean importClientsCSV(String file) throws NoEntryException, IOException {
+		Boolean result = false;
+		List<Client> clients = ExportCSV.getClientsFromCSV(file);
+		for (Client client : clients) {
+			if (getClientById(client.getId()) != null) {
+				getClientRepository().update(client);
+			} else {
+				getClientRepository().add(client);
+			}
+		}
+		result = true;
+		return result;
 	}
 
 }

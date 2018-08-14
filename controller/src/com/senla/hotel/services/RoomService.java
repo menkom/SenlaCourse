@@ -141,7 +141,7 @@ public class RoomService implements IService {
 		if (room == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(room, "room_" + room.getId() + ".csv");
+			return ExportCSV.saveCSV(room.toString(), "room_" + room.getId() + ".csv");
 		}
 	}
 

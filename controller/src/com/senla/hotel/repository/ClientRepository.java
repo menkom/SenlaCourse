@@ -26,11 +26,16 @@ public class ClientRepository {
 	}
 
 	public Boolean add(Client client) {
-		Integer id = IdGenerator.generateId(lastId);
-		client.setId(id);
-		Boolean result = clients.add(client);
-		if (result) {
-			lastId = id;
+		Boolean result = false;
+		if (client.getId() != null) {
+			result = clients.add(client);
+		} else {
+			Integer id = IdGenerator.generateId(lastId);
+			client.setId(id);
+			result = clients.add(client);
+			if (result) {
+				lastId = id;
+			}
 		}
 		return result;
 	}
