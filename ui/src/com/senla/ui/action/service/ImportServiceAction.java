@@ -6,7 +6,7 @@ import com.senla.ui.util.FileCheck;
 import com.senla.ui.util.Input;
 import com.senla.util.DisplayOperator;
 
-public class ImportService implements IAction {
+public class ImportServiceAction implements IAction {
 
 	private static final String ENTER_FILE_NAME = "Enter file name to import services: ";
 	private static final String FILE_IMPORT = "File %s imported.";
