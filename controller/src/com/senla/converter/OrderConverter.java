@@ -50,9 +50,14 @@ public class OrderConverter {
 				logger.error(e);
 			}
 		}
-		Order result = new Order(Integer.parseInt(array[1]), client, room, dateStart, dateFinish);
+		Order result = new Order();
 
 		result.setId(Integer.parseInt(array[0]));
+		result.setNum(Integer.parseInt(array[1]));
+		result.setClient(client);
+		result.setRoom(room);
+		result.setStartDate(dateStart);
+		result.setFinishDate(dateFinish);
 
 		for (int i = 6; i < array.length; i++) {
 			Service service = ServiceRepository.getInstance().getServiceById(Integer.parseInt(array[i]));

@@ -22,10 +22,10 @@ public class ListConverter {
 		return result.toArray(new String[result.size()]);
 	}
 
-	public static List<Client> getClients(String[] array) {
+	public static List<Client> getClients(List<String> list) {
 		List<Client> clients = new ArrayList<>();
 
-		for (String line : array) {
+		for (String line : list) {
 			Client client = ClientConverter.getClientFromString(line);
 
 			clients.add(client);
@@ -34,10 +34,10 @@ public class ListConverter {
 		return clients;
 	}
 
-	public static List<Order> getOrders(String[] array) {
+	public static List<Order> getOrders(List<String> list) {
 		List<Order> orders = new ArrayList<>();
 
-		for (String line : array) {
+		for (String line : list) {
 			Order order = OrderConverter.getOrderFromString(line);
 
 			orders.add(order);
@@ -45,10 +45,10 @@ public class ListConverter {
 		return orders;
 	}
 
-	public static List<Room> getRooms(String[] array) {
+	public static List<Room> getRooms(List<String> list) {
 		List<Room> orders = new ArrayList<>();
 
-		for (String line : array) {
+		for (String line : list) {
 			Room room = RoomConverter.getRoomFromString(line);
 
 			orders.add(room);
@@ -56,10 +56,10 @@ public class ListConverter {
 		return orders;
 	}
 
-	public static List<Service> getServices(String[] array) {
+	public static List<Service> getServices(List<String> list) {
 		List<Service> orders = new ArrayList<>();
 
-		for (String line : array) {
+		for (String line : list) {
 			Service service = ServiceConverter.getServiceFromString(line);
 
 			orders.add(service);
