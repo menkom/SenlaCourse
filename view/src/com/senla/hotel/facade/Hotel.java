@@ -492,7 +492,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean importClientCSV(String fileName) {
+	public Boolean importClientsCSV(String fileName) {
 		try {
 			return getClientService().importClientsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
 		} catch (NoEntryException | IOException e) {
@@ -507,4 +507,48 @@ public class Hotel {
 		}
 	}
 
+	public Boolean importOrdersCSV(String fileName) {
+		try {
+			return getOrderService().importOrdersCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return false;
+		} catch (NullPointerException ex) {
+			logger.error(ex);
+			return false;
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+	}
+
+	public Boolean importRoomsCSV(String fileName) {
+		try {
+			return getRoomService().importRoomsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return false;
+		} catch (NullPointerException ex) {
+			logger.error(ex);
+			return false;
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+	}
+
+	public Boolean importServicesCSV(String fileName) {
+		try {
+			return getServiceService().importServicesCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
+		} catch (NoEntryException | IOException e) {
+			logger.error(e);
+			return false;
+		} catch (NullPointerException ex) {
+			logger.error(ex);
+			return false;
+		} catch (Exception e) {
+			logger.error(e);
+			return false;
+		}
+	}
 }

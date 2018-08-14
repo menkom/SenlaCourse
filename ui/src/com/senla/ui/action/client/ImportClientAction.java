@@ -19,7 +19,7 @@ public class ImportClientAction implements IAction {
 		DisplayOperator.printMessage(ENTER_FILE_NAME);
 		String fileName = Input.inputString();
 		if (FileCheck.isFileExist(fileName)) {
-			Boolean result = Hotel.getInstance().importClientCSV(fileName);
+			Boolean result = Hotel.getInstance().importClientsCSV(fileName);
 			if (result) {
 				DisplayOperator.printMessage(String.format(CLIENT_IMPORT, fileName));
 			} else {
