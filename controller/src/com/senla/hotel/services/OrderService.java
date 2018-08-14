@@ -188,4 +188,18 @@ public class OrderService implements IService {
 		}
 	}
 
+	public Boolean importOrdersCSV(String file) throws NoEntryException, IOException {
+		Boolean result = false;
+		List<Order> orders = ExportCSV.getOrdersFromCSV(file);
+		for (Order order : orders) {
+			if (getOrderById(order.getId()) != null) {
+				getOrderRepository().update(order);
+			} else {
+				getOrderRepository().add(order);
+			}
+		}
+		result = true;
+		return result;
+	}
+
 }
