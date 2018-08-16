@@ -183,12 +183,12 @@ public class OrderService implements IService {
 		}
 	}
 
-	public Boolean exportOrderCSV(Integer orderNum) throws NoEntryException, IOException {
+	public Boolean exportOrderCSV(Integer orderNum, String fileName) throws NoEntryException, IOException {
 		Order order = getOrderByNum(orderNum);
 		if (order == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(order.toString(), "order_" + order.getId() + ".csv");
+			return ExportCSV.saveCSV(order.toString(), fileName);
 		}
 	}
 

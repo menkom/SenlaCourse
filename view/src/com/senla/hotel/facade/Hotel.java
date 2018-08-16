@@ -444,9 +444,11 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportClientCSV(String name) {
+	public Boolean exportClientCSV(String name, String fileName) {
 		try {
-			return getClientService().exportClientCSV(name);
+			String filePath = HotelProperty.getInstance().getCsvFilePath()
+					+ (fileName.equals("") ? "client_" + name + ".csv" : fileName);
+			return getClientService().exportClientCSV(name, filePath);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return false;
@@ -456,9 +458,11 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportOrderCSV(Integer orderNum) {
+	public Boolean exportOrderCSV(Integer orderNum, String fileName) {
 		try {
-			return getOrderService().exportOrderCSV(orderNum);
+			String filePath = HotelProperty.getInstance().getCsvFilePath()
+					+ (fileName.equals("") ? "order_" + orderNum + ".csv" : fileName);
+			return getOrderService().exportOrderCSV(orderNum, filePath);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return false;
@@ -468,9 +472,11 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportRoomCSV(Integer roomNum) {
+	public Boolean exportRoomCSV(Integer roomNum, String fileName) {
 		try {
-			return getRoomService().exportRoomCSV(roomNum);
+			String filePath = HotelProperty.getInstance().getCsvFilePath()
+					+ (fileName.equals("") ? "room_" + roomNum + ".csv" : fileName);
+			return getRoomService().exportRoomCSV(roomNum, filePath);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return null;
@@ -480,9 +486,11 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportServiceCSV(Integer code) {
+	public Boolean exportServiceCSV(Integer code, String fileName) {
 		try {
-			return getServiceService().exportServiceCSV(code);
+			String filePath = HotelProperty.getInstance().getCsvFilePath()
+					+ (fileName.equals("") ? "service_" + code + ".csv" : fileName);
+			return getServiceService().exportServiceCSV(code, filePath);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
 			return false;

@@ -6,19 +6,29 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.senla.annotation.CsvEntity;
+import com.senla.annotation.CsvProperty;
+import com.senla.annotation.enums.PropertyType;
 import com.senla.base.BaseObject;
 
+@CsvEntity(filename = "order.csv")
 public class Order extends BaseObject implements Cloneable, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7566079556846351806L;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private Integer num;
+	@CsvProperty(propertyType = PropertyType.CompositeProperty, columnNumber = 2, keyField = "id")
 	private Client client;
+	@CsvProperty(propertyType = PropertyType.CompositeProperty, columnNumber = 3, keyField = "id")
 	private Room room;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 4)
 	private Date startDate;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 5)
 	private Date finishDate;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 6)
 	private List<Service> services;
 
 	public Order() {

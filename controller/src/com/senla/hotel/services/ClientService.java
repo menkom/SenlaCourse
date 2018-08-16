@@ -57,12 +57,12 @@ public class ClientService implements IService {
 		return clientRepository;
 	}
 
-	public Boolean exportClientCSV(String name) throws NoEntryException, IOException {
+	public Boolean exportClientCSV(String name, String fileName) throws NoEntryException, IOException {
 		Client client = getClientByName(name);
 		if (client == null) {
 			return false;
 		} else {
-			return ExportCSV.saveCSV(client.toString(), "client_" + client.getId() + ".csv");
+			return ExportCSV.saveCSV(client.toString(), fileName);
 		}
 	}
 

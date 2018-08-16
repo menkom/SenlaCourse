@@ -2,20 +2,29 @@ package com.senla.hotel.model;
 
 import java.io.Serializable;
 
+import com.senla.annotation.CsvEntity;
+import com.senla.annotation.CsvProperty;
+import com.senla.annotation.enums.PropertyType;
 import com.senla.base.BaseObject;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 
+@CsvEntity(filename = "room.csv")
 public class Room extends BaseObject implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9218560100890176515L;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private Integer number;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 2)
 	private Integer capacity;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 3)
 	private RoomStar star;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 4)
 	private RoomStatus status;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 5)
 	private Integer price;
 
 	public Room() {

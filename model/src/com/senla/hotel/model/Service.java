@@ -2,8 +2,12 @@ package com.senla.hotel.model;
 
 import java.io.Serializable;
 
+import com.senla.annotation.CsvEntity;
+import com.senla.annotation.CsvProperty;
+import com.senla.annotation.enums.PropertyType;
 import com.senla.base.BaseObject;
 
+@CsvEntity(filename = "service.csv")
 public class Service extends BaseObject implements Serializable {
 
 	/**
@@ -11,8 +15,11 @@ public class Service extends BaseObject implements Serializable {
 	 */
 	private static final long serialVersionUID = -7596450064115664493L;
 
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private Integer code;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 2)
 	private String name;
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 3)
 	private Integer price;
 
 	public Service() {
