@@ -3,6 +3,7 @@ package com.senla.hotel.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.senla.annotation.parser.CsvParser;
 import com.senla.hotel.model.Client;
 import com.senla.util.IdGenerator;
 
@@ -105,6 +106,14 @@ public class ClientRepository {
 
 	public void setLastId(Integer lastId) {
 		this.lastId = lastId;
+	}
+
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException {
+		boolean result = false;
+
+		CsvParser.exportItemCsv(getClients().get(0));
+		result = true;
+		return result;
 	}
 
 }

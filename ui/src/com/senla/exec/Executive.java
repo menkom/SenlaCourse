@@ -22,6 +22,7 @@ public class Executive {
 		if (!saved) {
 			DisplayOperator.printMessage(ERROR_SAVE);
 		}
+		Hotel.getInstance().exportCsv();
 	}
 
 }

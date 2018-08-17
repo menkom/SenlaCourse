@@ -479,10 +479,10 @@ public class Hotel {
 			return getRoomService().exportRoomCSV(roomNum, filePath);
 		} catch (NoEntryException | IOException e) {
 			logger.error(e);
-			return null;
+			return false;
 		} catch (Exception e) {
 			logger.error(e);
-			return null;
+			return false;
 		}
 	}
 
@@ -556,6 +556,15 @@ public class Hotel {
 			return false;
 		} catch (Exception e) {
 			logger.error(e);
+			return false;
+		}
+	}
+
+	public boolean exportCsv() {
+		try {
+			return getClientService().exportCsv();
+		} catch (Exception ex) {
+			logger.error(ex);
 			return false;
 		}
 	}
