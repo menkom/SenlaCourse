@@ -46,32 +46,50 @@ public class CsvParser {
 			if (fieldCsvProperty != null) {
 				if (fieldCsvProperty.propertyType() == PropertyType.SimpleProperty) {
 
-					Integer columnNumber = Integer.valueOf(fieldCsvProperty.columnNumber());
+					Integer columnNumber = fieldCsvProperty.columnNumber();
 
-					String itemValue = getValue(item, field);
-
-					result.put(columnNumber, itemValue);
+					result.putAll(getSimpleProperty(item, field, columnNumber));
 				}
 				if (fieldCsvProperty.propertyType() == PropertyType.CompositeProperty) {
 					Integer columnNumber = Integer.valueOf(fieldCsvProperty.columnNumber());
 					String keyFieldName = fieldCsvProperty.keyField();
 
-					boolean isAccessible = field.isAccessible();
-					if (!field.isAccessible()) {
-						field.setAccessible(true);
-					}
-
-					Class<? extends Object> fieldClass = field.get(item).getClass();
-
-					String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
-
-					result.put(columnNumber, itemValue);
-
-					field.setAccessible(isAccessible);
-
+					result.putAll(getCompositeProperty(item, field, columnNumber, keyFieldName));
 				}
 			}
 		}
+		return result;
+	}
+
+	private static SortedMap<Integer, String> getSimpleProperty(Object item, Field field, Integer columnNumber)
+			throws IllegalArgumentException, IllegalAccessException {
+
+		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
+		String itemValue = getValue(item, field);
+		result.put(columnNumber, itemValue);
+		return result;
+	}
+
+	private static SortedMap<Integer, String> getCompositeProperty(Object item, Field field, Integer columnNumber,
+			String keyFieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+
+		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
+
+		boolean isAccessible = field.isAccessible();
+
+		if (!field.isAccessible()) {
+			field.setAccessible(true);
+		}
+
+		Class<? extends Object> fieldClass = field.get(item).getClass();
+		//List processing needed
+		if (true) {
+			String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
+
+			result.put(columnNumber, itemValue);
+		}
+		field.setAccessible(isAccessible);
+
 		return result;
 	}
 
