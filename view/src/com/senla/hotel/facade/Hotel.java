@@ -561,11 +561,23 @@ public class Hotel {
 	}
 
 	public boolean exportCsv() {
+		boolean result = false;
 		try {
-			return getClientService().exportCsv();
-		} catch (Exception ex) {
-			logger.error(ex);
-			return false;
+			result = getClientService().exportCsv();
+			if (result) {
+				result = getServiceService().exportCsv();
+			}
+			if (result) {
+				result = getRoomService().exportCsv();
+			}
+			if (result) {
+				result = getOrderService().exportCsv();
+			}
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error(e);
+			result = false;
 		}
+		return result;
 	}
+
 }

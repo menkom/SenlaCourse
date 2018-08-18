@@ -3,6 +3,7 @@ package com.senla.hotel.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.senla.annotation.parser.CsvParser;
 import com.senla.hotel.model.Room;
 import com.senla.util.IdGenerator;
 
@@ -104,6 +105,14 @@ public class RoomRepository {
 				}
 			}
 		}
+		result = true;
+		return result;
+	}
+
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		boolean result = false;
+
+		CsvParser.exportItemCsv(getRooms().get(0));
 		result = true;
 		return result;
 	}

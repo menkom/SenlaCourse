@@ -80,7 +80,7 @@ public class ClientService implements IService {
 		return result;
 	}
 
-	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException {
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		return getClientRepository().exportCsv();
 	}
 

@@ -1,5 +1,9 @@
 package com.senla.exec;
 
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.MenuController;
 import com.senla.util.DisplayOperator;
@@ -15,14 +19,15 @@ public class Executive {
 			DisplayOperator.printMessage(ERROR_LOAD);
 		}
 
-		MenuController menuController = new MenuController();
-		menuController.run();
+//		MenuController menuController = new MenuController();
+//		menuController.run();
 
 		Boolean saved = Hotel.getInstance().save();
 		if (!saved) {
 			DisplayOperator.printMessage(ERROR_SAVE);
 		}
 		Hotel.getInstance().exportCsv();
+
 	}
 
 }

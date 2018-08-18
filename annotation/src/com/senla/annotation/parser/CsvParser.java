@@ -3,6 +3,7 @@ package com.senla.annotation.parser;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -24,6 +25,9 @@ public class CsvParser {
 //				entityId = itemCsvEntity.entityId();
 
 				SortedMap<Integer, String> data = getCsvProperties(item, itemClass);
+
+				System.out.println("----" + item.getClass() + "----");
+
 				printMap(data);
 			}
 		}
@@ -71,7 +75,8 @@ public class CsvParser {
 	}
 
 	private static SortedMap<Integer, String> getCompositeProperty(Object item, Field field, Integer columnNumber,
-			String keyFieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+			String keyFieldName)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
 
@@ -82,8 +87,15 @@ public class CsvParser {
 		}
 
 		Class<? extends Object> fieldClass = field.get(item).getClass();
-		//List processing needed
-		if (true) {
+		if (field.getType().equals(List.class)) {
+			List<?> list = (List<?>) field.get(item);
+			StringBuilder itemValue = new StringBuilder();
+
+			for (Object element : list) {
+				itemValue.append(getKeyValue(element, element.getClass(), keyFieldName));
+			}
+			result.put(columnNumber, itemValue.toString());
+		} else if (true) {
 			String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
 
 			result.put(columnNumber, itemValue);

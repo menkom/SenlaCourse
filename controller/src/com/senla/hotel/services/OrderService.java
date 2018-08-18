@@ -206,4 +206,8 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		return getOrderRepository().exportCsv();
+	}
+
 }

@@ -91,4 +91,8 @@ public class ServiceService implements IService {
 		return result;
 	}
 
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		return getServiceRepository().exportCsv();
+	}
+
 }

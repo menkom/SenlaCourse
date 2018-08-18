@@ -108,7 +108,7 @@ public class ClientRepository {
 		this.lastId = lastId;
 	}
 
-	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException {
+	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		boolean result = false;
 
 		CsvParser.exportItemCsv(getClients().get(0));

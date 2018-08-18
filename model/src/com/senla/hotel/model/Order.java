@@ -28,7 +28,7 @@ public class Order extends BaseObject implements Cloneable, Serializable {
 	private Date startDate;
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 5)
 	private Date finishDate;
-	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 6)
+	@CsvProperty(propertyType = PropertyType.CompositeProperty, columnNumber = 6, keyField = "id")
 	private List<Service> services;
 
 	public Order() {
