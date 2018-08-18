@@ -33,6 +33,7 @@ public class Order extends BaseObject implements Cloneable, Serializable {
 
 	public Order() {
 		super();
+		this.services = new ArrayList<Service>();
 	}
 
 	public Order(Integer num, Client client, Room room, Date startDate, Date finishDate) {

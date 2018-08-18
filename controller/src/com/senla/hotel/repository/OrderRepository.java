@@ -1,5 +1,6 @@
 package com.senla.hotel.repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,10 +114,11 @@ public class OrderRepository {
 		return result;
 	}
 
-	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	public boolean exportCsv(String csvFilePath)
+			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException {
 		boolean result = false;
 
-		CsvParser.exportItemCsv(getOrders().get(2));
+		CsvParser.exportItemCsv(getOrders(), csvFilePath);
 		result = true;
 		return result;
 	}

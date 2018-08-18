@@ -167,8 +167,8 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public boolean exportCsv() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-		return getRoomRepository().exportCsv();
+	public boolean exportCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, IOException {
+		return getRoomRepository().exportCsv(csvFilePath);
 	}
 
 }

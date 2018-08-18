@@ -563,17 +563,20 @@ public class Hotel {
 	public boolean exportCsv() {
 		boolean result = false;
 		try {
-			result = getClientService().exportCsv();
+			result = getClientService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
 			if (result) {
-				result = getServiceService().exportCsv();
+				result = getServiceService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
 			}
 			if (result) {
-				result = getRoomService().exportCsv();
+				result = getRoomService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
 			}
 			if (result) {
-				result = getOrderService().exportCsv();
+				result = getOrderService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
 			}
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error(e);
+			result = false;
+		} catch (IOException e) {
 			logger.error(e);
 			result = false;
 		}

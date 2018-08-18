@@ -1,7 +1,12 @@
 package com.senla.annotation.parser;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
@@ -13,32 +18,63 @@ import com.senla.annotation.enums.PropertyType;
 
 public class CsvParser {
 
-	public static void exportItemCsv(Object item)
-			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
-//		String valueSeparator;
-//		String entityId;
-		Class<? extends Object> itemClass = item.getClass();
-		if (itemClass != null) {
-			CsvEntity itemCsvEntity = (CsvEntity) itemClass.getAnnotation(CsvEntity.class);
-			if (itemCsvEntity != null) {
-//				valueSeparator = itemCsvEntity.valueSeparator();
-//				entityId = itemCsvEntity.entityId();
+	private static final String EOL = "\n";
 
-				SortedMap<Integer, String> data = getCsvProperties(item, itemClass);
+	public static boolean exportItemCsv(List<?> list, String csvFilePath) throws IllegalArgumentException,
+			IllegalAccessException, NoSuchFieldException, SecurityException, IOException {
+		boolean result = false;
+		List<String> toSave = new ArrayList<>();
+		String valueSeparator = "";
+		String filename = "";
+		for (Object item : list) {
+			Class<? extends Object> itemClass = item.getClass();
 
-				System.out.println("----" + item.getClass() + "----");
+			if (itemClass != null) {
+				CsvEntity itemCsvEntity = (CsvEntity) itemClass.getAnnotation(CsvEntity.class);
+				if (itemCsvEntity != null) {
+					if (filename.equals("")) {
+						filename = itemCsvEntity.filename();
+					}
 
-				printMap(data);
+					if (valueSeparator.equals("")) {
+						valueSeparator = itemCsvEntity.valueSeparator();
+					}
+
+					SortedMap<Integer, String> data = getCsvProperties(item, itemClass, valueSeparator);
+
+					toSave.add(mapToString(data, valueSeparator));
+				}
 			}
 		}
+
+		saveCsv(toSave, csvFilePath + filename);
+
+		result = true;
+		return result;
 	}
 
-	public static SortedMap<Integer, String> getCsvProperties(Object item, Class<?> itemClass)
+	private static boolean saveCsv(List<String> lines, String fileName) throws IOException {
+		Boolean result = false;
+		File file = new File(fileName);
+		if (!file.getName().equals("")) {
+			try (FileWriter fileWriter = new FileWriter(file)) {
+				try (BufferedWriter br = new BufferedWriter(fileWriter);) {
+					for (String line : lines) {
+						br.write(line);
+					}
+				}
+			}
+			result = true;
+		}
+		return result;
+	}
+
+	private static SortedMap<Integer, String> getCsvProperties(Object item, Class<?> itemClass, String separator)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
 
 		if (!itemClass.getSuperclass().equals(Object.class)) {
-			result.putAll(getCsvProperties(item, itemClass.getSuperclass()));
+			result.putAll(getCsvProperties(item, itemClass.getSuperclass(), separator));
 		}
 
 		final Field[] fields = itemClass.getDeclaredFields();
@@ -51,14 +87,12 @@ public class CsvParser {
 				if (fieldCsvProperty.propertyType() == PropertyType.SimpleProperty) {
 
 					Integer columnNumber = fieldCsvProperty.columnNumber();
-
 					result.putAll(getSimpleProperty(item, field, columnNumber));
-				}
-				if (fieldCsvProperty.propertyType() == PropertyType.CompositeProperty) {
+				} else if (fieldCsvProperty.propertyType() == PropertyType.CompositeProperty) {
 					Integer columnNumber = Integer.valueOf(fieldCsvProperty.columnNumber());
 					String keyFieldName = fieldCsvProperty.keyField();
 
-					result.putAll(getCompositeProperty(item, field, columnNumber, keyFieldName));
+					result.putAll(getCompositeProperty(item, field, columnNumber, keyFieldName, separator));
 				}
 			}
 		}
@@ -67,7 +101,6 @@ public class CsvParser {
 
 	private static SortedMap<Integer, String> getSimpleProperty(Object item, Field field, Integer columnNumber)
 			throws IllegalArgumentException, IllegalAccessException {
-
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
 		String itemValue = getValue(item, field);
 		result.put(columnNumber, itemValue);
@@ -75,7 +108,7 @@ public class CsvParser {
 	}
 
 	private static SortedMap<Integer, String> getCompositeProperty(Object item, Field field, Integer columnNumber,
-			String keyFieldName)
+			String keyFieldName, String separator)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
@@ -85,30 +118,49 @@ public class CsvParser {
 		if (!field.isAccessible()) {
 			field.setAccessible(true);
 		}
+		if (field.get(item) != null) {
+			Class<? extends Object> fieldClass = field.get(item).getClass();
 
-		Class<? extends Object> fieldClass = field.get(item).getClass();
-		if (field.getType().equals(List.class)) {
-			List<?> list = (List<?>) field.get(item);
-			StringBuilder itemValue = new StringBuilder();
+			if (field.getType().equals(List.class)) {
+				List<?> list = (List<?>) field.get(item);
+				if (list.size() > 0) {
+					StringBuilder itemValue = new StringBuilder();
 
-			for (Object element : list) {
-				itemValue.append(getKeyValue(element, element.getClass(), keyFieldName));
+					for (Object element : list) {
+						itemValue.append(getKeyValue(element, element.getClass(), keyFieldName)).append(separator);
+					}
+					if (list.size() > 0) {
+						itemValue.deleteCharAt(itemValue.length() - 1);
+					}
+					result.put(columnNumber, itemValue.toString());
+				}
+			} else {
+				String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
+
+				result.put(columnNumber, itemValue);
 			}
-			result.put(columnNumber, itemValue.toString());
-		} else if (true) {
-			String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
-
-			result.put(columnNumber, itemValue);
+			field.setAccessible(isAccessible);
+		} else {
+			result.put(columnNumber, "null");
 		}
-		field.setAccessible(isAccessible);
-
 		return result;
 	}
 
+	@SuppressWarnings("unused")
 	private static void printMap(SortedMap<Integer, String> map) {
+		System.out.println("-----");
 		for (SortedMap.Entry<Integer, String> entry : map.entrySet()) {
 			System.out.println("Key:" + entry.getKey() + "; Value:" + entry.getValue());
 		}
+	}
+
+	private static String mapToString(SortedMap<Integer, String> map, String separator) {
+		StringBuilder result = new StringBuilder();
+		for (SortedMap.Entry<Integer, String> entry : map.entrySet()) {
+			result.append(entry.getValue()).append(separator);
+		}
+		result.append(EOL);
+		return result.toString();
 	}
 
 	private static String getValue(Object item, Field field) throws IllegalArgumentException, IllegalAccessException {
@@ -117,9 +169,11 @@ public class CsvParser {
 		if (!field.isAccessible()) {
 			field.setAccessible(true);
 		}
-		if (field.getType().equals(Date.class)) {
+		if (field.get(item) == null) {
+			result = "null";
+		} else if (field.getType().equals(Date.class)) {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			result = formatter.format(field.get(item));
+			result = formatter.format((Date) field.get(item));
 		} else {
 			result = field.get(item).toString();
 		}
@@ -129,15 +183,15 @@ public class CsvParser {
 
 	private static String getKeyValue(Object item, Class<?> itemClass, String keyFieldName)
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-
 		String result = null;
-		if (hasField(item, itemClass, keyFieldName)) {
-			Field keyField = itemClass.getDeclaredField(keyFieldName);
-			result = getValue(item, keyField);
-		} else {
-			result = getKeyValue(item, itemClass.getSuperclass(), keyFieldName);
+		if (!keyFieldName.equals("")) {
+			if (hasField(item, itemClass, keyFieldName)) {
+				Field keyField = itemClass.getDeclaredField(keyFieldName);
+				result = getValue(item, keyField);
+			} else {
+				result = getKeyValue(item, itemClass.getSuperclass(), keyFieldName);
+			}
 		}
-
 		return result;
 	}
 
