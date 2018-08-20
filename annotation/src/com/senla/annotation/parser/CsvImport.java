@@ -16,6 +16,34 @@ import com.senla.annotation.enums.PropertyType;
 
 public class CsvImport {
 
+	private static boolean setSimpleProperty(Object item, Field field, String fieldValue)
+			throws IllegalArgumentException, IllegalAccessException, ParseException {
+		return setValue(item, field, fieldValue);
+	}
+
+	private static boolean setValue(Object item, Field field, String fieldValue)
+			throws IllegalArgumentException, IllegalAccessException, ParseException {
+		boolean result = false;
+		boolean isAccessible = field.isAccessible();
+		if (!field.isAccessible()) {
+			field.setAccessible(true);
+		}
+		if (fieldValue.equals("null")) {
+			field.set(item, null);
+		} else if (field.getType().equals(String.class)) {
+			field.set(item, fieldValue);
+		} else if (field.getType().equals(Integer.class)) {
+			field.set(item, Integer.parseInt(fieldValue));
+		} else if (field.getType().equals(Date.class)) {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			field.set(item, formatter.parse(fieldValue));
+		}
+
+		field.setAccessible(isAccessible);
+		result = true;
+		return result;
+	}
+
 	public static List<String> loadCsvFile(String path) throws IOException {
 		List<String> result = new ArrayList<>();
 		File file = new File(path);
@@ -58,34 +86,6 @@ public class CsvImport {
 				}
 			}
 		}
-		result = true;
-		return result;
-	}
-
-	private static boolean setSimpleProperty(Object item, Field field, String fieldValue)
-			throws IllegalArgumentException, IllegalAccessException, ParseException {
-		return setValue(item, field, fieldValue);
-	}
-
-	private static boolean setValue(Object item, Field field, String fieldValue)
-			throws IllegalArgumentException, IllegalAccessException, ParseException {
-		boolean result = false;
-		boolean isAccessible = field.isAccessible();
-		if (!field.isAccessible()) {
-			field.setAccessible(true);
-		}
-		if (fieldValue.equals("null")) {
-			field.set(item, null);
-		} else if (field.getType().equals(String.class)) {
-			field.set(item, fieldValue);
-		} else if (field.getType().equals(Integer.class)) {
-			field.set(item, Integer.parseInt(fieldValue));
-		} else if (field.getType().equals(Date.class)) {
-			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-			field.set(item, formatter.parse(fieldValue));
-		}
-
-		field.setAccessible(isAccessible);
 		result = true;
 		return result;
 	}
