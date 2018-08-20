@@ -1,6 +1,7 @@
 package com.senla.hotel.facade;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -583,4 +584,24 @@ public class Hotel {
 		return result;
 	}
 
+	public boolean importCsv() {
+		boolean result = false;
+		try {
+			result = getClientService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+			if (result) {
+				result = getOrderService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+			}
+			if (result) {
+				result = getRoomService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+			}
+			if (result) {
+				result = getServiceService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+			}
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
+				| InstantiationException | IOException | ParseException e) {
+			logger.error(e);
+			result = false;
+		}
+		return result;
+	}
 }

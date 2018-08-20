@@ -1,7 +1,6 @@
 package com.senla.exec;
 
 import com.senla.hotel.facade.Hotel;
-import com.senla.ui.base.MenuController;
 import com.senla.util.DisplayOperator;
 
 public class Executive {
@@ -15,9 +14,16 @@ public class Executive {
 			DisplayOperator.printMessage(ERROR_LOAD);
 		}
 
-		MenuController menuController = new MenuController();
-		menuController.run();
-		
+		loaded = Hotel.getInstance().importCsv();
+
+		if (!loaded) {
+			DisplayOperator.printMessage(ERROR_LOAD);
+		} else {
+			DisplayOperator.printMessage("Csv loaded.");
+		}
+
+//		MenuController menuController = new MenuController();
+//		menuController.run();
 
 		Boolean saved = Hotel.getInstance().save();
 		if (!saved) {
