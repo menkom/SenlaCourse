@@ -17,6 +17,7 @@ import com.senla.annotation.enums.PropertyType;
 public class CsvExport {
 
 	private static final String EOL = "\n";
+	private static final String LIST_FIELD_SEPARATOR = ",";
 
 	private static SortedMap<Integer, String> getSimpleProperty(Object item, Field field, Integer columnNumber)
 			throws IllegalArgumentException, IllegalAccessException {
@@ -27,7 +28,7 @@ public class CsvExport {
 	}
 
 	private static SortedMap<Integer, String> getCompositeProperty(Object item, Field field, Integer columnNumber,
-			String keyFieldName, String separator)
+			String keyFieldName)
 			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
@@ -46,12 +47,12 @@ public class CsvExport {
 					StringBuilder itemValue = new StringBuilder();
 
 					for (Object element : list) {
-						itemValue.append(getKeyValue(element, element.getClass(), keyFieldName)).append(separator);
-					}
-					if (list.size() > 0) {
-						itemValue.deleteCharAt(itemValue.length() - 1);
+						itemValue.append(getKeyValue(element, element.getClass(), keyFieldName))
+								.append(LIST_FIELD_SEPARATOR);
 					}
 					result.put(columnNumber, itemValue.toString());
+				} else {
+					result.put(columnNumber, "null");
 				}
 			} else {
 				String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
@@ -146,7 +147,7 @@ public class CsvExport {
 					Integer columnNumber = Integer.valueOf(fieldCsvProperty.columnNumber());
 					String keyFieldName = fieldCsvProperty.keyField();
 
-					result.putAll(getCompositeProperty(item, field, columnNumber, keyFieldName, separator));
+					result.putAll(getCompositeProperty(item, field, columnNumber, keyFieldName));
 				}
 			}
 		}
