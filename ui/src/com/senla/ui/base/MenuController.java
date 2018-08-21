@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.apache.log4j.Logger;
 
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class MenuController {
 	private static final String NEED_MENU_NUMBER = "You have to enter menu number.";

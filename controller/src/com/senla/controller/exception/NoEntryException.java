@@ -1,4 +1,4 @@
-package com.senla.exception;
+package com.senla.controller.exception;
 
 @SuppressWarnings("serial")
 public class NoEntryException extends Exception {

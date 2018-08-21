@@ -5,7 +5,7 @@ import java.util.List;
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class ShowFreeRoomsSortByCapacity implements IAction {
 

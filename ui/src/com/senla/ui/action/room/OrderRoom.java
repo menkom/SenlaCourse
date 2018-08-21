@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class OrderRoom implements IAction {
 

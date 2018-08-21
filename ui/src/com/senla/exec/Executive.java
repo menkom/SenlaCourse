@@ -1,7 +1,7 @@
 package com.senla.exec;
 
 import com.senla.hotel.facade.Hotel;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class Executive {
 

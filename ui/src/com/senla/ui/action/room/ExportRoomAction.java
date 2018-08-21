@@ -3,7 +3,7 @@ package com.senla.ui.action.room;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class ExportRoomAction implements IAction {
 

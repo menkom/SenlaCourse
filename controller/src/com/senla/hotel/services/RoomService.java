@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.exception.NoEntryException;
+import com.senla.controller.exception.NoEntryException;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;

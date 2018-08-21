@@ -13,12 +13,10 @@ import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ClientRepository;
 import com.senla.hotel.repository.RoomRepository;
 import com.senla.hotel.repository.ServiceRepository;
-import com.senla.util.DisplayOperator;
 
 public class OrderConverter {
 
 	private static final Logger logger = Logger.getLogger(OrderConverter.class);
-	private static final String ERROR_DATE_FORMAT = "Error in Date format during loading the Order.";
 	public static final String SEPARATOR = ";";
 
 	public static Order getOrderFromString(String line) {
@@ -38,7 +36,6 @@ public class OrderConverter {
 			try {
 				dateStart = formatter.parse(array[4]);
 			} catch (ParseException e) {
-				DisplayOperator.printMessage(ERROR_DATE_FORMAT);
 				logger.error(e);
 			}
 		}
@@ -46,7 +43,6 @@ public class OrderConverter {
 			try {
 				dateFinish = formatter.parse(array[5]);
 			} catch (ParseException e) {
-				DisplayOperator.printMessage(ERROR_DATE_FORMAT);
 				logger.error(e);
 			}
 		}

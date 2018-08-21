@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.senla.exception.NoEntryException;
+import com.senla.controller.exception.NoEntryException;
 import com.senla.hotel.comparator.OrderSortByClientName;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
@@ -25,7 +25,6 @@ import com.senla.hotel.services.ClientService;
 import com.senla.hotel.services.OrderService;
 import com.senla.hotel.services.RoomService;
 import com.senla.hotel.services.ServiceService;
-import com.senla.util.DisplayOperator;
 import com.senla.util.IdGenerator;
 import com.senla.util.ModelSerializer;
 
@@ -336,7 +335,6 @@ public class Hotel {
 		try {
 			return getOrderService().orderRoom(orderNum, roomNum, clientName, dateStart, dateFinish);
 		} catch (NoEntryException e) {
-			DisplayOperator.printMessage(e.toString());
 			logger.error(e);
 			return false;
 		}

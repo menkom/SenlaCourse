@@ -4,11 +4,11 @@ import java.util.InputMismatchException;
 
 import org.apache.log4j.Logger;
 
-import com.senla.exception.WrongPropertyRange;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
+import com.senla.ui.exception.WrongPropertyRange;
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class AddService implements IAction {
 	private static final String ENTER_SERVICE_CODE = "Enter service code: ";

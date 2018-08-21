@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.base.BaseObject;
+import com.senla.controller.exception.NoEntryException;
 import com.senla.converter.ListConverter;
-import com.senla.exception.NoEntryException;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;

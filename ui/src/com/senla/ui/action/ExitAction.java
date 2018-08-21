@@ -2,7 +2,7 @@ package com.senla.ui.action;
 
 import com.senla.ui.base.IAction;
 import com.senla.ui.base.MenuController;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class ExitAction implements IAction {
 

@@ -1,4 +1,4 @@
-package com.senla.util;
+package com.senla.ui.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

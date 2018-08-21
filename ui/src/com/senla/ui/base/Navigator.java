@@ -2,7 +2,7 @@ package com.senla.ui.base;
 
 import org.apache.log4j.Logger;
 
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class Navigator {
 

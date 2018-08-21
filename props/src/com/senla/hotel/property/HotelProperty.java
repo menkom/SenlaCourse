@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.senla.util.DisplayOperator;
-
 public class HotelProperty {
 
 	private static final Logger logger = Logger.getLogger(HotelProperty.class);
@@ -46,7 +44,6 @@ public class HotelProperty {
 			this.csvFilePath = prop.getProperty("csvFilePath");
 
 		} catch (IOException e) {
-			DisplayOperator.printMessage("Properties file error. File hotel.propeties not found.");
 			logger.error(e);
 		}
 

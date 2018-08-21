@@ -8,7 +8,7 @@ import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.Hotel;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class ChangeRoomStatus implements IAction {
 	private static final String ENTER_ROOM_NUM = "Enter room num: ";

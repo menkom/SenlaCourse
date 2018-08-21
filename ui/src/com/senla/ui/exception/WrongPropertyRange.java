@@ -1,4 +1,4 @@
-package com.senla.exception;
+package com.senla.ui.exception;
 
 @SuppressWarnings("serial")
 public class WrongPropertyRange extends Exception {

@@ -9,7 +9,7 @@ import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Service;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
-import com.senla.util.DisplayOperator;
+import com.senla.ui.util.DisplayOperator;
 
 public class ShowOrderServices implements IAction {
 

@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
 
-import com.senla.exception.NoEntryException;
+import com.senla.controller.exception.NoEntryException;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.repository.ServiceRepository;
 import com.senla.util.ExportCSV;
