@@ -37,8 +37,7 @@ public class AddService implements IAction {
 				throw new WrongPropertyRange(price);
 			}
 
-			Boolean result = Hotel.getInstance().addService(serviceCode, serviceName, price);
-			if (result) {
+			if (Hotel.getInstance().addService(serviceCode, serviceName, price)) {
 				DisplayOperator.printMessage(String.format(SERVICE_ADDED, serviceCode));
 			} else {
 				DisplayOperator.printMessage(ERROR_CREATING_SERVICE);
