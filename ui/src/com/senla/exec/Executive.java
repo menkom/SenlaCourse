@@ -1,6 +1,7 @@
 package com.senla.exec;
 
 import com.senla.hotel.facade.Hotel;
+import com.senla.ui.base.MenuController;
 import com.senla.ui.util.DisplayOperator;
 
 public class Executive {
@@ -9,10 +10,11 @@ public class Executive {
 	private static final String ERROR_SAVE = "Error while data saving.";
 
 	public static void main(String[] args) {
-		Boolean loaded = Hotel.getInstance().load();
-		if (!loaded) {
-			DisplayOperator.printMessage(ERROR_LOAD);
-		}
+		Boolean loaded;
+//		loaded = Hotel.getInstance().load();
+//		if (!loaded) {
+//			DisplayOperator.printMessage(ERROR_LOAD);
+//		}
 
 		loaded = Hotel.getInstance().importCsv();
 
@@ -22,8 +24,8 @@ public class Executive {
 			DisplayOperator.printMessage("Csv loaded.");
 		}
 
-//		MenuController menuController = new MenuController();
-//		menuController.run();
+		MenuController menuController = new MenuController();
+		menuController.run();
 
 		Boolean saved = Hotel.getInstance().save();
 		if (!saved) {
