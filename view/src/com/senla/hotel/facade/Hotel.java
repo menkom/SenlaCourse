@@ -1,7 +1,6 @@
 package com.senla.hotel.facade;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -561,44 +560,30 @@ public class Hotel {
 
 	public boolean exportCsv() {
 		boolean result = false;
-		try {
-			result = getClientService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
-			if (result) {
-				result = getServiceService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-			if (result) {
-				result = getRoomService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-			if (result) {
-				result = getOrderService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			logger.error(e);
-			result = false;
-		} catch (IOException e) {
-			logger.error(e);
-			result = false;
+		result = getClientService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
+		if (result) {
+			result = getServiceService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
+		}
+		if (result) {
+			result = getRoomService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
+		}
+		if (result) {
+			result = getOrderService().exportCsv(HotelProperty.getInstance().getCsvFilePath());
 		}
 		return result;
 	}
 
 	public boolean importCsv() {
 		boolean result = false;
-		try {
-			result = getClientService().importCsv(HotelProperty.getInstance().getCsvFilePath());
-			if (result) {
-				result = getOrderService().importCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-			if (result) {
-				result = getRoomService().importCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-			if (result) {
-				result = getServiceService().importCsv(HotelProperty.getInstance().getCsvFilePath());
-			}
-		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException
-				| InstantiationException | IOException | ParseException e) {
-			logger.error(e);
-			result = false;
+		result = getClientService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+		if (result) {
+			result = getOrderService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+		}
+		if (result) {
+			result = getRoomService().importCsv(HotelProperty.getInstance().getCsvFilePath());
+		}
+		if (result) {
+			result = getServiceService().importCsv(HotelProperty.getInstance().getCsvFilePath());
 		}
 		return result;
 	}
