@@ -11,25 +11,32 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import com.senla.annotation.CsvProperty;
 import com.senla.annotation.enums.PropertyType;
 
 public class CsvExport {
 
+	private static final Logger logger = Logger.getLogger(CsvExport.class);
+
 	private static final String EOL = "\n";
 	private static final String LIST_FIELD_SEPARATOR = ",";
 
-	private static SortedMap<Integer, String> getSimpleProperty(Object item, Field field, Integer columnNumber)
-			throws IllegalArgumentException, IllegalAccessException {
+	private static SortedMap<Integer, String> getSimpleProperty(Object item, Field field, Integer columnNumber) {
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
-		String itemValue = getValue(item, field);
-		result.put(columnNumber, itemValue);
+		String itemValue;
+		try {
+			itemValue = getValue(item, field);
+			result.put(columnNumber, itemValue);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			logger.error(e);
+		}
 		return result;
 	}
 
 	private static SortedMap<Integer, String> getCompositeProperty(Object item, Field field, Integer columnNumber,
-			String keyFieldName)
-			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+			String keyFieldName) {
 
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
 
@@ -38,30 +45,36 @@ public class CsvExport {
 		if (!field.isAccessible()) {
 			field.setAccessible(true);
 		}
-		if (field.get(item) != null) {
-			Class<? extends Object> fieldClass = field.get(item).getClass();
+		try {
+			if (field.get(item) != null) {
+				Class<? extends Object> fieldClass = field.get(item).getClass();
 
-			if (field.getType().equals(List.class)) {
-				List<?> list = (List<?>) field.get(item);
-				if (list.size() > 0) {
-					StringBuilder itemValue = new StringBuilder();
+				if (field.getType().equals(List.class)) {
+					List<?> list = (List<?>) field.get(item);
+					if (list.size() > 0) {
+						StringBuilder itemValue = new StringBuilder();
 
-					for (Object element : list) {
-						itemValue.append(getKeyValue(element, element.getClass(), keyFieldName))
-								.append(LIST_FIELD_SEPARATOR);
+						for (Object element : list) {
+							if (element != null) {
+								itemValue.append(getKeyValue(element, element.getClass(), keyFieldName))
+										.append(LIST_FIELD_SEPARATOR);
+							}
+						}
+						result.put(columnNumber, itemValue.toString());
+					} else {
+						result.put(columnNumber, "null");
 					}
-					result.put(columnNumber, itemValue.toString());
 				} else {
-					result.put(columnNumber, "null");
-				}
-			} else {
-				String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
+					String itemValue = getKeyValue(field.get(item), fieldClass, keyFieldName);
 
-				result.put(columnNumber, itemValue);
+					result.put(columnNumber, itemValue);
+				}
+				field.setAccessible(isAccessible);
+			} else {
+				result.put(columnNumber, "null");
 			}
-			field.setAccessible(isAccessible);
-		} else {
-			result.put(columnNumber, "null");
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			logger.error(e);
 		}
 		return result;
 	}
@@ -88,7 +101,7 @@ public class CsvExport {
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		String result = null;
 		if (!keyFieldName.equals("")) {
-			if (hasField(item, itemClass, keyFieldName)) {
+			if (hasField(itemClass, keyFieldName)) {
 				Field keyField = itemClass.getDeclaredField(keyFieldName);
 				result = getValue(item, keyField);
 			} else {
@@ -98,7 +111,7 @@ public class CsvExport {
 		return result;
 	}
 
-	private static boolean hasField(Object item, Class<?> itemClass, String keyFieldName) {
+	private static boolean hasField(Class<?> itemClass, String keyFieldName) {
 		Field[] fields = itemClass.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.getName().equals(keyFieldName)) {
@@ -108,7 +121,7 @@ public class CsvExport {
 		return false;
 	}
 
-	public static boolean saveCsvFile(List<String> lines, String fileName) throws IOException {
+	public static boolean saveCsvFile(List<String> lines, String fileName) {
 		Boolean result = false;
 		File file = new File(fileName);
 		if (!file.getName().equals("")) {
@@ -118,14 +131,15 @@ public class CsvExport {
 						br.write(line);
 					}
 				}
+			} catch (IOException e) {
+				logger.error(e);
 			}
 			result = true;
 		}
 		return result;
 	}
 
-	public static SortedMap<Integer, String> getCsvProperties(Object item, Class<?> itemClass, String separator)
-			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	public static SortedMap<Integer, String> getCsvProperties(Object item, Class<?> itemClass, String separator) {
 		SortedMap<Integer, String> result = new TreeMap<Integer, String>();
 
 		if (!itemClass.getSuperclass().equals(Object.class)) {
