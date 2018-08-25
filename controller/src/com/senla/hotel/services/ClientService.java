@@ -1,7 +1,6 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 import com.senla.controller.exception.NoEntryException;
@@ -81,13 +80,11 @@ public class ClientService implements IService {
 		return result;
 	}
 
-	public boolean exportCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException {
+	public boolean exportCsv(String csvFilePath) {
 		return getClientRepository().exportCsv(csvFilePath);
 	}
 
-	public boolean importCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException, InstantiationException, ParseException {
+	public boolean importCsv(String csvFilePath) {
 		return getClientRepository().importCsv(csvFilePath);
 	}
 

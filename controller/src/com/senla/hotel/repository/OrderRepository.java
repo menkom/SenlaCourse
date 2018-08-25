@@ -1,7 +1,5 @@
 package com.senla.hotel.repository;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +31,8 @@ public class OrderRepository {
 		return orders;
 	}
 
-	public Boolean add(Order order) {
-		Boolean result = false;
+	public boolean add(Order order) {
+		boolean result = false;
 		if (order.getId() != null) {
 			result = orders.add(order);
 		} else {
@@ -48,8 +46,14 @@ public class OrderRepository {
 		return result;
 	}
 
-	public Boolean delete(Integer orderNum) {
-		Boolean result = false;
+	public boolean addAll(List<Order> orders) {
+		boolean result = orders.addAll(orders);
+		getInstance().setLastId(IdGenerator.getLastId(getInstance().getOrders()));
+		return result;
+	}
+
+	public boolean delete(Integer orderNum) {
+		boolean result = false;
 		for (int i = 0; i < getOrders().size(); i++) {
 			if (getOrders().get(i).getNum().equals(orderNum)) {
 				getOrders().remove(i);
@@ -60,8 +64,8 @@ public class OrderRepository {
 		return result;
 	}
 
-	public Boolean deleteById(Integer id) {
-		Boolean result = false;
+	public boolean deleteById(Integer id) {
+		boolean result = false;
 		for (int i = 0; i < orders.size() - 1; i++) {
 			if (orders.get(i).getId().equals(id)) {
 				orders.remove(i);
@@ -90,7 +94,7 @@ public class OrderRepository {
 		return null;
 	}
 
-	public Boolean addOrderService(int num, Service service) {
+	public boolean addOrderService(int num, Service service) {
 		return getOrderByNum(num).addService(service);
 	}
 
@@ -102,8 +106,8 @@ public class OrderRepository {
 		this.lastId = lastId;
 	}
 
-	public Boolean update(Order order) {
-		Boolean result = false;
+	public boolean update(Order order) {
+		boolean result = false;
 		if (order != null) {
 			for (int i = 0; i < getOrders().size(); i++) {
 				if ((getOrders().get(i) != null) && (getOrders().get(i).getId().equals(order.getId()))) {
@@ -115,23 +119,12 @@ public class OrderRepository {
 		return result;
 	}
 
-	public boolean exportCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException {
-		boolean result = false;
-
-		CsvParser.exportToCsv(getOrders(), csvFilePath);
-		result = true;
-		return result;
+	public boolean exportCsv(String csvFilePath) {
+		return CsvParser.exportToCsv(getOrders(), csvFilePath);
 	}
 
-	public boolean importCsv(String csvFilePath) throws IOException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, ParseException {
-		boolean result = false;
-
-		CsvParser.importFromCsv(Order.class, csvFilePath);
-
-		result = true;
-		return result;
+	public boolean importCsv(String csvFilePath) {
+		return addAll(CsvParser.importFromCsv(Order.class, csvFilePath));
 	}
 
 }

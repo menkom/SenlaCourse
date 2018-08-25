@@ -1,7 +1,5 @@
 package com.senla.hotel.repository;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class ClientRepository {
 		return clientRepository;
 	}
 
-	public Boolean add(Client client) {
+	public boolean add(Client client) {
 		Boolean result = false;
 		if (client.getId() != null) {
 			result = clients.add(client);
@@ -43,8 +41,14 @@ public class ClientRepository {
 		return result;
 	}
 
-	public Boolean delete(String name) {
-		Boolean result = false;
+	public boolean addAll(List<Client> clients) {
+		boolean result = getClients().addAll(clients);
+		getInstance().setLastId(IdGenerator.getLastId(getInstance().getClients()));
+		return result;
+	}
+
+	public boolean delete(String name) {
+		boolean result = false;
 		for (int i = 0; i < clients.size() - 1; i++) {
 			if (clients.get(i).getName().equals(name)) {
 				clients.remove(i);
@@ -55,8 +59,8 @@ public class ClientRepository {
 		return result;
 	}
 
-	public Boolean deleteById(Integer id) {
-		Boolean result = false;
+	public boolean deleteById(Integer id) {
+		boolean result = false;
 		for (int i = 0; i < clients.size() - 1; i++) {
 			if (clients.get(i).getId().equals(id)) {
 				clients.remove(i);
@@ -85,8 +89,8 @@ public class ClientRepository {
 		return null;
 	}
 
-	public Boolean update(Client client) {
-		Boolean result = false;
+	public boolean update(Client client) {
+		boolean result = false;
 		if (client != null) {
 			for (int i = 0; i < getClients().size(); i++) {
 				if ((getClients().get(i) != null) && (getClients().get(i).getId().equals(client.getId()))) {
@@ -110,22 +114,11 @@ public class ClientRepository {
 		this.lastId = lastId;
 	}
 
-	public boolean exportCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException {
-		boolean result = false;
-
-		CsvParser.exportToCsv(getClients(), csvFilePath);
-		result = true;
-		return result;
+	public boolean exportCsv(String csvFilePath) {
+		return CsvParser.exportToCsv(getClients(), csvFilePath);
 	}
 
-	public boolean importCsv(String csvFilePath) throws IOException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, ParseException {
-		boolean result = false;
-
-		CsvParser.importFromCsv(Client.class, csvFilePath);
-
-		result = true;
-		return result;
+	public boolean importCsv(String csvFilePath) {
+		return addAll(CsvParser.importFromCsv(Client.class, csvFilePath));
 	}
 }

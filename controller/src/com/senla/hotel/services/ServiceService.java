@@ -1,7 +1,6 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -92,13 +91,11 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public boolean exportCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException {
+	public boolean exportCsv(String csvFilePath) {
 		return getServiceRepository().exportCsv(csvFilePath);
 	}
 
-	public boolean importCsv(String csvFilePath) throws IllegalArgumentException, IllegalAccessException,
-			NoSuchFieldException, SecurityException, IOException, InstantiationException, ParseException {
+	public boolean importCsv(String csvFilePath) {
 		return getServiceRepository().importCsv(csvFilePath);
 	}
 
