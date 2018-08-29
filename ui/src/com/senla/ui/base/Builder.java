@@ -12,6 +12,7 @@ import com.senla.ui.action.order.ExportOrderAction;
 import com.senla.ui.action.order.ImportOrderAction;
 import com.senla.ui.action.order.ShowActiveOrdersSortByFinishDate;
 import com.senla.ui.action.order.ShowActiveOrdersSortByName;
+import com.senla.ui.action.order.ShowAllOrders;
 import com.senla.ui.action.order.ShowLastOrdersByRoom;
 import com.senla.ui.action.order.ShowOrderPrice;
 import com.senla.ui.action.order.ShowOrderServices;
@@ -81,6 +82,7 @@ public class Builder {
 	private static final String IMPORT_SERVICE = "Import service";
 
 	private static final String ORDER_OPTIONS = "Order options";
+	private static final String SHOW_ALL_ORDERS = "Show all orders.";
 	private static final String SHOW_ACTIVE_ORDERS_SORT_NAME = "Show active orders sort by client name.";
 	private static final String SHOW_ACTIVE_ORDERS_SORT_FINISH_DATE = "Show active orders sort by finish date.";
 	private static final String SHOW_ORDER_PRICE = "Show order price.";
@@ -275,6 +277,9 @@ public class Builder {
 
 		MenuItem ordersMenuItem = new MenuItem(ORDER_OPTIONS, ordersMenu);
 		upLevelMenu.addMenuItem(ordersMenuItem);
+
+		MenuItem showAllOrdersMenuItem = new MenuItem(SHOW_ALL_ORDERS, new ShowAllOrders());
+		ordersMenu.addMenuItem(showAllOrdersMenuItem);
 
 		MenuItem showActiveOrdersSortByNameMenuItem = new MenuItem(SHOW_ACTIVE_ORDERS_SORT_NAME,
 				new ShowActiveOrdersSortByName());

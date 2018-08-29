@@ -57,6 +57,8 @@ public class CsvImport {
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				logger.error(e);
 			}
+		} else {
+			result = true;
 		}
 		field.setAccessible(isAccessible);
 		return result;

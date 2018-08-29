@@ -46,7 +46,9 @@ public class ClientRepository implements IClientRepository {
 
 	public boolean addAll(List<Client> clients) {
 		boolean result = getClients().addAll(clients);
-		setLastId(IdGenerator.getLastId(getClients()));
+		if (result) {
+			setLastId(IdGenerator.getLastId(getClients()));
+		}
 		return result;
 	}
 

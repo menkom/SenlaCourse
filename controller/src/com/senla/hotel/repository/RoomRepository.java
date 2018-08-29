@@ -52,7 +52,9 @@ public class RoomRepository implements IRoomRepository {
 
 	public boolean addAll(List<Room> rooms) {
 		boolean result = getRooms().addAll(rooms);
-		getInstance().setLastId(IdGenerator.getLastId(getInstance().getRooms()));
+		if (result) {
+			setLastId(IdGenerator.getLastId(getRooms()));
+		}
 		return result;
 	}
 

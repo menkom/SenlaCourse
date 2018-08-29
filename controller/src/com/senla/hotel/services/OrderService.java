@@ -36,13 +36,18 @@ public class OrderService implements IOrderService {
 		return orderService;
 	}
 
-	public IOrderRepository getOrderRepository() {
+	private IOrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
 	@Override
 	public boolean add(Order order) {
-		return orderRepository.add(order);
+		return getOrderRepository().add(order);
+	}
+
+	@Override
+	public boolean addAll(List<Order> orders) {
+		return orderRepository.addAll(orders);
 	}
 
 	@Override
@@ -57,6 +62,11 @@ public class OrderService implements IOrderService {
 	@Override
 	public boolean update(Order order) {
 		return orderRepository.update(order);
+	}
+
+	@Override
+	public List<Order> getOrders() {
+		return getOrderRepository().getOrders();
 	}
 
 	@Override

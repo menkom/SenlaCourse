@@ -38,6 +38,8 @@ public interface IHotel {
 
 	public Integer getNumberOfClients();
 
+	public List<Order> getAllOrders();
+
 	public List<Order> getActiveOrdersSortByName();
 
 	public List<Order> getActiveOrdersSortByFinishDate();

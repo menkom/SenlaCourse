@@ -32,34 +32,42 @@ public class ClientService implements IClientService {
 		return clientService;
 	}
 
+	@Override
 	public boolean add(Client client) {
 		return getClientRepository().add(client);
 	}
 
+	@Override
 	public boolean addAll(List<Client> clients) {
 		return getClientRepository().addAll(clients);
 	}
 
+	@Override
 	public boolean update(Client client) {
 		return getClientRepository().update(client);
 	}
 
+	@Override
 	public List<Client> getClients() {
 		return getClientRepository().getClients();
 	}
 
+	@Override
 	public Client getClientByName(String name) {
 		return getClientRepository().getClientByName(name);
 	}
 
+	@Override
 	public Client getClientById(int id) {
 		return getClientRepository().getClientById(id);
 	}
 
+	@Override
 	public int getNumberOfClients() {
 		return getClientRepository().getClients().size();
 	}
 
+	@Override
 	public boolean exportClientCSV(String name, String fileName) throws IOException {
 		Client client = getClientByName(name);
 		if (client == null) {
@@ -69,6 +77,7 @@ public class ClientService implements IClientService {
 		}
 	}
 
+	@Override
 	public boolean importClientsCSV(String file) throws IOException {
 		boolean result = false;
 		List<Client> clients = ExportCSV.getClientsFromCSV(file);
@@ -86,10 +95,12 @@ public class ClientService implements IClientService {
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return getClientRepository().exportCsv(csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return getClientRepository().importCsv(csvFilePath);
 	}

@@ -8,17 +8,18 @@ import java.util.List;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Room;
-import com.senla.hotel.repository.api.IRoomRepository;
 
 public interface IRoomService {
 
-	public IRoomRepository getRoomRepository();
-
 	public boolean add(Room room);
+
+	public boolean addAll(List<Room> rooms);
 
 	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price);
 
 	public boolean update(Room room);
+
+	public List<Room> getRooms();
 
 	public List<Room> getAllRooms(Comparator<Room> comparator);
 

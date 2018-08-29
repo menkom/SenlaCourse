@@ -7,17 +7,18 @@ import java.util.List;
 
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.api.IOrderRepository;
 
 public interface IOrderService {
 
-	IOrderRepository getOrderRepository();
-
 	boolean add(Order order);
+
+	boolean addAll(List<Order> orders);
 
 	boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate);
 
 	boolean update(Order order);
+
+	public List<Order> getOrders();
 
 	Order getOrderByNum(int num);
 

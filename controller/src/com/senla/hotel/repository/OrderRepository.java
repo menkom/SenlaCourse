@@ -50,8 +50,10 @@ public class OrderRepository implements IOrderRepository {
 	}
 
 	public boolean addAll(List<Order> orders) {
-		boolean result = orders.addAll(orders);
-		getInstance().setLastId(IdGenerator.getLastId(getInstance().getOrders()));
+		boolean result = getOrders().addAll(orders);
+		if (result) {
+			setLastId(IdGenerator.getLastId(getOrders()));
+		}
 		return result;
 	}
 

@@ -30,37 +30,55 @@ public class ServiceService implements IServiceService {
 		return serviceService;
 	}
 
-	public IServiceRepository getServiceRepository() {
+	private IServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
+	@Override
 	public boolean add(Service service) {
 		return getServiceRepository().add(service);
 	}
 
+	@Override
+	public boolean addAll(List<Service> services) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public boolean addService(int code, String name, int price) {
 		Service service = new Service(code, name, price);
 		return add(service);
 	}
 
+	@Override
 	public boolean update(Service service) {
 		return getServiceRepository().update(service);
 	}
 
+	@Override
+	public List<Service> getServices() {
+		return getServiceRepository().getServices();
+	}
+
+	@Override
 	public List<Service> getAllServices(Comparator<Service> comparator) {
-		List<Service> result = getServiceRepository().getServices();
+		List<Service> result = getServices();
 		result.sort(comparator);
 		return result;
 	}
 
+	@Override
 	public Service getServiceByCode(int code) {
 		return getServiceRepository().getServiceByCode(code);
 	}
 
+	@Override
 	public Service getServiceById(int id) {
 		return getServiceRepository().getServiceById(id);
 	}
 
+	@Override
 	public boolean changeServicePrice(int code, int price) {
 		boolean result = false;
 		Service service = getServiceByCode(code);
@@ -71,6 +89,7 @@ public class ServiceService implements IServiceService {
 		return result;
 	}
 
+	@Override
 	public boolean exportServiceCSV(int code, String fileName) throws IOException {
 		Service service = getServiceByCode(code);
 		if (service == null) {
@@ -80,6 +99,7 @@ public class ServiceService implements IServiceService {
 		}
 	}
 
+	@Override
 	public boolean importServicesCSV(String file) throws IOException {
 		boolean result = false;
 		List<Service> rooms = ExportCSV.getServicesFromCSV(file);
@@ -96,10 +116,12 @@ public class ServiceService implements IServiceService {
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return getServiceRepository().exportCsv(csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return getServiceRepository().importCsv(csvFilePath);
 	}

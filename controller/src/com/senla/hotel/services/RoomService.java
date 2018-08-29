@@ -47,29 +47,44 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
-	public IRoomRepository getRoomRepository() {
+	private IRoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
+	@Override
 	public boolean add(Room room) {
 		return getRoomRepository().add(room);
 	}
 
+	@Override
+	public boolean addAll(List<Room> rooms) {
+		return getRoomRepository().addAll(rooms);
+	}
+
+	@Override
 	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
 		Room room = new Room(number, capacity, star, status, price);
 		return add(room);
 	}
 
+	@Override
 	public boolean update(Room room) {
 		return getRoomRepository().update(room);
 	}
 
+	@Override
+	public List<Room> getRooms() {
+		return getRoomRepository().getRooms();
+	}
+
+	@Override
 	public List<Room> getAllRooms(Comparator<Room> comparator) {
-		List<Room> result = getRoomRepository().getRooms();
+		List<Room> result = getRooms();
 		result.sort(comparator);
 		return result;
 	}
 
+	@Override
 	public int getNumberOfFreeRooms() {
 		int result = 0;
 		for (Room room : getRoomRepository().getRooms()) {
@@ -80,6 +95,7 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public List<Room> getFreeRooms(Comparator<Room> comparator) {
 		List<Room> result = new ArrayList<>();
 
@@ -92,14 +108,17 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public Room getRoomByNum(int number) {
 		return getRoomRepository().getRoomByNum(number);
 	}
 
+	@Override
 	public Room getRoomById(int id) {
 		return getRoomRepository().getRoomById(id);
 	}
 
+	@Override
 	public boolean changeRoomStatus(int number, RoomStatus roomStatus) {
 		boolean result = false;
 		Room room = getRoomByNum(number);
@@ -110,6 +129,7 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public boolean changeRoomPrice(int number, int price) {
 		boolean result = false;
 		Room room = getRoomByNum(number);
@@ -120,13 +140,14 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public List<Room> getFreeRooms(Date date, Comparator<Room> comparator) {
 
 		List<Room> result = new ArrayList<>();
 
 		List<Room> resultExclude = new ArrayList<>();
 
-		for (Order order : OrderService.getInstance().getOrderRepository().getOrders()) {
+		for (Order order : OrderService.getInstance().getOrders()) {
 			if (order != null) {
 				if ((date.after(order.getStartDate())
 						&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
@@ -146,6 +167,7 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public boolean exportRoomCSV(int roomNum, String fileName) throws IOException {
 		Room room = getRoomByNum(roomNum);
 		if (room == null) {
@@ -155,6 +177,7 @@ public class RoomService implements IRoomService {
 		}
 	}
 
+	@Override
 	public boolean importRoomsCSV(String file) throws IOException {
 		boolean result = false;
 		List<Room> rooms = ExportCSV.getRoomsFromCSV(file);
@@ -171,10 +194,12 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return getRoomRepository().exportCsv(csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return getRoomRepository().importCsv(csvFilePath);
 	}

@@ -25,7 +25,6 @@ import com.senla.hotel.services.api.IClientService;
 import com.senla.hotel.services.api.IOrderService;
 import com.senla.hotel.services.api.IRoomService;
 import com.senla.hotel.services.api.IServiceService;
-import com.senla.util.IdGenerator;
 import com.senla.util.ModelSerializer;
 
 public class Hotel implements IHotel {
@@ -80,14 +79,11 @@ public class Hotel implements IHotel {
 
 			getClientService().addAll(serializer.getClients());
 
-			getRoomService().getRoomRepository().getRooms().addAll(serializer.getRooms());
-			getRoomService().getRoomRepository().setLastId(IdGenerator.getLastId(serializer.getRooms()));
+			getRoomService().addAll(serializer.getRooms());
 
-			getServiceService().getServiceRepository().getServices().addAll(serializer.getServices());
-			getServiceService().getServiceRepository().setLastId(IdGenerator.getLastId(serializer.getServices()));
+			getServiceService().addAll(serializer.getServices());
 
-			getOrderService().getOrderRepository().getOrders().addAll(serializer.getOrders());
-			getOrderService().getOrderRepository().setLastId(IdGenerator.getLastId(serializer.getOrders()));
+			getOrderService().addAll(serializer.getOrders());
 
 		} catch (IOException e) {
 			logger.error(e);
@@ -105,9 +101,9 @@ public class Hotel implements IHotel {
 		ModelSerializer serializer = new ModelSerializer();
 		try {
 			serializer.setClients(getClientService().getClients());
-			serializer.setRooms(getRoomService().getRoomRepository().getRooms());
-			serializer.setServices(getServiceService().getServiceRepository().getServices());
-			serializer.setOrders(getOrderService().getOrderRepository().getOrders());
+			serializer.setRooms(getRoomService().getRooms());
+			serializer.setServices(getServiceService().getServices());
+			serializer.setOrders(getOrderService().getOrders());
 
 			serializer.serialize(filePath + "hotel.raw");
 		} catch (IOException ex) {
@@ -218,6 +214,10 @@ public class Hotel implements IHotel {
 			logger.error(e);
 			return null;
 		}
+	}
+
+	public List<Order> getAllOrders() {
+		return getOrderService().getOrders();
 	}
 
 	public List<Order> getActiveOrdersSortByName() {

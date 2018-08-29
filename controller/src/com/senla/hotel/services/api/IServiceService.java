@@ -5,17 +5,18 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.api.IServiceRepository;
 
 public interface IServiceService {
 
-	public IServiceRepository getServiceRepository();
-
 	boolean add(Service service);
+
+	boolean addAll(List<Service> services);
 
 	boolean addService(int code, String name, int price);
 
 	boolean update(Service service);
+
+	public List<Service> getServices();
 
 	List<Service> getAllServices(Comparator<Service> comparator);
 

@@ -51,7 +51,9 @@ public class ServiceRepository implements IServiceRepository {
 
 	public boolean addAll(List<Service> services) {
 		boolean result = getServices().addAll(services);
-		getInstance().setLastId(IdGenerator.getLastId(getInstance().getServices()));
+		if (result) {
+			setLastId(IdGenerator.getLastId(getServices()));
+		}
 		return result;
 	}
 
