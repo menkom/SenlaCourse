@@ -4,24 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.annotation.parser.CsvParser;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Service;
+import com.senla.hotel.repository.api.IServiceRepository;
 import com.senla.util.IdGenerator;
 
-public class ServiceRepository {
+public class ServiceRepository implements IServiceRepository {
 
-	private static ServiceRepository serviceRepository;
+	private static IServiceRepository serviceRepository;
 
 	private Integer lastId;
 	private List<Service> services;
 
-	private ServiceRepository() {
+	public ServiceRepository() {
 		super();
 		this.services = new ArrayList<Service>();
 	}
 
-	public static ServiceRepository getInstance() {
+	public static IServiceRepository getInstance() {
 		if (serviceRepository == null) {
-			serviceRepository = new ServiceRepository();
+			serviceRepository = (IServiceRepository) DependencyInjection.getInstance()
+					.getInterfacePair(IServiceRepository.class);
+			;
 		}
 		return serviceRepository;
 	}

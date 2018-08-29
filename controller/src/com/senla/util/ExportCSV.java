@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.base.BaseObject;
-import com.senla.controller.exception.NoEntryException;
 import com.senla.converter.ListConverter;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
@@ -55,7 +54,7 @@ public class ExportCSV {
 		return result;
 	}
 
-	public static List<Client> getClientsFromCSV(String file) throws NoEntryException, IOException {
+	public static List<Client> getClientsFromCSV(String file) throws IOException {
 		List<Client> result = new ArrayList<>();
 		List<String> list = loadCSV(file);
 		if (list != null) {
@@ -64,7 +63,7 @@ public class ExportCSV {
 		return result;
 	}
 
-	public static List<Order> getOrdersFromCSV(String file) throws NoEntryException, IOException {
+	public static List<Order> getOrdersFromCSV(String file) throws IOException {
 		List<Order> result = new ArrayList<>();
 		List<String> list = loadCSV(file);
 		if (list != null) {
@@ -73,7 +72,7 @@ public class ExportCSV {
 		return result;
 	}
 
-	public static List<Room> getRoomsFromCSV(String file) throws NoEntryException, IOException {
+	public static List<Room> getRoomsFromCSV(String file) throws IOException {
 		List<Room> result = new ArrayList<>();
 		List<String> list = loadCSV(file);
 		if (list != null) {
@@ -82,7 +81,7 @@ public class ExportCSV {
 		return result;
 	}
 
-	public static List<Service> getServicesFromCSV(String file) throws NoEntryException, IOException {
+	public static List<Service> getServicesFromCSV(String file) throws IOException {
 		List<Service> result = new ArrayList<>();
 		List<String> list = loadCSV(file);
 		if (list != null) {

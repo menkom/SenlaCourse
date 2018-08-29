@@ -6,25 +6,27 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.controller.exception.NoEntryException;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.OrderRepository;
+import com.senla.hotel.repository.api.IOrderRepository;
+import com.senla.hotel.services.api.IOrderService;
 import com.senla.util.ExportCSV;
 
-public class OrderService implements IService {
+public class OrderService implements IOrderService {
 
 	private static OrderService orderService;
 
-	private OrderRepository orderRepository;
+	private IOrderRepository orderRepository;
 
-	private OrderService() {
+	public OrderService() {
 		super();
-		this.orderRepository = OrderRepository.getInstance();
+		this.orderRepository = (IOrderRepository) DependencyInjection.getInstance()
+				.getInterfacePair(IOrderRepository.class);
 	}
 
 	public static OrderService getInstance() {
@@ -34,16 +36,17 @@ public class OrderService implements IService {
 		return orderService;
 	}
 
-	public OrderRepository getOrderRepository() {
+	public IOrderRepository getOrderRepository() {
 		return orderRepository;
 	}
 
-	public Boolean add(Order order) {
+	@Override
+	public boolean add(Order order) {
 		return orderRepository.add(order);
 	}
 
-	public Boolean addOrder(Integer num, String clientName, Integer roomNum, Date startDate, Date finishDate)
-			throws NoEntryException {
+	@Override
+	public boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
 		Client client = ClientService.getInstance().getClientByName(clientName);
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 
@@ -51,21 +54,24 @@ public class OrderService implements IService {
 		return add(order);
 	}
 
-	public Boolean update(Order order) {
+	@Override
+	public boolean update(Order order) {
 		return orderRepository.update(order);
 	}
 
-	public Order getOrderByNum(Integer num) {
+	@Override
+	public Order getOrderByNum(int num) {
 		return getOrderRepository().getOrderByNum(num);
 	}
 
-	public Order getOrderById(Integer id) {
+	@Override
+	public Order getOrderById(int id) {
 		return getOrderRepository().getOrderById(id);
 	}
 
-	public Boolean orderRoom(Integer orderNum, Integer roomNum, String clientName, Date dateStart, Date dateFinish)
-			throws NoEntryException {
-		Boolean result = false;
+	@Override
+	public boolean orderRoom(int orderNum, int roomNum, String clientName, Date dateStart, Date dateFinish) {
+		boolean result = false;
 		Room room = RoomService.getInstance().getRoomByNum(roomNum);
 		Order order = new Order(orderNum, ClientService.getInstance().getClientByName(clientName), room, dateStart,
 				dateFinish);
@@ -76,8 +82,9 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public Boolean freeRoom(Integer orderNum) {
-		Boolean result = false;
+	@Override
+	public boolean freeRoom(int orderNum) {
+		boolean result = false;
 		Order order = orderRepository.getOrderByNum(orderNum);
 
 		if (order != null) {
@@ -88,12 +95,14 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public Boolean addOrderService(Integer orderNum, Integer serviceCode) {
+	@Override
+	public boolean addOrderService(int orderNum, int serviceCode) {
 		Service service = ServiceService.getInstance().getServiceByCode(serviceCode);
 		return getOrderRepository().addOrderService(orderNum, service);
 	}
 
-	public Integer getOrderPrice(Integer orderNum) {
+	@Override
+	public Integer getOrderPrice(int orderNum) {
 		Order order = getOrderByNum(orderNum);
 		Integer result;
 		if (order.getFinishDate() == null) {
@@ -113,6 +122,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	@Override
 	public List<Order> getActiveOrders(Comparator<Order> comparator) {
 		List<Order> result = new ArrayList<>();
 
@@ -129,6 +139,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	@Override
 	public List<Order> getOrdersByRoom(int num) {
 
 		List<Order> result = new ArrayList<>();
@@ -143,6 +154,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	@Override
 	public List<Order> getLastOrdersByRoom(int num, int maxOrders, Comparator<Order> comparator) {
 
 		List<Order> result = new ArrayList<>();
@@ -164,6 +176,7 @@ public class OrderService implements IService {
 		return result;
 	}
 
+	@Override
 	public List<Service> getOrderServices(int orderNum, Comparator<Service> comparator) {
 		List<Service> result = null;
 		Order order = getOrderByNum(orderNum);
@@ -174,7 +187,8 @@ public class OrderService implements IService {
 		return result;
 	}
 
-	public Order cloneOrder(Integer orderNum) throws CloneNotSupportedException {
+	@Override
+	public Order cloneOrder(int orderNum) throws CloneNotSupportedException {
 		Order orderToClone = orderRepository.getOrderByNum(orderNum);
 		if (orderToClone == null) {
 			return null;
@@ -183,7 +197,8 @@ public class OrderService implements IService {
 		}
 	}
 
-	public Boolean exportOrderCSV(Integer orderNum, String fileName) throws NoEntryException, IOException {
+	@Override
+	public boolean exportOrderCSV(int orderNum, String fileName) throws IOException {
 		Order order = getOrderByNum(orderNum);
 		if (order == null) {
 			return false;
@@ -192,24 +207,29 @@ public class OrderService implements IService {
 		}
 	}
 
-	public Boolean importOrdersCSV(String file) throws NoEntryException, IOException {
-		Boolean result = false;
+	@Override
+	public boolean importOrdersCSV(String file) throws IOException {
+		boolean result = false;
 		List<Order> orders = ExportCSV.getOrdersFromCSV(file);
 		for (Order order : orders) {
 			if (getOrderById(order.getId()) != null) {
-				update(order);
+				result = update(order);
 			} else {
-				add(order);
+				result = add(order);
+			}
+			if (!result) {
+				break;
 			}
 		}
-		result = true;
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return getOrderRepository().exportCsv(csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return getOrderRepository().importCsv(csvFilePath);
 	}

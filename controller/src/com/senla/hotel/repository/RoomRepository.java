@@ -4,24 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.annotation.parser.CsvParser;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Room;
+import com.senla.hotel.repository.api.IRoomRepository;
 import com.senla.util.IdGenerator;
 
-public class RoomRepository {
+public class RoomRepository implements IRoomRepository {
 
-	private static RoomRepository roomRepository;
+	private static IRoomRepository roomRepository;
 
 	private Integer lastId;
 	private List<Room> rooms;
 
-	private RoomRepository() {
+	public RoomRepository() {
 		super();
 		this.rooms = new ArrayList<Room>();
 	}
 
-	public static RoomRepository getInstance() {
+	public static IRoomRepository getInstance() {
 		if (roomRepository == null) {
-			roomRepository = new RoomRepository();
+			roomRepository = (IRoomRepository) DependencyInjection.getInstance()
+					.getInterfacePair(IRoomRepository.class);
+			;
 		}
 		return roomRepository;
 	}

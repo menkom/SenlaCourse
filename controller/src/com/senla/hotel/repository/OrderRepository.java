@@ -4,25 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.annotation.parser.CsvParser;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
 import com.senla.util.IdGenerator;
+import com.senla.hotel.repository.api.IOrderRepository;
 
-public class OrderRepository {
+public class OrderRepository implements IOrderRepository {
 
-	private static OrderRepository orderRepository;
+	private static IOrderRepository orderRepository;
 
 	private Integer lastId;
 	private List<Order> orders;
 
-	private OrderRepository() {
+	public OrderRepository() {
 		super();
 		this.orders = new ArrayList<Order>();
 	}
 
-	public static OrderRepository getInstance() {
+	public static IOrderRepository getInstance() {
 		if (orderRepository == null) {
-			orderRepository = new OrderRepository();
+			orderRepository = (IOrderRepository) DependencyInjection.getInstance()
+					.getInterfacePair(IOrderRepository.class);
 		}
 		return orderRepository;
 	}

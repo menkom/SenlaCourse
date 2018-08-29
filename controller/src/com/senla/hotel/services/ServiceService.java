@@ -4,43 +4,46 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
 
-import com.senla.controller.exception.NoEntryException;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.ServiceRepository;
+import com.senla.hotel.repository.api.IServiceRepository;
+import com.senla.hotel.services.api.IServiceService;
 import com.senla.util.ExportCSV;
 
-public class ServiceService implements IService {
+public class ServiceService implements IServiceService {
 
-	private static ServiceService serviceService;
+	private static IServiceService serviceService;
 
-	private ServiceRepository serviceRepository;
+	private IServiceRepository serviceRepository;
 
-	private ServiceService() {
+	public ServiceService() {
 		super();
-		this.serviceRepository = ServiceRepository.getInstance();
+		this.serviceRepository = (IServiceRepository) DependencyInjection.getInstance()
+				.getInterfacePair(IServiceRepository.class);
 	}
 
-	public static ServiceService getInstance() {
+	public static IServiceService getInstance() {
 		if (serviceService == null) {
-			serviceService = new ServiceService();
+			serviceService = (IServiceService) DependencyInjection.getInstance()
+					.getInterfacePair(IServiceService.class);
 		}
 		return serviceService;
 	}
 
-	public ServiceRepository getServiceRepository() {
+	public IServiceRepository getServiceRepository() {
 		return serviceRepository;
 	}
 
-	public Boolean add(Service service) {
+	public boolean add(Service service) {
 		return getServiceRepository().add(service);
 	}
 
-	public Boolean addService(int code, String name, int price) {
+	public boolean addService(int code, String name, int price) {
 		Service service = new Service(code, name, price);
 		return add(service);
 	}
 
-	public Boolean update(Service service) {
+	public boolean update(Service service) {
 		return getServiceRepository().update(service);
 	}
 
@@ -50,7 +53,7 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public Service getServiceByCode(Integer code) {
+	public Service getServiceByCode(int code) {
 		return getServiceRepository().getServiceByCode(code);
 	}
 
@@ -58,8 +61,8 @@ public class ServiceService implements IService {
 		return getServiceRepository().getServiceById(id);
 	}
 
-	public Boolean changeServicePrice(Integer code, Integer price) {
-		Boolean result = false;
+	public boolean changeServicePrice(int code, int price) {
+		boolean result = false;
 		Service service = getServiceByCode(code);
 		if (service != null) {
 			service.setPrice(price);
@@ -68,7 +71,7 @@ public class ServiceService implements IService {
 		return result;
 	}
 
-	public Boolean exportServiceCSV(Integer code, String fileName) throws NoEntryException, IOException {
+	public boolean exportServiceCSV(int code, String fileName) throws IOException {
 		Service service = getServiceByCode(code);
 		if (service == null) {
 			return false;
@@ -77,17 +80,19 @@ public class ServiceService implements IService {
 		}
 	}
 
-	public Boolean importServicesCSV(String file) throws NoEntryException, IOException {
-		Boolean result = false;
+	public boolean importServicesCSV(String file) throws IOException {
+		boolean result = false;
 		List<Service> rooms = ExportCSV.getServicesFromCSV(file);
 		for (Service room : rooms) {
 			if (getServiceById(room.getId()) != null) {
-				update(room);
+				result = update(room);
 			} else {
-				add(room);
+				result = add(room);
+			}
+			if (!result) {
+				break;
 			}
 		}
-		result = true;
 		return result;
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.senla.controller.exception.NoEntryException;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.comparator.OrderSortByClientName;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
@@ -15,69 +15,70 @@ import com.senla.hotel.comparator.RoomSortByStar;
 import com.senla.hotel.comparator.ServiceSortByPrice;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
+import com.senla.hotel.facade.api.IHotel;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.property.HotelProperty;
-import com.senla.hotel.services.ClientService;
-import com.senla.hotel.services.OrderService;
-import com.senla.hotel.services.RoomService;
-import com.senla.hotel.services.ServiceService;
+import com.senla.hotel.services.api.IClientService;
+import com.senla.hotel.services.api.IOrderService;
+import com.senla.hotel.services.api.IRoomService;
+import com.senla.hotel.services.api.IServiceService;
 import com.senla.util.IdGenerator;
 import com.senla.util.ModelSerializer;
 
-public class Hotel {
+public class Hotel implements IHotel {
 
-	private ClientService clientService;
-	private RoomService roomService;
-	private ServiceService serviceService;
-	private OrderService orderService;
+	private IClientService clientService;
+	private IRoomService roomService;
+	private IServiceService serviceService;
+	private IOrderService orderService;
 
-	private static Hotel hotel;
+	private static IHotel hotel;
 
 	private static final Logger logger = Logger.getLogger(Hotel.class);
 
-	private Hotel() {
+	public Hotel() {
 		super();
-		this.clientService = ClientService.getInstance();
-		this.roomService = RoomService.getInstance();
-		this.serviceService = ServiceService.getInstance();
-		this.orderService = OrderService.getInstance();
+		this.clientService = (IClientService) DependencyInjection.getInstance().getInterfacePair(IClientService.class);
+		this.roomService = (IRoomService) DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
+		this.serviceService = (IServiceService) DependencyInjection.getInstance()
+				.getInterfacePair(IServiceService.class);
+		this.orderService = (IOrderService) DependencyInjection.getInstance().getInterfacePair(IOrderService.class);
 	}
 
-	public static Hotel getInstance() {
+	public static IHotel getInstance() {
 		if (hotel == null) {
-			hotel = new Hotel();
+			hotel = (IHotel) DependencyInjection.getInstance().getInterfacePair(IHotel.class);
 		}
 		return hotel;
 	}
 
-	private ClientService getClientService() {
+	private IClientService getClientService() {
 		return clientService;
 	}
 
-	private RoomService getRoomService() {
+	private IRoomService getRoomService() {
 		return roomService;
 	}
 
-	private ServiceService getServiceService() {
+	private IServiceService getServiceService() {
 		return serviceService;
 	}
 
-	private OrderService getOrderService() {
+	private IOrderService getOrderService() {
 		return orderService;
 	}
 
-	public Boolean load() {
-		Boolean result = true;
+	public boolean load() {
+		boolean result = true;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
 		try {
 			result = serializer.deserialize(filePath + "hotel.raw");
 
-			getClientService().getClientRepository().setLastId(IdGenerator.getLastId(serializer.getClients()));
-			getClientService().getClientRepository().getClients().addAll(serializer.getClients());
+			getClientService().addAll(serializer.getClients());
 
 			getRoomService().getRoomRepository().getRooms().addAll(serializer.getRooms());
 			getRoomService().getRoomRepository().setLastId(IdGenerator.getLastId(serializer.getRooms()));
@@ -98,12 +99,12 @@ public class Hotel {
 		return result;
 	}
 
-	public Boolean save() {
-		Boolean result = true;
+	public boolean save() {
+		boolean result = true;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
 		try {
-			serializer.setClients(getClientService().getClientRepository().getClients());
+			serializer.setClients(getClientService().getClients());
 			serializer.setRooms(getRoomService().getRoomRepository().getRooms());
 			serializer.setServices(getServiceService().getServiceRepository().getServices());
 			serializer.setOrders(getOrderService().getOrderRepository().getOrders());
@@ -246,15 +247,6 @@ public class Hotel {
 		}
 	}
 
-	public Room getRoomByNum(int roomNum) {
-		try {
-			return getRoomService().getRoomByNum(roomNum);
-		} catch (Exception e) {
-			logger.error(e);
-			return null;
-		}
-	}
-
 	public List<Order> getLastOrdersByRoom(int roomNum) {
 		try {
 			return getOrderService().getLastOrdersByRoom(roomNum, HotelProperty.getInstance().getLastVisibleOrders(),
@@ -283,7 +275,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean addClient(String name) {
+	public boolean addClient(String name) {
 		try {
 			return getClientService().add(new Client(name));
 		} catch (Exception e) {
@@ -293,7 +285,7 @@ public class Hotel {
 
 	}
 
-	public Boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
+	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
 		try {
 			return getRoomService().addRoom(number, capacity, star, status, price);
 		} catch (Exception e) {
@@ -302,7 +294,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean addService(int code, String name, int price) {
+	public boolean addService(int code, String name, int price) {
 		try {
 			return getServiceService().addService(code, name, price);
 		} catch (Exception e) {
@@ -312,7 +304,7 @@ public class Hotel {
 
 	}
 
-	public Boolean addOrder(Order order) {
+	public boolean addOrder(Order order) {
 		try {
 			return getOrderService().add(order);
 		} catch (Exception e) {
@@ -321,25 +313,15 @@ public class Hotel {
 		}
 	}
 
-	public Boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
-		try {
-			return getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
-		} catch (NoEntryException e) {
-			logger.error(e);
-			return false;
-		}
+	public boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
+		return getOrderService().addOrder(num, clientName, roomNum, startDate, finishDate);
 	}
 
-	public Boolean orderRoom(Integer orderNum, String clientName, Integer roomNum, Date dateStart, Date dateFinish) {
-		try {
-			return getOrderService().orderRoom(orderNum, roomNum, clientName, dateStart, dateFinish);
-		} catch (NoEntryException e) {
-			logger.error(e);
-			return false;
-		}
+	public boolean orderRoom(int orderNum, String clientName, int roomNum, Date dateStart, Date dateFinish) {
+		return getOrderService().orderRoom(orderNum, roomNum, clientName, dateStart, dateFinish);
 	}
 
-	public Boolean addOrderService(int orderNum, int serviceCode) {
+	public boolean addOrderService(int orderNum, int serviceCode) {
 		try {
 			return getOrderService().addOrderService(orderNum, serviceCode);
 		} catch (Exception e) {
@@ -348,7 +330,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean freeRoom(int orderNum) {
+	public boolean freeRoom(int orderNum) {
 		try {
 			return getOrderService().freeRoom(orderNum);
 		} catch (Exception e) {
@@ -357,7 +339,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
+	public boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
 		try {
 			if (HotelProperty.getInstance().isAbleChangeRoomStatus()) {
 				return getRoomService().changeRoomStatus(roomNum, roomStatus);
@@ -370,7 +352,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean changeRoomPrice(int roomNum, int newPrice) {
+	public boolean changeRoomPrice(int roomNum, int newPrice) {
 		try {
 			return getRoomService().changeRoomPrice(roomNum, newPrice);
 		} catch (Exception e) {
@@ -379,7 +361,7 @@ public class Hotel {
 		}
 	}
 
-	public Boolean changeServicePrice(int code, int price) {
+	public boolean changeServicePrice(int code, int price) {
 		try {
 			return getServiceService().changeServicePrice(code, price);
 		} catch (Exception e) {
@@ -390,14 +372,14 @@ public class Hotel {
 
 	public List<Client> getAllClients() {
 		try {
-			return getClientService().getAllClients();
+			return getClientService().getClients();
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public Order cloneOrder(Integer orderNum) {
+	public Order cloneOrder(int orderNum) {
 		try {
 			return getOrderService().cloneOrder(orderNum);
 		} catch (CloneNotSupportedException e) {
@@ -406,7 +388,7 @@ public class Hotel {
 		}
 	}
 
-	public Order getOrderByNum(Integer orderNum) {
+	public Order getOrderByNum(int orderNum) {
 		try {
 			return getOrderService().getOrderByNum(orderNum);
 		} catch (Exception e) {
@@ -416,24 +398,19 @@ public class Hotel {
 	}
 
 	public Client getClientByName(String name) {
-		try {
-			return getClientService().getClientByName(name);
-		} catch (NoEntryException e) {
-			logger.error(e);
-			return null;
-		}
+		return getClientService().getClientByName(name);
 	}
 
-	public Room getRoomByNum(Integer num) {
+	public Room getRoomByNum(int roomNum) {
 		try {
-			return getRoomService().getRoomByNum(num);
+			return getRoomService().getRoomByNum(roomNum);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public Service getServiceByCode(Integer code) {
+	public Service getServiceByCode(int code) {
 		try {
 			return getServiceService().getServiceByCode(code);
 		} catch (Exception e) {
@@ -442,12 +419,12 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportClientCSV(String name, String fileName) {
+	public boolean exportClientCSV(String name, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
 					+ (fileName.equals("") ? "client_" + name + ".csv" : fileName);
 			return getClientService().exportClientCSV(name, filePath);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (Exception e) {
@@ -456,12 +433,12 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportOrderCSV(Integer orderNum, String fileName) {
+	public boolean exportOrderCSV(int orderNum, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
 					+ (fileName.equals("") ? "order_" + orderNum + ".csv" : fileName);
 			return getOrderService().exportOrderCSV(orderNum, filePath);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (Exception e) {
@@ -470,12 +447,12 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportRoomCSV(Integer roomNum, String fileName) {
+	public boolean exportRoomCSV(int roomNum, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
 					+ (fileName.equals("") ? "room_" + roomNum + ".csv" : fileName);
 			return getRoomService().exportRoomCSV(roomNum, filePath);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (Exception e) {
@@ -484,12 +461,12 @@ public class Hotel {
 		}
 	}
 
-	public Boolean exportServiceCSV(Integer code, String fileName) {
+	public boolean exportServiceCSV(int code, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
 					+ (fileName.equals("") ? "service_" + code + ".csv" : fileName);
 			return getServiceService().exportServiceCSV(code, filePath);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (Exception e) {
@@ -498,10 +475,10 @@ public class Hotel {
 		}
 	}
 
-	public Boolean importClientsCSV(String fileName) {
+	public boolean importClientsCSV(String fileName) {
 		try {
 			return getClientService().importClientsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (NullPointerException ex) {
@@ -513,10 +490,10 @@ public class Hotel {
 		}
 	}
 
-	public Boolean importOrdersCSV(String fileName) {
+	public boolean importOrdersCSV(String fileName) {
 		try {
 			return getOrderService().importOrdersCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (NullPointerException ex) {
@@ -528,10 +505,10 @@ public class Hotel {
 		}
 	}
 
-	public Boolean importRoomsCSV(String fileName) {
+	public boolean importRoomsCSV(String fileName) {
 		try {
 			return getRoomService().importRoomsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (NullPointerException ex) {
@@ -543,10 +520,10 @@ public class Hotel {
 		}
 	}
 
-	public Boolean importServicesCSV(String fileName) {
+	public boolean importServicesCSV(String fileName) {
 		try {
 			return getServiceService().importServicesCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
-		} catch (NoEntryException | IOException e) {
+		} catch (IOException e) {
 			logger.error(e);
 			return false;
 		} catch (NullPointerException ex) {
@@ -587,4 +564,5 @@ public class Hotel {
 		}
 		return result;
 	}
+
 }

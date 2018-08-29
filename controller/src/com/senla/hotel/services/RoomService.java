@@ -6,28 +6,30 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.controller.exception.NoEntryException;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
-import com.senla.hotel.repository.RoomRepository;
+import com.senla.hotel.repository.api.IRoomRepository;
+import com.senla.hotel.services.api.IRoomService;
 import com.senla.util.ExportCSV;
 
-public class RoomService implements IService {
+public class RoomService implements IRoomService {
 
-	private static RoomService roomService;
+	private static IRoomService roomService;
 
-	private RoomRepository roomRepository;
+	private IRoomRepository roomRepository;
 
-	private RoomService() {
+	public RoomService() {
 		super();
-		this.roomRepository = RoomRepository.getInstance();
+		this.roomRepository = (IRoomRepository) DependencyInjection.getInstance()
+				.getInterfacePair(IRoomRepository.class);
 	}
 
-	public static RoomService getInstance() {
+	public static IRoomService getInstance() {
 		if (roomService == null) {
-			roomService = new RoomService();
+			roomService = (IRoomService) DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
 		}
 		return roomService;
 	}
@@ -45,20 +47,20 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public RoomRepository getRoomRepository() {
+	public IRoomRepository getRoomRepository() {
 		return roomRepository;
 	}
 
-	public Boolean add(Room room) {
+	public boolean add(Room room) {
 		return getRoomRepository().add(room);
 	}
 
-	public Boolean addRoom(Integer number, Integer capacity, RoomStar star, RoomStatus status, Integer price) {
+	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
 		Room room = new Room(number, capacity, star, status, price);
 		return add(room);
 	}
 
-	public Boolean update(Room room) {
+	public boolean update(Room room) {
 		return getRoomRepository().update(room);
 	}
 
@@ -98,8 +100,8 @@ public class RoomService implements IService {
 		return getRoomRepository().getRoomById(id);
 	}
 
-	public Boolean changeRoomStatus(Integer number, RoomStatus roomStatus) {
-		Boolean result = false;
+	public boolean changeRoomStatus(int number, RoomStatus roomStatus) {
+		boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
 			room.setStatus(roomStatus);
@@ -108,8 +110,8 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Boolean changeRoomPrice(Integer number, Integer price) {
-		Boolean result = false;
+	public boolean changeRoomPrice(int number, int price) {
+		boolean result = false;
 		Room room = getRoomByNum(number);
 		if (room != null) {
 			room.setPrice(price);
@@ -144,7 +146,7 @@ public class RoomService implements IService {
 		return result;
 	}
 
-	public Boolean exportRoomCSV(Integer roomNum, String fileName) throws NoEntryException, IOException {
+	public boolean exportRoomCSV(int roomNum, String fileName) throws IOException {
 		Room room = getRoomByNum(roomNum);
 		if (room == null) {
 			return false;
@@ -153,17 +155,19 @@ public class RoomService implements IService {
 		}
 	}
 
-	public Boolean importRoomsCSV(String file) throws NoEntryException, IOException {
-		Boolean result = false;
+	public boolean importRoomsCSV(String file) throws IOException {
+		boolean result = false;
 		List<Room> rooms = ExportCSV.getRoomsFromCSV(file);
 		for (Room room : rooms) {
 			if (getRoomById(room.getId()) != null) {
-				update(room);
+				result = update(room);
 			} else {
-				add(room);
+				result = add(room);
+			}
+			if (!result) {
+				break;
 			}
 		}
-		result = true;
 		return result;
 	}
 
@@ -174,4 +178,5 @@ public class RoomService implements IService {
 	public boolean importCsv(String csvFilePath) {
 		return getRoomRepository().importCsv(csvFilePath);
 	}
+
 }

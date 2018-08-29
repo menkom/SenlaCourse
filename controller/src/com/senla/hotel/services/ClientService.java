@@ -3,61 +3,64 @@ package com.senla.hotel.services;
 import java.io.IOException;
 import java.util.List;
 
-import com.senla.controller.exception.NoEntryException;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Client;
-import com.senla.hotel.repository.ClientRepository;
+import com.senla.hotel.repository.api.IClientRepository;
+import com.senla.hotel.services.api.IClientService;
 import com.senla.util.ExportCSV;
 
-public class ClientService implements IService {
+public class ClientService implements IClientService {
 
-	private static ClientService clientService;
+	private static IClientService clientService;
 
-	private ClientRepository clientRepository;
+	private IClientRepository clientRepository;
 
-	private ClientService() {
+	public ClientService() {
 		super();
-		this.clientRepository = ClientRepository.getInstance();
+		this.clientRepository = (IClientRepository) DependencyInjection.getInstance()
+				.getInterfacePair(IClientRepository.class);
 	}
 
-	public static ClientService getInstance() {
+	private IClientRepository getClientRepository() {
+		return clientRepository;
+	}
+
+	public static IClientService getInstance() {
 		if (clientService == null) {
-			clientService = new ClientService();
+			clientService = (IClientService) DependencyInjection.getInstance().getInterfacePair(IClientService.class);
 		}
 		return clientService;
 	}
 
-	public Boolean add(Client client) {
+	public boolean add(Client client) {
 		return getClientRepository().add(client);
 	}
 
-	public Boolean update(Client client) {
+	public boolean addAll(List<Client> clients) {
+		return getClientRepository().addAll(clients);
+	}
+
+	public boolean update(Client client) {
 		return getClientRepository().update(client);
 	}
 
-	public List<Client> getAllClients() {
+	public List<Client> getClients() {
 		return getClientRepository().getClients();
 	}
 
-	public Client getClientByName(String name) throws NoEntryException {
-		Client result = clientRepository.getClientByName(name);
-		if (result == null)
-			throw new NoEntryException(name);
-		return result;
+	public Client getClientByName(String name) {
+		return getClientRepository().getClientByName(name);
 	}
 
-	public Client getClientById(Integer id) throws NoEntryException {
-		return clientRepository.getClientById(id);
+	public Client getClientById(int id) {
+		return getClientRepository().getClientById(id);
 	}
 
 	public int getNumberOfClients() {
 		return getClientRepository().getClients().size();
 	}
 
-	public ClientRepository getClientRepository() {
-		return clientRepository;
-	}
-
-	public Boolean exportClientCSV(String name, String fileName) throws NoEntryException, IOException {
+	public boolean exportClientCSV(String name, String fileName) throws IOException {
 		Client client = getClientByName(name);
 		if (client == null) {
 			return false;
@@ -66,17 +69,20 @@ public class ClientService implements IService {
 		}
 	}
 
-	public Boolean importClientsCSV(String file) throws NoEntryException, IOException {
-		Boolean result = false;
+	public boolean importClientsCSV(String file) throws IOException {
+		boolean result = false;
 		List<Client> clients = ExportCSV.getClientsFromCSV(file);
 		for (Client client : clients) {
 			if (getClientById(client.getId()) != null) {
-				update(client);
+				result = update(client);
 			} else {
-				add(client);
+				result = add(client);
 			}
+			if (!result) {
+				break;
+			}
+
 		}
-		result = true;
 		return result;
 	}
 

@@ -4,24 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.annotation.parser.CsvParser;
+import com.senla.di.DependencyInjection;
 import com.senla.hotel.model.Client;
+import com.senla.hotel.repository.api.IClientRepository;
 import com.senla.util.IdGenerator;
 
-public class ClientRepository {
+public class ClientRepository implements IClientRepository {
 
-	private static ClientRepository clientRepository;
+	private static IClientRepository clientRepository;
 
 	private Integer lastId;
 	private List<Client> clients;
 
-	private ClientRepository() {
+	public ClientRepository() {
 		super();
-		this.clients = new ArrayList<Client>();
+		clients = new ArrayList<Client>();
 	}
 
-	public static ClientRepository getInstance() {
+	public static IClientRepository getInstance() {
 		if (clientRepository == null) {
-			clientRepository = new ClientRepository();
+			clientRepository = (IClientRepository) DependencyInjection.getInstance()
+					.getInterfacePair(IClientRepository.class);
 		}
 		return clientRepository;
 	}
@@ -43,7 +46,7 @@ public class ClientRepository {
 
 	public boolean addAll(List<Client> clients) {
 		boolean result = getClients().addAll(clients);
-		getInstance().setLastId(IdGenerator.getLastId(getInstance().getClients()));
+		setLastId(IdGenerator.getLastId(getClients()));
 		return result;
 	}
 
