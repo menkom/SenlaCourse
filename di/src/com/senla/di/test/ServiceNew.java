@@ -6,7 +6,7 @@ public class ServiceNew extends Base implements IService {
 
 	@Override
 	public IRep getRepository() {
-		IRep rep = (IRep) DependencyInjection.getInstance().getInstance(IRep.class);
+		IRep rep = (IRep) DependencyInjection.getInstance().getInterfacePair(IRep.class);
 		System.out.println("Class:" + this.getClass().getSimpleName() + "; .getRepository();");
 		for (Class<?> interfaceClass : this.getClass().getInterfaces()) {
 			System.out.println("interface:" + interfaceClass);

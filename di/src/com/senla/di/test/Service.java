@@ -1,15 +1,13 @@
 package com.senla.di.test;
 
 import com.senla.di.DependencyInjection;
-import com.senla.di.annotation.Injection;
 
 public class Service extends Base implements IService {
 
-	@Injection
 	private IRep repository;
 
 	public Service() {
-		repository = (IRep) DependencyInjection.getInstance().getInstance(IRep.class);
+		repository = (IRep) DependencyInjection.getInstance().getInterfacePair(IRep.class);
 	}
 
 	public IRep getRepository() {

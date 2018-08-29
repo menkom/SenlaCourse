@@ -1,15 +1,13 @@
 package com.senla.di.test;
 
 import com.senla.di.DependencyInjection;
-import com.senla.di.annotation.Injection;
 
 public class Facade extends Base implements IFacade {
 
-	@Injection
 	private IService service;
 
 	public Facade() {
-		service = (IService) DependencyInjection.getInstance().getInstance(IService.class);
+		service = (IService) DependencyInjection.getInstance().getInterfacePair(IService.class);
 	}
 
 	public IService getService() {

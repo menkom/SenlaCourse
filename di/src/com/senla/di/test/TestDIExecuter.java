@@ -8,7 +8,7 @@ public class TestDIExecuter {
 		System.out.println("Class:" + TestDIExecuter.class.getSimpleName() + "; .main(); parent :"
 				+ TestDIExecuter.class.getSuperclass().getSimpleName());
 
-		IFacade facade = (IFacade) DependencyInjection.getInstance().getInstance(IFacade.class);
+		IFacade facade = (IFacade) DependencyInjection.getInstance().getInterfacePair(IFacade.class);
 
 		facade.printInfo();
 		facade.getService().printInfo();

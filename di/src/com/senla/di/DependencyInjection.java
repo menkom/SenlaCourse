@@ -3,14 +3,11 @@ package com.senla.di;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-//import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-
-//import com.senla.di.annotation.Injection;
 
 public class DependencyInjection {
 
@@ -18,16 +15,19 @@ public class DependencyInjection {
 
 	private static final String ERROR_DEPENDENCY_INJECTION_LOADING = "Error dependency injection property file load.";
 	private static final String ERROR_DEPENDENCY_INJECTION_NO_FILE = "Error. Dependency injection property file not found.";
+	private static final String ERROR_DEPENDENCY_INJECTION_NO_PAIR = "Such dependency pair not found.";
+	private static final String ERROR_DEPENDENCY_INJECTION_NEW_INSTANCE = "Error during instance cretion using dependency injection.";
 
 	private static final String INSTANCE_PATH = "./dependency.properties";
 	private static DependencyInjection instance;
 
 	private Map<String, String> dependencies = new HashMap<>();
 
+	private Map<Class<?>, Object> instances = new HashMap<>();
+
 	private DependencyInjection() {
 		if (!loadDependencies()) {
-			// For test period
-			System.out.println(ERROR_DEPENDENCY_INJECTION_LOADING);
+			logger.error(ERROR_DEPENDENCY_INJECTION_LOADING);
 		}
 	}
 
@@ -56,30 +56,25 @@ public class DependencyInjection {
 		return result;
 	}
 
-	public Object getInstance(Class<?> type) {
-
+	public Object getInterfacePair(Class<?> type) {
 		Class<?> cl = null;
 		try {
-			cl = Class.forName(dependencies.get(type.getName()));
+			if (dependencies.containsKey(type.getName())) {
+				cl = Class.forName(dependencies.get(type.getName()));
+			} else {
+				logger.error(ERROR_DEPENDENCY_INJECTION_NO_PAIR);
+			}
+			if (!instances.containsKey(cl)) {
+				Object result = cl.newInstance();
+				instances.put(cl, result);
+			}
 
-//			if (cl.isAnnotationPresent(Injection.class)) {
-//				return cl.getMethod("getInstance").invoke(null);
-//			} else {
-			return cl.newInstance();
-//			}
+			return instances.get(cl);
 		} catch (ClassNotFoundException e) {
-			logger.error(e);
+			logger.error(ERROR_DEPENDENCY_INJECTION_NO_PAIR, e);
 			return null;
 		} catch (InstantiationException | IllegalAccessException e) {
-			// newInstance
-			logger.error(e);
-			return null;
-		} catch (IllegalArgumentException
-//				| InvocationTargetException 
-//				| NoSuchMethodException 
-				| SecurityException e) {
-			// getMethod
-			logger.error(e);
+			logger.error(ERROR_DEPENDENCY_INJECTION_NEW_INSTANCE, e);
 			return null;
 		}
 	}
