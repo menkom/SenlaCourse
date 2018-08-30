@@ -78,7 +78,7 @@ public class ClientRepository implements IClientRepository {
 
 	public Client getClientByName(String name) {
 		for (Client client : clients) {
-			if ((client != null) && (client.getName().toLowerCase().equals(name.toLowerCase()))) {
+			if ((client != null) && (client.getName().equalsIgnoreCase(name))) {
 				return client;
 			}
 		}

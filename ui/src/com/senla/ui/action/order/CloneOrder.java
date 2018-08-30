@@ -54,7 +54,7 @@ public class CloneOrder implements IAction {
 				DisplayOperator.printMessage(WANT_CHANGE);
 
 				String change = Input.inputString();
-				if (change.toLowerCase().equals("y") || change.toLowerCase().equals("yes")) {
+				if (change.equalsIgnoreCase("y") || change.equalsIgnoreCase("yes")) {
 
 					DisplayOperator.printMessage(LEAVE_EMPTY_NO_CHANGE);
 					DisplayOperator.printMessage(ENTER_ORDER_NUM);
@@ -95,7 +95,7 @@ public class CloneOrder implements IAction {
 				DisplayOperator.printMessage(WANT_SAVE);
 
 				String save = Input.inputString();
-				if (save.toLowerCase().equals("y") || save.toLowerCase().equals("yes")) {
+				if (save.equalsIgnoreCase("y") || save.equalsIgnoreCase("yes")) {
 					if (Hotel.getInstance().addOrder(clone)) {
 						DisplayOperator.printMessage(String.format(ORDER_SAVED, clone.getId()));
 					} else {
