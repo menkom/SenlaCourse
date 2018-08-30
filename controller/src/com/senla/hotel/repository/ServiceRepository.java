@@ -23,8 +23,7 @@ public class ServiceRepository implements IServiceRepository {
 
 	public static IServiceRepository getInstance() {
 		if (serviceRepository == null) {
-			serviceRepository = (IServiceRepository) DependencyInjection.getInstance()
-					.getInterfacePair(IServiceRepository.class);
+			serviceRepository = DependencyInjection.getInstance().getInterfacePair(IServiceRepository.class);
 			;
 		}
 		return serviceRepository;

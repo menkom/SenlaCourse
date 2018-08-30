@@ -19,19 +19,18 @@ import com.senla.util.ExportCSV;
 
 public class OrderService implements IOrderService {
 
-	private static OrderService orderService;
+	private static IOrderService orderService;
 
 	private IOrderRepository orderRepository;
 
 	public OrderService() {
 		super();
-		this.orderRepository = (IOrderRepository) DependencyInjection.getInstance()
-				.getInterfacePair(IOrderRepository.class);
+		this.orderRepository = DependencyInjection.getInstance().getInterfacePair(IOrderRepository.class);
 	}
 
-	public static OrderService getInstance() {
+	public static IOrderService getInstance() {
 		if (orderService == null) {
-			orderService = new OrderService();
+			orderService = DependencyInjection.getInstance().getInterfacePair(IOrderService.class);
 		}
 		return orderService;
 	}

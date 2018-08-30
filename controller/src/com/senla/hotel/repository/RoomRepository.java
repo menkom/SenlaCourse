@@ -23,8 +23,7 @@ public class RoomRepository implements IRoomRepository {
 
 	public static IRoomRepository getInstance() {
 		if (roomRepository == null) {
-			roomRepository = (IRoomRepository) DependencyInjection.getInstance()
-					.getInterfacePair(IRoomRepository.class);
+			roomRepository = DependencyInjection.getInstance().getInterfacePair(IRoomRepository.class);
 			;
 		}
 		return roomRepository;

@@ -23,13 +23,12 @@ public class RoomService implements IRoomService {
 
 	public RoomService() {
 		super();
-		this.roomRepository = (IRoomRepository) DependencyInjection.getInstance()
-				.getInterfacePair(IRoomRepository.class);
+		this.roomRepository = DependencyInjection.getInstance().getInterfacePair(IRoomRepository.class);
 	}
 
 	public static IRoomService getInstance() {
 		if (roomService == null) {
-			roomService = (IRoomService) DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
+			roomService = DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
 		}
 		return roomService;
 	}

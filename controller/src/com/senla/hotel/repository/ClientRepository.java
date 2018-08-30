@@ -23,8 +23,7 @@ public class ClientRepository implements IClientRepository {
 
 	public static IClientRepository getInstance() {
 		if (clientRepository == null) {
-			clientRepository = (IClientRepository) DependencyInjection.getInstance()
-					.getInterfacePair(IClientRepository.class);
+			clientRepository = DependencyInjection.getInstance().getInterfacePair(IClientRepository.class);
 		}
 		return clientRepository;
 	}

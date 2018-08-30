@@ -18,14 +18,12 @@ public class ServiceService implements IServiceService {
 
 	public ServiceService() {
 		super();
-		this.serviceRepository = (IServiceRepository) DependencyInjection.getInstance()
-				.getInterfacePair(IServiceRepository.class);
+		this.serviceRepository = DependencyInjection.getInstance().getInterfacePair(IServiceRepository.class);
 	}
 
 	public static IServiceService getInstance() {
 		if (serviceService == null) {
-			serviceService = (IServiceService) DependencyInjection.getInstance()
-					.getInterfacePair(IServiceService.class);
+			serviceService = DependencyInjection.getInstance().getInterfacePair(IServiceService.class);
 		}
 		return serviceService;
 	}
@@ -41,8 +39,7 @@ public class ServiceService implements IServiceService {
 
 	@Override
 	public boolean addAll(List<Service> services) {
-		// TODO Auto-generated method stub
-		return false;
+		return getServiceRepository().addAll(services);
 	}
 
 	@Override

@@ -40,16 +40,15 @@ public class Hotel implements IHotel {
 
 	public Hotel() {
 		super();
-		this.clientService = (IClientService) DependencyInjection.getInstance().getInterfacePair(IClientService.class);
-		this.roomService = (IRoomService) DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
-		this.serviceService = (IServiceService) DependencyInjection.getInstance()
-				.getInterfacePair(IServiceService.class);
-		this.orderService = (IOrderService) DependencyInjection.getInstance().getInterfacePair(IOrderService.class);
+		this.clientService = DependencyInjection.getInstance().getInterfacePair(IClientService.class);
+		this.roomService = DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
+		this.serviceService = DependencyInjection.getInstance().getInterfacePair(IServiceService.class);
+		this.orderService = DependencyInjection.getInstance().getInterfacePair(IOrderService.class);
 	}
 
 	public static IHotel getInstance() {
 		if (hotel == null) {
-			hotel = (IHotel) DependencyInjection.getInstance().getInterfacePair(IHotel.class);
+			hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
 		}
 		return hotel;
 	}

@@ -17,8 +17,7 @@ public class ClientService implements IClientService {
 
 	public ClientService() {
 		super();
-		this.clientRepository = (IClientRepository) DependencyInjection.getInstance()
-				.getInterfacePair(IClientRepository.class);
+		this.clientRepository = DependencyInjection.getInstance().getInterfacePair(IClientRepository.class);
 	}
 
 	private IClientRepository getClientRepository() {
@@ -27,7 +26,7 @@ public class ClientService implements IClientService {
 
 	public static IClientService getInstance() {
 		if (clientService == null) {
-			clientService = (IClientService) DependencyInjection.getInstance().getInterfacePair(IClientService.class);
+			clientService = DependencyInjection.getInstance().getInterfacePair(IClientService.class);
 		}
 		return clientService;
 	}

@@ -56,7 +56,8 @@ public class DependencyInjection {
 		return result;
 	}
 
-	public Object getInterfacePair(Class<?> type) {
+	@SuppressWarnings("unchecked")
+	public <T> T getInterfacePair(Class<T> type) {
 		Class<?> cl = null;
 		try {
 			if (dependencies.containsKey(type.getName())) {
@@ -69,7 +70,7 @@ public class DependencyInjection {
 				instances.put(cl, result);
 			}
 
-			return instances.get(cl);
+			return (T) instances.get(cl);
 		} catch (ClassNotFoundException e) {
 			logger.error(ERROR_DEPENDENCY_INJECTION_NO_PAIR, e);
 			return null;

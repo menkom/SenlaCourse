@@ -24,8 +24,7 @@ public class OrderRepository implements IOrderRepository {
 
 	public static IOrderRepository getInstance() {
 		if (orderRepository == null) {
-			orderRepository = (IOrderRepository) DependencyInjection.getInstance()
-					.getInterfacePair(IOrderRepository.class);
+			orderRepository = DependencyInjection.getInstance().getInterfacePair(IOrderRepository.class);
 		}
 		return orderRepository;
 	}
