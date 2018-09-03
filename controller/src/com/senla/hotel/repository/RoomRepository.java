@@ -16,6 +16,14 @@ public class RoomRepository implements IRoomRepository {
 	private static Integer lastId;
 	private List<Room> rooms;
 
+	private static Integer getLastId() {
+		return RoomRepository.lastId;
+	}
+
+	private static void setLastId(Integer lastId) {
+		RoomRepository.lastId = lastId;
+	}
+
 	public RoomRepository() {
 		super();
 		this.rooms = new ArrayList<Room>();
@@ -28,10 +36,12 @@ public class RoomRepository implements IRoomRepository {
 		return roomRepository;
 	}
 
+	@Override
 	public List<Room> getRooms() {
 		return rooms;
 	}
 
+	@Override
 	public boolean add(Room room) {
 		boolean result = false;
 		if (room.getId() != null) {
@@ -48,6 +58,7 @@ public class RoomRepository implements IRoomRepository {
 		return result;
 	}
 
+	@Override
 	public boolean addAll(List<Room> rooms) {
 		boolean result = getRooms().addAll(rooms);
 		if (result) {
@@ -56,6 +67,7 @@ public class RoomRepository implements IRoomRepository {
 		return result;
 	}
 
+	@Override
 	public boolean delete(Integer roomNum) {
 		boolean result = false;
 		for (int i = 0; i < getRooms().size(); i++) {
@@ -68,6 +80,7 @@ public class RoomRepository implements IRoomRepository {
 		return result;
 	}
 
+	@Override
 	public boolean deleteById(Integer id) {
 		boolean result = false;
 		for (int i = 0; i < rooms.size() - 1; i++) {
@@ -80,6 +93,7 @@ public class RoomRepository implements IRoomRepository {
 		return result;
 	}
 
+	@Override
 	public Room getRoomByNum(Integer number) {
 		for (Room room : getRooms()) {
 			if ((room != null) && (room.getNumber().equals(number))) {
@@ -89,6 +103,7 @@ public class RoomRepository implements IRoomRepository {
 		return null;
 	}
 
+	@Override
 	public Room getRoomById(Integer id) {
 		for (Room room : getRooms()) {
 			if ((room != null) && (room.getId().equals(id))) {
@@ -98,14 +113,7 @@ public class RoomRepository implements IRoomRepository {
 		return null;
 	}
 
-	private static Integer getLastId() {
-		return RoomRepository.lastId;
-	}
-
-	private static void setLastId(Integer lastId) {
-		RoomRepository.lastId = lastId;
-	}
-
+	@Override
 	public boolean update(Room room) {
 		boolean result = false;
 		if (room != null) {
@@ -119,10 +127,12 @@ public class RoomRepository implements IRoomRepository {
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return CsvParser.exportToCsv(getRooms(), csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return addAll(CsvParser.importFromCsv(Room.class, csvFilePath));
 	}

@@ -16,6 +16,14 @@ public class ServiceRepository implements IServiceRepository {
 	private static Integer lastId;
 	private List<Service> services;
 
+	private static Integer getLastId() {
+		return ServiceRepository.lastId;
+	}
+
+	private static void setLastId(Integer lastId) {
+		ServiceRepository.lastId = lastId;
+	}
+
 	public ServiceRepository() {
 		super();
 		this.services = new ArrayList<Service>();
@@ -28,10 +36,12 @@ public class ServiceRepository implements IServiceRepository {
 		return serviceRepository;
 	}
 
+	@Override
 	public List<Service> getServices() {
 		return services;
 	}
 
+	@Override
 	public boolean add(Service service) {
 		boolean result = false;
 		if (service.getId() != null) {
@@ -47,6 +57,7 @@ public class ServiceRepository implements IServiceRepository {
 		return result;
 	}
 
+	@Override
 	public boolean addAll(List<Service> services) {
 		boolean result = getServices().addAll(services);
 		if (result) {
@@ -55,6 +66,7 @@ public class ServiceRepository implements IServiceRepository {
 		return result;
 	}
 
+	@Override
 	public boolean delete(Integer serviceCode) {
 		boolean result = false;
 		for (int i = 0; i < getServices().size(); i++) {
@@ -67,6 +79,7 @@ public class ServiceRepository implements IServiceRepository {
 		return result;
 	}
 
+	@Override
 	public boolean deleteById(Integer id) {
 		boolean result = false;
 		for (int i = 0; i < services.size() - 1; i++) {
@@ -79,6 +92,7 @@ public class ServiceRepository implements IServiceRepository {
 		return result;
 	}
 
+	@Override
 	public Service getServiceByCode(Integer number) {
 		for (Service service : getServices()) {
 			if ((service != null) && (service.getCode().equals(number))) {
@@ -88,6 +102,7 @@ public class ServiceRepository implements IServiceRepository {
 		return null;
 	}
 
+	@Override
 	public Service getServiceById(Integer id) {
 		for (Service service : getServices()) {
 			if ((service != null) && (service.getId().equals(id))) {
@@ -97,14 +112,7 @@ public class ServiceRepository implements IServiceRepository {
 		return null;
 	}
 
-	private static Integer getLastId() {
-		return ServiceRepository.lastId;
-	}
-
-	private static void setLastId(Integer lastId) {
-		ServiceRepository.lastId = lastId;
-	}
-
+	@Override
 	public boolean update(Service service) {
 		boolean result = false;
 		if (service != null) {
@@ -118,10 +126,12 @@ public class ServiceRepository implements IServiceRepository {
 		return result;
 	}
 
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return CsvParser.exportToCsv(getServices(), csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return addAll(CsvParser.importFromCsv(Service.class, csvFilePath));
 	}

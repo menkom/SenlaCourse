@@ -16,6 +16,14 @@ public class ClientRepository implements IClientRepository {
 	private static Integer lastId;
 	private List<Client> clients;
 
+	private static Integer getLastId() {
+		return ClientRepository.lastId;
+	}
+
+	private static void setLastId(Integer lastId) {
+		ClientRepository.lastId = lastId;
+	}
+
 	public ClientRepository() {
 		super();
 		clients = new ArrayList<Client>();
@@ -28,6 +36,7 @@ public class ClientRepository implements IClientRepository {
 		return clientRepository;
 	}
 
+	@Override
 	public boolean add(Client client) {
 		Boolean result = false;
 		if (client.getId() != null) {
@@ -43,6 +52,7 @@ public class ClientRepository implements IClientRepository {
 		return result;
 	}
 
+	@Override
 	public boolean addAll(List<Client> clients) {
 		boolean result = getClients().addAll(clients);
 		if (result) {
@@ -51,6 +61,7 @@ public class ClientRepository implements IClientRepository {
 		return result;
 	}
 
+	@Override
 	public boolean delete(String name) {
 		boolean result = false;
 		for (int i = 0; i < clients.size() - 1; i++) {
@@ -63,6 +74,7 @@ public class ClientRepository implements IClientRepository {
 		return result;
 	}
 
+	@Override
 	public boolean deleteById(Integer id) {
 		boolean result = false;
 		for (int i = 0; i < clients.size() - 1; i++) {
@@ -75,6 +87,7 @@ public class ClientRepository implements IClientRepository {
 		return result;
 	}
 
+	@Override
 	public Client getClientByName(String name) {
 		for (Client client : clients) {
 			if ((client != null) && (client.getName().equalsIgnoreCase(name))) {
@@ -84,6 +97,7 @@ public class ClientRepository implements IClientRepository {
 		return null;
 	}
 
+	@Override
 	public Client getClientById(Integer id) {
 		for (Client client : getClients()) {
 			if ((client != null) && (client.getId().equals(id))) {
@@ -93,6 +107,7 @@ public class ClientRepository implements IClientRepository {
 		return null;
 	}
 
+	@Override
 	public boolean update(Client client) {
 		boolean result = false;
 		if (client != null) {
@@ -106,22 +121,17 @@ public class ClientRepository implements IClientRepository {
 		return result;
 	}
 
+	@Override
 	public List<Client> getClients() {
 		return clients;
 	}
 
-	private static Integer getLastId() {
-		return ClientRepository.lastId;
-	}
-
-	private static void setLastId(Integer lastId) {
-		ClientRepository.lastId = lastId;
-	}
-
+	@Override
 	public boolean exportCsv(String csvFilePath) {
 		return CsvParser.exportToCsv(getClients(), csvFilePath);
 	}
 
+	@Override
 	public boolean importCsv(String csvFilePath) {
 		return addAll(CsvParser.importFromCsv(Client.class, csvFilePath));
 	}
