@@ -67,4 +67,10 @@ public class Service extends BaseObject implements Serializable {
 
 		return builder.toString();
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 }

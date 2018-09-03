@@ -93,4 +93,10 @@ public class Room extends BaseObject implements Serializable {
 		return builder.toString();
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
+
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.senla.annotation.CsvProperty;
 import com.senla.annotation.enums.PropertyType;
 
-public class BaseObject implements Cloneable, Serializable {
+public abstract class BaseObject implements Cloneable, Serializable {
 
 	/**
 	 * 
@@ -27,11 +27,6 @@ public class BaseObject implements Cloneable, Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
 	}
 
 }
