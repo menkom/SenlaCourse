@@ -13,7 +13,7 @@ public class ClientRepository implements IClientRepository {
 
 	private static IClientRepository clientRepository;
 
-	private Integer lastId;
+	private static Integer lastId;
 	private List<Client> clients;
 
 	public ClientRepository() {
@@ -33,11 +33,11 @@ public class ClientRepository implements IClientRepository {
 		if (client.getId() != null) {
 			result = clients.add(client);
 		} else {
-			Integer id = IdGenerator.generateId(lastId);
+			Integer id = IdGenerator.generateId(getLastId());
 			client.setId(id);
 			result = clients.add(client);
 			if (result) {
-				lastId = id;
+				setLastId(id);
 			}
 		}
 		return result;
@@ -110,12 +110,12 @@ public class ClientRepository implements IClientRepository {
 		return clients;
 	}
 
-	public Integer getLastId() {
-		return lastId;
+	private static Integer getLastId() {
+		return ClientRepository.lastId;
 	}
 
-	public void setLastId(Integer lastId) {
-		this.lastId = lastId;
+	private static void setLastId(Integer lastId) {
+		ClientRepository.lastId = lastId;
 	}
 
 	public boolean exportCsv(String csvFilePath) {

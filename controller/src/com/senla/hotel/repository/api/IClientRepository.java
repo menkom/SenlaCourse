@@ -21,10 +21,6 @@ public interface IClientRepository {
 
 	List<Client> getClients();
 
-	Integer getLastId();
-
-	void setLastId(Integer lastId);
-
 	boolean exportCsv(String csvFilePath);
 
 	boolean importCsv(String csvFilePath);

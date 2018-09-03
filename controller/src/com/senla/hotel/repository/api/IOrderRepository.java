@@ -23,10 +23,6 @@ public interface IOrderRepository {
 
 	boolean addOrderService(int num, Service service);
 
-	Integer getLastId();
-
-	void setLastId(Integer lastId);
-
 	boolean update(Order order);
 
 	boolean exportCsv(String csvFilePath);

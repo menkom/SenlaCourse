@@ -13,7 +13,7 @@ public class ServiceRepository implements IServiceRepository {
 
 	private static IServiceRepository serviceRepository;
 
-	private Integer lastId;
+	private static Integer lastId;
 	private List<Service> services;
 
 	public ServiceRepository() {
@@ -24,7 +24,6 @@ public class ServiceRepository implements IServiceRepository {
 	public static IServiceRepository getInstance() {
 		if (serviceRepository == null) {
 			serviceRepository = DependencyInjection.getInstance().getInterfacePair(IServiceRepository.class);
-			;
 		}
 		return serviceRepository;
 	}
@@ -38,11 +37,11 @@ public class ServiceRepository implements IServiceRepository {
 		if (service.getId() != null) {
 			result = services.add(service);
 		} else {
-			Integer id = IdGenerator.generateId(lastId);
+			Integer id = IdGenerator.generateId(getLastId());
 			service.setId(id);
 			result = getServices().add(service);
 			if (result) {
-				lastId = id;
+				setLastId(id);
 			}
 		}
 		return result;
@@ -98,12 +97,12 @@ public class ServiceRepository implements IServiceRepository {
 		return null;
 	}
 
-	public Integer getLastId() {
-		return lastId;
+	private static Integer getLastId() {
+		return ServiceRepository.lastId;
 	}
 
-	public void setLastId(Integer lastId) {
-		this.lastId = lastId;
+	private static void setLastId(Integer lastId) {
+		ServiceRepository.lastId = lastId;
 	}
 
 	public boolean update(Service service) {

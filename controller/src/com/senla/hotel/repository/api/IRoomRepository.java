@@ -20,10 +20,6 @@ public interface IRoomRepository {
 
 	Room getRoomById(Integer id);
 
-	Integer getLastId();
-
-	void setLastId(Integer lastId);
-
 	boolean update(Room room);
 
 	boolean exportCsv(String csvFilePath);

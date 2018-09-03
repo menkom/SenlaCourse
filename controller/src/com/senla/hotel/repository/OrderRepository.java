@@ -14,7 +14,7 @@ public class OrderRepository implements IOrderRepository {
 
 	private static IOrderRepository orderRepository;
 
-	private Integer lastId;
+	private static Integer lastId;
 	private List<Order> orders;
 
 	public OrderRepository() {
@@ -38,11 +38,11 @@ public class OrderRepository implements IOrderRepository {
 		if (order.getId() != null) {
 			result = orders.add(order);
 		} else {
-			Integer id = IdGenerator.generateId(lastId);
+			Integer id = IdGenerator.generateId(getLastId());
 			order.setId(id);
 			result = getOrders().add(order);
 			if (result) {
-				lastId = id;
+				setLastId(id);
 			}
 		}
 		return result;
@@ -102,12 +102,12 @@ public class OrderRepository implements IOrderRepository {
 		return getOrderByNum(num).addService(service);
 	}
 
-	public Integer getLastId() {
-		return lastId;
+	private static Integer getLastId() {
+		return OrderRepository.lastId;
 	}
 
-	public void setLastId(Integer lastId) {
-		this.lastId = lastId;
+	private static void setLastId(Integer lastId) {
+		OrderRepository.lastId = lastId;
 	}
 
 	public boolean update(Order order) {

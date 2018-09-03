@@ -20,10 +20,6 @@ public interface IServiceRepository {
 
 	Service getServiceById(Integer id);
 
-	Integer getLastId();
-
-	void setLastId(Integer lastId);
-
 	boolean update(Service service);
 
 	boolean exportCsv(String csvFilePath);

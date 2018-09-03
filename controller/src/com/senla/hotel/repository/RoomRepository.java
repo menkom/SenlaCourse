@@ -13,7 +13,7 @@ public class RoomRepository implements IRoomRepository {
 
 	private static IRoomRepository roomRepository;
 
-	private Integer lastId;
+	private static Integer lastId;
 	private List<Room> rooms;
 
 	public RoomRepository() {
@@ -24,7 +24,6 @@ public class RoomRepository implements IRoomRepository {
 	public static IRoomRepository getInstance() {
 		if (roomRepository == null) {
 			roomRepository = DependencyInjection.getInstance().getInterfacePair(IRoomRepository.class);
-			;
 		}
 		return roomRepository;
 	}
@@ -39,11 +38,11 @@ public class RoomRepository implements IRoomRepository {
 			result = rooms.add(room);
 		} else {
 
-			Integer id = IdGenerator.generateId(lastId);
+			Integer id = IdGenerator.generateId(getLastId());
 			room.setId(id);
 			result = getRooms().add(room);
 			if (result) {
-				lastId = id;
+				setLastId(id);
 			}
 		}
 		return result;
@@ -99,12 +98,12 @@ public class RoomRepository implements IRoomRepository {
 		return null;
 	}
 
-	public Integer getLastId() {
-		return lastId;
+	private static Integer getLastId() {
+		return RoomRepository.lastId;
 	}
 
-	public void setLastId(Integer lastId) {
-		this.lastId = lastId;
+	private static void setLastId(Integer lastId) {
+		RoomRepository.lastId = lastId;
 	}
 
 	public boolean update(Room room) {
