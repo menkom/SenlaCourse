@@ -64,7 +64,7 @@ public class Room extends BaseObject implements Serializable {
 		this.status = status;
 	}
 
-	public int getCapacity() {
+	public Integer getCapacity() {
 		return capacity;
 	}
 
