@@ -35,13 +35,9 @@ public class OrderService implements IOrderService {
 		return orderService;
 	}
 
-	private IOrderRepository getOrderRepository() {
-		return orderRepository;
-	}
-
 	@Override
 	public boolean add(Order order) {
-		return getOrderRepository().add(order);
+		return orderRepository.add(order);
 	}
 
 	@Override
@@ -65,17 +61,17 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getOrders() {
-		return getOrderRepository().getOrders();
+		return orderRepository.getOrders();
 	}
 
 	@Override
 	public Order getOrderByNum(int num) {
-		return getOrderRepository().getOrderByNum(num);
+		return orderRepository.getOrderByNum(num);
 	}
 
 	@Override
 	public Order getOrderById(int id) {
-		return getOrderRepository().getOrderById(id);
+		return orderRepository.getOrderById(id);
 	}
 
 	@Override
@@ -107,7 +103,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public boolean addOrderService(int orderNum, int serviceCode) {
 		Service service = ServiceService.getInstance().getServiceByCode(serviceCode);
-		return getOrderRepository().addOrderService(orderNum, service);
+		return orderRepository.addOrderService(orderNum, service);
 	}
 
 	@Override
@@ -135,7 +131,7 @@ public class OrderService implements IOrderService {
 	public List<Order> getActiveOrders(Comparator<Order> comparator) {
 		List<Order> result = new ArrayList<>();
 
-		for (Order order : getOrderRepository().getOrders()) {
+		for (Order order : orderRepository.getOrders()) {
 			Date currentDate = new Date();
 			if (order != null) {
 				if (currentDate.after(order.getStartDate())
@@ -153,7 +149,7 @@ public class OrderService implements IOrderService {
 
 		List<Order> result = new ArrayList<>();
 
-		for (Order order : getOrderRepository().getOrders()) {
+		for (Order order : orderRepository.getOrders()) {
 			if (order != null) {
 				if (order.getRoom().getNumber() == num) {
 					result.add(order);
@@ -235,12 +231,12 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public boolean exportCsv(String csvFilePath) {
-		return getOrderRepository().exportCsv(csvFilePath);
+		return orderRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
 	public boolean importCsv(String csvFilePath) {
-		return getOrderRepository().importCsv(csvFilePath);
+		return orderRepository.importCsv(csvFilePath);
 	}
 
 }

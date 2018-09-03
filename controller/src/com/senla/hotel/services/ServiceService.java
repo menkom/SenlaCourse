@@ -28,18 +28,14 @@ public class ServiceService implements IServiceService {
 		return serviceService;
 	}
 
-	private IServiceRepository getServiceRepository() {
-		return serviceRepository;
-	}
-
 	@Override
 	public boolean add(Service service) {
-		return getServiceRepository().add(service);
+		return serviceRepository.add(service);
 	}
 
 	@Override
 	public boolean addAll(List<Service> services) {
-		return getServiceRepository().addAll(services);
+		return serviceRepository.addAll(services);
 	}
 
 	@Override
@@ -50,12 +46,12 @@ public class ServiceService implements IServiceService {
 
 	@Override
 	public boolean update(Service service) {
-		return getServiceRepository().update(service);
+		return serviceRepository.update(service);
 	}
 
 	@Override
 	public List<Service> getServices() {
-		return getServiceRepository().getServices();
+		return serviceRepository.getServices();
 	}
 
 	@Override
@@ -67,12 +63,12 @@ public class ServiceService implements IServiceService {
 
 	@Override
 	public Service getServiceByCode(int code) {
-		return getServiceRepository().getServiceByCode(code);
+		return serviceRepository.getServiceByCode(code);
 	}
 
 	@Override
 	public Service getServiceById(int id) {
-		return getServiceRepository().getServiceById(id);
+		return serviceRepository.getServiceById(id);
 	}
 
 	@Override
@@ -115,12 +111,12 @@ public class ServiceService implements IServiceService {
 
 	@Override
 	public boolean exportCsv(String csvFilePath) {
-		return getServiceRepository().exportCsv(csvFilePath);
+		return serviceRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
 	public boolean importCsv(String csvFilePath) {
-		return getServiceRepository().importCsv(csvFilePath);
+		return serviceRepository.importCsv(csvFilePath);
 	}
 
 }

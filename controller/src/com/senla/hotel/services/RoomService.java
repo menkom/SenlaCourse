@@ -46,18 +46,14 @@ public class RoomService implements IRoomService {
 		return result;
 	}
 
-	private IRoomRepository getRoomRepository() {
-		return roomRepository;
-	}
-
 	@Override
 	public boolean add(Room room) {
-		return getRoomRepository().add(room);
+		return roomRepository.add(room);
 	}
 
 	@Override
 	public boolean addAll(List<Room> rooms) {
-		return getRoomRepository().addAll(rooms);
+		return roomRepository.addAll(rooms);
 	}
 
 	@Override
@@ -68,12 +64,12 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public boolean update(Room room) {
-		return getRoomRepository().update(room);
+		return roomRepository.update(room);
 	}
 
 	@Override
 	public List<Room> getRooms() {
-		return getRoomRepository().getRooms();
+		return roomRepository.getRooms();
 	}
 
 	@Override
@@ -86,7 +82,7 @@ public class RoomService implements IRoomService {
 	@Override
 	public int getNumberOfFreeRooms() {
 		int result = 0;
-		for (Room room : getRoomRepository().getRooms()) {
+		for (Room room : roomRepository.getRooms()) {
 			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
 				result++;
 			}
@@ -98,7 +94,7 @@ public class RoomService implements IRoomService {
 	public List<Room> getFreeRooms(Comparator<Room> comparator) {
 		List<Room> result = new ArrayList<>();
 
-		for (Room room : getRoomRepository().getRooms()) {
+		for (Room room : roomRepository.getRooms()) {
 			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
 				result.add(room);
 			}
@@ -109,12 +105,12 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public Room getRoomByNum(int number) {
-		return getRoomRepository().getRoomByNum(number);
+		return roomRepository.getRoomByNum(number);
 	}
 
 	@Override
 	public Room getRoomById(int id) {
-		return getRoomRepository().getRoomById(id);
+		return roomRepository.getRoomById(id);
 	}
 
 	@Override
@@ -155,7 +151,7 @@ public class RoomService implements IRoomService {
 			}
 		}
 
-		for (Room room : getRoomRepository().getRooms()) {
+		for (Room room : roomRepository.getRooms()) {
 			if (room != null) {
 				if (!isRoomInArray(room, resultExclude)) {
 					result.add(room);
@@ -195,12 +191,12 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public boolean exportCsv(String csvFilePath) {
-		return getRoomRepository().exportCsv(csvFilePath);
+		return roomRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
 	public boolean importCsv(String csvFilePath) {
-		return getRoomRepository().importCsv(csvFilePath);
+		return roomRepository.importCsv(csvFilePath);
 	}
 
 }

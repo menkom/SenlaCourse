@@ -20,10 +20,6 @@ public class ClientService implements IClientService {
 		this.clientRepository = DependencyInjection.getInstance().getInterfacePair(IClientRepository.class);
 	}
 
-	private IClientRepository getClientRepository() {
-		return clientRepository;
-	}
-
 	public static IClientService getInstance() {
 		if (clientService == null) {
 			clientService = DependencyInjection.getInstance().getInterfacePair(IClientService.class);
@@ -33,37 +29,37 @@ public class ClientService implements IClientService {
 
 	@Override
 	public boolean add(Client client) {
-		return getClientRepository().add(client);
+		return clientRepository.add(client);
 	}
 
 	@Override
 	public boolean addAll(List<Client> clients) {
-		return getClientRepository().addAll(clients);
+		return clientRepository.addAll(clients);
 	}
 
 	@Override
 	public boolean update(Client client) {
-		return getClientRepository().update(client);
+		return clientRepository.update(client);
 	}
 
 	@Override
 	public List<Client> getClients() {
-		return getClientRepository().getClients();
+		return clientRepository.getClients();
 	}
 
 	@Override
 	public Client getClientByName(String name) {
-		return getClientRepository().getClientByName(name);
+		return clientRepository.getClientByName(name);
 	}
 
 	@Override
 	public Client getClientById(int id) {
-		return getClientRepository().getClientById(id);
+		return clientRepository.getClientById(id);
 	}
 
 	@Override
 	public int getNumberOfClients() {
-		return getClientRepository().getClients().size();
+		return clientRepository.getClients().size();
 	}
 
 	@Override
@@ -89,19 +85,18 @@ public class ClientService implements IClientService {
 			if (!result) {
 				break;
 			}
-
 		}
 		return result;
 	}
 
 	@Override
 	public boolean exportCsv(String csvFilePath) {
-		return getClientRepository().exportCsv(csvFilePath);
+		return clientRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
 	public boolean importCsv(String csvFilePath) {
-		return getClientRepository().importCsv(csvFilePath);
+		return clientRepository.importCsv(csvFilePath);
 	}
 
 }
