@@ -29,6 +29,11 @@ import com.senla.util.ModelSerializer;
 
 public class Hotel implements IHotel {
 
+	private static final String ERROR_CLIENTS_ADD = "Error adding clients.";
+	private static final String ERROR_ROOMS_ADD = "Error adding rooms.";
+	private static final String ERROR_SERVICES_ADD = "Error adding services.";
+	private static final String ERROR_ORDERS_ADD = "Error adding orders.";
+
 	private IClientService clientService;
 	private IRoomService roomService;
 	private IServiceService serviceService;
@@ -53,27 +58,44 @@ public class Hotel implements IHotel {
 		return hotel;
 	}
 
+	private int addAll(ModelSerializer serializer) {
+		int result = 0b0000;
+
+		result = result | (clientService.addAll(serializer.getClients()) ? 0b1000 : 0b0000);
+		result = result | (roomService.addAll(serializer.getRooms()) ? 0b0100 : 0b0000);
+		result = result | (serviceService.addAll(serializer.getServices()) ? 0b0010 : 0b0000);
+		result = result | (orderService.addAll(serializer.getOrders()) ? 0b0001 : 0b0000);
+
+		return result;
+	}
+
+	@Override
 	public boolean load() {
-		boolean result = true;
+		boolean result = false;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
+
 		ModelSerializer serializer = new ModelSerializer();
-		try {
-			result = serializer.deserialize(filePath + "hotel.raw");
 
-			clientService.addAll(serializer.getClients());
+		if (serializer.deserialize(filePath + "hotel.raw")) {
 
-			roomService.addAll(serializer.getRooms());
+			int addResult = addAll(serializer);
+			if (addResult == 0b1111) {
+				result = true;
+			} else {
+				if ((addResult ^ 0b0111) != 0b0000) {
+					logger.error(ERROR_CLIENTS_ADD);
+				}
+				if ((addResult ^ 0b1011) != 0b0000) {
+					logger.error(ERROR_ROOMS_ADD);
+				}
+				if ((addResult ^ 0b1101) != 0b0000) {
+					logger.error(ERROR_SERVICES_ADD);
+				}
+				if ((addResult ^ 0b1110) != 0b0000) {
+					logger.error(ERROR_ORDERS_ADD);
+				}
+			}
 
-			serviceService.addAll(serializer.getServices());
-
-			orderService.addAll(serializer.getOrders());
-
-		} catch (IOException e) {
-			logger.error(e);
-			result = false;
-		} catch (ClassNotFoundException e) {
-			logger.error(e);
-			result = false;
 		}
 		return result;
 	}
