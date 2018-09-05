@@ -29,11 +29,6 @@ import com.senla.util.ModelSerializer;
 
 public class Hotel implements IHotel {
 
-//	private static final String ERROR_CLIENTS_ADD = "Error adding clients.";
-//	private static final String ERROR_ROOMS_ADD = "Error adding rooms.";
-//	private static final String ERROR_SERVICES_ADD = "Error adding services.";
-//	private static final String ERROR_ORDERS_ADD = "Error adding orders.";
-
 	private IClientService clientService;
 	private IRoomService roomService;
 	private IServiceService serviceService;
