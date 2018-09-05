@@ -121,7 +121,7 @@ public class CsvExport {
 		return false;
 	}
 
-	public static boolean saveCsvFile(List<String> lines, String fileName) {
+	public static boolean saveCsvFile(List<String> lines, String fileName) throws IOException {
 		Boolean result = false;
 		File file = new File(fileName);
 		if (!file.getName().equals("")) {
@@ -131,10 +131,8 @@ public class CsvExport {
 						br.write(line);
 					}
 				}
-			} catch (IOException e) {
-				logger.error(e);
-			}
-			result = true;
+				result = true;
+			} 
 		}
 		return result;
 	}

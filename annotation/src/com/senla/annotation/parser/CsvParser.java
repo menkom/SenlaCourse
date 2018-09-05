@@ -1,5 +1,6 @@
 package com.senla.annotation.parser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
@@ -10,7 +11,7 @@ import com.senla.annotation.parser.CsvImport;
 
 public class CsvParser {
 
-	public static boolean exportToCsv(List<?> list, String csvFilePath) {
+	public static boolean exportToCsv(List<?> list, String csvFilePath) throws IOException {
 		List<String> toSave = new ArrayList<>();
 		String valueSeparator = "";
 		String filename = "";
@@ -37,7 +38,7 @@ public class CsvParser {
 		return CsvExport.saveCsvFile(toSave, csvFilePath + filename);
 	}
 
-	public static <T extends Object> List<T> importFromCsv(Class<T> itemClass, String csvFilePath) {
+	public static <T extends Object> List<T> importFromCsv(Class<T> itemClass, String csvFilePath) throws IOException {
 		return CsvImport.getFromCsv(itemClass, csvFilePath);
 	}
 

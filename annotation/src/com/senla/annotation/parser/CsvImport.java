@@ -30,7 +30,7 @@ public class CsvImport {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static boolean setCompositeProperty(Object item, Field field, String fieldValue, String keyFieldName,
-			String csvFilePath) {
+			String csvFilePath) throws IOException {
 		boolean result = false;
 		boolean isAccessible = field.isAccessible();
 		if (!field.isAccessible()) {
@@ -101,7 +101,7 @@ public class CsvImport {
 	}
 
 	private static <T> T getCompositePropertyItem(Class<T> itemClass, String keyField, String keyValue,
-			String csvFilePath) {
+			String csvFilePath)  throws IOException{
 		T result = null;
 		List<T> list = getFromCsv(itemClass, csvFilePath);
 
@@ -155,7 +155,7 @@ public class CsvImport {
 		return false;
 	}
 
-	public static <T extends Object> List<T> getFromCsv(Class<T> itemClass, String csvFilePath) {
+	public static <T extends Object> List<T> getFromCsv(Class<T> itemClass, String csvFilePath) throws IOException {
 		List<T> result = new ArrayList<>();
 		if (itemClass != null) {
 			CsvEntity itemCsvEntity = itemClass.getAnnotation(CsvEntity.class);
@@ -173,8 +173,6 @@ public class CsvImport {
 							result.add(item);
 						}
 					}
-				} catch (IOException e) {
-					logger.error(e);
 				} catch (IllegalArgumentException | IllegalAccessException e) {
 					logger.error(e);
 				} catch (InstantiationException e) {
@@ -201,7 +199,8 @@ public class CsvImport {
 		return result;
 	}
 
-	public static boolean setCsvProperties(Object item, Class<?> itemClass, String[] fieldValues, String csvFilePath) {
+	public static boolean setCsvProperties(Object item, Class<?> itemClass, String[] fieldValues, String csvFilePath)
+			throws IOException {
 		boolean result = false;
 		if (!itemClass.getSuperclass().equals(Object.class)) {
 			setCsvProperties(item, itemClass.getSuperclass(), fieldValues, csvFilePath);
