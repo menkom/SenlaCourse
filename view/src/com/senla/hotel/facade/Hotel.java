@@ -29,10 +29,10 @@ import com.senla.util.ModelSerializer;
 
 public class Hotel implements IHotel {
 
-	private static final String ERROR_CLIENTS_ADD = "Error adding clients.";
-	private static final String ERROR_ROOMS_ADD = "Error adding rooms.";
-	private static final String ERROR_SERVICES_ADD = "Error adding services.";
-	private static final String ERROR_ORDERS_ADD = "Error adding orders.";
+//	private static final String ERROR_CLIENTS_ADD = "Error adding clients.";
+//	private static final String ERROR_ROOMS_ADD = "Error adding rooms.";
+//	private static final String ERROR_SERVICES_ADD = "Error adding services.";
+//	private static final String ERROR_ORDERS_ADD = "Error adding orders.";
 
 	private IClientService clientService;
 	private IRoomService roomService;
@@ -58,13 +58,11 @@ public class Hotel implements IHotel {
 		return hotel;
 	}
 
-	private int addAll(ModelSerializer serializer) {
-		int result = 0b0000;
-
-		result = result | (clientService.addAll(serializer.getClients()) ? 0b1000 : 0b0000);
-		result = result | (roomService.addAll(serializer.getRooms()) ? 0b0100 : 0b0000);
-		result = result | (serviceService.addAll(serializer.getServices()) ? 0b0010 : 0b0000);
-		result = result | (orderService.addAll(serializer.getOrders()) ? 0b0001 : 0b0000);
+	private boolean addAll(ModelSerializer serializer) {
+		boolean result = clientService.addAll(serializer.getClients());
+		result = result && roomService.addAll(serializer.getRooms());
+		result = result && serviceService.addAll(serializer.getServices());
+		result = result && orderService.addAll(serializer.getOrders());
 
 		return result;
 	}
@@ -77,25 +75,7 @@ public class Hotel implements IHotel {
 		ModelSerializer serializer = new ModelSerializer();
 
 		if (serializer.deserialize(filePath + "hotel.raw")) {
-
-			int addResult = addAll(serializer);
-			if (addResult == 0b1111) {
-				result = true;
-			} else {
-				if ((addResult ^ 0b0111) != 0b0000) {
-					logger.error(ERROR_CLIENTS_ADD);
-				}
-				if ((addResult ^ 0b1011) != 0b0000) {
-					logger.error(ERROR_ROOMS_ADD);
-				}
-				if ((addResult ^ 0b1101) != 0b0000) {
-					logger.error(ERROR_SERVICES_ADD);
-				}
-				if ((addResult ^ 0b1110) != 0b0000) {
-					logger.error(ERROR_ORDERS_ADD);
-				}
-			}
-
+			result = addAll(serializer);
 		}
 		return result;
 	}
@@ -104,17 +84,15 @@ public class Hotel implements IHotel {
 		boolean result = true;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
-		try {
-			serializer.setClients(clientService.getClients());
-			serializer.setRooms(roomService.getRooms());
-			serializer.setServices(serviceService.getServices());
-			serializer.setOrders(orderService.getOrders());
 
+		serializer.setClients(clientService.getClients());
+		serializer.setRooms(roomService.getRooms());
+		serializer.setServices(serviceService.getServices());
+		serializer.setOrders(orderService.getOrders());
+
+		try {
 			serializer.serialize(filePath + "hotel.raw");
 		} catch (IOException ex) {
-			logger.error(ex);
-			result = false;
-		} catch (Exception ex) {
 			logger.error(ex);
 			result = false;
 		}
@@ -541,33 +519,29 @@ public class Hotel implements IHotel {
 	}
 
 	public boolean exportCsv() {
-		boolean result = false;
-		result = clientService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
-		if (result) {
-			result = serviceService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
+		try {
+			clientService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
+			serviceService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
+			roomService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
+			orderService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
+			return true;
+		} catch (IOException e) {
+			logger.error(e);
+			return false;
 		}
-		if (result) {
-			result = roomService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
-		}
-		if (result) {
-			result = orderService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
-		}
-		return result;
 	}
 
 	public boolean importCsv() {
-		boolean result = false;
-		result = clientService.importCsv(HotelProperty.getInstance().getCsvFilePath());
-		if (result) {
-			result = orderService.importCsv(HotelProperty.getInstance().getCsvFilePath());
+		try {
+			clientService.importCsv(HotelProperty.getInstance().getCsvFilePath());
+			orderService.importCsv(HotelProperty.getInstance().getCsvFilePath());
+			roomService.importCsv(HotelProperty.getInstance().getCsvFilePath());
+			serviceService.importCsv(HotelProperty.getInstance().getCsvFilePath());
+			return true;
+		} catch (IOException e) {
+			logger.error(e);
+			return false;
 		}
-		if (result) {
-			result = roomService.importCsv(HotelProperty.getInstance().getCsvFilePath());
-		}
-		if (result) {
-			result = serviceService.importCsv(HotelProperty.getInstance().getCsvFilePath());
-		}
-		return result;
 	}
 
 }

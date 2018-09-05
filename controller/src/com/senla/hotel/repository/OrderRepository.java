@@ -1,5 +1,6 @@
 package com.senla.hotel.repository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,12 +134,12 @@ public class OrderRepository implements IOrderRepository {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) {
+	public boolean exportCsv(String csvFilePath)  throws IOException{
 		return CsvParser.exportToCsv(getOrders(), csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) {
+	public boolean importCsv(String csvFilePath)  throws IOException{
 		return addAll(CsvParser.importFromCsv(Order.class, csvFilePath));
 	}
 

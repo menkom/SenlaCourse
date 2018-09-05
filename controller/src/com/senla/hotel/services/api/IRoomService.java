@@ -41,8 +41,8 @@ public interface IRoomService {
 
 	public boolean importRoomsCSV(String file) throws IOException;
 
-	public boolean exportCsv(String csvFilePath);
+	public boolean exportCsv(String csvFilePath) throws IOException;
 
-	public boolean importCsv(String csvFilePath);
+	public boolean importCsv(String csvFilePath) throws IOException;
 
 }

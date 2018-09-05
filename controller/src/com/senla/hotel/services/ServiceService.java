@@ -110,12 +110,12 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) {
+	public boolean exportCsv(String csvFilePath) throws IOException {
 		return serviceRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) {
+	public boolean importCsv(String csvFilePath) throws IOException {
 		return serviceRepository.importCsv(csvFilePath);
 	}
 

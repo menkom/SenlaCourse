@@ -46,8 +46,8 @@ public interface IOrderService {
 
 	boolean importOrdersCSV(String file) throws IOException;
 
-	boolean exportCsv(String csvFilePath);
+	boolean exportCsv(String csvFilePath) throws IOException;
 
-	boolean importCsv(String csvFilePath);
+	boolean importCsv(String csvFilePath) throws IOException;
 
 }

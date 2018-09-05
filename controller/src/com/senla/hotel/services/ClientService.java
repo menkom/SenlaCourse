@@ -90,12 +90,12 @@ public class ClientService implements IClientService {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) {
+	public boolean exportCsv(String csvFilePath) throws IOException {
 		return clientRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) {
+	public boolean importCsv(String csvFilePath) throws IOException {
 		return clientRepository.importCsv(csvFilePath);
 	}
 

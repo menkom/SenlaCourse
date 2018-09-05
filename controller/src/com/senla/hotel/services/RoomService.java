@@ -190,12 +190,12 @@ public class RoomService implements IRoomService {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) {
+	public boolean exportCsv(String csvFilePath) throws IOException {
 		return roomRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) {
+	public boolean importCsv(String csvFilePath) throws IOException {
 		return roomRepository.importCsv(csvFilePath);
 	}
 

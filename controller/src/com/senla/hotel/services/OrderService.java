@@ -230,12 +230,12 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) {
+	public boolean exportCsv(String csvFilePath) throws IOException {
 		return orderRepository.exportCsv(csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) {
+	public boolean importCsv(String csvFilePath) throws IOException {
 		return orderRepository.importCsv(csvFilePath);
 	}
 
