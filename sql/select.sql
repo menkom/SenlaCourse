@@ -39,11 +39,12 @@ SELECT model, price FROM printer where price=(SELECT MAX(price) FROM printer);
 /*11*/
 SELECT sum(speed)/count(speed) FROM pc;
 /*12*/
-SELECT sum(speed)/count(speed) FROM laptop where price>1000;
+SELECT AVG(speed) FROM laptop where price>1000;
 /*13*/
-SELECT sum(speed)/count(speed) FROM pc, product pr where pr.model=pc.model and pr.maker='hp';
+SELECT AVG(speed) FROM pc, product pr where pr.model=pc.model and pr.maker='hp';
 /*14*/
-SELECT speed, sum(price)/count(price) as price FROM pc group by speed
+SELECT speed, AVG(price) as price FROM pc group by speed;
 /*15*/
+SELECT hd FROM pc group by pc.hd having count(pc.hd) >1;
 /*16*/
 /*17*/
