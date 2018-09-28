@@ -4,8 +4,7 @@ CREATE TABLE printer (
   color char(1)  NOT NULL,
   type varchar(10) NOT NULL,
   price double,
-    UNIQUE KEY(code),
-    FOREIGN KEY (`model`) REFERENCES product(model)
+    UNIQUE KEY(code)
 );
 
 CREATE TABLE pc (
@@ -18,7 +17,6 @@ CREATE TABLE pc (
   price double,
     UNIQUE KEY(code)
 );
-ALTER TABLE pc ADD FOREIGN KEY (`model`) REFERENCES product(`model`);
 
 CREATE TABLE laptop (
   code int NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -30,7 +28,6 @@ CREATE TABLE laptop (
      screen tinyint not null,
     UNIQUE KEY(code)
 );
-ALTER TABLE laptop ADD FOREIGN KEY (model) REFERENCES product(model);
 ALTER TABLE laptop MODIFY code int(11) AUTO_INCREMENT;
 
 create table product (
@@ -39,3 +36,6 @@ maker varchar(10) not null,
     type varchar(50) not null,
     UNIQUE KEY(model)
 ); 
+ALTER TABLE printer ADD FOREIGN KEY (model) REFERENCES product(model);
+ALTER TABLE laptop ADD FOREIGN KEY (model) REFERENCES product(model);
+ALTER TABLE pc ADD FOREIGN KEY (`model`) REFERENCES product(`model`);
