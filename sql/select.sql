@@ -34,3 +34,8 @@ SELECT speed, AVG(price) as price FROM pc group by speed;
 SELECT hd FROM pc group by pc.hd having count(pc.hd) >1;
 /*16*/
 /*17*/
+select pr.type, l.model, l.speed from laptop l, product pr where l.model=pr.model and speed >(select min(speed) from pc);
+/*18*/
+/*19*/
+/*20*/
+/*21*/
