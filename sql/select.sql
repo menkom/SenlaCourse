@@ -43,6 +43,7 @@ SELECT sum(speed)/count(speed) FROM laptop where price>1000;
 /*13*/
 SELECT sum(speed)/count(speed) FROM pc, product pr where pr.model=pc.model and pr.maker='hp';
 /*14*/
+SELECT speed, sum(price)/count(price) as price FROM pc group by speed
 /*15*/
 /*16*/
 /*17*/
