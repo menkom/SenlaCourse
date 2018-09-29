@@ -34,8 +34,10 @@ SELECT speed, AVG(price) as price FROM pc group by speed;
 SELECT hd FROM pc group by pc.hd having count(pc.hd) >1;
 /*16*/
 /*17*/
-select pr.type, l.model, l.speed from laptop l, product pr where l.model=pr.model and speed >(select min(speed) from pc);
+select pr.type, l.model, l.speed from laptop l, product pr where l.model=pr.model and speed<(select min(speed) from pc);
 /*18*/
+select pro.maker, pri.price from product pro, printer pri where pro.model=pri.model and pri.color='y' and pri.price=(select min(pr1.price) from printer pr1 where pr1.color='y');
 /*19*/
+select pr.maker, avg(l.screen) from laptop l, product pr where l.model=pr.model group BY pr.maker;
 /*20*/
 /*21*/
