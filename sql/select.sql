@@ -40,4 +40,5 @@ select pro.maker, pri.price from product pro, printer pri where pro.model=pri.mo
 /*19*/
 select pr.maker, avg(l.screen) from laptop l, product pr where l.model=pr.model group BY pr.maker;
 /*20*/
+SELECT maker, count(model) as count FROM product pr where type='pc' group by pr.maker having count(pr.model) >3;
 /*21*/
