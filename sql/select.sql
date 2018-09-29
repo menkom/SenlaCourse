@@ -44,6 +44,7 @@ SELECT maker, count(model) as count FROM product pr where type='pc' group by pr.
 /*21*/
 SELECT pr.maker, max(pc.price) FROM product pr, pc where pc.model=pr.model group by pr.maker;
 /*22*/
+select pc.speed, avg(pc.price)as price from pc where pc.speed>600 group by pc.speed;
 /*23*/
 SELECT distinct pr.maker FROM product pr, pc where pc.model=pr.model and pc.speed>750 and pr.maker in ( SELECT pr.maker FROM product pr, laptop l where l.model=pr.model and l.speed>750);
 /*24*/
