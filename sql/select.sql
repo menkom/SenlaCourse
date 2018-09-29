@@ -42,3 +42,8 @@ select pr.maker, avg(l.screen) from laptop l, product pr where l.model=pr.model 
 /*20*/
 SELECT maker, count(model) as count FROM product pr where type='pc' group by pr.maker having count(pr.model) >3;
 /*21*/
+SELECT pr.maker, max(pc.price) FROM product pr, pc where pc.model=pr.model group by pr.maker;
+/*22*/
+/*23*/
+/*24*/
+/*25*/
