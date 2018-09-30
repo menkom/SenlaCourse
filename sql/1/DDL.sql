@@ -1,3 +1,6 @@
+create database SenlaDbLesson10;
+use SenlaDbLesson10;
+
 CREATE TABLE printer (
   code int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   model varchar(50) NOT NULL,
