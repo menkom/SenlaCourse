@@ -1,3 +1,5 @@
+use SenlaDbLesson10;
+
 INSERT INTO `product` (`maker`, `model`, `type`) VALUES ('Sony', 'vaio', 'laptop');
 INSERT INTO `product` (maker, model, type) VALUES ('lenovo', 'yoga 900', 'laptop');
 INSERT INTO `product` (maker, model, type) VALUES ('lenovo', 'x250', 'laptop');
