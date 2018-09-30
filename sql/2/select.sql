@@ -49,3 +49,12 @@ select pc.speed, avg(pc.price)as price from pc where pc.speed>600 group by pc.sp
 SELECT distinct pr.maker FROM product pr, pc where pc.model=pr.model and pc.speed>750 and pr.maker in ( SELECT pr.maker FROM product pr, laptop l where l.model=pr.model and l.speed>750);
 #24
 #25
+select DISTINCT maker 
+from product 
+where maker in (select pro.maker 
+	from product pro, pc 
+	where pro.model=pc.model 
+	  and speed = (select max(speed) 
+	  from pc 
+	  where ram = (select MIN(ram) from pc)) 
+		and ram = (select MIN(ram) from pc));
