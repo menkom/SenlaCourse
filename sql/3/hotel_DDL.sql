@@ -59,12 +59,28 @@ CREATE TABLE IF NOT EXISTS `hotel`.`service` (
   `code` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `price` INT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hotel`.`service_order`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hotel`.`service_order` (
+  `id` INT NOT NULL,
+  `service_id` INT NOT NULL,
   `order_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_service_order1_idx` (`order_id` ASC),
-  CONSTRAINT `fk_service_order1`
+  INDEX `fk_service_order_order1_idx` (`order_id` ASC),
+  INDEX `fk_service_order_service1_idx` (`service_id` ASC),
+  CONSTRAINT `fk_service_order_order1`
     FOREIGN KEY (`order_id`)
     REFERENCES `hotel`.`order` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_service_order_service1`
+    FOREIGN KEY (`service_id`)
+    REFERENCES `hotel`.`service` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
