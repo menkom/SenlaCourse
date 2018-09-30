@@ -32,7 +32,7 @@ SELECT AVG(speed) FROM pc, product pr where pr.model=pc.model and pr.maker='hp';
 SELECT speed, AVG(price) as price FROM pc group by speed;
 /*15*/
 SELECT hd FROM pc group by pc.hd having count(pc.hd) >1;
-/*16*/
+#16
 /*17*/
 select pr.type, l.model, l.speed from laptop l, product pr where l.model=pr.model and speed<(select min(speed) from pc);
 /*18*/
@@ -47,5 +47,5 @@ SELECT pr.maker, max(pc.price) FROM product pr, pc where pc.model=pr.model group
 select pc.speed, avg(pc.price)as price from pc where pc.speed>600 group by pc.speed;
 /*23*/
 SELECT distinct pr.maker FROM product pr, pc where pc.model=pr.model and pc.speed>750 and pr.maker in ( SELECT pr.maker FROM product pr, laptop l where l.model=pr.model and l.speed>750);
-/*24*/
-/*25*/
+#24
+#25
