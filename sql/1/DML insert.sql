@@ -49,8 +49,28 @@ INSERT INTO product (maker, model, type) VALUES ('Xerox', 'Phaser 3119', 'printe
 INSERT INTO product (maker, model, type) VALUES ('Xerox', 'phaser 3140', 'printer');
 INSERT INTO product (maker, model, type) VALUES ('Xerox', 'WorkCentre Pro 420', 'printer');
 INSERT INTO product (maker, model, type) VALUES ('Xerox', 'DC 260', 'printer');
-INSERT INTO product (maker, model, type) VALUES ('Xerox', 'Workcentre 5020', 'printer');
- 
+INSERT INTO product (maker, model, type) VALUES
+ ('Xerox', 'Workcentre 5020', 'printer'),
+('HP', 'DeskJet 2130', 'printer'),
+('Canon', 'PIXMA G3411', 'printer'),
+('HP', 'DeskJet Ink Advantage 4535', 'printer'),
+('HP', 'DesignJet T520', 'printer'),
+('Epson', 'SureColor SC-P600', 'printer');
+
+INSERT INTO `printer` (`model`, `color`, `type`, `price`) VALUES 
+('CLP-310', 'y', 'Laser', '220'),
+('CLP-315', 'y', 'Laser', '200'),
+('DC 260', 'n', 'Laser', '8650'),
+('Laserjet M1132', 'n', 'Laser', '350'),
+('M2026W', 'n', 'Laser', '280'),
+('SCX-3400', 'n', 'Laser', '300'),
+('DeskJet 2130', 'y', 'Jet', '60'),
+('PIXMA G3411', 'y', 'Jet', '400'),
+('Phaser 3119', 'n', 'Laser', '60'),
+('DeskJet Ink Advantage 4535', 'y', 'Jet', '330'),
+('DesignJet T520', 'y', 'Jet', '2700'),
+('SureColor SC-P600', 'y', 'Jet', '1860'); 
+
 INSERT INTO `laptop` (`code`, `model`, `speed`, `ram`, `hd`, `price`, `screen`) 
   VALUES (NULL, 'yoga 900', '2000', '8000', '500', '2000', '13');
 INSERT INTO `laptop` (`code`, `model`, `speed`, `ram`, `hd`, `price`, `screen`) VALUES (NULL, 'x250', '1500', '4000', '256', '600', '12');
