@@ -75,7 +75,7 @@ INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES (
 INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES (NULL, 'Compaq CQ5210F', '4000', '3000', '500', '0', '400');
 
 INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES
-(NULL, '2017 HP Pavilion Slimline 400 Flagship Premium', '1400', '4', '500', '24', '380'),
+(NULL, '2017 HP Pavilion Slimline 400 Flagship Premium', '1400', '4000', '500', '24', '380'),
 (NULL, '24-r028ur', '2900', '4000', '1000', '24', '1100'),
 (NULL, 'Aspire Desktop', '3500', '12000', '2000', '8', '940'),
 (NULL, 'Optiplex 780 Minitower', '3000', '4000', '160', '12', '220'),
