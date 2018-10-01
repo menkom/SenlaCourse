@@ -5,9 +5,10 @@ USE `hotel` ;
 -- Table `hotel`.`client`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`client` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -15,13 +16,14 @@ ENGINE = InnoDB;
 -- Table `hotel`.`room`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`room` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `number` INT NOT NULL,
   `capacity` SMALLINT NOT NULL,
   `roomstar` VARCHAR(5) NOT NULL,
   `roomstatus` VARCHAR(9) NOT NULL,
   `price` INT NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -29,7 +31,7 @@ ENGINE = InnoDB;
 -- Table `hotel`.`order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`order` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `num` INT NOT NULL,
   `client_id` INT NOT NULL,
   `room_id` INT NOT NULL,
@@ -38,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `hotel`.`order` (
   PRIMARY KEY (`id`),
   INDEX `fk_order_client_idx` (`client_id` ASC),
   INDEX `fk_order_room1_idx` (`room_id` ASC),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   CONSTRAINT `fk_order_client`
     FOREIGN KEY (`client_id`)
     REFERENCES `hotel`.`client` (`id`)
@@ -55,11 +58,12 @@ ENGINE = InnoDB;
 -- Table `hotel`.`service`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`service` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `code` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `price` INT NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC))
 ENGINE = InnoDB;
 
 
@@ -67,12 +71,13 @@ ENGINE = InnoDB;
 -- Table `hotel`.`service_order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`service_order` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `service_id` INT NOT NULL,
   `order_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_service_order_order1_idx` (`order_id` ASC),
   INDEX `fk_service_order_service1_idx` (`service_id` ASC),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   CONSTRAINT `fk_service_order_order1`
     FOREIGN KEY (`order_id`)
     REFERENCES `hotel`.`order` (`id`)
