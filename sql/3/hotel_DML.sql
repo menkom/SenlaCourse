@@ -1,3 +1,4 @@
+use hotel;
 INSERT INTO client (id, name) VALUES 
 	(1, 'Customer One'),
 	(2, 'John'),
