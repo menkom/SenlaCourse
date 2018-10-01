@@ -90,6 +90,27 @@ INSERT INTO laptop (model, speed, ram, hd, price, screen) VALUES
   ('vaio', '2000', '4000', '250', '710', '16'),
   ('Miix 630', '1900', '4000', '250', '1680', '12');
 
+INSERT INTO product (maker, model, type) VALUES
+ ('HP', 'Envy 750-000ur', 'pc'),
+ ('Dell', 'Alienware X51 R2', 'pc'),
+ ('HP', 'EliteDesk 800 G1', 'pc'),
+ ('Dell', 'Optiplex', 'pc'),
+ ('HP', 'Pavilion 570', 'pc'),
+ ('HP', 'ProDesk 600 G1', 'pc'),
+ ('HP', '290 G1', 'pc');
+
+INSERT INTO pc (model, speed, ram, hd, cd, price) VALUES 
+('Envy 750-000ur', '3600', '16000', '1128', '42', '2500'),
+('Alienware X51 R2', '3600', '16000', '2000', '42', '2900'),
+('EliteDesk 800 G1', '3600', '16000', '256', '42', '3000'),
+('Optiplex', '3000', '4000', '500', '42', '1200'),
+('Pavilion 570', '3000', '8000', '2000', '42', '1860'),
+('ProDesk 600 G1', '3000', '4000', '500', '42', '630'),
+('ProDesk 600 G1', '3200', '8000', '1128', '42', '1340'),
+('290 G1', '3000', '4000', '500', '42', '1610'),
+('Optiplex', '3200', '8000', '256', '42', '1680'),
+('Optiplex', '3600', '8000', '500', '42', '1960');
+
 INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES (NULL, '8300 Elite', '3200', '8000', '500', '0', '184');
 INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES (NULL, 'Aspire Desktop', '2400', '8000', '1000', '8', '700');
 INSERT INTO `pc` (`code`, `model`, `speed`, `ram`, `hd`, `cd`, `price`) VALUES (NULL, 'Compaq CQ5210F', '4000', '3000', '500', '0', '400');
