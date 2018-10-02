@@ -79,4 +79,16 @@ public class DaoHandler {
 		}
 		return result;
 	}
+
+	public int executeUpdate(String query) throws SQLException {
+		int result = 0;
+		Connection conn = DaoHandler.getInstance().getConnection();
+
+		Statement statement = conn.createStatement();
+
+		if (statement != null) {
+			result = statement.executeUpdate(query);
+		}
+		return result;
+	}
 }

@@ -1,34 +1,33 @@
 package com.senla.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+//import org.apache.log4j.Logger;
 
-import org.apache.log4j.Logger;
+import com.senla.hotel.dao.ClientDao;
+import com.senla.hotel.model.Client;
 
 public class Executer {
 
-	private static final Logger logger = Logger.getLogger(Executer.class);
-
-	private static final String query = "select * from client";
+//	private static final Logger logger = Logger.getLogger(Executer.class);
 
 	public static void main(String[] args) {
-		try {
-			ResultSet result = DaoHandler.getInstance().executeQuery(query);
+		ClientDao clients = new ClientDao();
 
-			while (result.next()) {
-				String userid = result.getString("id");
-				String username = result.getString("name");
+		clients.getClients();
 
-				System.out.print("user_id: " + userid + "; ");
-				System.out.println("user_name: " + username);
-			}
+		System.out.println("clients : " + clients.getClients().size());
 
-		} catch (SQLException e) {
-			System.out.println(e);
-			logger.error(e);
+		Client client = clients.getClients().get(0);
 
-		} finally {
-			DaoHandler.getInstance().closeConnection();
-		}
+		System.out.println("client[0] : " + client.getName());
+
+		client.setName(client.getName() + "1");
+
+		clients.update(client);
+
+		System.out.println("client[0] : " + client.getName());
+
+		System.out.println("client[0] : " + clients.getClientById(1));
+
+		DaoHandler.getInstance().closeConnection();
 	}
 }
