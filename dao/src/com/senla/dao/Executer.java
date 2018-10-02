@@ -1,5 +1,8 @@
 package com.senla.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //import org.apache.log4j.Logger;
 
 import com.senla.hotel.dao.ClientDao;
@@ -10,7 +13,7 @@ public class Executer {
 //	private static final Logger logger = Logger.getLogger(Executer.class);
 
 	public static void main(String[] args) {
-		ClientDao clients = new ClientDao();
+		ClientDao clients = (ClientDao) ClientDao.getInstance();
 
 		clients.getClients();
 
@@ -26,8 +29,23 @@ public class Executer {
 
 		System.out.println("client[0] : " + client.getName());
 
-		System.out.println("client[0] : " + clients.getClientById(1));
+		System.out.println("client[2] : " + clients.getClientById(3));
 
 		DaoHandler.getInstance().closeConnection();
+
+//		client = new Client();
+//		client.setName("Feel");
+//		System.out.println("Client add:" + clients.add(client));
+//
+//		client.setId(14);
+//		System.out.println("Client add:" + clients.add(client))
+
+		List<Client> clientsToAdd = new ArrayList<>();
+
+		clientsToAdd.add(new Client("Stranger 1"));
+		clientsToAdd.add(new Client("Stranger 2"));
+		clientsToAdd.add(new Client("Stranger 3"));
+
+		System.out.println("Clients add all:" + clients.addAll(clientsToAdd));
 	}
 }
