@@ -81,6 +81,7 @@ public class DaoHandler {
 	}
 
 	public int executeUpdate(String query) throws SQLException {
+		System.out.println("executeUpdate:" + query);
 		int result = 0;
 		Connection conn = DaoHandler.getInstance().getConnection();
 
