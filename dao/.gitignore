@@ -1,0 +1,7 @@
+/bin/
+*.log
+*.classpath
+*.project
+*.properties
+/resources/
+/.externalToolBuilders/
