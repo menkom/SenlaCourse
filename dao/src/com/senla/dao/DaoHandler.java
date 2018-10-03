@@ -69,6 +69,7 @@ public class DaoHandler {
 	}
 
 	public ResultSet executeQuery(String query) throws SQLException {
+		System.out.println("executeQuery:" + query);
 		ResultSet result = null;
 		Connection conn = DaoHandler.getInstance().getConnection();
 
