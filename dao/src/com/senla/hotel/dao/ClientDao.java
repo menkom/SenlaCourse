@@ -66,7 +66,7 @@ public class ClientDao implements IClientRepository {
 	public boolean delete(String name) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete client where name=\'" + name + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from client where name=\'" + name + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -77,7 +77,7 @@ public class ClientDao implements IClientRepository {
 	public boolean deleteById(Integer id) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete client  where id=\'" + id + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from client  where id=\'" + id + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
