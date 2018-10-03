@@ -7,13 +7,14 @@ import java.util.List;
 
 import com.senla.hotel.dao.ClientDao;
 import com.senla.hotel.model.Client;
+import com.senla.hotel.repository.api.IClientRepository;
 
 public class Executer {
 
 //	private static final Logger logger = Logger.getLogger(Executer.class);
 
 	public static void main(String[] args) {
-		ClientDao clients = (ClientDao) ClientDao.getInstance();
+		IClientRepository clients = (ClientDao) ClientDao.getInstance();
 
 		clients.getClients();
 
