@@ -1,14 +1,13 @@
 package com.senla.dao;
 
-import com.senla.dao.test.RoomTest;
-
-//import com.senla.dao.test.ClientTest;
+import com.senla.dao.test.ServiceTest;
 
 public class Executer {
 
 	public static void main(String[] args) {
 
 //		ClientTest.testClientDao();
-		RoomTest.testRoomDao();
+//		RoomTest.testRoomDao();
+		ServiceTest.testServiceDao();
 	}
 }
