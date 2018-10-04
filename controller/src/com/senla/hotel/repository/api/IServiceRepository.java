@@ -17,7 +17,7 @@ public interface IServiceRepository {
 
 	boolean deleteById(Integer id);
 
-	Service getServiceByCode(Integer number);
+	Service getServiceByCode(Integer code);
 
 	Service getServiceById(Integer id);
 
