@@ -35,7 +35,7 @@ public class RoomTest {
 
 		room.setNumber(room.getNumber() + 1);
 //		rooms.update(room);
-//		System.out.println("client[0] : " + client.getName());
+		System.out.println("room[0] : " + room.getNumber());
 		DaoHandler.getInstance().closeConnection();
 	}
 
