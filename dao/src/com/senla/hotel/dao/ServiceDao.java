@@ -5,9 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
 import com.senla.annotation.parser.CsvParser;
 import com.senla.dao.DaoHandler;
 import com.senla.di.DependencyInjection;
@@ -39,13 +37,7 @@ public class ServiceDao implements IServiceRepository {
 			resultSet = DaoHandler.getInstance().executeQuery("select * from service");
 
 			while (resultSet.next()) {
-				Service service = new Service();
-				service.setId(resultSet.getInt("id"));
-				service.setCode(resultSet.getInt("code"));
-				service.setName(resultSet.getString("name"));
-				service.setPrice(resultSet.getInt("price"));
-
-				System.out.println("service : " + service);
+				Service service = parseResultSet(resultSet);
 				resultList.add(service);
 			}
 
@@ -59,9 +51,10 @@ public class ServiceDao implements IServiceRepository {
 	public boolean add(Service service) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance()
-					.executeUpdate("insert into service (id, code, name, price) values (" + service.getId() + ", "
-							+ service.getCode() + ", \'" + service.getName() + "\', " + service.getPrice() + ")");
+			result = DaoHandler.getInstance().executeUpdate(
+					"insert into service (service_id, service_code, service_name, service_price) values ("
+							+ service.getId() + ", " + service.getCode() + ", \'" + service.getName() + "\', "
+							+ service.getPrice() + ")");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -72,7 +65,8 @@ public class ServiceDao implements IServiceRepository {
 	public boolean addAll(List<Service> services) {
 		int result = 0;
 		if (services.size() > 0) {
-			StringBuilder query = new StringBuilder("insert into service (id, code, name, price) values ");
+			StringBuilder query = new StringBuilder(
+					"insert into service (service_id, service_code, service_name, service_price) values ");
 			for (Service service : services) {
 				query.append("(" + service.getId() + ", \'" + service.getCode() + "\', \'" + service.getName() + "\', "
 						+ service.getPrice() + "),");
@@ -84,7 +78,6 @@ public class ServiceDao implements IServiceRepository {
 				logger.error(e);
 			}
 		}
-		System.out.println("addAll result:" + result);
 		return result > 0;
 	}
 
@@ -92,7 +85,8 @@ public class ServiceDao implements IServiceRepository {
 	public boolean delete(Integer serviceCode) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from service where code=\'" + serviceCode + "\'");
+			result = DaoHandler.getInstance()
+					.executeUpdate("delete from service where service_code=\'" + serviceCode + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -103,7 +97,7 @@ public class ServiceDao implements IServiceRepository {
 	public boolean deleteById(Integer id) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from service where id=\'" + id + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from service where service_id=\'" + id + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -115,14 +109,11 @@ public class ServiceDao implements IServiceRepository {
 		Service service = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from service where code=\'" + code + "\'");
+			resultSet = DaoHandler.getInstance()
+					.executeQuery("select * from service where service_code=\'" + code + "\'");
 
 			while (resultSet.next()) {
-				service = new Service();
-				service.setId(resultSet.getInt("id"));
-				service.setCode(resultSet.getInt("code"));
-				service.setName(resultSet.getString("name"));
-				service.setPrice(resultSet.getInt("price"));
+				service = parseResultSet(resultSet);
 				return service;
 			}
 		} catch (SQLException e) {
@@ -136,14 +127,10 @@ public class ServiceDao implements IServiceRepository {
 		Service service = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from service where id=\'" + id + "\'");
+			resultSet = DaoHandler.getInstance().executeQuery("select * from service where service_id=\'" + id + "\'");
 
 			while (resultSet.next()) {
-				service = new Service();
-				service.setId(resultSet.getInt("id"));
-				service.setCode(resultSet.getInt("code"));
-				service.setName(resultSet.getString("name"));
-				service.setPrice(resultSet.getInt("price"));
+				service = parseResultSet(resultSet);
 				return service;
 			}
 		} catch (SQLException e) {
@@ -156,8 +143,10 @@ public class ServiceDao implements IServiceRepository {
 	public boolean update(Service service) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("update service set code=" + service.getCode() + ", name=\'"
-					+ service.getName() + "\', price=" + service.getPrice() + " where id=\'" + service.getId() + "\'");
+			result = DaoHandler.getInstance()
+					.executeUpdate("update service set service_code=" + service.getCode() + ", service_name=\'"
+							+ service.getName() + "\', service_price=" + service.getPrice() + " where service_id=\'"
+							+ service.getId() + "\'");
 
 		} catch (SQLException e) {
 			logger.error(e);
@@ -175,4 +164,13 @@ public class ServiceDao implements IServiceRepository {
 		return addAll(CsvParser.importFromCsv(Service.class, csvFilePath));
 	}
 
+	public Service parseResultSet(ResultSet resultSet) throws SQLException {
+		Service service = new Service();
+		service.setId(resultSet.getInt("service_id"));
+		service.setCode(resultSet.getInt("service_code"));
+		service.setName(resultSet.getString("service_name"));
+		service.setPrice(resultSet.getInt("service_price"));
+		return service;
+
+	}
 }

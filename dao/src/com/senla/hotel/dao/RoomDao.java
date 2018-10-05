@@ -41,15 +41,7 @@ public class RoomDao implements IRoomRepository {
 			resultSet = DaoHandler.getInstance().executeQuery("select * from room");
 
 			while (resultSet.next()) {
-				Room room = new Room();
-				room.setId(resultSet.getInt("id"));
-				room.setNumber(resultSet.getInt("number"));
-				room.setCapacity(resultSet.getInt("capacity"));
-				room.setStar(RoomStar.valueOf(resultSet.getString("roomstar")));
-				room.setStatus(RoomStatus.valueOf(resultSet.getString("roomstatus")));
-				room.setPrice(resultSet.getInt("price"));
-
-				System.out.println("room : " + room);
+				Room room = parseResultSet(resultSet);
 				resultList.add(room);
 			}
 
@@ -63,8 +55,8 @@ public class RoomDao implements IRoomRepository {
 	public boolean add(Room room) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance()
-					.executeUpdate("insert into room (id, number, capacity, roomstar, roomstatus, price) values ("
+			result = DaoHandler.getInstance().executeUpdate(
+					"insert into room (room_id, room_number, room_capacity, room_roomstar, room_roomstatus, room_price) values ("
 							+ room.getId() + "," + room.getNumber() + "," + room.getCapacity() + ",\'" + room.getStar()
 							+ "\',\'" + room.getStatus() + "\'," + room.getPrice() + ")");
 		} catch (SQLException e) {
@@ -78,7 +70,7 @@ public class RoomDao implements IRoomRepository {
 		int result = 0;
 		if (rooms.size() > 0) {
 			StringBuilder query = new StringBuilder(
-					"insert into room (id, number, capacity, roomstar, roomstatus, price) values ");
+					"insert into room (room_id, room_number, room_capacity, room_roomstar, room_roomstatus, room_price) values ");
 			for (Room room : rooms) {
 				query.append("(" + room.getId() + "," + room.getNumber() + "," + room.getCapacity() + ",\'"
 						+ room.getStar() + "\',\'" + room.getStatus() + "\'," + room.getPrice() + "),");
@@ -90,7 +82,6 @@ public class RoomDao implements IRoomRepository {
 				logger.error(e);
 			}
 		}
-		System.out.println("addAll result:" + result);
 		return result > 0;
 	}
 
@@ -98,7 +89,7 @@ public class RoomDao implements IRoomRepository {
 	public boolean delete(Integer roomNum) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from room where number=\'" + roomNum + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from room where room_number=\'" + roomNum + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -109,7 +100,7 @@ public class RoomDao implements IRoomRepository {
 	public boolean deleteById(Integer id) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from room where id=\'" + id + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from room where room_id=\'" + id + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -121,16 +112,11 @@ public class RoomDao implements IRoomRepository {
 		Room room = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from room where number=\'" + number + "\'");
+			resultSet = DaoHandler.getInstance()
+					.executeQuery("select * from room where room_number=\'" + number + "\'");
 
 			while (resultSet.next()) {
-				room = new Room();
-				room.setId(resultSet.getInt("id"));
-				room.setNumber(resultSet.getInt("number"));
-				room.setCapacity(resultSet.getInt("capacity"));
-				room.setStar(RoomStar.valueOf(resultSet.getString("roomstar")));
-				room.setStatus(RoomStatus.valueOf(resultSet.getString("roomstatus")));
-				room.setPrice(resultSet.getInt("price"));
+				room = parseResultSet(resultSet);
 				return room;
 			}
 		} catch (SQLException e) {
@@ -144,16 +130,10 @@ public class RoomDao implements IRoomRepository {
 		Room room = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from room where id=\'" + id + "\'");
+			resultSet = DaoHandler.getInstance().executeQuery("select * from room where room_id=\'" + id + "\'");
 
 			while (resultSet.next()) {
-				room = new Room();
-				room.setId(resultSet.getInt("id"));
-				room.setNumber(resultSet.getInt("number"));
-				room.setCapacity(resultSet.getInt("capacity"));
-				room.setStar(RoomStar.valueOf(resultSet.getString("roomstar")));
-				room.setStatus(RoomStatus.valueOf(resultSet.getString("roomstatus")));
-				room.setPrice(resultSet.getInt("price"));
+				room = parseResultSet(resultSet);
 				return room;
 			}
 		} catch (SQLException e) {
@@ -167,9 +147,10 @@ public class RoomDao implements IRoomRepository {
 		int result = 0;
 		try {
 			result = DaoHandler.getInstance()
-					.executeUpdate("update room set number=" + room.getNumber() + ", capacity=" + room.getCapacity()
-							+ ", roomstar=\'" + room.getStar() + "\', roomstatus=\'" + room.getStatus() + "\', price="
-							+ room.getPrice() + " where id=\'" + room.getId() + "\'");
+					.executeUpdate("update room set room_number=" + room.getNumber() + ", room_capacity="
+							+ room.getCapacity() + ", room_roomstar=\'" + room.getStar() + "\', room_roomstatus=\'"
+							+ room.getStatus() + "\', room_price=" + room.getPrice() + " where room_id=\'"
+							+ room.getId() + "\'");
 
 		} catch (SQLException e) {
 			logger.error(e);
@@ -185,6 +166,18 @@ public class RoomDao implements IRoomRepository {
 	@Override
 	public boolean importCsv(String csvFilePath) throws IOException {
 		return addAll(CsvParser.importFromCsv(Room.class, csvFilePath));
+	}
+
+	public Room parseResultSet(ResultSet resultSet) throws SQLException {
+		Room room = new Room();
+		room.setId(resultSet.getInt("room_id"));
+		room.setNumber(resultSet.getInt("room_number"));
+		room.setCapacity(resultSet.getInt("room_capacity"));
+		room.setStar(RoomStar.valueOf(resultSet.getString("room_roomstar")));
+		room.setStatus(RoomStatus.valueOf(resultSet.getString("room_roomstatus")));
+		room.setPrice(resultSet.getInt("room_price"));
+
+		return room;
 	}
 
 }

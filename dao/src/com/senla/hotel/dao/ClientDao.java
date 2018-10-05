@@ -35,8 +35,8 @@ public class ClientDao implements IClientRepository {
 	public boolean add(Client client) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate(
-					"insert into client (id, name) values (" + client.getId() + ",\'" + client.getName() + "\')");
+			result = DaoHandler.getInstance().executeUpdate("insert into client (client_id, client_name) values ("
+					+ client.getId() + ",\'" + client.getName() + "\')");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -47,7 +47,7 @@ public class ClientDao implements IClientRepository {
 	public boolean addAll(List<Client> clients) {
 		int result = 0;
 		if (clients.size() > 0) {
-			StringBuilder query = new StringBuilder("insert into client (id, name) values ");
+			StringBuilder query = new StringBuilder("insert into client (client_id, client_name) values ");
 			for (Client client : clients) {
 				query.append("(" + client.getId() + ",\'" + client.getName() + "\'),");
 			}
@@ -58,7 +58,6 @@ public class ClientDao implements IClientRepository {
 				logger.error(e);
 			}
 		}
-		System.out.println("addAll result:" + result);
 		return result > 0;
 	}
 
@@ -66,7 +65,7 @@ public class ClientDao implements IClientRepository {
 	public boolean delete(String name) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from client where name=\'" + name + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from client where client_name=\'" + name + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -77,7 +76,7 @@ public class ClientDao implements IClientRepository {
 	public boolean deleteById(Integer id) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate("delete from client  where id=\'" + id + "\'");
+			result = DaoHandler.getInstance().executeUpdate("delete from client  where client_id=\'" + id + "\'");
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -89,15 +88,11 @@ public class ClientDao implements IClientRepository {
 		Client client = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from client where name=\'" + name + "\'");
+			resultSet = DaoHandler.getInstance()
+					.executeQuery("select * from client where client_name=\'" + name + "\'");
 
 			while (resultSet.next()) {
-				client = new Client();
-				client.setId(resultSet.getInt("id"));
-				client.setName(resultSet.getString("name"));
-
-				System.out.println("client by id : " + client);
-
+				client = parseResultSet(resultSet);
 				return client;
 			}
 		} catch (SQLException e) {
@@ -111,15 +106,10 @@ public class ClientDao implements IClientRepository {
 		Client client = null;
 		ResultSet resultSet = null;
 		try {
-			resultSet = DaoHandler.getInstance().executeQuery("select * from client where id=\'" + id + "\'");
+			resultSet = DaoHandler.getInstance().executeQuery("select * from client where client_id=\'" + id + "\'");
 
 			while (resultSet.next()) {
-				client = new Client();
-				client.setId(resultSet.getInt("id"));
-				client.setName(resultSet.getString("name"));
-
-				System.out.println("client by id : " + client);
-
+				client = parseResultSet(resultSet);
 				return client;
 			}
 		} catch (SQLException e) {
@@ -132,8 +122,8 @@ public class ClientDao implements IClientRepository {
 	public boolean update(Client client) {
 		int result = 0;
 		try {
-			result = DaoHandler.getInstance().executeUpdate(
-					"update client set name=\'" + client.getName() + "\' where id=\'" + client.getId() + "\'");
+			result = DaoHandler.getInstance().executeUpdate("update client set client_name=\'" + client.getName()
+					+ "\' where client_id=\'" + client.getId() + "\'");
 
 		} catch (SQLException e) {
 			logger.error(e);
@@ -149,11 +139,7 @@ public class ClientDao implements IClientRepository {
 			resultSet = DaoHandler.getInstance().executeQuery("select * from client");
 
 			while (resultSet.next()) {
-				Client client = new Client();
-				client.setId(resultSet.getInt("id"));
-				client.setName(resultSet.getString("name"));
-
-				System.out.println("client : " + client);
+				Client client = parseResultSet(resultSet);
 				resultList.add(client);
 			}
 
@@ -171,6 +157,14 @@ public class ClientDao implements IClientRepository {
 	@Override
 	public boolean importCsv(String csvFilePath) throws IOException {
 		return addAll(CsvParser.importFromCsv(Client.class, csvFilePath));
+	}
+
+	public Client parseResultSet(ResultSet resultSet) throws SQLException {
+		Client client = new Client();
+		client.setId(resultSet.getInt("client_id"));
+		client.setName(resultSet.getString("client_name"));
+
+		return client;
 	}
 
 }
