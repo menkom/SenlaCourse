@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `hotel`.`order` (
   `order_client_id` INT NOT NULL,
   `order_room_id` INT NOT NULL,
   `order_start_date` DATE NOT NULL,
-  `order_finish_date` DATE NOT NULL,
+  `order_finish_date` DATE NULL,
   PRIMARY KEY (`order_id`),
   INDEX `fk_order_client_idx` (`order_client_id` ASC),
   INDEX `fk_order_room1_idx` (`order_room_id` ASC),
@@ -71,20 +71,20 @@ ENGINE = InnoDB;
 -- Table `hotel`.`service_order`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hotel`.`service_order` (
-  `sc_id` INT NOT NULL AUTO_INCREMENT,
-  `sc_service_id` INT NOT NULL,
-  `sc_order_id` INT NOT NULL,
-  PRIMARY KEY (`sc_id`),
-  INDEX `fk_service_order_order1_idx` (`sc_order_id` ASC),
-  INDEX `fk_service_order_service1_idx` (`sc_service_id` ASC),
-  UNIQUE INDEX `id_UNIQUE` (`sc_id` ASC),
+  `so_id` INT NOT NULL AUTO_INCREMENT,
+  `so_service_id` INT NOT NULL,
+  `so_order_id` INT NOT NULL,
+  PRIMARY KEY (`so_id`),
+  INDEX `fk_service_order_order1_idx` (`so_order_id` ASC),
+  INDEX `fk_service_order_service1_idx` (`so_service_id` ASC),
+  UNIQUE INDEX `id_UNIQUE` (`so_id` ASC),
   CONSTRAINT `fk_service_order_order1`
-    FOREIGN KEY (`sc_order_id`)
+    FOREIGN KEY (`so_order_id`)
     REFERENCES `hotel`.`order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_service_order_service1`
-    FOREIGN KEY (`sc_service_id`)
+    FOREIGN KEY (`so_service_id`)
     REFERENCES `hotel`.`service` (`service_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

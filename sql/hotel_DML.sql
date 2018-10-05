@@ -40,7 +40,7 @@ INSERT INTO `order` (order_id, order_num, order_client_id, order_room_id, order_
 (10, '10', '3', '8', '2018-08-01', '2018-08-08'),
 (11, '11', '3', '8', '2018-07-01', '2018-07-08');
 
-INSERT INTO service_order (sc_id, sc_service_id, sc_order_id) VALUES 
+INSERT INTO service_order (so_id, so_service_id, so_order_id) VALUES 
  (1, 1, 1),
  (2, 2, 1),
  (3, 3, 1),
