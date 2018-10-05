@@ -94,6 +94,10 @@ public class Order extends BaseObject implements Cloneable, Serializable {
 		return services.add(service);
 	}
 
+	public Boolean addServices(List<Service> services) {
+		return this.services.addAll(services);
+	}
+
 	public Order clone() throws CloneNotSupportedException {
 		Order clone = (Order) super.clone();
 		clone.setId(null);
