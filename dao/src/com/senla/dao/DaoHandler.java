@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 public class DaoHandler {
 
 	private static final String ERROR_CLOSING_CONNECTION = "Error closing connection.";
+	private static final String ERROR_CHANGING_AUTOCOMMIT = "Error changing autocommit status.";
 	private static final String ERROR_LOADING_JDBC_DRIVER = "Error loading jdbc driver.";
 	private static final String ERROR_TRYING_TO_CONNECT = "Error trying to connect to %s.";
 
@@ -51,10 +52,39 @@ public class DaoHandler {
 						DaoProperty.getInstance().getDbPass());
 			}
 		} catch (SQLException e) {
-			System.out.println(ERROR_TRYING_TO_CONNECT);
-			logger.error(ERROR_TRYING_TO_CONNECT, e);
+			logger.error(String.format(ERROR_TRYING_TO_CONNECT, url), e);
 		}
 		return connection;
+	}
+
+	public void setConnectionAutoCommit(boolean autoCommit) {
+		try {
+			if (connection != null && !(connection.isClosed())) {
+				connection.setAutoCommit(autoCommit);
+			}
+		} catch (SQLException e) {
+			logger.error(ERROR_CHANGING_AUTOCOMMIT, e);
+		}
+	}
+
+	public void setConnectionCommit() {
+		try {
+			if (connection != null && !(connection.isClosed())) {
+				connection.commit();
+			}
+		} catch (SQLException e) {
+			logger.error(ERROR_CHANGING_AUTOCOMMIT, e);
+		}
+	}
+
+	public void setConnectionRollback() {
+		try {
+			if (connection != null && !(connection.isClosed())) {
+				connection.rollback();
+			}
+		} catch (SQLException e) {
+			logger.error(ERROR_CHANGING_AUTOCOMMIT, e);
+		}
 	}
 
 	public void closeConnection() {
