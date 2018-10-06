@@ -43,9 +43,11 @@ public class OrderDao implements IOrderRepository {
 		ResultSet resultSet = null;
 		try {
 			resultSet = DaoHandler.getInstance().executeQuery("SELECT * FROM `order`");
+
 			while (resultSet.next()) {
 				resultList.add(parseResultSet(resultSet));
 			}
+
 		} catch (SQLException e) {
 			logger.error(e);
 		}
@@ -68,13 +70,34 @@ public class OrderDao implements IOrderRepository {
 				dateFinish = "\'" + formatter.format(order.getFinishDate()) + "\'";
 			}
 
+			DaoHandler.getInstance().setConnectionAutoCommit(false);
+
 			result = DaoHandler.getInstance().executeUpdate(
 					"insert into `order` (order_id, order_num, order_client_id, order_room_id, order_start_date, order_finish_date) values ("
 							+ order.getId() + ", " + order.getNum() + ", " + order.getClient().getId() + ", "
 							+ order.getRoom().getId() + ", " + dateStart + ", " + dateFinish + ")");
+			if (result > 0) {
+				ResultSet rs = DaoHandler.getInstance().executeQuery("select last_insert_id()");
+				order.setId(parseLastId(rs));
+
 //TODO dont forget about saving and services
+
+				if (order.getServices().size() > 0) {
+					StringBuilder insertSO = new StringBuilder(
+							"insert into `service_order` (so_service_id, sc_order_id) values +");
+
+					for (Service service : order.getServices()) {
+						insertSO.append("(" + service.getId() + ", " + order.getId() + "),");
+					}
+					insertSO.deleteCharAt(insertSO.length() - 1);
+					result = DaoHandler.getInstance().executeUpdate(insertSO.toString());
+				}
+				DaoHandler.getInstance().setConnectionCommit();
+			}
+			DaoHandler.getInstance().setConnectionAutoCommit(true);
 		} catch (SQLException e) {
 			logger.error(e);
+			DaoHandler.getInstance().setConnectionRollback();
 		}
 		return result > 0;
 	}
@@ -231,6 +254,10 @@ public class OrderDao implements IOrderRepository {
 	public boolean importCsv(String csvFilePath) throws IOException {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	private int parseLastId(ResultSet resultSet) throws SQLException {
+		return resultSet.getInt("last_insert_id()");
 	}
 
 	public Order parseResultSet(ResultSet resultSet) throws SQLException {
