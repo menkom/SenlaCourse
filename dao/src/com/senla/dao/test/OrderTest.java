@@ -6,6 +6,7 @@ import com.senla.dao.DaoHandler;
 import com.senla.hotel.dao.ClientDao;
 import com.senla.hotel.dao.OrderDao;
 import com.senla.hotel.dao.RoomDao;
+import com.senla.hotel.dao.ServiceDao;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.repository.api.IOrderRepository;
 
@@ -23,16 +24,27 @@ public class OrderTest {
 		}
 
 		// insert
-		Order order = new Order();
-		order.setNum(701);
-		order.setClient(ClientDao.getInstance().getClientById(3));
-		order.setRoom(RoomDao.getInstance().getRoomById(3));
+//		Order order = new Order();
+//		order.setNum(701);
+//		order.setClient(ClientDao.getInstance().getClientById(3));
+//		order.setRoom(RoomDao.getInstance().getRoomById(3));
+//		try {
+//			order.setStartDate(formatter.parse("2018-10-04"));
+//		} catch (ParseException e) {
+//			System.out.println(e);
+//		}
+//		System.out.println("Order add:" + dao.add(order));
+
+		Order order;
 		try {
-			order.setStartDate(formatter.parse("2018-10-04"));
-		} catch (ParseException e) {
+			order = dao.getOrders().get(0).clone();
+			order.setNum(701);
+			order.addService(((ServiceDao) ServiceDao.getInstance()).getServiceById(1));
+			order.addService(((ServiceDao) ServiceDao.getInstance()).getServiceById(2));
+			System.out.println("Order add:" + dao.add(order));
+		} catch (CloneNotSupportedException e) {
 			System.out.println(e);
 		}
-		System.out.println("Order add:" + dao.add(order));
 
 		// addAll
 //		List<Order> ordersToAdd = new ArrayList<>();
