@@ -1,6 +1,4 @@
-package com.senla.dao;
-
-import com.senla.dao.test.OrderTest;
+package com.senla.dao.test;
 
 public class Executer {
 

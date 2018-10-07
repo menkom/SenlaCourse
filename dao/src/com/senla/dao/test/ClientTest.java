@@ -1,37 +1,58 @@
 package com.senla.dao.test;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
-import com.senla.dao.DaoHandler;
+import com.senla.dao.dbconnector.DbConnector;
 import com.senla.hotel.dao.ClientDao;
 import com.senla.hotel.model.Client;
-import com.senla.hotel.repository.api.IClientRepository;
 
 public class ClientTest {
 
 	public static void testClientDao() {
-		IClientRepository clients = (ClientDao) ClientDao.getInstance();
-		clients.getClients();
-		System.out.println("clients : " + clients.getClients().size());
-		Client client = clients.getClients().get(0);
-		System.out.println("client[0] : " + client.getName());
-		client.setName(client.getName() + "1");
-		clients.update(client);
-		System.out.println("client[0] : " + client.getName());
-		System.out.println("client[2] : " + clients.getClientById(3));
-		DaoHandler.getInstance().closeConnection();
-//		client = new Client();
-//		client.setName("Feel");
-//		System.out.println("Client add:" + clients.add(client));
-//
-//		client.setId(14);
-//		System.out.println("Client add:" + clients.add(client))
-		List<Client> clientsToAdd = new ArrayList<>();
-		clientsToAdd.add(new Client("Stranger 1"));
-		clientsToAdd.add(new Client("Stranger 2"));
-		clientsToAdd.add(new Client("Stranger 3"));
-		System.out.println("Clients add all:" + clients.addAll(clientsToAdd));
+
+		ClientDao dao = new ClientDao();
+		// getAll
+		List<Client> clients;
+		try {
+			clients = dao.getAll(DbConnector.getInstance().getConnection(), "");
+			for (Client client : clients) {
+				System.out.println(client);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+		// getById
+		try {
+			System.out.println("client[2] : " + dao.getById(DbConnector.getInstance().getConnection(), 3));
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+		// add
+//		try {
+//			System.out.println(
+//					"client add : " + dao.add(DbConnector.getInstance().getConnection(), new Client("simple name")));
+//		} catch (SQLException e) {
+//			System.out.println(e);
+//		}
+
+		// deleteById
+		try {
+			System.out.println("delete client.id=10 : " + dao.delete(DbConnector.getInstance().getConnection(), 10));
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+		// update
+		try {
+			Client client = dao.getById(DbConnector.getInstance().getConnection(), 11);
+			client.setName(client.getName() + "1");
+			System.out.println("client.id=11 update: " + dao.update(DbConnector.getInstance().getConnection(), client));
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
 
 	}
 
