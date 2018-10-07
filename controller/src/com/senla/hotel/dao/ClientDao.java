@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.senla.hotel.dao.api.IClientDao;
 import com.senla.hotel.model.Client;
 
@@ -32,22 +31,33 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 	}
 
 	@Override
-	public int add(Connection connection, Client entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(INSERT_ENTITY)) {
-			ps.setString(1, entity.getName());
-			System.out.println(ps);
-			return ps.executeUpdate();
-		}
-	}
-
-	@Override
-	public int update(Connection connection, Client entity) throws SQLException {
+	public boolean update(Connection connection, Client entity) throws SQLException {
 		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
 			ps.setString(1, entity.getName());
 			ps.setInt(2, entity.getId());
 			System.out.println(ps);
-			return ps.executeUpdate();
+			return ps.executeUpdate() > 0;
 		}
+	}
+
+	protected void prepareAddStatement(PreparedStatement ps, Client entity) throws SQLException {
+		ps.setString(1, entity.getName());
+		System.out.println(ps);
+	}
+
+	@Override
+	protected String getInsertQuery() {
+		return INSERT_ENTITY;
+	}
+
+	@Override
+	protected Class<Client> getTClass() {
+		return Client.class;
+	}
+
+	@Override
+	protected String getUpdateQuery() {
+		return UPDATE_ENTITY;
 	}
 
 }

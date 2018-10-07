@@ -1,6 +1,5 @@
 package com.senla.hotel.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,26 +35,25 @@ public class ServiceDao extends GenericDao<Service> implements IServiceDao<Servi
 	}
 
 	@Override
-	public int add(Connection connection, Service entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(INSERT_ENTITY)) {
-			ps.setInt(1, entity.getCode());
-			ps.setString(2, entity.getName());
-			ps.setInt(3, entity.getPrice());
-			System.out.println(ps);
-			return ps.executeUpdate();
-		}
+	protected void prepareAddStatement(PreparedStatement ps, Service entity) throws SQLException {
+		ps.setInt(1, entity.getCode());
+		ps.setString(2, entity.getName());
+		ps.setInt(3, entity.getPrice());
+		System.out.println(ps);
 	}
 
 	@Override
-	public int update(Connection connection, Service entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
-			ps.setInt(1, entity.getCode());
-			ps.setString(2, entity.getName());
-			ps.setInt(3, entity.getPrice());
-			ps.setInt(4, entity.getId());
-			System.out.println(ps);
-			return ps.executeUpdate();
-		}
+	protected String getInsertQuery() {
+		return INSERT_ENTITY;
 	}
 
+	@Override
+	protected Class<Service> getTClass() {
+		return Service.class;
+	}
+
+	@Override
+	protected String getUpdateQuery() {
+		return UPDATE_ENTITY;
+	}
 }

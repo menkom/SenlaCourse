@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,67 +93,6 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	}
 
 	@Override
-	public int add(Connection connection, Order entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(INSERT_ENTITY, Statement.RETURN_GENERATED_KEYS)) {
-			ps.setInt(1, entity.getNum());
-			ps.setInt(2, entity.getClient().getId());
-			ps.setInt(3, entity.getRoom().getId());
-
-			String dateStart = null;
-			if (entity.getStartDate() != null) {
-				dateStart = formatter.format(entity.getStartDate());
-			}
-			ps.setString(4, dateStart);
-
-			String dateFinish = null;
-			if (entity.getFinishDate() != null) {
-				dateFinish = formatter.format(entity.getFinishDate());
-			}
-			ps.setString(5, dateFinish);
-
-			System.out.println(ps);
-
-			int result = ps.executeUpdate();
-
-			ResultSet rs = ps.getGeneratedKeys();
-			if (rs.next()) {
-				int lastInsertedId = rs.getInt(1);
-				entity.setId(lastInsertedId);
-			}
-
-			return result;
-		}
-	}
-
-	@Override
-	public int update(Connection connection, Order entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
-			System.out.println("update");
-
-			ps.setInt(1, entity.getNum());
-			ps.setInt(2, entity.getClient().getId());
-			ps.setInt(3, entity.getRoom().getId());
-
-			String dateStart = null;
-			if (entity.getStartDate() != null) {
-				dateStart = formatter.format(entity.getStartDate());
-			}
-			ps.setString(4, dateStart);
-
-			String dateFinish = null;
-			if (entity.getFinishDate() != null) {
-				dateFinish = formatter.format(entity.getFinishDate());
-			}
-			ps.setString(5, dateFinish);
-
-			ps.setInt(6, entity.getId());
-			System.out.println(ps);
-
-			return ps.executeUpdate();
-		}
-	}
-
-	@Override
 	public List<Service> getServices(Connection connection, int orderId) throws SQLException {
 		List<Service> result = new ArrayList<>();
 
@@ -171,4 +109,39 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 		return result;
 	}
 
+	@Override
+	protected void prepareAddStatement(PreparedStatement ps, Order entity) throws SQLException {
+		ps.setInt(1, entity.getNum());
+		ps.setInt(2, entity.getClient().getId());
+		ps.setInt(3, entity.getRoom().getId());
+
+		String dateStart = null;
+		if (entity.getStartDate() != null) {
+			dateStart = formatter.format(entity.getStartDate());
+		}
+		ps.setString(4, dateStart);
+
+		String dateFinish = null;
+		if (entity.getFinishDate() != null) {
+			dateFinish = formatter.format(entity.getFinishDate());
+		}
+		ps.setString(5, dateFinish);
+
+		System.out.println(ps);
+	}
+
+	@Override
+	protected String getInsertQuery() {
+		return INSERT_ENTITY;
+	}
+
+	@Override
+	protected Class<Order> getTClass() {
+		return Order.class;
+	}
+
+	@Override
+	protected String getUpdateQuery() {
+		return UPDATE_ENTITY;
+	}
 }

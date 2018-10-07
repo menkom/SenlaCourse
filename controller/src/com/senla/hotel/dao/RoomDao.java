@@ -1,6 +1,5 @@
 package com.senla.hotel.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,30 +40,27 @@ public class RoomDao extends GenericDao<Room> implements IRoomDao<Room> {
 	}
 
 	@Override
-	public int add(Connection connection, Room entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(INSERT_ENTITY)) {
-			ps.setInt(1, entity.getNumber());
-			ps.setInt(2, entity.getCapacity());
-			ps.setString(3, entity.getStar().toString());
-			ps.setString(4, entity.getStatus().toString());
-			ps.setInt(5, entity.getPrice());
-			System.out.println(ps);
-			return ps.executeUpdate();
-		}
+	protected void prepareAddStatement(PreparedStatement ps, Room entity) throws SQLException {
+		ps.setInt(1, entity.getNumber());
+		ps.setInt(2, entity.getCapacity());
+		ps.setString(3, entity.getStar().toString());
+		ps.setString(4, entity.getStatus().toString());
+		ps.setInt(5, entity.getPrice());
+		System.out.println(ps);
 	}
 
 	@Override
-	public int update(Connection connection, Room entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
-			ps.setInt(1, entity.getNumber());
-			ps.setInt(2, entity.getCapacity());
-			ps.setString(3, entity.getStar().toString());
-			ps.setString(4, entity.getStatus().toString());
-			ps.setInt(5, entity.getPrice());
-			ps.setInt(6, entity.getId());
-			System.out.println(ps);
-			return ps.executeUpdate();
-		}
+	protected String getInsertQuery() {
+		return INSERT_ENTITY;
 	}
 
+	@Override
+	protected Class<Room> getTClass() {
+		return Room.class;
+	}
+
+	@Override
+	protected String getUpdateQuery() {
+		return UPDATE_ENTITY;
+	}
 }
