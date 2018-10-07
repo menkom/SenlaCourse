@@ -1,6 +1,7 @@
 package com.senla.dao.test;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.senla.dao.dbconnector.DbConnector;
@@ -13,7 +14,7 @@ public class ClientTest {
 
 		ClientDao dao = new ClientDao();
 		// getAll
-		List<Client> clients;
+		List<Client> clients = new ArrayList<>();
 		try {
 			clients = dao.getAll(DbConnector.getInstance().getConnection(), "");
 			for (Client client : clients) {
@@ -38,12 +39,19 @@ public class ClientTest {
 //			System.out.println(e);
 //		}
 
+		// addAll
+//		try {
+//			System.out.println("client addAll : " + dao.addAll(DbConnector.getInstance().getConnection(), clients));
+//		} catch (SQLException e) {
+//			System.out.println(e);
+//		}
+
 		// deleteById
-		try {
-			System.out.println("delete client.id=10 : " + dao.delete(DbConnector.getInstance().getConnection(), 10));
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
+//		try {
+//			System.out.println("delete client.id=10 : " + dao.delete(DbConnector.getInstance().getConnection(), 10));
+//		} catch (SQLException e) {
+//			System.out.println(e);
+//		}
 
 		// update
 		try {
