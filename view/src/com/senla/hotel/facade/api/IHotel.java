@@ -60,39 +60,44 @@ public interface IHotel {
 
 	public boolean addOrder(Order order);
 
-	public boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate);
+	public boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate);
 
-	public boolean orderRoom(int orderNum, String clientName, int roomNum, Date dateStart, Date dateFinish);
+	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish);
 
-	public boolean addOrderService(int orderNum, int serviceCode);
+	public boolean addOrderService(int orderId, int serviceCode);
 
 	public boolean freeRoom(int orderNum);
 
-	public boolean changeRoomStatus(int roomNum, RoomStatus roomStatus);
+	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus);
 
-	public boolean changeRoomPrice(int roomNum, int newPrice);
+	public boolean changeRoomPrice(int roomId, int newPrice);
 
-	public boolean changeServicePrice(int code, int price);
+	public boolean changeServicePrice(int ServiceId, int price);
 
 	public List<Client> getAllClients();
 
-	public Order cloneOrder(int orderNum);
+	public Order cloneOrder(int orderId);
 
-	public Order getOrderByNum(int orderNum);
+	public Order getOrderById(int orderId);
 
-	public Client getClientByName(String name);
+//	public Client getClientByName(String name);
+	public Client getClientById(int clientId);
 
-	public Room getRoomByNum(int roomNum);
+//	public Room getRoomByNum(int roomNum);
 
-	public Service getServiceByCode(int code);
+	Room getRoomById(int roomId);
 
-	public boolean exportClientCSV(String name, String fileName);
+	Service getServiceById(int serviceId);
 
-	public boolean exportOrderCSV(int orderNum, String fileName);
+//	public Service getServiceByCode(int code);
 
-	public boolean exportRoomCSV(int roomNum, String fileName);
+	public boolean exportClientCSV(int id, String fileName);
 
-	public boolean exportServiceCSV(int code, String fileName);
+	public boolean exportOrderCSV(int orderId, String fileName);
+
+	public boolean exportRoomCSV(int roomId, String fileName);
+
+	public boolean exportServiceCSV(int serviceId, String fileName);
 
 	public boolean importClientsCSV(String fileName);
 
@@ -105,4 +110,5 @@ public interface IHotel {
 	public boolean exportCsv();
 
 	public boolean importCsv();
+
 }

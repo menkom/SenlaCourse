@@ -1,6 +1,7 @@
 package com.senla.hotel.facade;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,8 @@ import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.comparator.RoomSortByCapacity;
 import com.senla.hotel.comparator.RoomSortByPrice;
 import com.senla.hotel.comparator.RoomSortByStar;
-import com.senla.hotel.comparator.ServiceSortByPrice;
+import com.senla.hotel.enums.EnumRoomSort;
+import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.api.IHotel;
@@ -54,11 +56,16 @@ public class Hotel implements IHotel {
 	}
 
 	private boolean addAll(ModelSerializer serializer) {
-		boolean result = clientService.addAll(serializer.getClients());
-		result = result && roomService.addAll(serializer.getRooms());
-		result = result && serviceService.addAll(serializer.getServices());
-		result = result && orderService.addAll(serializer.getOrders());
-
+		boolean result;
+		try {
+			result = clientService.addAll(serializer.getClients());
+			result = result && roomService.addAll(serializer.getRooms());
+			result = result && serviceService.addAll(serializer.getServices());
+			result = result && orderService.addAll(serializer.getOrders());
+		} catch (SQLException e) {
+			logger.error(e);
+			result = false;
+		}
 		return result;
 	}
 
@@ -75,54 +82,63 @@ public class Hotel implements IHotel {
 		return result;
 	}
 
+	@Override
 	public boolean save() {
 		boolean result = true;
 		String filePath = HotelProperty.getInstance().getRawFilePath();
 		ModelSerializer serializer = new ModelSerializer();
 
-		serializer.setClients(clientService.getClients());
-		serializer.setRooms(roomService.getRooms());
-		serializer.setServices(serviceService.getServices());
-		serializer.setOrders(orderService.getOrders());
-
 		try {
+			serializer.setClients(clientService.getClients());
+			serializer.setRooms(roomService.getRooms());
+			serializer.setServices(serviceService.getServices());
+			serializer.setOrders(orderService.getOrders());
+
 			serializer.serialize(filePath + "hotel.raw");
 		} catch (IOException ex) {
+			logger.error(ex);
+			result = false;
+		} catch (SQLException ex) {
 			logger.error(ex);
 			result = false;
 		}
 		return result;
 	}
 
+	@Override
 	public List<Room> getAllRoomsSortByPrice() {
 		try {
-			return roomService.getAllRooms(new RoomSortByPrice());
+			return roomService.getAllRooms(EnumRoomSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
+	@Override
 	public List<Room> getAllRoomsSortByCapacity() {
 		try {
-			return roomService.getAllRooms(new RoomSortByCapacity());
+			return roomService.getAllRooms(EnumRoomSort.CAPACITY);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
+	@Override
 	public List<Room> getAllRoomsSortByStar() {
 		try {
-			return roomService.getAllRooms(new RoomSortByStar());
+			return roomService.getAllRooms(EnumRoomSort.STAR);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
+	@Override
 	public List<Room> getFreeRoomsSortByPrice() {
 		try {
+//TODO delete comparators
 			return roomService.getFreeRooms(new RoomSortByPrice());
 		} catch (Exception e) {
 			logger.error(e);
@@ -131,6 +147,7 @@ public class Hotel implements IHotel {
 
 	}
 
+	@Override
 	public List<Room> getFreeRoomsSortByCapacity() {
 		try {
 			return roomService.getFreeRooms(new RoomSortByCapacity());
@@ -140,6 +157,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Room> getFreeRoomsSortByStar() {
 		try {
 			return roomService.getFreeRooms(new RoomSortByStar());
@@ -149,6 +167,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Room> getFreeRoomsByDateSortByPrice(Date date) {
 		try {
 			return roomService.getFreeRooms(date, new RoomSortByPrice());
@@ -158,6 +177,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Room> getFreeRoomsByDateSortByCapacity(Date date) {
 		try {
 			return roomService.getFreeRooms(date, new RoomSortByCapacity());
@@ -167,6 +187,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Room> getFreeRoomsByDateSortByStar(Date date) {
 		try {
 			return roomService.getFreeRooms(date, new RoomSortByStar());
@@ -176,6 +197,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public Integer getNumberOfFreeRooms() {
 		try {
 			return roomService.getNumberOfFreeRooms();
@@ -185,6 +207,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public Integer getNumberOfClients() {
 		try {
 			return clientService.getNumberOfClients();
@@ -194,10 +217,17 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Order> getAllOrders() {
-		return orderService.getOrders();
+		try {
+			return orderService.getOrders();
+		} catch (SQLException e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
+	@Override
 	public List<Order> getActiveOrdersSortByName() {
 		try {
 			return orderService.getActiveOrders(new OrderSortByClientName());
@@ -207,6 +237,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Order> getActiveOrdersSortByFinishDate() {
 		try {
 			return orderService.getActiveOrders(new OrderSortByFinishDate());
@@ -216,18 +247,20 @@ public class Hotel implements IHotel {
 		}
 	}
 
-	public Integer getOrderPrice(int orderNum) {
+	@Override
+	public Integer getOrderPrice(int orderId) {
 		try {
-			return orderService.getOrderPrice(orderNum);
+			return orderService.getOrderPrice(orderId);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public List<Order> getLastOrdersByRoom(int roomNum) {
+	@Override
+	public List<Order> getLastOrdersByRoom(int roomId) {
 		try {
-			return orderService.getLastOrdersByRoom(roomNum, HotelProperty.getInstance().getLastVisibleOrders(),
+			return orderService.getLastOrdersByRoom(roomId, HotelProperty.getInstance().getLastVisibleOrders(),
 					new OrderSortByFinishDate());
 		} catch (Exception e) {
 			logger.error(e);
@@ -235,24 +268,27 @@ public class Hotel implements IHotel {
 		}
 	}
 
-	public List<Service> getOrderServices(int orderNum) {
+	@Override
+	public List<Service> getOrderServices(int orderId) {
 		try {
-			return orderService.getOrderServices(orderNum, new ServiceSortByPrice());
+			return orderService.getOrderServices(orderId, EnumServiceSort.ID);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
+	@Override
 	public List<Service> getAllServicesSortByPrice() {
 		try {
-			return serviceService.getAllServices(new ServiceSortByPrice());
+			return serviceService.getAllServices(EnumServiceSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
+	@Override
 	public boolean addClient(String name) {
 		try {
 			return clientService.add(new Client(name));
@@ -263,6 +299,7 @@ public class Hotel implements IHotel {
 
 	}
 
+	@Override
 	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
 		try {
 			return roomService.addRoom(number, capacity, star, status, price);
@@ -272,6 +309,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean addService(int code, String name, int price) {
 		try {
 			return serviceService.addService(code, name, price);
@@ -282,6 +320,7 @@ public class Hotel implements IHotel {
 
 	}
 
+	@Override
 	public boolean addOrder(Order order) {
 		try {
 			return orderService.add(order);
@@ -291,14 +330,27 @@ public class Hotel implements IHotel {
 		}
 	}
 
-	public boolean addOrder(int num, String clientName, int roomNum, Date startDate, Date finishDate) {
-		return orderService.addOrder(num, clientName, roomNum, startDate, finishDate);
+	@Override
+	public boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate) {
+		try {
+			return orderService.addOrder(num, clientId, roomId, startDate, finishDate);
+		} catch (SQLException e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
-	public boolean orderRoom(int orderNum, String clientName, int roomNum, Date dateStart, Date dateFinish) {
-		return orderService.orderRoom(orderNum, roomNum, clientName, dateStart, dateFinish);
+	@Override
+	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish) {
+		try {
+			return orderService.orderRoom(orderNum, roomId, clientId, dateStart, dateFinish);
+		} catch (SQLException e) {
+			logger.error(e);
+			return false;
+		}
 	}
 
+	@Override
 	public boolean addOrderService(int orderNum, int serviceCode) {
 		try {
 			return orderService.addOrderService(orderNum, serviceCode);
@@ -308,6 +360,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean freeRoom(int orderNum) {
 		try {
 			return orderService.freeRoom(orderNum);
@@ -317,6 +370,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
 		try {
 			if (HotelProperty.getInstance().isAbleChangeRoomStatus()) {
@@ -330,6 +384,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean changeRoomPrice(int roomNum, int newPrice) {
 		try {
 			return roomService.changeRoomPrice(roomNum, newPrice);
@@ -339,6 +394,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean changeServicePrice(int code, int price) {
 		try {
 			return serviceService.changeServicePrice(code, price);
@@ -348,6 +404,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public List<Client> getAllClients() {
 		try {
 			return clientService.getClients();
@@ -357,51 +414,68 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public Order cloneOrder(int orderNum) {
 		try {
 			return orderService.cloneOrder(orderNum);
 		} catch (CloneNotSupportedException e) {
 			logger.error(e);
 			return null;
+		} catch (SQLException e) {
+			logger.error(e);
+			return null;
 		}
 	}
 
-	public Order getOrderByNum(int orderNum) {
+	@Override
+	public Order getOrderById(int orderId) {
 		try {
-			return orderService.getOrderByNum(orderNum);
+			return orderService.getOrderById(orderId);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public Client getClientByName(String name) {
-		return clientService.getClientByName(name);
+//	public Client getClientByName(String name) {
+//	return clientService.getClientByName(name);
+//  }
+
+	public Client getClientById(int clientId) {
+		try {
+			return clientService.getClientById(clientId);
+		} catch (SQLException e) {
+			logger.error(e);
+			return null;
+		}
 	}
 
-	public Room getRoomByNum(int roomNum) {
+	@Override
+	public Room getRoomById(int roomId) {
 		try {
-			return roomService.getRoomByNum(roomNum);
+			return roomService.getRoomById(roomId);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public Service getServiceByCode(int code) {
+	@Override
+	public Service getServiceById(int serviceId) {
 		try {
-			return serviceService.getServiceByCode(code);
+			return serviceService.getServiceById(serviceId);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
 	}
 
-	public boolean exportClientCSV(String name, String fileName) {
+	@Override
+	public boolean exportClientCSV(int id, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
-					+ (fileName.equals("") ? "client_" + name + ".csv" : fileName);
-			return clientService.exportClientCSV(name, filePath);
+					+ (fileName.equals("") ? "client_" + id + ".csv" : fileName);
+			return clientService.exportClientCSV(id, filePath);
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
@@ -411,6 +485,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean exportOrderCSV(int orderNum, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
@@ -425,6 +500,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean exportRoomCSV(int roomNum, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
@@ -439,6 +515,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean exportServiceCSV(int code, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
@@ -453,6 +530,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean importClientsCSV(String fileName) {
 		try {
 			return clientService.importClientsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
@@ -468,6 +546,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean importOrdersCSV(String fileName) {
 		try {
 			return orderService.importOrdersCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
@@ -483,6 +562,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean importRoomsCSV(String fileName) {
 		try {
 			return roomService.importRoomsCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
@@ -498,6 +578,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean importServicesCSV(String fileName) {
 		try {
 			return serviceService.importServicesCSV(HotelProperty.getInstance().getCsvFilePath() + fileName);
@@ -513,6 +594,7 @@ public class Hotel implements IHotel {
 		}
 	}
 
+	@Override
 	public boolean exportCsv() {
 		try {
 			clientService.exportCsv(HotelProperty.getInstance().getCsvFilePath());
@@ -523,17 +605,26 @@ public class Hotel implements IHotel {
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
+		} catch (SQLException e) {
+			logger.error(e);
+			return false;
 		}
 	}
 
+	@Override
 	public boolean importCsv() {
 		try {
+			System.out.println("clientService>" + clientService);
+
 			clientService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			orderService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			roomService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			serviceService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			return true;
 		} catch (IOException e) {
+			logger.error(e);
+			return false;
+		} catch (SQLException e) {
 			logger.error(e);
 			return false;
 		}
