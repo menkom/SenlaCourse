@@ -34,7 +34,7 @@ public class ListConverter {
 		return clients;
 	}
 
-	public static List<Order> getOrders(List<String> list) {
+	public static List<Order> getOrders(List<String> list) throws ClassNotFoundException {
 		List<Order> orders = new ArrayList<>();
 
 		for (String line : list) {

@@ -1,31 +1,50 @@
 package com.senla.converter;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
 
+import com.senla.dao.dbconnector.DbConnector;
+import com.senla.di.DependencyInjection;
+import com.senla.hotel.dao.api.IClientDao;
+import com.senla.hotel.dao.api.IRoomDao;
+import com.senla.hotel.dao.api.IServiceDao;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.ClientRepository;
-import com.senla.hotel.repository.RoomRepository;
-import com.senla.hotel.repository.ServiceRepository;
 
 public class OrderConverter {
 
 	private static final Logger logger = Logger.getLogger(OrderConverter.class);
 	public static final String SEPARATOR = ";";
 
-	public static Order getOrderFromString(String line) {
+	public static Order getOrderFromString(String line) throws ClassNotFoundException {
 
 		String[] array = line.split(SEPARATOR);
 
-		Client client = ClientRepository.getInstance().getClientById(Integer.parseInt(array[2]));
+		@SuppressWarnings("unchecked")
+		IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
+		Client client = null;
+		try {
+			client = clientDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[2]));
+		} catch (NumberFormatException | SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
-		Room room = RoomRepository.getInstance().getRoomById(Integer.parseInt(array[3]));
+		@SuppressWarnings("unchecked")
+		IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
+		Room room = null;
+		try {
+			room = roomDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[3]));
+		} catch (NumberFormatException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -55,9 +74,17 @@ public class OrderConverter {
 		result.setStartDate(dateStart);
 		result.setFinishDate(dateFinish);
 
+		@SuppressWarnings("unchecked")
+		IServiceDao<Service> serviceDao = DependencyInjection.getInstance().getInterfacePair(IServiceDao.class);
+
 		for (int i = 6; i < array.length; i++) {
-			Service service = ServiceRepository.getInstance().getServiceById(Integer.parseInt(array[i]));
-			result.addService(service);
+			Service service;
+			try {
+				service = serviceDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[i]));
+				result.addService(service);
+			} catch (NumberFormatException | SQLException e) {
+				logger.error(e);
+			}
 		}
 		return result;
 	}

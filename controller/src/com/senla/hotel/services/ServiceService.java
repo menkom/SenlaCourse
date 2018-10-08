@@ -1,12 +1,14 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.util.Comparator;
+import java.sql.SQLException;
 import java.util.List;
 
+import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
+import com.senla.hotel.dao.api.IServiceDao;
+import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.model.Service;
-import com.senla.hotel.repository.api.IServiceRepository;
 import com.senla.hotel.services.api.IServiceService;
 import com.senla.util.ExportCSV;
 
@@ -14,11 +16,15 @@ public class ServiceService implements IServiceService {
 
 	private static IServiceService serviceService;
 
-	private IServiceRepository serviceRepository;
+	private DbConnector dbConnector;
 
-	public ServiceService() {
+	private IServiceDao<Service> serviceDao;
+
+	@SuppressWarnings("unchecked")
+	public ServiceService() throws ClassNotFoundException {
 		super();
-		this.serviceRepository = DependencyInjection.getInstance().getInterfacePair(IServiceRepository.class);
+		dbConnector = DbConnector.getInstance();
+		this.serviceDao = DependencyInjection.getInstance().getInterfacePair(IServiceDao.class);
 	}
 
 	public static IServiceService getInstance() {
@@ -29,52 +35,50 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean add(Service service) {
-		return serviceRepository.add(service);
+	public boolean add(Service service) throws SQLException {
+		return serviceDao.add(dbConnector.getConnection(), service);
 	}
 
 	@Override
-	public boolean addAll(List<Service> services) {
-		return serviceRepository.addAll(services);
+	public boolean addAll(List<Service> services) throws SQLException {
+		return serviceDao.addAll(dbConnector.getConnection(), services);
 	}
 
 	@Override
-	public boolean addService(int code, String name, int price) {
+	public boolean addService(int code, String name, int price) throws SQLException {
 		Service service = new Service(code, name, price);
 		return add(service);
 	}
 
 	@Override
-	public boolean update(Service service) {
-		return serviceRepository.update(service);
+	public boolean update(Service service) throws SQLException {
+		return serviceDao.update(dbConnector.getConnection(), service);
 	}
 
 	@Override
-	public List<Service> getServices() {
-		return serviceRepository.getServices();
+	public List<Service> getServices() throws SQLException {
+		return serviceDao.getAll(dbConnector.getConnection(), "");
 	}
 
 	@Override
-	public List<Service> getAllServices(Comparator<Service> comparator) {
-		List<Service> result = getServices();
-		result.sort(comparator);
-		return result;
+	public List<Service> getAllServices(EnumServiceSort serviceSort) throws SQLException {
+		return serviceDao.getAll(dbConnector.getConnection(), serviceSort.getTableField());
+	}
+
+//	@Override
+//	public Service getServiceByCode(int code) {
+//		return serviceDao.getServiceByCode(code);
+//	}
+
+	@Override
+	public Service getServiceById(int serviceId) throws SQLException {
+		return serviceDao.getById(dbConnector.getConnection(), serviceId);
 	}
 
 	@Override
-	public Service getServiceByCode(int code) {
-		return serviceRepository.getServiceByCode(code);
-	}
-
-	@Override
-	public Service getServiceById(int id) {
-		return serviceRepository.getServiceById(id);
-	}
-
-	@Override
-	public boolean changeServicePrice(int code, int price) {
+	public boolean changeServicePrice(int serviceId, int price) throws SQLException {
 		boolean result = false;
-		Service service = getServiceByCode(code);
+		Service service = getServiceById(serviceId);
 		if (service != null) {
 			service.setPrice(price);
 			result = true;
@@ -83,8 +87,8 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean exportServiceCSV(int code, String fileName) throws IOException {
-		Service service = getServiceByCode(code);
+	public boolean exportServiceCSV(int serviceId, String fileName) throws IOException, SQLException {
+		Service service = getServiceById(serviceId);
 		if (service == null) {
 			return false;
 		} else {
@@ -93,7 +97,7 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean importServicesCSV(String file) throws IOException {
+	public boolean importServicesCSV(String file) throws IOException, SQLException {
 		boolean result = false;
 		List<Service> rooms = ExportCSV.getServicesFromCSV(file);
 		for (Service room : rooms) {
@@ -110,13 +114,13 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) throws IOException {
-		return serviceRepository.exportCsv(csvFilePath);
+	public boolean exportCsv(String csvFilePath) throws IOException, SQLException {
+		return serviceDao.exportCsv(dbConnector.getConnection(), csvFilePath);
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) throws IOException {
-		return serviceRepository.importCsv(csvFilePath);
+	public boolean importCsv(String csvFilePath) throws IOException, SQLException {
+		return serviceDao.importCsv(dbConnector.getConnection(), csvFilePath);
 	}
 
 }

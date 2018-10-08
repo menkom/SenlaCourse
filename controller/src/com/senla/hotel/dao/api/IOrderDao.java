@@ -9,6 +9,8 @@ import com.senla.hotel.model.Service;
 
 public interface IOrderDao<T extends Order> extends IGenericDao<T> {
 
-	List<Service> getServices(Connection connection, int orderId) throws SQLException;
+	List<Service> getServices(Connection connection, int orderId, String sortColumn) throws SQLException;
+
+	boolean addOrderService(Connection connection, int orderId, Service service) throws SQLException;
 
 }

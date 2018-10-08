@@ -22,9 +22,10 @@ import com.senla.hotel.model.Service;
 
 public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 
+	private static final String INSERT_SERVICE_TO_ORDER = "insert into `service_order` (so_service_id, so_order_id) values ( ?, ?)";
 	private static final String SELECT_ALL = "SELECT * FROM `%s` join client join room on `order`.order_client_id=client.client_id and `order`.order_room_id=room.room_id order by (?)";
 	private static final String SELECT_BY_ID = "SELECT * FROM `%s` join client join room on `order`.order_client_id=client.client_id and `order`.order_room_id=room.room_id where %s =?";
-	private static final String SELECT_ORDER_SERVICES = "SELECT s.* FROM service s, service_order so WHERE so.so_service_id=s.service_id and so.so_order_id=?";
+	private static final String SELECT_ORDER_SERVICES = "SELECT s.* FROM service s, service_order so WHERE so.so_service_id=s.service_id and so.so_order_id=? order by (?)";
 
 	private static final String INSERT_ENTITY = "insert into `order` "
 			+ "(order_num, order_client_id, order_room_id, order_start_date, order_finish_date)"
@@ -93,11 +94,12 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	}
 
 	@Override
-	public List<Service> getServices(Connection connection, int orderId) throws SQLException {
+	public List<Service> getServices(Connection connection, int orderId, String sortColumn) throws SQLException {
 		List<Service> result = new ArrayList<>();
 
 		try (PreparedStatement ps = connection.prepareStatement(SELECT_ORDER_SERVICES)) {
 			ps.setInt(1, orderId);
+			ps.setString(2, (sortColumn.equals("") ? "service_id" : sortColumn));
 			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
@@ -143,5 +145,19 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	@Override
 	protected String getUpdateQuery() {
 		return UPDATE_ENTITY;
+	}
+
+	@Override
+	public boolean addOrderService(Connection connection, int orderId, Service service) throws SQLException {
+		int result = 0;
+		try (PreparedStatement ps = connection.prepareStatement(INSERT_SERVICE_TO_ORDER)) {
+			ps.setInt(1, orderId);
+			ps.setInt(2, service.getId());
+
+			result = ps.executeUpdate();
+		} catch (SQLException e) {
+			logger.error(e);
+		}
+		return result > 0;
 	}
 }
