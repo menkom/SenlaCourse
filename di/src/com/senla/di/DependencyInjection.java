@@ -20,7 +20,7 @@ public class DependencyInjection {
 
 	private static final String ERROR_DEPENDENCY_INJECTION_LOADING = "Error dependency injection property file load.";
 	private static final String ERROR_DEPENDENCY_INJECTION_NO_FILE = "Error. Dependency injection property file not found.";
-	private static final String ERROR_DEPENDENCY_INJECTION_NO_PAIR = "Such dependency pair not found.";
+	private static final String ERROR_DEPENDENCY_INJECTION_NO_PAIR = "Dependency pair for %s not found.";
 	private static final String ERROR_DEPENDENCY_INJECTION_NEW_INSTANCE = "Error during instance creation using dependency injection.";
 
 	private static final String INSTANCE_PATH = "./dependency.properties";
@@ -68,7 +68,7 @@ public class DependencyInjection {
 			if (dependencies.containsKey(type.getName())) {
 				cl = Class.forName(dependencies.get(type.getName()));
 			} else {
-				logger.error(ERROR_DEPENDENCY_INJECTION_NO_PAIR);
+				logger.error(String.format(ERROR_DEPENDENCY_INJECTION_NO_PAIR, type.getName()));
 			}
 			if (!instances.containsKey(cl)) {
 				Constructor<?>[] constr = cl.getDeclaredConstructors();
