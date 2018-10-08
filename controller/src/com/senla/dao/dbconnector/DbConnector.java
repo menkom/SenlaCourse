@@ -20,41 +20,47 @@ public class DbConnector {
 
 	private Connection connection;
 
-	private DbConnector() {
+	private DbConnector() throws ClassNotFoundException {
 		init();
 	}
 
-	public static DbConnector getInstance() {
+	public static DbConnector getInstance() throws ClassNotFoundException {
 		if (instance == null) {
 			instance = new DbConnector();
 		}
 		return instance;
 	}
 
-	private void init() {
+	private void init() throws ClassNotFoundException {
 		try {
 			Class.forName(DbProperty.getInstance().getProp("driverClass"));
+			System.out.println("DB driver loaded.");
 		} catch (ClassNotFoundException e) {
 			logger.error(ERROR_LOADING_JDBC_DRIVER, e);
+			throw new ClassNotFoundException(ERROR_LOADING_JDBC_DRIVER);
 		}
 	}
 
-	private void connect() {
+	private void connect() throws SQLException {
 		try {
 			connection = DriverManager.getConnection(url, DbProperty.getInstance().getProp("dbUser"),
 					DbProperty.getInstance().getProp("dbPass"));
+			System.out.println("DB driver loaded.");
+
 		} catch (SQLException e) {
 			logger.error(String.format(ERROR_TRYING_TO_CONNECT, url), e);
+			throw new SQLException(String.format(ERROR_TRYING_TO_CONNECT, url));
 		}
 	}
 
-	public Connection getConnection() {
+	public Connection getConnection() throws SQLException {
 		try {
 			if (connection == null || connection.isClosed()) {
 				connect();
 			}
 		} catch (SQLException e) {
 			logger.error(String.format(ERROR_TRYING_TO_CONNECT, url), e);
+			throw new SQLException(String.format(ERROR_TRYING_TO_CONNECT, url));
 		}
 		return connection;
 	}
