@@ -10,9 +10,6 @@ import org.apache.log4j.Logger;
 import com.senla.di.DependencyInjection;
 import com.senla.hotel.comparator.OrderSortByClientName;
 import com.senla.hotel.comparator.OrderSortByFinishDate;
-import com.senla.hotel.comparator.RoomSortByCapacity;
-import com.senla.hotel.comparator.RoomSortByPrice;
-import com.senla.hotel.comparator.RoomSortByStar;
 import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.enums.RoomStar;
@@ -139,7 +136,7 @@ public class Hotel implements IHotel {
 	public List<Room> getFreeRoomsSortByPrice() {
 		try {
 //TODO delete comparators
-			return roomService.getFreeRooms(new RoomSortByPrice());
+			return roomService.getFreeRooms(EnumRoomSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -150,7 +147,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsSortByCapacity() {
 		try {
-			return roomService.getFreeRooms(new RoomSortByCapacity());
+			return roomService.getFreeRooms(EnumRoomSort.CAPACITY);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -160,7 +157,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsSortByStar() {
 		try {
-			return roomService.getFreeRooms(new RoomSortByStar());
+			return roomService.getFreeRooms(EnumRoomSort.STAR);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -170,7 +167,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsByDateSortByPrice(Date date) {
 		try {
-			return roomService.getFreeRooms(date, new RoomSortByPrice());
+			return roomService.getFreeRooms(date, EnumRoomSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -180,7 +177,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsByDateSortByCapacity(Date date) {
 		try {
-			return roomService.getFreeRooms(date, new RoomSortByCapacity());
+			return roomService.getFreeRooms(date, EnumRoomSort.CAPACITY);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -190,7 +187,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsByDateSortByStar(Date date) {
 		try {
-			return roomService.getFreeRooms(date, new RoomSortByStar());
+			return roomService.getFreeRooms(date, EnumRoomSort.STAR);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
