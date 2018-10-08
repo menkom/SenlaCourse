@@ -1,6 +1,8 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -58,7 +60,16 @@ public class ClientService implements IClientService {
 
 	@Override
 	public int getNumberOfClients() throws SQLException {
-		return this.getClients().size();
+		int result = 0;
+		try (PreparedStatement ps = dbConnector.getConnection()
+				.prepareStatement("SELECT count(client_id) count FROM `client`")) {
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("count");
+			}
+		}
+		return result;
 	}
 
 	@Override
