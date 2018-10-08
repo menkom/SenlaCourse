@@ -106,10 +106,6 @@ public class ClientService implements IClientService {
 
 	@Override
 	public boolean importCsv(String csvFilePath) throws IOException, SQLException {
-		System.out.println("importCsv dbConnector>" + dbConnector);
-
-		System.out.println("importCsv Client2>" + dbConnector.getConnection());
-
 		return clientDao.importCsv(dbConnector.getConnection(), csvFilePath);
 	}
 

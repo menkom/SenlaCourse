@@ -27,17 +27,15 @@ public interface IRoomService {
 
 	public int getNumberOfFreeRooms() throws SQLException;
 
-//	public Room getRoomByNum(int number);
-
 	public Room getRoomById(int id) throws SQLException;
 
 	public boolean changeRoomStatus(int number, RoomStatus roomStatus) throws SQLException;
 
 	public boolean changeRoomPrice(int number, int price) throws SQLException;
 
-	public List<Room> getFreeRooms(Comparator<Room> comparator) throws SQLException;
+	public List<Room> getFreeRooms(EnumRoomSort roomSort) throws SQLException;
 
-	public List<Room> getFreeRooms(Date date, Comparator<Room> comparator) throws SQLException;
+	public List<Room> getFreeRooms(Date date, EnumRoomSort roomSort) throws SQLException;
 
 	public boolean exportRoomCSV(int roomNum, String fileName) throws IOException, SQLException;
 

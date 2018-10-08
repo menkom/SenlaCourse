@@ -1,9 +1,10 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -85,31 +86,35 @@ public class RoomService implements IRoomService {
 	@Override
 	public int getNumberOfFreeRooms() throws SQLException {
 		int result = 0;
-		for (Room room : roomDao.getAll(dbConnector.getConnection(), "")) {
-			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
-				result++;
+		try (PreparedStatement ps = dbConnector.getConnection()
+				.prepareStatement("SELECT count(room_id) count FROM `room` where room_roomstatus=?")) {
+			ps.setString(1, RoomStatus.AVAILABLE.toString());
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt("count");
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public List<Room> getFreeRooms(Comparator<Room> comparator) throws SQLException {
+	public List<Room> getFreeRooms(EnumRoomSort roomSort) throws SQLException {
 		List<Room> result = new ArrayList<>();
-//TODO rebuild everything so that DB filter everything 
-//		for (Room room : roomDao.getRooms()) {
-//			if (room != null && room.getStatus() == RoomStatus.AVAILABLE) {
-//				result.add(room);
-//			}
-//		}
-//		result.sort(comparator);
+
+		try (PreparedStatement ps = dbConnector.getConnection()
+				.prepareStatement("SELECT * FROM `room` where room_roomstatus=? order by (?)")) {
+			ps.setString(1, RoomStatus.AVAILABLE.toString());
+			ps.setString(2, roomSort.getTableField());
+			System.out.println(ps);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Room room = roomDao.parseResultSet(resultSet);
+				result.add(room);
+			}
+		}
 		return result;
 	}
-
-//	@Override
-//	public Room getRoomByNum(int number) {
-//		return roomDao.getRoomByNum(number);
-//	}
 
 	@Override
 	public Room getRoomById(int id) throws SQLException {
@@ -139,7 +144,7 @@ public class RoomService implements IRoomService {
 	}
 
 	@Override
-	public List<Room> getFreeRooms(Date date, Comparator<Room> comparator) throws SQLException {
+	public List<Room> getFreeRooms(Date date, EnumRoomSort roomSort) throws SQLException {
 
 		List<Room> result = new ArrayList<>();
 
@@ -161,7 +166,6 @@ public class RoomService implements IRoomService {
 				}
 			}
 		}
-		result.sort(comparator);
 		return result;
 	}
 
