@@ -11,7 +11,7 @@ import com.senla.hotel.model.Room;
 
 public class RoomTest {
 
-	public static void testRoomDao() {
+	public static void testRoomDao() throws ClassNotFoundException {
 		RoomDao dao = new RoomDao();
 		// getAll
 		try {

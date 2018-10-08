@@ -10,7 +10,7 @@ import com.senla.hotel.model.Client;
 
 public class ClientTest {
 
-	public static void testClientDao() {
+	public static void testClientDao() throws ClassNotFoundException {
 
 		ClientDao dao = new ClientDao();
 		// getAll

@@ -16,7 +16,7 @@ public class OrderTest {
 	private static final Logger logger = Logger.getLogger(OrderTest.class);
 //	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-	public static void testOrderDao() {
+	public static void testOrderDao() throws ClassNotFoundException {
 
 		@SuppressWarnings("unchecked")
 		IOrderDao<Order> dao = DependencyInjection.getInstance().getInterfacePair(IOrderDao.class);

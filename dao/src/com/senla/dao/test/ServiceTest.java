@@ -9,7 +9,7 @@ import com.senla.hotel.model.Service;
 
 public class ServiceTest {
 
-	public static void testServiceDao() {
+	public static void testServiceDao() throws ClassNotFoundException {
 		ServiceDao dao = new ServiceDao();
 		// getAll
 		try {
