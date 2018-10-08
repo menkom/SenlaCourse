@@ -2,10 +2,10 @@ package com.senla.hotel.services.api;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
@@ -32,11 +32,11 @@ public interface IOrderService {
 
 	Integer getOrderPrice(int orderNum) throws SQLException;
 
-	List<Order> getActiveOrders(Comparator<Order> comparator) throws SQLException;
+	List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException;
 
-	List<Order> getOrdersByRoom(int num) throws SQLException;
+	List<Order> getOrdersByRoom(int roomId) throws SQLException;
 
-	List<Order> getLastOrdersByRoom(int num, int maxOrders, Comparator<Order> comparator) throws SQLException;
+	List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException;
 
 	List<Service> getOrderServices(int orderNum, EnumServiceSort serviceSort) throws SQLException;
 

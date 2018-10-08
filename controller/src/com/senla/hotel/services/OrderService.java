@@ -1,18 +1,20 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
-import com.senla.hotel.comparator.OrderSortByFinishDate;
 import com.senla.hotel.dao.api.IClientDao;
 import com.senla.hotel.dao.api.IOrderDao;
 import com.senla.hotel.dao.api.IRoomDao;
+import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
@@ -23,6 +25,8 @@ import com.senla.hotel.services.api.IOrderService;
 import com.senla.util.ExportCSV;
 
 public class OrderService implements IOrderService {
+
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	private static IOrderService orderService;
 
@@ -138,56 +142,68 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public List<Order> getActiveOrders(Comparator<Order> comparator) throws SQLException {
+	public List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException {
 		List<Order> result = new ArrayList<>();
-//TODO Remake it to database filter
-		for (Order order : orderDao.getAll(dbConnector.getConnection(), "start_date")) {
-			Date currentDate = new Date();
-			if (order != null) {
-				if (currentDate.after(order.getStartDate())
-						&& ((order.getFinishDate() == null) || (currentDate.before(order.getFinishDate())))) {
-					result.add(order);
-				}
-			}
-		}
-		result.sort(comparator);
-		return result;
-	}
+		String query = "select * from `order` o join client join room "
+				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
+				+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
 
-	@Override
-	public List<Order> getOrdersByRoom(int num) throws SQLException {
+			ps.setString(1, formatter.format(new Date()));
+			ps.setString(2, formatter.format(new Date()));
+			ps.setString(3, orderSort.getTableField());
 
-		List<Order> result = new ArrayList<>();
-//TODO do it to DB
-		for (Order order : orderDao.getAll(dbConnector.getConnection(), "")) {
-			if (order != null) {
-				if (order.getRoom().getNumber() == num) {
-					result.add(order);
-				}
+			System.out.println(ps);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = orderDao.parseResultSet(resultSet);
+				result.add(order);
 			}
 		}
 		return result;
 	}
 
 	@Override
-	public List<Order> getLastOrdersByRoom(int num, int maxOrders, Comparator<Order> comparator) throws SQLException {
+	public List<Order> getOrdersByRoom(int roomId) throws SQLException {
+
+		List<Order> result = new ArrayList<>();
+		String query = "select * from `order` o join client join room "
+				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+
+			ps.setInt(1, roomId);
+
+			System.out.println(ps);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = orderDao.parseResultSet(resultSet);
+				result.add(order);
+			}
+		}
+
+		return result;
+	}
+
+	@Override
+	public List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException {
 //TODO DB again
 		List<Order> result = new ArrayList<>();
-		List<Order> orders = getOrdersByRoom(num);
-		orders.sort(new OrderSortByFinishDate());
 
-		int j = 0;
-		for (int i = orders.size() - 1; i >= 0; i--) {
-			if (orders.get(i) != null) {
-				result.add(orders.get(i));
-				if (j == maxOrders - 1) {
-					break;
-				} else {
-					j++;
-				}
+		String query = "select * from `order` o join client join room "
+				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
+				+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+
+			ps.setInt(1, roomId);
+			ps.setInt(2, maxOrders);
+
+			System.out.println(ps);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = orderDao.parseResultSet(resultSet);
+				result.add(order);
 			}
 		}
-		result.sort(comparator);
 		return result;
 	}
 
