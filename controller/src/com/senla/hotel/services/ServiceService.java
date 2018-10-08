@@ -65,11 +65,6 @@ public class ServiceService implements IServiceService {
 		return serviceDao.getAll(dbConnector.getConnection(), serviceSort.getTableField());
 	}
 
-//	@Override
-//	public Service getServiceByCode(int code) {
-//		return serviceDao.getServiceByCode(code);
-//	}
-
 	@Override
 	public Service getServiceById(int serviceId) throws SQLException {
 		return serviceDao.getById(dbConnector.getConnection(), serviceId);

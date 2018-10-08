@@ -2,7 +2,6 @@ package com.senla.hotel.services.api;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 

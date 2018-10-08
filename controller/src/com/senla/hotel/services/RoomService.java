@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,13 +15,13 @@ import com.senla.hotel.dao.api.IRoomDao;
 import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.services.api.IRoomService;
 import com.senla.util.ExportCSV;
 
 public class RoomService implements IRoomService {
 
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	private static IRoomService roomService;
 	private DbConnector dbConnector;
 	private IRoomDao<Room> roomDao;
@@ -37,19 +38,6 @@ public class RoomService implements IRoomService {
 			roomService = DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
 		}
 		return roomService;
-	}
-
-	private boolean isRoomInArray(Room room, List<Room> rooms) {
-		boolean result = false;
-		for (Room forRoom : rooms) {
-			if (forRoom != null) {
-				if (room.getNumber().equals(forRoom.getNumber())) {
-					result = true;
-					break;
-				}
-			}
-		}
-		return result;
 	}
 
 	@Override
@@ -145,25 +133,25 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public List<Room> getFreeRooms(Date date, EnumRoomSort roomSort) throws SQLException {
-
+		String query = "select * from room where room.room_id not in "
+				+ "(SELECT order_room_id  FROM room join `order` on `order`.order_room_id=room.room_id "
+				+ "where `order`.order_start_date<=? AND "
+				+ "(`order`.order_finish_date>=? or `order`.order_finish_date is null)) order by (?)";
 		List<Room> result = new ArrayList<>();
-
-		List<Room> resultExclude = new ArrayList<>();
-
-		for (Order order : OrderService.getInstance().getOrders()) {
-			if (order != null) {
-				if ((date.after(order.getStartDate())
-						&& ((date.before(order.getFinishDate()) || order.getFinishDate() == null)))) {
-					resultExclude.add(order.getRoom());
-				}
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+			String dateStr = null;
+			if (date != null) {
+				dateStr = formatter.format(date);
 			}
-		}
 
-		for (Room room : roomDao.getAll(dbConnector.getConnection(), "")) {
-			if (room != null) {
-				if (!isRoomInArray(room, resultExclude)) {
-					result.add(room);
-				}
+			ps.setString(1, dateStr);
+			ps.setString(2, dateStr);
+			ps.setString(3, roomSort.getTableField());
+			System.out.println(ps);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Room room = roomDao.parseResultSet(resultSet);
+				result.add(room);
 			}
 		}
 		return result;
