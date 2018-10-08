@@ -13,17 +13,19 @@ import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
 
 public class CloneOrder implements IAction {
-	private static final String ENTER_ORDER_NUM = "Enter order num: ";
+	private static final String ENTER_ORDER_ID = "Enter order id: ";
+//	private static final String ENTER_ORDER_NUM = "Enter order num: ";
 	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
 	private static final String ERROR_CLONING = "Error during clonning.";
-	private static final String ORDER_CLONED = "Order #%s cloned.";
+	private static final String ORDER_CLONED = "Order with Id #%s cloned.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 	private static final String WANT_CHANGE = "Do you want to change anything?[yes or no]";
 	private static final String WANT_SAVE = "Do you want to save?[yes or no]";
 	private static final String ORDER_SAVED = "Order saved and recieved id #%s.";
 
-	private static final String ENTER_NAME = "Enter client name: ";
-	private static final String ENTER_ROOM_NUM = "Enter room number: ";
+	private static final String ENTER_CLIENT_ID = "Enter client Id: ";
+//	private static final String ENTER_ROOM_NUM = "Enter room number: ";
+	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ENTER_DATE_START = "Enter start date (format dd/MM/yyyy): ";
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy): ";
 	private static final String ERROR_ROOM_NUM_OR_CLIENT = "Room or Client not found.";
@@ -35,19 +37,19 @@ public class CloneOrder implements IAction {
 
 	@Override
 	public void execute() {
-		int orderNum = 0;
-		DisplayOperator.printMessage(ENTER_ORDER_NUM);
+		int orderId = 0;
+		DisplayOperator.printMessage(ENTER_ORDER_ID);
 		try {
-			orderNum = Input.inputInteger();
+			orderId = Input.inputInteger();
 
-			Order clone = Hotel.getInstance().cloneOrder(orderNum);
+			Order clone = Hotel.getInstance().cloneOrder(orderId);
 
 			if (clone == null) {
 				DisplayOperator.printMessage(ERROR_CLONING);
 			} else {
-				DisplayOperator.printMessage(String.format(ORDER_CLONED, orderNum));
+				DisplayOperator.printMessage(String.format(ORDER_CLONED, orderId));
 
-				DisplayOperator.printOrderInfo(Hotel.getInstance().getOrderByNum(orderNum));
+				DisplayOperator.printOrderInfo(Hotel.getInstance().getOrderById(orderId));
 
 				DisplayOperator.printOrderInfo(clone);
 
@@ -57,23 +59,19 @@ public class CloneOrder implements IAction {
 				if (change.equalsIgnoreCase("y") || change.equalsIgnoreCase("yes")) {
 
 					DisplayOperator.printMessage(LEAVE_EMPTY_NO_CHANGE);
-					DisplayOperator.printMessage(ENTER_ORDER_NUM);
+					DisplayOperator.printMessage(ENTER_ORDER_ID);
 					String newOrderNum = Input.inputString();
 					if (!newOrderNum.equals("")) {
 						clone.setNum(Integer.parseInt(newOrderNum));
 					}
 
-					DisplayOperator.printMessage(ENTER_NAME);
-					String clientName = Input.inputString();
-					if (!clientName.equals("")) {
-						clone.setClient(Hotel.getInstance().getClientByName(clientName));
-					}
+					DisplayOperator.printMessage(ENTER_CLIENT_ID);
+					int clientId = Input.inputInteger();
+					clone.setClient(Hotel.getInstance().getClientById(clientId));
 
-					DisplayOperator.printMessage(ENTER_ROOM_NUM);
-					String roomNum = Input.inputString();
-					if (!roomNum.equals("")) {
-						clone.setRoom(Hotel.getInstance().getRoomByNum(Integer.parseInt(roomNum)));
-					}
+					DisplayOperator.printMessage(ENTER_ROOM_ID);
+					int roomId = Input.inputInteger();
+					clone.setRoom(Hotel.getInstance().getRoomById(roomId));
 
 					DisplayOperator.printMessage(ENTER_DATE_START);
 					String dateStartInString = Input.inputString();

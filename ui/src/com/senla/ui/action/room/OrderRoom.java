@@ -15,7 +15,7 @@ import com.senla.ui.util.DisplayOperator;
 public class OrderRoom implements IAction {
 
 	private static final String ENTER_ORDER_NUM = "Enter order number: ";
-	private static final String ENTER_NAME = "Enter client name: ";
+	private static final String ENTER_CLIENT_ID = "Enter client Id: ";
 	private static final String ENTER_ROOM_NUM = "Enter room number: ";
 	private static final String ENTER_DATE_START = "Enter start date (format dd/MM/yyyy) (current date if empty): ";
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy) (no date if empty): ";
@@ -31,16 +31,16 @@ public class OrderRoom implements IAction {
 	@Override
 	public void execute() {
 		Integer orderNum = 0;
-		Integer roomNum = 0;
-		String clientName = "";
+		Integer roomId = null;
+		Integer clientId = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
 			DisplayOperator.printMessage(ENTER_ORDER_NUM);
 			orderNum = Input.inputInteger();
-			DisplayOperator.printMessage(ENTER_NAME);
-			clientName = Input.inputString();
+			DisplayOperator.printMessage(ENTER_CLIENT_ID);
+			clientId = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_ROOM_NUM);
-			roomNum = Input.inputInteger();
+			roomId = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_DATE_START);
 			String dateStartInString = Input.inputString();
 			DisplayOperator.printMessage(ENTER_DATE_FINISH);
@@ -57,10 +57,10 @@ public class OrderRoom implements IAction {
 				dateFinish = formatter.parse(dateFinishInString);
 			}
 
-			Boolean result = Hotel.getInstance().orderRoom(orderNum, clientName, roomNum, dateStart, dateFinish);
+			Boolean result = Hotel.getInstance().orderRoom(orderNum, clientId, roomId, dateStart, dateFinish);
 
 			if (result) {
-				DisplayOperator.printMessage(String.format(ROOM_ORDERED, roomNum, clientName));
+				DisplayOperator.printMessage(String.format(ROOM_ORDERED, roomId, clientId));
 			} else {
 				DisplayOperator.printMessage(ERROR_ORDERING);
 			}

@@ -7,15 +7,15 @@ import com.senla.ui.util.DisplayOperator;
 
 public class ExportOrderAction implements IAction {
 
-	private static final String ENTER_ORDER_NUM = "Enter order num to export: ";
-	private static final String ENTER_FILE_NAME = "Enter file name to export (order_OrderNum.csv if empty by default): ";
-	private static final String ORDER_EXPORTED = "Order #%s exported.";
+	private static final String ENTER_ORDER_ID = "Enter order Id to export: ";
+	private static final String ENTER_FILE_NAME = "Enter file name to export (order_OrderId.csv if empty by default): ";
+	private static final String ORDER_EXPORTED = "Order with Id %s exported.";
 	private static final String ORDER_EXPORT_FAILED = "Error during order export.";
 
 	@Override
 	public void execute() {
 
-		DisplayOperator.printMessage(ENTER_ORDER_NUM);
+		DisplayOperator.printMessage(ENTER_ORDER_ID);
 		Integer orderNum = Input.inputInteger();
 
 		DisplayOperator.printMessage(ENTER_FILE_NAME);

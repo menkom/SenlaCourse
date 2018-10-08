@@ -12,21 +12,22 @@ import com.senla.ui.util.DisplayOperator;
 
 public class ShowRoomInfo implements IAction {
 
+	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ERROR_NEED_ROOM = "You need to enter room number.";
-	private static final String ERROR_ROOM_NUM = "Room #%s not found.";
+	private static final String ERROR_ROOM_ID = "Room Id #%s not found.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ShowRoomInfo.class);
 
 	@Override
 	public void execute() {
-		int roomNum = 0;
-		DisplayOperator.printMessage("Enter room num: ");
+		int roomId = 0;
+		DisplayOperator.printMessage(ENTER_ROOM_ID);
 		try {
-			roomNum = Input.inputInteger();
-			Room room = Hotel.getInstance().getRoomByNum(roomNum);
+			roomId = Input.inputInteger();
+			Room room = Hotel.getInstance().getRoomById(roomId);
 			if (room == null) {
-				DisplayOperator.printMessage(String.format(ERROR_ROOM_NUM, roomNum));
+				DisplayOperator.printMessage(String.format(ERROR_ROOM_ID, roomId));
 			} else {
 				DisplayOperator.printRoomInfo(room);
 			}
