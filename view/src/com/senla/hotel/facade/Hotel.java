@@ -8,8 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.senla.di.DependencyInjection;
-import com.senla.hotel.comparator.OrderSortByClientName;
-import com.senla.hotel.comparator.OrderSortByFinishDate;
+import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.enums.RoomStar;
@@ -227,7 +226,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Order> getActiveOrdersSortByName() {
 		try {
-			return orderService.getActiveOrders(new OrderSortByClientName());
+			return orderService.getActiveOrders(EnumOrderSort.CLIENT_NAME);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -237,7 +236,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Order> getActiveOrdersSortByFinishDate() {
 		try {
-			return orderService.getActiveOrders(new OrderSortByFinishDate());
+			return orderService.getActiveOrders(EnumOrderSort.FINISH_DATE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -258,7 +257,7 @@ public class Hotel implements IHotel {
 	public List<Order> getLastOrdersByRoom(int roomId) {
 		try {
 			return orderService.getLastOrdersByRoom(roomId, HotelProperty.getInstance().getLastVisibleOrders(),
-					new OrderSortByFinishDate());
+					EnumOrderSort.FINISH_DATE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
