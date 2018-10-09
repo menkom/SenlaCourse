@@ -44,13 +44,13 @@ CREATE TABLE IF NOT EXISTS `hotel`.`order` (
   CONSTRAINT `fk_order_client`
     FOREIGN KEY (`order_client_id`)
     REFERENCES `hotel`.`client` (`client_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_order_room1`
     FOREIGN KEY (`order_room_id`)
     REFERENCES `hotel`.`room` (`room_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -81,11 +81,11 @@ CREATE TABLE IF NOT EXISTS `hotel`.`service_order` (
   CONSTRAINT `fk_service_order_order1`
     FOREIGN KEY (`so_order_id`)
     REFERENCES `hotel`.`order` (`order_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_service_order_service1`
     FOREIGN KEY (`so_service_id`)
     REFERENCES `hotel`.`service` (`service_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
