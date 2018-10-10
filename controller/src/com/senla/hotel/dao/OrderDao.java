@@ -22,6 +22,8 @@ import com.senla.hotel.model.Service;
 
 public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 
+	private static final String TABLE_COLUMN_SERVICE_ID = "service_id";
+	private static final String ZERO_DATE = "0000-00-00";
 	private static final String INSERT_SERVICE_TO_ORDER = "insert into `service_order` (so_service_id, so_order_id) values ( ?, ?)";
 	private static final String SELECT_ALL = "SELECT * FROM `%s` join client join room on `order`.order_client_id=client.client_id and `order`.order_room_id=room.room_id order by (?)";
 	private static final String SELECT_BY_ID = "SELECT * FROM `%s` join client join room on `order`.order_client_id=client.client_id and `order`.order_room_id=room.room_id where %s =?";
@@ -33,6 +35,14 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	private static final String UPDATE_ENTITY = "update `order` set "
 			+ "order_num=?, order_client_id=?, order_room_id=?, order_start_date=?, order_finish_date=?"
 			+ " where order_id=?";
+
+	private static final String TABLE_NAME = "order";
+	private static final String TABLE_COLUMN_ID = "order_id";
+	private static final String TABLE_COLUMN_NUM = "order_num";
+	private static final String TABLE_COLUMN_JOIN_CLIENT_ID = "client_id";
+	private static final String TABLE_COLUMN_JOIN_ROOM_ID = "room_id";
+	private static final String TABLE_COLUMN_DATE_START = "order_start_date";
+	private static final String TABLE_COLUMN_DATE_FINISH = "order_finish_date";
 
 	private static final String ERROR_DATE_FORMAT = "Date format error.";
 	private static final Logger logger = Logger.getLogger(OrderDao.class);
@@ -52,28 +62,28 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	public Order parseResultSet(ResultSet resultSet) throws SQLException {
 		Order order = new Order();
 
-		order.setId(resultSet.getInt("order_id"));
-		order.setNum(resultSet.getInt("order_num"));
+		order.setId(resultSet.getInt(TABLE_COLUMN_ID));
+		order.setNum(resultSet.getInt(TABLE_COLUMN_NUM));
 
-		if (isExist(resultSet, "client_id")) {
+		if (isExist(resultSet, TABLE_COLUMN_JOIN_CLIENT_ID)) {
 			@SuppressWarnings("unchecked")
 			IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 			Client client = clientDao.parseResultSet(resultSet);
 			order.setClient(client);
 		}
 
-		if (isExist(resultSet, "room_id")) {
+		if (isExist(resultSet, TABLE_COLUMN_JOIN_ROOM_ID)) {
 			@SuppressWarnings("unchecked")
 			IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
 			Room room = roomDao.parseResultSet(resultSet);
 			order.setRoom(room);
 		}
 
-		order.setStartDate(resultSet.getDate("order_start_date"));
+		order.setStartDate(resultSet.getDate(TABLE_COLUMN_DATE_START));
 
-		String dateStr = resultSet.getString("order_finish_date");
+		String dateStr = resultSet.getString(TABLE_COLUMN_DATE_FINISH);
 
-		if ((dateStr != null) && !dateStr.equals("0000-00-00")) {
+		if ((dateStr != null) && !dateStr.equals(ZERO_DATE)) {
 			try {
 				order.setFinishDate(formatter.parse(dateStr));
 			} catch (ParseException e) {
@@ -85,12 +95,12 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 
 	@Override
 	protected String getTableName() {
-		return "order";
+		return TABLE_NAME;
 	}
 
 	@Override
 	protected String getIdColumn() {
-		return "order_id";
+		return TABLE_COLUMN_ID;
 	}
 
 	@Override
@@ -99,7 +109,7 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 
 		try (PreparedStatement ps = connection.prepareStatement(SELECT_ORDER_SERVICES)) {
 			ps.setInt(1, orderId);
-			ps.setString(2, (sortColumn.equals("") ? "service_id" : sortColumn));
+			ps.setString(2, (sortColumn.equals("") ? TABLE_COLUMN_SERVICE_ID : sortColumn));
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				ServiceDao serviceDao = new ServiceDao();

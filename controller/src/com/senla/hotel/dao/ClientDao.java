@@ -11,23 +11,26 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 
 	private static final String INSERT_ENTITY = "insert into client (client_name) values (?)";
 	private static final String UPDATE_ENTITY = "update client set client_name=? where client_id=?";
+	private static final String TABLE_COLUMN_ID = "client_id";
+	private static final String TABLE_COLUMN_NAME = "client_name";
+	private static final String TABLE_NAME = "client";
 
 	@Override
 	public Client parseResultSet(ResultSet resultSet) throws SQLException {
 		Client client = new Client();
-		client.setId(resultSet.getInt("client_id"));
-		client.setName(resultSet.getString("client_name"));
+		client.setId(resultSet.getInt(TABLE_COLUMN_ID));
+		client.setName(resultSet.getString(TABLE_COLUMN_NAME));
 		return client;
 	}
 
 	@Override
 	protected String getTableName() {
-		return "client";
+		return TABLE_NAME;
 	}
 
 	@Override
 	protected String getIdColumn() {
-		return "client_id";
+		return TABLE_COLUMN_ID;
 	}
 
 	@Override
