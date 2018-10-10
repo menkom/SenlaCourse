@@ -15,6 +15,8 @@ import com.senla.util.ExportCSV;
 
 public class ClientService implements IClientService {
 
+	private static final String SELECT_COUNT_CLIENTS = "SELECT count(client_id) count FROM `client`";
+	private static final String TABLE_COLUMN_COUNT = "count";
 	private static IClientService clientService;
 	private DbConnector dbConnector;
 	private IClientDao<Client> clientDao;
@@ -61,11 +63,10 @@ public class ClientService implements IClientService {
 	@Override
 	public int getNumberOfClients() throws SQLException {
 		int result = 0;
-		try (PreparedStatement ps = dbConnector.getConnection()
-				.prepareStatement("SELECT count(client_id) count FROM `client`")) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_COUNT_CLIENTS)) {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				result = rs.getInt("count");
+				result = rs.getInt(TABLE_COLUMN_COUNT);
 			}
 		}
 		return result;

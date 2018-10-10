@@ -26,6 +26,17 @@ import com.senla.util.ExportCSV;
 
 public class OrderService implements IOrderService {
 
+	private static final String SELECT_ORDERS_BY_ROOM = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
+
+	private static final String SELECT_ACTIVE_ORDERS = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
+			+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
+
+	private static final String SELECT_LAST_ROOM_ORDERS = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
+			+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
+
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	private static IOrderService orderService;
@@ -144,10 +155,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException {
 		List<Order> result = new ArrayList<>();
-		String query = "select * from `order` o join client join room "
-				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
-				+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_ACTIVE_ORDERS)) {
 			ps.setString(1, formatter.format(new Date()));
 			ps.setString(2, formatter.format(new Date()));
 			ps.setString(3, orderSort.getTableField());
@@ -164,9 +172,7 @@ public class OrderService implements IOrderService {
 	public List<Order> getOrdersByRoom(int roomId) throws SQLException {
 
 		List<Order> result = new ArrayList<>();
-		String query = "select * from `order` o join client join room "
-				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_ORDERS_BY_ROOM)) {
 			ps.setInt(1, roomId);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
@@ -182,10 +188,7 @@ public class OrderService implements IOrderService {
 	public List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException {
 		List<Order> result = new ArrayList<>();
 
-		String query = "select * from `order` o join client join room "
-				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
-				+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_LAST_ROOM_ORDERS)) {
 			ps.setInt(1, roomId);
 			ps.setInt(2, maxOrders);
 			ResultSet resultSet = ps.executeQuery();

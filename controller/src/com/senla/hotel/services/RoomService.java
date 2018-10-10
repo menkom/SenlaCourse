@@ -21,7 +21,14 @@ import com.senla.util.ExportCSV;
 
 public class RoomService implements IRoomService {
 
+	private static final String SELECT_FREEROOMS = "SELECT * FROM `room` where room_roomstatus=? order by (?)";
+	private static final String SELECT_COUNT_ROOM = "SELECT count(room_id) count FROM `room` where room_roomstatus=?";
+	private static final String SELECT_FREE_ROOMS = "select * from room where room.room_id not in "
+			+ "(SELECT order_room_id  FROM room join `order` on `order`.order_room_id=room.room_id "
+			+ "where `order`.order_start_date<=? AND "
+			+ "(`order`.order_finish_date>=? or `order`.order_finish_date is null)) order by (?)";
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	private static final String TABLE_COLUMN_COUNT = "count";
 	private static IRoomService roomService;
 	private DbConnector dbConnector;
 	private IRoomDao<Room> roomDao;
@@ -75,11 +82,11 @@ public class RoomService implements IRoomService {
 	public int getNumberOfFreeRooms() throws SQLException {
 		int result = 0;
 		try (PreparedStatement ps = dbConnector.getConnection()
-				.prepareStatement("SELECT count(room_id) count FROM `room` where room_roomstatus=?")) {
+				.prepareStatement(SELECT_COUNT_ROOM)) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				result = rs.getInt("count");
+				result = rs.getInt(TABLE_COLUMN_COUNT);
 			}
 		}
 		return result;
@@ -90,7 +97,7 @@ public class RoomService implements IRoomService {
 		List<Room> result = new ArrayList<>();
 
 		try (PreparedStatement ps = dbConnector.getConnection()
-				.prepareStatement("SELECT * FROM `room` where room_roomstatus=? order by (?)")) {
+				.prepareStatement(SELECT_FREEROOMS)) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
 			ps.setString(2, roomSort.getTableField());
 			ResultSet resultSet = ps.executeQuery();
@@ -131,12 +138,8 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public List<Room> getFreeRooms(Date date, EnumRoomSort roomSort) throws SQLException {
-		String query = "select * from room where room.room_id not in "
-				+ "(SELECT order_room_id  FROM room join `order` on `order`.order_room_id=room.room_id "
-				+ "where `order`.order_start_date<=? AND "
-				+ "(`order`.order_finish_date>=? or `order`.order_finish_date is null)) order by (?)";
 		List<Room> result = new ArrayList<>();
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_FREE_ROOMS)) {
 			String dateStr = null;
 			if (date != null) {
 				dateStr = formatter.format(date);
