@@ -21,8 +21,6 @@ public interface IServiceService {
 
 	List<Service> getAllServices(EnumServiceSort serviceSort) throws SQLException;
 
-//	Service getServiceByCode(int code);
-
 	Service getServiceById(int id) throws SQLException;
 
 	boolean changeServicePrice(int serviceId, int price) throws SQLException;

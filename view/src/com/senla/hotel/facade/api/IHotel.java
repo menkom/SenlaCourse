@@ -80,16 +80,11 @@ public interface IHotel {
 
 	public Order getOrderById(int orderId);
 
-//	public Client getClientByName(String name);
 	public Client getClientById(int clientId);
-
-//	public Room getRoomByNum(int roomNum);
 
 	Room getRoomById(int roomId);
 
 	Service getServiceById(int serviceId);
-
-//	public Service getServiceByCode(int code);
 
 	public boolean exportClientCSV(int id, String fileName);
 

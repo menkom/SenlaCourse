@@ -14,7 +14,6 @@ import com.senla.ui.util.DisplayOperator;
 
 public class CloneOrder implements IAction {
 	private static final String ENTER_ORDER_ID = "Enter order id: ";
-//	private static final String ENTER_ORDER_NUM = "Enter order num: ";
 	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
 	private static final String ERROR_CLONING = "Error during clonning.";
 	private static final String ORDER_CLONED = "Order with Id #%s cloned.";
@@ -24,7 +23,6 @@ public class CloneOrder implements IAction {
 	private static final String ORDER_SAVED = "Order saved and recieved id #%s.";
 
 	private static final String ENTER_CLIENT_ID = "Enter client Id: ";
-//	private static final String ENTER_ROOM_NUM = "Enter room number: ";
 	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ENTER_DATE_START = "Enter start date (format dd/MM/yyyy): ";
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy): ";

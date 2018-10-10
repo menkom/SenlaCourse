@@ -1,7 +1,10 @@
 package com.senla.converter;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.senla.base.BaseObject;
 import com.senla.hotel.model.Client;
@@ -10,6 +13,8 @@ import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 
 public class ListConverter {
+
+	private static final Logger logger = Logger.getLogger(ListConverter.class);
 
 	public static String[] getArrayFromList(List<? extends BaseObject> list) {
 		List<String> result = new ArrayList<String>();
@@ -37,11 +42,16 @@ public class ListConverter {
 	public static List<Order> getOrders(List<String> list) throws ClassNotFoundException {
 		List<Order> orders = new ArrayList<>();
 
-		for (String line : list) {
-			Order order = OrderConverter.getOrderFromString(line);
+		try {
+			for (String line : list) {
+				Order order = OrderConverter.getOrderFromString(line);
 
-			orders.add(order);
+				orders.add(order);
+			}
+		} catch (SQLException e) {
+			logger.error(e);
 		}
+
 		return orders;
 	}
 

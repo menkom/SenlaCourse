@@ -134,7 +134,6 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getFreeRoomsSortByPrice() {
 		try {
-//TODO delete comparators
 			return roomService.getFreeRooms(EnumRoomSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
@@ -432,10 +431,6 @@ public class Hotel implements IHotel {
 			return null;
 		}
 	}
-
-//	public Client getClientByName(String name) {
-//	return clientService.getClientByName(name);
-//  }
 
 	public Client getClientById(int clientId) {
 		try {

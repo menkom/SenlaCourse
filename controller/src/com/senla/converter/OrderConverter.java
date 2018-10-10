@@ -22,7 +22,7 @@ public class OrderConverter {
 	private static final Logger logger = Logger.getLogger(OrderConverter.class);
 	public static final String SEPARATOR = ";";
 
-	public static Order getOrderFromString(String line) throws ClassNotFoundException {
+	public static Order getOrderFromString(String line) throws ClassNotFoundException, SQLException {
 
 		String[] array = line.split(SEPARATOR);
 
@@ -31,9 +31,11 @@ public class OrderConverter {
 		Client client = null;
 		try {
 			client = clientDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[2]));
-		} catch (NumberFormatException | SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+		} catch (NumberFormatException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw e;
 		}
 
 		@SuppressWarnings("unchecked")
@@ -41,9 +43,11 @@ public class OrderConverter {
 		Room room = null;
 		try {
 			room = roomDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[3]));
-		} catch (NumberFormatException | SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (NumberFormatException e) {
+			logger.error(e);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw e;
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -82,8 +86,11 @@ public class OrderConverter {
 			try {
 				service = serviceDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[i]));
 				result.addService(service);
-			} catch (NumberFormatException | SQLException e) {
+			} catch (NumberFormatException e) {
 				logger.error(e);
+			} catch (SQLException e) {
+				logger.error(e);
+				throw e;
 			}
 		}
 		return result;

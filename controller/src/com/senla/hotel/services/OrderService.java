@@ -186,7 +186,6 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException {
-//TODO DB again
 		List<Order> result = new ArrayList<>();
 
 		String query = "select * from `order` o join client join room "
