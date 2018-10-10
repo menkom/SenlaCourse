@@ -109,6 +109,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		} catch (SQLException e) {
 			logger.error(e);
 			connection.rollback();
+			connection.setAutoCommit(true);
 			throw e;
 		}
 		return result;
