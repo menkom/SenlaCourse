@@ -46,7 +46,6 @@ public class RoomDao extends GenericDao<Room> implements IRoomDao<Room> {
 		ps.setString(3, entity.getStar().toString());
 		ps.setString(4, entity.getStatus().toString());
 		ps.setInt(5, entity.getPrice());
-		System.out.println(ps);
 	}
 
 	@Override

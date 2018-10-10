@@ -77,7 +77,6 @@ public class RoomService implements IRoomService {
 		try (PreparedStatement ps = dbConnector.getConnection()
 				.prepareStatement("SELECT count(room_id) count FROM `room` where room_roomstatus=?")) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
-			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt("count");
@@ -94,7 +93,6 @@ public class RoomService implements IRoomService {
 				.prepareStatement("SELECT * FROM `room` where room_roomstatus=? order by (?)")) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
 			ps.setString(2, roomSort.getTableField());
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				Room room = roomDao.parseResultSet(resultSet);
@@ -147,7 +145,6 @@ public class RoomService implements IRoomService {
 			ps.setString(1, dateStr);
 			ps.setString(2, dateStr);
 			ps.setString(3, roomSort.getTableField());
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				Room room = roomDao.parseResultSet(resultSet);

@@ -63,7 +63,6 @@ public class ClientService implements IClientService {
 		int result = 0;
 		try (PreparedStatement ps = dbConnector.getConnection()
 				.prepareStatement("SELECT count(client_id) count FROM `client`")) {
-			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				result = rs.getInt("count");

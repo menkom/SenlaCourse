@@ -65,7 +65,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		List<T> result = new ArrayList<>();
 		try (PreparedStatement ps = connection.prepareStatement(String.format(getAllQuery(), getTableName()))) {
 			ps.setString(1, (sortColumn.equals("") ? getIdColumn() : sortColumn));
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				T entity = parseResultSet(resultSet);
@@ -120,7 +119,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection.prepareStatement(getUpdateQuery())) {
 			prepareAddStatement(ps, entity);
 			ps.setInt(6, entity.getId());
-			System.out.println(ps);
 			return ps.executeUpdate() > 0;
 		}
 	}
@@ -130,7 +128,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection
 				.prepareStatement(String.format(getByIdQuery(), getTableName(), getIdColumn()))) {
 			ps.setInt(1, id);
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				return parseResultSet(resultSet);
@@ -144,7 +141,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection
 				.prepareStatement(String.format(DELETE_BY_ID, getTableName(), getIdColumn()))) {
 			ps.setInt(1, id);
-			System.out.println(ps);
 			return ps.executeUpdate() > 0;
 		}
 	}

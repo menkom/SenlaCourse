@@ -35,14 +35,12 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
 			ps.setString(1, entity.getName());
 			ps.setInt(2, entity.getId());
-			System.out.println(ps);
 			return ps.executeUpdate() > 0;
 		}
 	}
 
 	protected void prepareAddStatement(PreparedStatement ps, Client entity) throws SQLException {
 		ps.setString(1, entity.getName());
-		System.out.println(ps);
 	}
 
 	@Override

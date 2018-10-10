@@ -100,7 +100,6 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 		try (PreparedStatement ps = connection.prepareStatement(SELECT_ORDER_SERVICES)) {
 			ps.setInt(1, orderId);
 			ps.setString(2, (sortColumn.equals("") ? "service_id" : sortColumn));
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				ServiceDao serviceDao = new ServiceDao();
@@ -128,8 +127,6 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 			dateFinish = formatter.format(entity.getFinishDate());
 		}
 		ps.setString(5, dateFinish);
-
-		System.out.println(ps);
 	}
 
 	@Override

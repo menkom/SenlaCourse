@@ -39,7 +39,6 @@ public class ServiceDao extends GenericDao<Service> implements IServiceDao<Servi
 		ps.setInt(1, entity.getCode());
 		ps.setString(2, entity.getName());
 		ps.setInt(3, entity.getPrice());
-		System.out.println(ps);
 	}
 
 	@Override

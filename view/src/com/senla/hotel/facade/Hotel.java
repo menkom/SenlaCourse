@@ -605,8 +605,6 @@ public class Hotel implements IHotel {
 	@Override
 	public boolean importCsv() {
 		try {
-			System.out.println("clientService>" + clientService);
-
 			clientService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			orderService.importCsv(HotelProperty.getInstance().getCsvFilePath());
 			roomService.importCsv(HotelProperty.getInstance().getCsvFilePath());

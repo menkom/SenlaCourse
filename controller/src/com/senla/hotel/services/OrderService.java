@@ -148,12 +148,9 @@ public class OrderService implements IOrderService {
 				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
 				+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
 		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
-
 			ps.setString(1, formatter.format(new Date()));
 			ps.setString(2, formatter.format(new Date()));
 			ps.setString(3, orderSort.getTableField());
-
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				Order order = orderDao.parseResultSet(resultSet);
@@ -170,10 +167,7 @@ public class OrderService implements IOrderService {
 		String query = "select * from `order` o join client join room "
 				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
 		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
-
 			ps.setInt(1, roomId);
-
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				Order order = orderDao.parseResultSet(resultSet);
@@ -192,11 +186,8 @@ public class OrderService implements IOrderService {
 				+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
 				+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
 		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(query)) {
-
 			ps.setInt(1, roomId);
 			ps.setInt(2, maxOrders);
-
-			System.out.println(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				Order order = orderDao.parseResultSet(resultSet);
