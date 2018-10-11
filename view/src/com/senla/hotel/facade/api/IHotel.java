@@ -12,10 +12,6 @@ import com.senla.hotel.model.Service;
 
 public interface IHotel {
 
-	public boolean load();
-
-	public boolean save();
-
 	public List<Room> getAllRoomsSortByPrice();
 
 	public List<Room> getAllRoomsSortByCapacity();

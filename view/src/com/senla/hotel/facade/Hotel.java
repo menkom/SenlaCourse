@@ -23,7 +23,6 @@ import com.senla.hotel.services.api.IClientService;
 import com.senla.hotel.services.api.IOrderService;
 import com.senla.hotel.services.api.IRoomService;
 import com.senla.hotel.services.api.IServiceService;
-import com.senla.util.ModelSerializer;
 
 public class Hotel implements IHotel {
 
@@ -49,56 +48,6 @@ public class Hotel implements IHotel {
 			hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
 		}
 		return hotel;
-	}
-
-	private boolean addAll(ModelSerializer serializer) {
-		boolean result;
-		try {
-			result = clientService.addAll(serializer.getClients());
-			result = result && roomService.addAll(serializer.getRooms());
-			result = result && serviceService.addAll(serializer.getServices());
-			result = result && orderService.addAll(serializer.getOrders());
-		} catch (SQLException e) {
-			logger.error(e);
-			result = false;
-		}
-		return result;
-	}
-
-	@Override
-	public boolean load() {
-		boolean result = false;
-		String filePath = HotelProperty.getInstance().getRawFilePath();
-
-		ModelSerializer serializer = new ModelSerializer();
-
-		if (serializer.deserialize(filePath + "hotel.raw")) {
-			result = addAll(serializer);
-		}
-		return result;
-	}
-
-	@Override
-	public boolean save() {
-		boolean result = true;
-		String filePath = HotelProperty.getInstance().getRawFilePath();
-		ModelSerializer serializer = new ModelSerializer();
-
-		try {
-			serializer.setClients(clientService.getClients());
-			serializer.setRooms(roomService.getRooms());
-			serializer.setServices(serviceService.getServices());
-			serializer.setOrders(orderService.getOrders());
-
-			serializer.serialize(filePath + "hotel.raw");
-		} catch (IOException ex) {
-			logger.error(ex);
-			result = false;
-		} catch (SQLException ex) {
-			logger.error(ex);
-			result = false;
-		}
-		return result;
 	}
 
 	@Override
