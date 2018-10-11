@@ -110,6 +110,7 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 		try (PreparedStatement ps = connection.prepareStatement(SELECT_ORDER_SERVICES)) {
 			ps.setInt(1, orderId);
 			ps.setString(2, (sortColumn.equals("") ? TABLE_COLUMN_SERVICE_ID : sortColumn));
+			logger.info(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				ServiceDao serviceDao = new ServiceDao();

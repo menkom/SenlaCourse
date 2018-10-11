@@ -66,6 +66,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection.prepareStatement(String.format(getAllQuery(), getTableName()))) {
 			ps.setString(1, (sortColumn.equals("") ? getIdColumn() : sortColumn));
 			ResultSet resultSet = ps.executeQuery();
+			logger.info(ps);
 			while (resultSet.next()) {
 				T entity = parseResultSet(resultSet);
 				result.add(entity);
@@ -79,7 +80,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection.prepareStatement(getInsertQuery(), Statement.RETURN_GENERATED_KEYS)) {
 			prepareAddStatement(ps, entity);
 			int result = ps.executeUpdate();
-
+			logger.info(ps);
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				int lastInsertedId = rs.getInt(1);
@@ -104,6 +105,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 					break;
 				}
 			}
+			logger.info(ps);
 			connection.setAutoCommit(true);
 			result = true;
 		} catch (SQLException e) {
@@ -120,6 +122,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection.prepareStatement(getUpdateQuery())) {
 			prepareAddStatement(ps, entity);
 			ps.setInt(6, entity.getId());
+			logger.info(ps);
 			return ps.executeUpdate() > 0;
 		}
 	}
@@ -129,6 +132,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection
 				.prepareStatement(String.format(getByIdQuery(), getTableName(), getIdColumn()))) {
 			ps.setInt(1, id);
+			logger.info(ps);
 			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				return parseResultSet(resultSet);
@@ -142,6 +146,7 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 		try (PreparedStatement ps = connection
 				.prepareStatement(String.format(DELETE_BY_ID, getTableName(), getIdColumn()))) {
 			ps.setInt(1, id);
+			logger.info(ps);
 			return ps.executeUpdate() > 0;
 		}
 	}
