@@ -31,7 +31,7 @@ public class ServiceDao extends GenericDao<Service> implements IServiceDao<Servi
 
 	@Override
 	protected String getTableName() {
-		return TABLE_COLUMN_NAME;
+		return TABLE_NAME;
 	}
 
 	@Override
