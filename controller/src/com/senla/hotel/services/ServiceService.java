@@ -45,8 +45,8 @@ public class ServiceService implements IServiceService {
 	}
 
 	@Override
-	public boolean addService(int code, String name, int price) throws SQLException {
-		Service service = new Service(code, name, price);
+	public boolean addService(int serviceId, String name, int price) throws SQLException {
+		Service service = new Service(serviceId, name, price);
 		return add(service);
 	}
 

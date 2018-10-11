@@ -14,7 +14,8 @@ import com.senla.ui.util.DisplayOperator;
 
 public class CloneOrder implements IAction {
 	private static final String ENTER_ORDER_ID = "Enter order id: ";
-	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
+	private static final String ENTER_ORDER_NUM = "Enter new order num: ";
+	private static final String ERROR_NEED_ORDER = "You need to enter order id.";
 	private static final String ERROR_CLONING = "Error during clonning.";
 	private static final String ORDER_CLONED = "Order with Id #%s cloned.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
@@ -57,7 +58,7 @@ public class CloneOrder implements IAction {
 				if (change.equalsIgnoreCase("y") || change.equalsIgnoreCase("yes")) {
 
 					DisplayOperator.printMessage(LEAVE_EMPTY_NO_CHANGE);
-					DisplayOperator.printMessage(ENTER_ORDER_ID);
+					DisplayOperator.printMessage(ENTER_ORDER_NUM);
 					String newOrderNum = Input.inputString();
 					if (!newOrderNum.equals("")) {
 						clone.setNum(Integer.parseInt(newOrderNum));

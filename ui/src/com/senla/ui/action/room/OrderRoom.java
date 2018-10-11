@@ -16,7 +16,7 @@ public class OrderRoom implements IAction {
 
 	private static final String ENTER_ORDER_NUM = "Enter order number: ";
 	private static final String ENTER_CLIENT_ID = "Enter client Id: ";
-	private static final String ENTER_ROOM_NUM = "Enter room number: ";
+	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ENTER_DATE_START = "Enter start date (format dd/MM/yyyy) (current date if empty): ";
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy) (no date if empty): ";
 	private static final String ERROR_ROOM_NUM_OR_CLIENT = "Room or Client not found.";
@@ -39,7 +39,7 @@ public class OrderRoom implements IAction {
 			orderNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_CLIENT_ID);
 			clientId = Input.inputInteger();
-			DisplayOperator.printMessage(ENTER_ROOM_NUM);
+			DisplayOperator.printMessage(ENTER_ROOM_ID);
 			roomId = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_DATE_START);
 			String dateStartInString = Input.inputString();

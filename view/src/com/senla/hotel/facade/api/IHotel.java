@@ -40,11 +40,11 @@ public interface IHotel {
 
 	public List<Order> getActiveOrdersSortByFinishDate();
 
-	public Integer getOrderPrice(int orderNum);
+	public Integer getOrderPrice(int orderId);
 
-	public List<Order> getLastOrdersByRoom(int roomNum);
+	public List<Order> getLastOrdersByRoom(int roomId);
 
-	public List<Service> getOrderServices(int orderNum);
+	public List<Service> getOrderServices(int orderId);
 
 	public List<Service> getAllServicesSortByPrice();
 
@@ -60,9 +60,9 @@ public interface IHotel {
 
 	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish);
 
-	public boolean addOrderService(int orderId, int serviceCode);
+	public boolean addOrderService(int orderId, int serviceId);
 
-	public boolean freeRoom(int orderNum);
+	public boolean freeRoom(int orderId);
 
 	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus);
 

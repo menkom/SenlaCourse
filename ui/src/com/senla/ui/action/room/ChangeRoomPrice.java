@@ -12,9 +12,9 @@ import com.senla.ui.util.DisplayOperator;
 
 public class ChangeRoomPrice implements IAction {
 
-	private static final String ENTER_ROOM_NUM = "Enter room num: ";
+	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ENTER_ROOM_PRICE = "Enter room new price: ";
-	private static final String ROOM_PRICE_CHANGED = "Room #%s price changed to %s.";
+	private static final String ROOM_PRICE_CHANGED = "Room with Id %s price changed to %s.";
 	private static final String ERROR_CHANGING_PRICE = "Error changing room price.";
 	private static final String ERROR_FIELDS_TYPE = "Input correct fields type.";
 
@@ -24,17 +24,17 @@ public class ChangeRoomPrice implements IAction {
 	public void execute() {
 
 		try {
-			DisplayOperator.printMessage(ENTER_ROOM_NUM);
-			int roomNum = Input.inputInteger();
+			DisplayOperator.printMessage(ENTER_ROOM_ID);
+			int roomId = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_ROOM_PRICE);
 			int price = Input.inputInteger();
 			if (price < 0) {
 				throw new WrongPropertyRange(price);
 			}
 
-			Boolean result = Hotel.getInstance().changeRoomPrice(roomNum, price);
+			Boolean result = Hotel.getInstance().changeRoomPrice(roomId, price);
 			if (result) {
-				DisplayOperator.printMessage(String.format(ROOM_PRICE_CHANGED, roomNum, price));
+				DisplayOperator.printMessage(String.format(ROOM_PRICE_CHANGED, roomId, price));
 			} else {
 				DisplayOperator.printMessage(ERROR_CHANGING_PRICE);
 			}

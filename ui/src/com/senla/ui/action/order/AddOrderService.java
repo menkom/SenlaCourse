@@ -11,9 +11,9 @@ import com.senla.ui.util.DisplayOperator;
 
 public class AddOrderService implements IAction {
 
-	private static final String ENTER_ORDER_NUM = "Enter order num: ";
-	private static final String ENTER_SERVICE_CODE = "Enter service code: ";
-	private static final String SERVICE_ADDED = "Service with code %s added to order #%s.";
+	private static final String ENTER_ORDER_ID = "Enter order Id: ";
+	private static final String ENTER_SERVICE_ID = "Enter service Id: ";
+	private static final String SERVICE_ADDED = "Service with Id %s added to order Id %s.";
 	private static final String ERROR_ADDING_SERVICE = "Error during adding service to order.";
 	private static final String ERROR_IN_FIELDS = "Input correct field types.";
 
@@ -23,15 +23,15 @@ public class AddOrderService implements IAction {
 	public void execute() {
 
 		try {
-			DisplayOperator.printMessage(ENTER_ORDER_NUM);
-			Integer orderNum = Input.inputInteger();
-			DisplayOperator.printMessage(ENTER_SERVICE_CODE);
-			Integer serviceCode = Input.inputInteger();
+			DisplayOperator.printMessage(ENTER_ORDER_ID);
+			Integer orderId = Input.inputInteger();
+			DisplayOperator.printMessage(ENTER_SERVICE_ID);
+			Integer serviceId = Input.inputInteger();
 
-			Boolean result = Hotel.getInstance().addOrderService(orderNum, serviceCode);
+			Boolean result = Hotel.getInstance().addOrderService(orderId, serviceId);
 
 			if (result) {
-				DisplayOperator.printMessage(String.format(SERVICE_ADDED, serviceCode, orderNum));
+				DisplayOperator.printMessage(String.format(SERVICE_ADDED, serviceId, orderId));
 			} else {
 				DisplayOperator.printMessage(ERROR_ADDING_SERVICE);
 			}

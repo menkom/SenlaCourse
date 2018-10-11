@@ -11,9 +11,9 @@ import com.senla.ui.util.DisplayOperator;
 
 public class FreeRoom implements IAction {
 
-	private static final String ENTER_ROOM_NUM = "Enter room num: ";
-	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
-	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
+	private static final String ENTER_ROOM_ID = "Enter room Id: ";
+	private static final String ERROR_NEED_ORDER = "You need to enter order Id.";
+	private static final String ERROR_ORDER_ID = "Order #%s not found.";
 	private static final String ORDER_CLOSED = "Order #%s closed successfully.";
 	private static final String ERROR_CLOSING = "Error accured during closing Order #%s.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
@@ -22,23 +22,23 @@ public class FreeRoom implements IAction {
 
 	@Override
 	public void execute() {
-		int orderNum = 0;
-		DisplayOperator.printMessage(ENTER_ROOM_NUM);
+		int orderId = 0;
+		DisplayOperator.printMessage(ENTER_ROOM_ID);
 		try {
-			orderNum = Input.inputInteger();
+			orderId = Input.inputInteger();
 
-			Boolean result = Hotel.getInstance().freeRoom(orderNum);
+			Boolean result = Hotel.getInstance().freeRoom(orderId);
 
 			if (result) {
-				DisplayOperator.printMessage(String.format(ORDER_CLOSED, orderNum));
+				DisplayOperator.printMessage(String.format(ORDER_CLOSED, orderId));
 			} else {
-				DisplayOperator.printMessage(String.format(ERROR_CLOSING, orderNum));
+				DisplayOperator.printMessage(String.format(ERROR_CLOSING, orderId));
 			}
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_NEED_ORDER);
 			logger.error(e.toString());
 		} catch (NullPointerException e) {
-			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
+			DisplayOperator.printMessage(String.format(ERROR_ORDER_ID, orderId));
 			logger.error(e.toString());
 		} catch (NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_IN_FIELDS);

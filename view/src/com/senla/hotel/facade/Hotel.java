@@ -295,9 +295,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean addOrderService(int orderNum, int serviceCode) {
+	public boolean addOrderService(int orderId, int serviceId) {
 		try {
-			return orderService.addOrderService(orderNum, serviceCode);
+			return orderService.addOrderService(orderId, serviceId);
 		} catch (Exception e) {
 			logger.error(e);
 			return false;
@@ -305,9 +305,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean freeRoom(int orderNum) {
+	public boolean freeRoom(int orderId) {
 		try {
-			return orderService.freeRoom(orderNum);
+			return orderService.freeRoom(orderId);
 		} catch (Exception e) {
 			logger.error(e);
 			return false;
@@ -315,10 +315,10 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean changeRoomStatus(int roomNum, RoomStatus roomStatus) {
+	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus) {
 		try {
 			if (HotelProperty.getInstance().isAbleChangeRoomStatus()) {
-				return roomService.changeRoomStatus(roomNum, roomStatus);
+				return roomService.changeRoomStatus(roomId, roomStatus);
 			} else {
 				return false;
 			}
@@ -329,9 +329,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean changeRoomPrice(int roomNum, int newPrice) {
+	public boolean changeRoomPrice(int roomId, int newPrice) {
 		try {
-			return roomService.changeRoomPrice(roomNum, newPrice);
+			return roomService.changeRoomPrice(roomId, newPrice);
 		} catch (Exception e) {
 			logger.error(e);
 			return false;
@@ -339,9 +339,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean changeServicePrice(int code, int price) {
+	public boolean changeServicePrice(int serviceId, int price) {
 		try {
-			return serviceService.changeServicePrice(code, price);
+			return serviceService.changeServicePrice(serviceId, price);
 		} catch (Exception e) {
 			logger.error(e);
 			return false;
@@ -359,9 +359,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public Order cloneOrder(int orderNum) {
+	public Order cloneOrder(int orderId) {
 		try {
-			return orderService.cloneOrder(orderNum);
+			return orderService.cloneOrder(orderId);
 		} catch (CloneNotSupportedException e) {
 			logger.error(e);
 			return null;
@@ -426,11 +426,11 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean exportOrderCSV(int orderNum, String fileName) {
+	public boolean exportOrderCSV(int orderId, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
-					+ (fileName.equals("") ? "order_" + orderNum + ".csv" : fileName);
-			return orderService.exportOrderCSV(orderNum, filePath);
+					+ (fileName.equals("") ? "order_" + orderId + ".csv" : fileName);
+			return orderService.exportOrderCSV(orderId, filePath);
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
@@ -441,11 +441,11 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean exportRoomCSV(int roomNum, String fileName) {
+	public boolean exportRoomCSV(int roomId, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
-					+ (fileName.equals("") ? "room_" + roomNum + ".csv" : fileName);
-			return roomService.exportRoomCSV(roomNum, filePath);
+					+ (fileName.equals("") ? "room_" + roomId + ".csv" : fileName);
+			return roomService.exportRoomCSV(roomId, filePath);
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
@@ -456,11 +456,11 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean exportServiceCSV(int code, String fileName) {
+	public boolean exportServiceCSV(int serviceId, String fileName) {
 		try {
 			String filePath = HotelProperty.getInstance().getCsvFilePath()
-					+ (fileName.equals("") ? "service_" + code + ".csv" : fileName);
-			return serviceService.exportServiceCSV(code, filePath);
+					+ (fileName.equals("") ? "service_" + serviceId + ".csv" : fileName);
+			return serviceService.exportServiceCSV(serviceId, filePath);
 		} catch (IOException e) {
 			logger.error(e);
 			return false;

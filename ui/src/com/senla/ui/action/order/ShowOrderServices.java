@@ -13,9 +13,9 @@ import com.senla.ui.util.DisplayOperator;
 
 public class ShowOrderServices implements IAction {
 
-	private static final String ENTER_ORDER_NUM = "Enter order num: ";
-	private static final String ERROR_NEED_ORDER = "You need to enter order number.";
-	private static final String ERROR_ORDER_NUM = "Order #%s not found.";
+	private static final String ENTER_ORDER_ID = "Enter order Id: ";
+	private static final String ERROR_NEED_ORDER = "You need to enter order Id.";
+	private static final String ERROR_ORDER_ID = "Order with Id %s not found.";
 	private static final String ERROR_SERVICES_SEARCH = "Error during services search.";
 	private static final String NO_SERVICES = "No services.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
@@ -24,12 +24,12 @@ public class ShowOrderServices implements IAction {
 
 	@Override
 	public void execute() {
-		int orderNum = 0;
-		DisplayOperator.printMessage(ENTER_ORDER_NUM);
+		int orderId = 0;
+		DisplayOperator.printMessage(ENTER_ORDER_ID);
 		try {
-			orderNum = Input.inputInteger();
+			orderId = Input.inputInteger();
 
-			List<Service> services = Hotel.getInstance().getOrderServices(orderNum);
+			List<Service> services = Hotel.getInstance().getOrderServices(orderId);
 
 			if (services == null) {
 				DisplayOperator.printMessage(ERROR_SERVICES_SEARCH);
@@ -44,7 +44,7 @@ public class ShowOrderServices implements IAction {
 			DisplayOperator.printMessage(ERROR_NEED_ORDER);
 			logger.error(e.toString());
 		} catch (NullPointerException e) {
-			DisplayOperator.printMessage(String.format(ERROR_ORDER_NUM, orderNum));
+			DisplayOperator.printMessage(String.format(ERROR_ORDER_ID, orderId));
 			logger.error(e.toString());
 		} catch (NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_IN_FIELDS);
