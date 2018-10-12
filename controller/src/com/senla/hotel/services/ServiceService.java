@@ -47,7 +47,7 @@ public class ServiceService implements IServiceService {
 	@Override
 	public boolean addService(int serviceId, String name, int price) throws SQLException {
 		Service service = new Service(serviceId, name, price);
-		return add(service);
+		return serviceDao.add(dbConnector.getConnection(), service);
 	}
 
 	@Override
@@ -73,17 +73,17 @@ public class ServiceService implements IServiceService {
 	@Override
 	public boolean changeServicePrice(int serviceId, int price) throws SQLException {
 		boolean result = false;
-		Service service = getServiceById(serviceId);
+		Service service = serviceDao.getById(dbConnector.getConnection(), serviceId);
 		if (service != null) {
 			service.setPrice(price);
-			result = true;
+			result = serviceDao.update(dbConnector.getConnection(), service);
 		}
 		return result;
 	}
 
 	@Override
 	public boolean exportServiceCSV(int serviceId, String fileName) throws IOException, SQLException {
-		Service service = getServiceById(serviceId);
+		Service service = serviceDao.getById(dbConnector.getConnection(), serviceId);
 		if (service == null) {
 			return false;
 		} else {
@@ -96,10 +96,10 @@ public class ServiceService implements IServiceService {
 		boolean result = false;
 		List<Service> rooms = ExportCSV.getServicesFromCSV(file);
 		for (Service room : rooms) {
-			if (getServiceById(room.getId()) != null) {
-				result = update(room);
+			if (serviceDao.getById(dbConnector.getConnection(), room.getId()) != null) {
+				result = serviceDao.update(dbConnector.getConnection(), room);
 			} else {
-				result = add(room);
+				result = serviceDao.add(dbConnector.getConnection(), room);
 			}
 			if (!result) {
 				break;

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
 import com.senla.hotel.dao.api.IClientDao;
@@ -25,6 +27,8 @@ import com.senla.hotel.services.api.IOrderService;
 import com.senla.util.ExportCSV;
 
 public class OrderService implements IOrderService {
+
+	private static final Logger logger = Logger.getLogger(OrderService.class);
 
 	private static final String SELECT_ORDERS_BY_ROOM = "select * from `order` o join client join room "
 			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
@@ -75,7 +79,7 @@ public class OrderService implements IOrderService {
 		Room room = RoomService.getInstance().getRoomById(roomId);
 
 		Order order = new Order(num, client, room, startDate, finishDate);
-		return add(order);
+		return orderDao.add(dbConnector.getConnection(), order);
 	}
 
 	@Override
@@ -97,31 +101,52 @@ public class OrderService implements IOrderService {
 	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish)
 			throws SQLException {
 		boolean result = false;
-		@SuppressWarnings("unchecked")
-		IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
-		Room room = roomDao.getById(dbConnector.getConnection(), roomId);
+		try {
+			dbConnector.getConnection().setAutoCommit(false);
+			@SuppressWarnings("unchecked")
+			IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
+			Room room = roomDao.getById(dbConnector.getConnection(), roomId);
 
-		@SuppressWarnings("unchecked")
-		IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
-		Client client = clientDao.getById(dbConnector.getConnection(), clientId);
-		Order order = new Order(orderNum, client, room, dateStart, dateFinish);
-		result = add(order);
-		if (order.getStartDate().equals(new Date())) {
-			order.getRoom().setStatus(RoomStatus.OCCUPIED);
+			@SuppressWarnings("unchecked")
+			IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
+			Client client = clientDao.getById(dbConnector.getConnection(), clientId);
+			Order order = new Order(orderNum, client, room, dateStart, dateFinish);
+			result = orderDao.add(dbConnector.getConnection(), order);
+			if (order.getStartDate().equals(new Date())) {
+				order.getRoom().setStatus(RoomStatus.OCCUPIED);
+				roomDao.update(dbConnector.getConnection(), order.getRoom());
+			}
+			dbConnector.getConnection().setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			dbConnector.getConnection().rollback();
+			dbConnector.getConnection().setAutoCommit(true);
+			throw e;
 		}
+
 		return result;
 	}
 
 	@Override
 	public boolean freeRoom(int orderId) throws SQLException {
 		boolean result = false;
-		Order order = orderDao.getById(dbConnector.getConnection(), orderId);
+		try {
+			dbConnector.getConnection().setAutoCommit(false);
+			Order order = orderDao.getById(dbConnector.getConnection(), orderId);
 
-		if (order != null) {
-			order.setFinishDate(new Date());
-			order.getRoom().setStatus(RoomStatus.AVAILABLE);
-			result = orderDao.update(dbConnector.getConnection(), order);
+			if (order != null) {
+				order.setFinishDate(new Date());
+				order.getRoom().setStatus(RoomStatus.AVAILABLE);
+				result = orderDao.update(dbConnector.getConnection(), order);
+			}
+			dbConnector.getConnection().setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			dbConnector.getConnection().rollback();
+			dbConnector.getConnection().setAutoCommit(true);
+			throw e;
 		}
+
 		return result;
 	}
 
@@ -133,20 +158,22 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public Integer getOrderPrice(int orderId) throws SQLException {
-		Order order = getOrderById(orderId);
-		Integer result;
-		if (order.getFinishDate() == null) {
-			result = 0;
-		} else {
-			Date d1 = order.getStartDate();
-			Date d2 = order.getFinishDate();
+		Order order = orderDao.getById(dbConnector.getConnection(), orderId);
+		Integer result = null;
+		if (order != null) {
+			if (order.getFinishDate() == null) {
+				result = 0;
+			} else {
+				Date d1 = order.getStartDate();
+				Date d2 = order.getFinishDate();
 
-			int daysBetween = (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+				int daysBetween = (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 
-			result = daysBetween * order.getRoom().getPrice();
+				result = daysBetween * order.getRoom().getPrice();
 
-			for (Service service : order.getServices()) {
-				result += service.getPrice();
+				for (Service service : order.getServices()) {
+					result += service.getPrice();
+				}
 			}
 		}
 		return result;
@@ -211,13 +238,15 @@ public class OrderService implements IOrderService {
 		if (orderToClone == null) {
 			return null;
 		} else {
-			return orderToClone.clone();
+			Order result = orderToClone.clone();
+			orderDao.add(dbConnector.getConnection(), result);
+			return result;
 		}
 	}
 
 	@Override
 	public boolean exportOrderCSV(int orderId, String fileName) throws IOException, SQLException {
-		Order order = getOrderById(orderId);
+		Order order = orderDao.getById(dbConnector.getConnection(), orderId);
 		if (order == null) {
 			return false;
 		} else {
@@ -228,16 +257,25 @@ public class OrderService implements IOrderService {
 	@Override
 	public boolean importOrdersCSV(String file) throws IOException, SQLException {
 		boolean result = false;
-		List<Order> orders = ExportCSV.getOrdersFromCSV(file);
-		for (Order order : orders) {
-			if (getOrderById(order.getId()) != null) {
-				result = update(order);
-			} else {
-				result = add(order);
+		try {
+			dbConnector.getConnection().setAutoCommit(false);
+			List<Order> orders = ExportCSV.getOrdersFromCSV(file);
+			for (Order order : orders) {
+				if (orderDao.getById(dbConnector.getConnection(), order.getId()) != null) {
+					result = orderDao.update(dbConnector.getConnection(), order);
+				} else {
+					result = orderDao.add(dbConnector.getConnection(), order);
+				}
+				if (!result) {
+					break;
+				}
 			}
-			if (!result) {
-				break;
-			}
+			dbConnector.getConnection().setAutoCommit(true);
+		} catch (IOException | SQLException e) {
+			logger.error(e);
+			dbConnector.getConnection().rollback();
+			dbConnector.getConnection().setAutoCommit(true);
+			throw e;
 		}
 		return result;
 	}

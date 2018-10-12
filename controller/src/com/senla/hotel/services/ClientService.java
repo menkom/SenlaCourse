@@ -74,7 +74,7 @@ public class ClientService implements IClientService {
 
 	@Override
 	public boolean exportClientCSV(int id, String fileName) throws IOException, SQLException {
-		Client client = getClientById(id);
+		Client client = clientDao.getById(dbConnector.getConnection(), id);
 		if (client == null) {
 			return false;
 		} else {
@@ -87,10 +87,10 @@ public class ClientService implements IClientService {
 		boolean result = false;
 		List<Client> clients = ExportCSV.getClientsFromCSV(file);
 		for (Client client : clients) {
-			if (getClientById(client.getId()) != null) {
-				result = update(client);
+			if (clientDao.getById(dbConnector.getConnection(), client.getId()) != null) {
+				result = clientDao.update(dbConnector.getConnection(), client);
 			} else {
-				result = add(client);
+				result = clientDao.add(dbConnector.getConnection(), client);
 			}
 			if (!result) {
 				break;

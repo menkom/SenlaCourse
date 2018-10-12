@@ -60,7 +60,7 @@ public class RoomService implements IRoomService {
 	@Override
 	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) throws SQLException {
 		Room room = new Room(number, capacity, star, status, price);
-		return add(room);
+		return roomDao.add(dbConnector.getConnection(), room);
 	}
 
 	@Override
@@ -81,8 +81,7 @@ public class RoomService implements IRoomService {
 	@Override
 	public int getNumberOfFreeRooms() throws SQLException {
 		int result = 0;
-		try (PreparedStatement ps = dbConnector.getConnection()
-				.prepareStatement(SELECT_COUNT_ROOM)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_COUNT_ROOM)) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -96,8 +95,7 @@ public class RoomService implements IRoomService {
 	public List<Room> getFreeRooms(EnumRoomSort roomSort) throws SQLException {
 		List<Room> result = new ArrayList<>();
 
-		try (PreparedStatement ps = dbConnector.getConnection()
-				.prepareStatement(SELECT_FREEROOMS)) {
+		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_FREEROOMS)) {
 			ps.setString(1, RoomStatus.AVAILABLE.toString());
 			ps.setString(2, roomSort.getTableField());
 			ResultSet resultSet = ps.executeQuery();
@@ -117,7 +115,7 @@ public class RoomService implements IRoomService {
 	@Override
 	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus) throws SQLException {
 		boolean result = false;
-		Room room = getRoomById(roomId);
+		Room room = roomDao.getById(dbConnector.getConnection(), roomId);
 		if (room != null) {
 			room.setStatus(roomStatus);
 			result = roomDao.update(dbConnector.getConnection(), room);
@@ -128,7 +126,7 @@ public class RoomService implements IRoomService {
 	@Override
 	public boolean changeRoomPrice(int roomId, int price) throws SQLException {
 		boolean result = false;
-		Room room = getRoomById(roomId);
+		Room room = roomDao.getById(dbConnector.getConnection(), roomId);
 		if (room != null) {
 			room.setPrice(price);
 			result = roomDao.update(dbConnector.getConnection(), room);
@@ -159,7 +157,7 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public boolean exportRoomCSV(int roomId, String fileName) throws IOException, SQLException {
-		Room room = getRoomById(roomId);
+		Room room = roomDao.getById(dbConnector.getConnection(), roomId);
 		if (room == null) {
 			return false;
 		} else {
@@ -172,10 +170,10 @@ public class RoomService implements IRoomService {
 		boolean result = false;
 		List<Room> rooms = ExportCSV.getRoomsFromCSV(file);
 		for (Room room : rooms) {
-			if (getRoomById(room.getId()) != null) {
-				result = update(room);
+			if (roomDao.getById(dbConnector.getConnection(), room.getId()) != null) {
+				result = roomDao.update(dbConnector.getConnection(), room);
 			} else {
-				result = add(room);
+				result = roomDao.add(dbConnector.getConnection(), room);
 			}
 			if (!result) {
 				break;
