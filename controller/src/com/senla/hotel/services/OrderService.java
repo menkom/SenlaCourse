@@ -46,7 +46,7 @@ public class OrderService implements IOrderService {
 	private IOrderDao<Order> orderDao;
 
 	@SuppressWarnings("unchecked")
-	public OrderService() throws ClassNotFoundException {
+	private OrderService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.orderDao = DependencyInjection.getInstance().getInterfacePair(IOrderDao.class);

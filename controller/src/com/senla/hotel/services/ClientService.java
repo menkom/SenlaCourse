@@ -22,7 +22,7 @@ public class ClientService implements IClientService {
 	private IClientDao<Client> clientDao;
 
 	@SuppressWarnings("unchecked")
-	public ClientService() throws ClassNotFoundException {
+	private ClientService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);

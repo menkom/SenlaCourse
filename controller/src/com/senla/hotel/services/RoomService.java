@@ -34,7 +34,7 @@ public class RoomService implements IRoomService {
 	private IRoomDao<Room> roomDao;
 
 	@SuppressWarnings("unchecked")
-	public RoomService() throws ClassNotFoundException {
+	private RoomService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);

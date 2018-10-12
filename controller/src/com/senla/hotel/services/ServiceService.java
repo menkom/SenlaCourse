@@ -21,7 +21,7 @@ public class ServiceService implements IServiceService {
 	private IServiceDao<Service> serviceDao;
 
 	@SuppressWarnings("unchecked")
-	public ServiceService() throws ClassNotFoundException {
+	private ServiceService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.serviceDao = DependencyInjection.getInstance().getInterfacePair(IServiceDao.class);
