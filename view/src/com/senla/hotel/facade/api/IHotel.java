@@ -101,5 +101,7 @@ public interface IHotel {
 	public boolean exportCsv();
 
 	public boolean importCsv();
+	
+	public void close();
 
 }

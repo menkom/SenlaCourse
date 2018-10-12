@@ -20,6 +20,7 @@ import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 import com.senla.hotel.property.HotelProperty;
 import com.senla.hotel.services.api.IClientService;
+import com.senla.hotel.services.api.IConnectorService;
 import com.senla.hotel.services.api.IOrderService;
 import com.senla.hotel.services.api.IRoomService;
 import com.senla.hotel.services.api.IServiceService;
@@ -30,6 +31,7 @@ public class Hotel implements IHotel {
 	private IRoomService roomService;
 	private IServiceService serviceService;
 	private IOrderService orderService;
+	private IConnectorService connectorService;
 
 	private static IHotel hotel;
 
@@ -41,6 +43,7 @@ public class Hotel implements IHotel {
 		this.roomService = DependencyInjection.getInstance().getInterfacePair(IRoomService.class);
 		this.serviceService = DependencyInjection.getInstance().getInterfacePair(IServiceService.class);
 		this.orderService = DependencyInjection.getInstance().getInterfacePair(IOrderService.class);
+		this.connectorService = DependencyInjection.getInstance().getInterfacePair(IConnectorService.class);
 	}
 
 	public static IHotel getInstance() {
@@ -566,6 +569,11 @@ public class Hotel implements IHotel {
 			logger.error(e);
 			return false;
 		}
+	}
+
+	@Override
+	public void close() {
+		connectorService.CloseConnection();
 	}
 
 }
