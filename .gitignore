@@ -4,3 +4,4 @@
 /hotel_lib/
 /test_jar/
 *.jar
+/hotel/annotation/.settings/
