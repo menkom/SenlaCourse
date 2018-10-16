@@ -1,10 +1,16 @@
 package com.senla.hotel.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import com.senla.hotel.dao.api.IRoomDao;
+import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Room;
@@ -22,6 +28,16 @@ public class RoomDao extends GenericDao<Room> implements IRoomDao<Room> {
 	private static final String TABLE_NAME = "room";
 	private static final String TABLE_COLUMN_ID = "room_id";
 	private static final String TABLE_COLUMN_NUMBER = "room_number";
+
+	private static final String SELECT_FREEROOMS = "SELECT * FROM `room` where room_roomstatus=? order by (?)";
+	private static final String SELECT_COUNT_ROOM = "SELECT count(room_id) count FROM `room` where room_roomstatus=?";
+	private static final String SELECT_FREE_ROOMS = "select * from room where room.room_id not in "
+			+ "(SELECT order_room_id  FROM room join `order` on `order`.order_room_id=room.room_id "
+			+ "where `order`.order_start_date<=? AND "
+			+ "(`order`.order_finish_date>=? or `order`.order_finish_date is null)) order by (?)";
+	private static final String TABLE_COLUMN_COUNT = "count";
+
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
 	public Room parseResultSet(ResultSet resultSet) throws SQLException {
@@ -69,4 +85,54 @@ public class RoomDao extends GenericDao<Room> implements IRoomDao<Room> {
 	protected String getUpdateQuery() {
 		return UPDATE_ENTITY;
 	}
+
+	@Override
+	public int getNumberOfFreeRooms(Connection connection) throws SQLException {
+		int result = 0;
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_COUNT_ROOM)) {
+			ps.setString(1, RoomStatus.AVAILABLE.toString());
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(TABLE_COLUMN_COUNT);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Room> getFreeRooms(Connection connection, EnumRoomSort roomSort) throws SQLException {
+		List<Room> result = new ArrayList<>();
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_FREEROOMS)) {
+			ps.setString(1, RoomStatus.AVAILABLE.toString());
+			ps.setString(2, roomSort.getTableField());
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Room room = parseResultSet(resultSet);
+				result.add(room);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Room> getFreeRooms(Connection connection, Date date, EnumRoomSort roomSort) throws SQLException {
+		List<Room> result = new ArrayList<>();
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_FREE_ROOMS)) {
+			String dateStr = null;
+			if (date != null) {
+				dateStr = formatter.format(date);
+			}
+
+			ps.setString(1, dateStr);
+			ps.setString(2, dateStr);
+			ps.setString(3, roomSort.getTableField());
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Room room = parseResultSet(resultSet);
+				result.add(room);
+			}
+		}
+		return result;
+	}
+
 }

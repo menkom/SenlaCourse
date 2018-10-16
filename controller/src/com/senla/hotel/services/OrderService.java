@@ -1,11 +1,8 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,30 +27,21 @@ public class OrderService implements IOrderService {
 
 	private static final Logger logger = Logger.getLogger(OrderService.class);
 
-	private static final String SELECT_ORDERS_BY_ROOM = "select * from `order` o join client join room "
-			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
-
-	private static final String SELECT_ACTIVE_ORDERS = "select * from `order` o join client join room "
-			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
-			+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
-
-	private static final String SELECT_LAST_ROOM_ORDERS = "select * from `order` o join client join room "
-			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
-			+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
-
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
 	private static IOrderService orderService;
 
 	private DbConnector dbConnector;
 
 	private IOrderDao<Order> orderDao;
+	private IRoomDao<Room> roomDao;
+	private IClientDao<Client> clientDao;
 
 	@SuppressWarnings("unchecked")
 	private OrderService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.orderDao = DependencyInjection.getInstance().getInterfacePair(IOrderDao.class);
+		this.roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
+		this.clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 	}
 
 	public static IOrderService getInstance() {
@@ -70,7 +58,20 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public boolean addAll(List<Order> orders) throws SQLException {
-		return orderDao.addAll(dbConnector.getConnection(), orders);
+		
+		boolean result = false;
+		Connection connection = dbConnector.getConnection();
+		connection.setAutoCommit(false);
+		try {
+			result = orderDao.addAll(connection, orders);
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			connection.rollback();
+			connection.setAutoCommit(true);
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
@@ -101,26 +102,23 @@ public class OrderService implements IOrderService {
 	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish)
 			throws SQLException {
 		boolean result = false;
-		try {
-			dbConnector.getConnection().setAutoCommit(false);
-			@SuppressWarnings("unchecked")
-			IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
-			Room room = roomDao.getById(dbConnector.getConnection(), roomId);
 
-			@SuppressWarnings("unchecked")
-			IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
-			Client client = clientDao.getById(dbConnector.getConnection(), clientId);
+		Connection connection = dbConnector.getConnection();
+		try {
+			connection.setAutoCommit(false);
+			Room room = roomDao.getById(connection, roomId);
+			Client client = clientDao.getById(connection, clientId);
 			Order order = new Order(orderNum, client, room, dateStart, dateFinish);
-			result = orderDao.add(dbConnector.getConnection(), order);
+			result = orderDao.add(connection, order);
 			if (order.getStartDate().equals(new Date())) {
 				order.getRoom().setStatus(RoomStatus.OCCUPIED);
-				roomDao.update(dbConnector.getConnection(), order.getRoom());
+				roomDao.update(connection, order.getRoom());
 			}
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.setAutoCommit(true);
 		} catch (SQLException e) {
 			logger.error(e);
-			dbConnector.getConnection().rollback();
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.rollback();
+			connection.setAutoCommit(true);
 			throw e;
 		}
 
@@ -130,20 +128,21 @@ public class OrderService implements IOrderService {
 	@Override
 	public boolean freeRoom(int orderId) throws SQLException {
 		boolean result = false;
+		Connection connection = dbConnector.getConnection();
 		try {
-			dbConnector.getConnection().setAutoCommit(false);
-			Order order = orderDao.getById(dbConnector.getConnection(), orderId);
+			connection.setAutoCommit(false);
+			Order order = orderDao.getById(connection, orderId);
 
 			if (order != null) {
 				order.setFinishDate(new Date());
 				order.getRoom().setStatus(RoomStatus.AVAILABLE);
-				result = orderDao.update(dbConnector.getConnection(), order);
+				result = orderDao.update(connection, order);
 			}
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.setAutoCommit(true);
 		} catch (SQLException e) {
 			logger.error(e);
-			dbConnector.getConnection().rollback();
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.rollback();
+			connection.setAutoCommit(true);
 			throw e;
 		}
 
@@ -181,50 +180,17 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException {
-		List<Order> result = new ArrayList<>();
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_ACTIVE_ORDERS)) {
-			ps.setString(1, formatter.format(new Date()));
-			ps.setString(2, formatter.format(new Date()));
-			ps.setString(3, orderSort.getTableField());
-			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next()) {
-				Order order = orderDao.parseResultSet(resultSet);
-				result.add(order);
-			}
-		}
-		return result;
+		return orderDao.getActiveOrders(dbConnector.getConnection(), orderSort);
 	}
 
 	@Override
 	public List<Order> getOrdersByRoom(int roomId) throws SQLException {
-
-		List<Order> result = new ArrayList<>();
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_ORDERS_BY_ROOM)) {
-			ps.setInt(1, roomId);
-			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next()) {
-				Order order = orderDao.parseResultSet(resultSet);
-				result.add(order);
-			}
-		}
-
-		return result;
+		return orderDao.getOrdersByRoom(dbConnector.getConnection(), roomId);
 	}
 
 	@Override
 	public List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException {
-		List<Order> result = new ArrayList<>();
-
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_LAST_ROOM_ORDERS)) {
-			ps.setInt(1, roomId);
-			ps.setInt(2, maxOrders);
-			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next()) {
-				Order order = orderDao.parseResultSet(resultSet);
-				result.add(order);
-			}
-		}
-		return result;
+		return orderDao.getLastOrdersByRoom(dbConnector.getConnection(), roomId, maxOrders, orderSort);
 	}
 
 	@Override
@@ -234,12 +200,13 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public Order cloneOrder(int orderId) throws CloneNotSupportedException, SQLException {
-		Order orderToClone = orderDao.getById(dbConnector.getConnection(), orderId);
+		Connection connection = dbConnector.getConnection();
+		Order orderToClone = orderDao.getById(connection, orderId);
 		if (orderToClone == null) {
 			return null;
 		} else {
 			Order result = orderToClone.clone();
-			orderDao.add(dbConnector.getConnection(), result);
+			orderDao.add(connection, result);
 			return result;
 		}
 	}
@@ -257,24 +224,25 @@ public class OrderService implements IOrderService {
 	@Override
 	public boolean importOrdersCSV(String file) throws IOException, SQLException {
 		boolean result = false;
+		Connection connection = dbConnector.getConnection();
 		try {
-			dbConnector.getConnection().setAutoCommit(false);
+			connection.setAutoCommit(false);
 			List<Order> orders = ExportCSV.getOrdersFromCSV(file);
 			for (Order order : orders) {
-				if (orderDao.getById(dbConnector.getConnection(), order.getId()) != null) {
-					result = orderDao.update(dbConnector.getConnection(), order);
+				if (orderDao.getById(connection, order.getId()) != null) {
+					result = orderDao.update(connection, order);
 				} else {
-					result = orderDao.add(dbConnector.getConnection(), order);
+					result = orderDao.add(connection, order);
 				}
 				if (!result) {
 					break;
 				}
 			}
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.setAutoCommit(true);
 		} catch (IOException | SQLException e) {
 			logger.error(e);
-			dbConnector.getConnection().rollback();
-			dbConnector.getConnection().setAutoCommit(true);
+			connection.rollback();
+			connection.setAutoCommit(true);
 			throw e;
 		}
 		return result;

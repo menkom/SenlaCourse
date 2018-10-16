@@ -1,8 +1,11 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
@@ -13,6 +16,8 @@ import com.senla.hotel.services.api.IServiceService;
 import com.senla.util.ExportCSV;
 
 public class ServiceService implements IServiceService {
+
+	private static final Logger logger = Logger.getLogger(ServiceService.class);
 
 	private static IServiceService serviceService;
 
@@ -41,7 +46,19 @@ public class ServiceService implements IServiceService {
 
 	@Override
 	public boolean addAll(List<Service> services) throws SQLException {
-		return serviceDao.addAll(dbConnector.getConnection(), services);
+		boolean result = false;
+		Connection connection = dbConnector.getConnection();
+		connection.setAutoCommit(false);
+		try {
+			result = serviceDao.addAll(connection, services);
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			connection.rollback();
+			connection.setAutoCommit(true);
+			throw e;
+		}
+		return result;
 	}
 
 	@Override

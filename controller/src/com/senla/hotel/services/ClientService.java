@@ -1,10 +1,11 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
@@ -15,8 +16,8 @@ import com.senla.util.ExportCSV;
 
 public class ClientService implements IClientService {
 
-	private static final String SELECT_COUNT_CLIENTS = "SELECT count(client_id) count FROM `client`";
-	private static final String TABLE_COLUMN_COUNT = "count";
+	private static final Logger logger = Logger.getLogger(ClientService.class);
+
 	private static IClientService clientService;
 	private DbConnector dbConnector;
 	private IClientDao<Client> clientDao;
@@ -42,7 +43,19 @@ public class ClientService implements IClientService {
 
 	@Override
 	public boolean addAll(List<Client> clients) throws SQLException {
-		return clientDao.addAll(dbConnector.getConnection(), clients);
+		boolean result = false;
+		Connection connection = dbConnector.getConnection();
+		connection.setAutoCommit(false);
+		try {
+			result = clientDao.addAll(connection, clients);
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			connection.rollback();
+			connection.setAutoCommit(true);
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
@@ -62,14 +75,7 @@ public class ClientService implements IClientService {
 
 	@Override
 	public int getNumberOfClients() throws SQLException {
-		int result = 0;
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_COUNT_CLIENTS)) {
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				result = rs.getInt(TABLE_COLUMN_COUNT);
-			}
-		}
-		return result;
+		return clientDao.getNumberOfClients(dbConnector.getConnection());
 	}
 
 	@Override
