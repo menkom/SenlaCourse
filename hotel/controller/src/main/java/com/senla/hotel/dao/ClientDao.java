@@ -1,5 +1,6 @@
 package com.senla.hotel.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,8 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 	private static final String TABLE_COLUMN_ID = "client_id";
 	private static final String TABLE_COLUMN_NAME = "client_name";
 	private static final String TABLE_NAME = "client";
+	private static final String SELECT_COUNT_CLIENTS = "SELECT count(client_id) count FROM `client`";
+	private static final String TABLE_COLUMN_COUNT = "count";
 
 	@Override
 	public Client parseResultSet(ResultSet resultSet) throws SQLException {
@@ -50,6 +53,18 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 	@Override
 	protected String getUpdateQuery() {
 		return UPDATE_ENTITY;
+	}
+	
+	@Override
+	public int getNumberOfClients(Connection connection) throws SQLException {
+		int result = 0;
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_COUNT_CLIENTS)) {
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(TABLE_COLUMN_COUNT);
+			}
+		}
+		return result;
 	}
 
 }

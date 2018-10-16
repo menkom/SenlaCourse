@@ -93,7 +93,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 	@Override
 	public boolean addAll(Connection connection, List<T> list) throws SQLException {
 		boolean result = false;
-		connection.setAutoCommit(false);
 		try (PreparedStatement ps = connection.prepareStatement(getInsertQuery())) {
 			for (T entity : list) {
 				prepareAddStatement(ps, entity);
@@ -106,12 +105,9 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 				}
 			}
 			logger.info(ps);
-			connection.setAutoCommit(true);
 			result = true;
 		} catch (SQLException e) {
 			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
 			throw e;
 		}
 		return result;

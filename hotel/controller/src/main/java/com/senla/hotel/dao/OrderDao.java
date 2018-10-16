@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,6 +16,7 @@ import com.senla.di.DependencyInjection;
 import com.senla.hotel.dao.api.IClientDao;
 import com.senla.hotel.dao.api.IOrderDao;
 import com.senla.hotel.dao.api.IRoomDao;
+import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
@@ -45,12 +47,34 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 	private static final String TABLE_COLUMN_DATE_FINISH = "order_finish_date";
 
 	private static final String ERROR_DATE_FORMAT = "Date format error.";
+
+	private static final String SELECT_ORDERS_BY_ROOM = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and " + "room.room_id=?";
+
+	private static final String SELECT_ACTIVE_ORDERS = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id and "
+			+ "o.order_start_date<=? and (o.order_finish_date=null or o.order_finish_date>=?) " + "order by (?)";
+
+	private static final String SELECT_LAST_ROOM_ORDERS = "select * from `order` o join client join room "
+			+ "on o.order_client_id=client.client_id and o.order_room_id=room.room_id  "
+			+ "and room.room_id=? order by (-o.order_start_date) limit  ?";
+
 	private static final Logger logger = Logger.getLogger(OrderDao.class);
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+	private IRoomDao<Room> roomDao;
+	private IClientDao<Client> clientDao;
 
 	@Override
 	protected String getAllQuery() {
 		return SELECT_ALL;
+	}
+
+	@SuppressWarnings("unchecked")
+	public OrderDao() {
+		super();
+		roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
+		clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 	}
 
 	@Override
@@ -66,15 +90,11 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 		order.setNum(resultSet.getInt(TABLE_COLUMN_NUM));
 
 		if (isExist(resultSet, TABLE_COLUMN_JOIN_CLIENT_ID)) {
-			@SuppressWarnings("unchecked")
-			IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 			Client client = clientDao.parseResultSet(resultSet);
 			order.setClient(client);
 		}
 
 		if (isExist(resultSet, TABLE_COLUMN_JOIN_ROOM_ID)) {
-			@SuppressWarnings("unchecked")
-			IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
 			Room room = roomDao.parseResultSet(resultSet);
 			order.setRoom(room);
 		}
@@ -169,4 +189,52 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 		}
 		return result > 0;
 	}
+
+	@Override
+	public List<Order> getActiveOrders(Connection connection, EnumOrderSort orderSort) throws SQLException {
+		List<Order> result = new ArrayList<>();
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_ACTIVE_ORDERS)) {
+			ps.setString(1, formatter.format(new Date()));
+			ps.setString(2, formatter.format(new Date()));
+			ps.setString(3, orderSort.getTableField());
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = parseResultSet(resultSet);
+				result.add(order);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Order> getOrdersByRoom(Connection connection, int roomId) throws SQLException {
+		List<Order> result = new ArrayList<>();
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_ORDERS_BY_ROOM)) {
+			ps.setInt(1, roomId);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = parseResultSet(resultSet);
+				result.add(order);
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<Order> getLastOrdersByRoom(Connection connection, int roomId, int maxOrders, EnumOrderSort orderSort)
+			throws SQLException {
+		List<Order> result = new ArrayList<>();
+
+		try (PreparedStatement ps = connection.prepareStatement(SELECT_LAST_ROOM_ORDERS)) {
+			ps.setInt(1, roomId);
+			ps.setInt(2, maxOrders);
+			ResultSet resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				Order order = parseResultSet(resultSet);
+				result.add(order);
+			}
+		}
+		return result;
+	}
+
 }

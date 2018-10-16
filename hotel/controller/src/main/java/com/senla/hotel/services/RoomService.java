@@ -1,13 +1,12 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
@@ -21,14 +20,8 @@ import com.senla.util.ExportCSV;
 
 public class RoomService implements IRoomService {
 
-	private static final String SELECT_FREEROOMS = "SELECT * FROM `room` where room_roomstatus=? order by (?)";
-	private static final String SELECT_COUNT_ROOM = "SELECT count(room_id) count FROM `room` where room_roomstatus=?";
-	private static final String SELECT_FREE_ROOMS = "select * from room where room.room_id not in "
-			+ "(SELECT order_room_id  FROM room join `order` on `order`.order_room_id=room.room_id "
-			+ "where `order`.order_start_date<=? AND "
-			+ "(`order`.order_finish_date>=? or `order`.order_finish_date is null)) order by (?)";
-	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	private static final String TABLE_COLUMN_COUNT = "count";
+	private static final Logger logger = Logger.getLogger(RoomService.class);
+
 	private static IRoomService roomService;
 	private DbConnector dbConnector;
 	private IRoomDao<Room> roomDao;
@@ -54,7 +47,19 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public boolean addAll(List<Room> rooms) throws SQLException {
-		return roomDao.addAll(dbConnector.getConnection(), rooms);
+		boolean result = false;
+		Connection connection = dbConnector.getConnection();
+		connection.setAutoCommit(false);
+		try {
+			result = roomDao.addAll(connection, rooms);
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			logger.error(e);
+			connection.rollback();
+			connection.setAutoCommit(true);
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
@@ -80,31 +85,12 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public int getNumberOfFreeRooms() throws SQLException {
-		int result = 0;
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_COUNT_ROOM)) {
-			ps.setString(1, RoomStatus.AVAILABLE.toString());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				result = rs.getInt(TABLE_COLUMN_COUNT);
-			}
-		}
-		return result;
+		return roomDao.getNumberOfFreeRooms(dbConnector.getConnection());
 	}
 
 	@Override
 	public List<Room> getFreeRooms(EnumRoomSort roomSort) throws SQLException {
-		List<Room> result = new ArrayList<>();
-
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_FREEROOMS)) {
-			ps.setString(1, RoomStatus.AVAILABLE.toString());
-			ps.setString(2, roomSort.getTableField());
-			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next()) {
-				Room room = roomDao.parseResultSet(resultSet);
-				result.add(room);
-			}
-		}
-		return result;
+		return roomDao.getFreeRooms(dbConnector.getConnection(), roomSort);
 	}
 
 	@Override
@@ -136,23 +122,7 @@ public class RoomService implements IRoomService {
 
 	@Override
 	public List<Room> getFreeRooms(Date date, EnumRoomSort roomSort) throws SQLException {
-		List<Room> result = new ArrayList<>();
-		try (PreparedStatement ps = dbConnector.getConnection().prepareStatement(SELECT_FREE_ROOMS)) {
-			String dateStr = null;
-			if (date != null) {
-				dateStr = formatter.format(date);
-			}
-
-			ps.setString(1, dateStr);
-			ps.setString(2, dateStr);
-			ps.setString(3, roomSort.getTableField());
-			ResultSet resultSet = ps.executeQuery();
-			while (resultSet.next()) {
-				Room room = roomDao.parseResultSet(resultSet);
-				result.add(room);
-			}
-		}
-		return result;
+		return roomDao.getFreeRooms(dbConnector.getConnection(), date, roomSort);
 	}
 
 	@Override
