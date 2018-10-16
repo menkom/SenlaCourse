@@ -35,17 +35,9 @@ public class ClientDao extends GenericDao<Client> implements IClientDao<Client> 
 		return TABLE_COLUMN_ID;
 	}
 
-	@Override
-	public boolean update(Connection connection, Client entity) throws SQLException {
-		try (PreparedStatement ps = connection.prepareStatement(UPDATE_ENTITY)) {
-			ps.setString(1, entity.getName());
-			ps.setInt(2, entity.getId());
-			return ps.executeUpdate() > 0;
-		}
-	}
-
 	protected void prepareAddStatement(PreparedStatement ps, Client entity) throws SQLException {
 		ps.setString(1, entity.getName());
+		ps.setInt(2, entity.getId());
 	}
 
 	@Override

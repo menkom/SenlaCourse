@@ -158,6 +158,7 @@ public class OrderDao extends GenericDao<Order> implements IOrderDao<Order> {
 			dateFinish = formatter.format(entity.getFinishDate());
 		}
 		ps.setString(5, dateFinish);
+		ps.setInt(6, entity.getId());
 	}
 
 	@Override

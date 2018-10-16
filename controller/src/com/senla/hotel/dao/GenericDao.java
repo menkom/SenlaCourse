@@ -117,7 +117,6 @@ public abstract class GenericDao<T extends BaseObject> implements IGenericDao<T>
 	public boolean update(Connection connection, T entity) throws SQLException {
 		try (PreparedStatement ps = connection.prepareStatement(getUpdateQuery())) {
 			prepareAddStatement(ps, entity);
-			ps.setInt(6, entity.getId());
 			logger.info(ps);
 			return ps.executeUpdate() > 0;
 		}
