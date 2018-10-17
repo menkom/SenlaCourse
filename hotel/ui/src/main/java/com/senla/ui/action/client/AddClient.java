@@ -1,9 +1,10 @@
 package com.senla.ui.action.client;
 
-import com.senla.hotel.facade.Hotel;
+import com.senla.di.DependencyInjection;
+import com.senla.hotel.facade.api.IHotel;
 import com.senla.ui.base.IAction;
-import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
+import com.senla.ui.util.Input;
 
 public class AddClient implements IAction {
 
@@ -17,7 +18,9 @@ public class AddClient implements IAction {
 		DisplayOperator.printMessage(ENTER_CLIENT_NAME);
 		String clientName = Input.inputString();
 
-		Boolean result = Hotel.getInstance().addClient(clientName);
+		IHotel hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
+
+		Boolean result = hotel.addClient(clientName);
 		if (result) {
 			DisplayOperator.printMessage(String.format(CLIENT_CREATED, clientName));
 		} else {

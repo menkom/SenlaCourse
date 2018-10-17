@@ -1,6 +1,7 @@
 package com.senla.ui.action.client;
 
-import com.senla.hotel.facade.Hotel;
+import com.senla.di.DependencyInjection;
+import com.senla.hotel.facade.api.IHotel;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
@@ -21,7 +22,9 @@ public class ExportClientAction implements IAction {
 		DisplayOperator.printMessage(ENTER_FILE_NAME);
 		String fileName = Input.inputString();
 
-		Boolean result = Hotel.getInstance().exportClientCSV(clientId, fileName);
+		IHotel hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
+		Boolean result = hotel.exportClientCSV(clientId, fileName);
+
 		if (result) {
 			DisplayOperator.printMessage(String.format(CLIENT_EXPORTED, clientId));
 		} else {

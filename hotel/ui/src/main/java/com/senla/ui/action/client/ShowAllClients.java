@@ -2,7 +2,8 @@ package com.senla.ui.action.client;
 
 import java.util.List;
 
-import com.senla.hotel.facade.Hotel;
+import com.senla.di.DependencyInjection;
+import com.senla.hotel.facade.api.IHotel;
 import com.senla.hotel.model.Client;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.DisplayOperator;
@@ -14,7 +15,9 @@ public class ShowAllClients implements IAction {
 
 	@Override
 	public void execute() {
-		List<Client> clients = Hotel.getInstance().getAllClients();
+		IHotel hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
+
+		List<Client> clients = hotel.getAllClients();
 		if (clients == null) {
 			DisplayOperator.printMessage(CLIENT_SEARCH_FAILED);
 		} else {
