@@ -1,20 +1,24 @@
 package com.senla.hotel.model;
 
-import java.io.Serializable;
-
 import com.senla.annotation.CsvEntity;
 import com.senla.annotation.CsvProperty;
 import com.senla.annotation.enums.PropertyType;
 import com.senla.base.BaseObject;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "client", schema = "hotel", uniqueConstraints = @UniqueConstraint(columnNames = "client_id"))
 @CsvEntity(filename = "client.csv")
-public class Client extends BaseObject implements Serializable {
+public class Client extends BaseObject {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8734779988902631985L;
+	@Id
+	@Column(name = "client_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 0)
+	private Integer id;
 
+	@Basic
+	@Column(name = "client_name", nullable = false, length = 50)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private String name;
 
@@ -27,6 +31,8 @@ public class Client extends BaseObject implements Serializable {
 		this.name = name;
 	}
 
+	@Basic
+	@Column(name = "client_name", nullable = false, length = 50)
 	public String getName() {
 		return name;
 	}
@@ -46,6 +52,16 @@ public class Client extends BaseObject implements Serializable {
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
+	}
+
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

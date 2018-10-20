@@ -1,29 +1,46 @@
 package com.senla.hotel.model;
 
-import java.io.Serializable;
-
 import com.senla.annotation.CsvEntity;
 import com.senla.annotation.CsvProperty;
 import com.senla.annotation.enums.PropertyType;
 import com.senla.base.BaseObject;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "room", schema = "hotel", uniqueConstraints = @UniqueConstraint(columnNames = "room_id"))
 @CsvEntity(filename = "room.csv")
-public class Room extends BaseObject implements Serializable {
+public class Room extends BaseObject {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9218560100890176515L;
+	@Id
+	@Column(name = "room_id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 0)
+	private Integer id;
+
+	@Basic
+	@Column(name = "room_number", nullable = false)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private Integer number;
+
+	@Basic
+	@Column(name = "room_capacity", nullable = false)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 2)
 	private Integer capacity;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "room_roomstar", nullable = false)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 3)
 	private RoomStar star;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "room_roomstatus", nullable = false)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 4)
 	private RoomStatus status;
+
+	@Basic
+	@Column(name = "room_price", nullable = false)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 5)
 	private Integer price;
 
@@ -40,6 +57,8 @@ public class Room extends BaseObject implements Serializable {
 		this.price = price;
 	}
 
+	@Basic
+	@Column(name = "room_number", nullable = false)
 	public Integer getNumber() {
 		return number;
 	}
@@ -48,6 +67,8 @@ public class Room extends BaseObject implements Serializable {
 		this.number = number;
 	}
 
+	@Basic
+	@Column(name = "room_price", nullable = false)
 	public Integer getPrice() {
 		return price;
 	}
@@ -56,6 +77,8 @@ public class Room extends BaseObject implements Serializable {
 		this.price = price;
 	}
 
+	@Basic
+	@Column(name = "room_roomstatus", nullable = false)
 	public RoomStatus getStatus() {
 		return status;
 	}
@@ -64,6 +87,8 @@ public class Room extends BaseObject implements Serializable {
 		this.status = status;
 	}
 
+	@Basic
+	@Column(name = "room_capacity", nullable = false)
 	public Integer getCapacity() {
 		return capacity;
 	}
@@ -72,6 +97,8 @@ public class Room extends BaseObject implements Serializable {
 		this.capacity = capacity;
 	}
 
+	@Basic
+	@Column(name = "room_roomstar", nullable = false)
 	public RoomStar getStar() {
 		return star;
 	}
@@ -98,5 +125,14 @@ public class Room extends BaseObject implements Serializable {
 		return super.clone();
 	}
 
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 }
