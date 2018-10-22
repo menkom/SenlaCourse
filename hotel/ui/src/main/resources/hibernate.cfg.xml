@@ -12,7 +12,7 @@
 		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="connection.pool_size">1</property>
 		<!-- Echo the SQL to stdout -->
-		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.show_sql">false</property>
 		<property name="format_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
 		<mapping class="com.senla.hotel.model.Client" />
