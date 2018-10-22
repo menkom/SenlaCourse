@@ -30,24 +30,18 @@ public class OrderConverter {
 		IClientDao<Client> clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 		Client client = null;
 		try {
-			client = clientDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[2]));
+			client = clientDao.getById(DbConnector.getInstance().getSession(), Integer.parseInt(array[2]));
 		} catch (NumberFormatException e) {
 			logger.error(e);
-		} catch (SQLException e) {
-			logger.error(e);
-			throw e;
 		}
 
 		@SuppressWarnings("unchecked")
 		IRoomDao<Room> roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
 		Room room = null;
 		try {
-			room = roomDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[3]));
+			room = roomDao.getById(DbConnector.getInstance().getSession(), Integer.parseInt(array[3]));
 		} catch (NumberFormatException e) {
 			logger.error(e);
-		} catch (SQLException e) {
-			logger.error(e);
-			throw e;
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -84,13 +78,10 @@ public class OrderConverter {
 		for (int i = 6; i < array.length; i++) {
 			Service service;
 			try {
-				service = serviceDao.getById(DbConnector.getInstance().getConnection(), Integer.parseInt(array[i]));
+				service = serviceDao.getById(DbConnector.getInstance().getSession(), Integer.parseInt(array[i]));
 				result.addService(service);
 			} catch (NumberFormatException e) {
 				logger.error(e);
-			} catch (SQLException e) {
-				logger.error(e);
-				throw e;
 			}
 		}
 		return result;
