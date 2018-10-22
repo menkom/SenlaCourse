@@ -1,7 +1,6 @@
 package com.senla.hotel.facade;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import com.senla.di.DependencyInjection;
 import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumRoomSort;
 import com.senla.hotel.enums.EnumServiceSort;
-import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.api.IHotel;
 import com.senla.hotel.model.Client;
@@ -56,7 +54,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getAllRoomsSortByPrice() {
 		try {
-			return roomService.getAllRooms(EnumRoomSort.PRICE);
+			return roomService.getRooms(EnumRoomSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -66,7 +64,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getAllRoomsSortByCapacity() {
 		try {
-			return roomService.getAllRooms(EnumRoomSort.CAPACITY);
+			return roomService.getRooms(EnumRoomSort.CAPACITY);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -76,7 +74,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Room> getAllRoomsSortByStar() {
 		try {
-			return roomService.getAllRooms(EnumRoomSort.STAR);
+			return roomService.getRooms(EnumRoomSort.STAR);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -145,7 +143,7 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public Integer getNumberOfFreeRooms() {
+	public Long getNumberOfFreeRooms() {
 		try {
 			return roomService.getNumberOfFreeRooms();
 		} catch (Exception e) {
@@ -166,12 +164,7 @@ public class Hotel implements IHotel {
 
 	@Override
 	public List<Order> getAllOrders() {
-		try {
-			return orderService.getOrders();
-		} catch (SQLException e) {
-			logger.error(e);
-			return null;
-		}
+		return orderService.getOrders();
 	}
 
 	@Override
@@ -195,9 +188,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public Integer getOrderPrice(int orderId) {
+	public Integer getOrderPrice(Order order) {
 		try {
-			return orderService.getOrderPrice(orderId);
+			return orderService.getOrderPrice(order);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -205,9 +198,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public List<Order> getLastOrdersByRoom(int roomId) {
+	public List<Order> getLastOrdersByRoom(Room room) {
 		try {
-			return orderService.getLastOrdersByRoom(roomId, HotelProperty.getInstance().getLastVisibleOrders(),
+			return orderService.getLastOrdersByRoom(room, HotelProperty.getInstance().getLastVisibleOrders(),
 					EnumOrderSort.FINISH_DATE);
 		} catch (Exception e) {
 			logger.error(e);
@@ -216,9 +209,9 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public List<Service> getOrderServices(int orderId) {
+	public List<Service> getOrderServices(Order order) {
 		try {
-			return orderService.getOrderServices(orderId, EnumServiceSort.ID);
+			return orderService.getOrderServices(order, EnumServiceSort.ID);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -228,7 +221,7 @@ public class Hotel implements IHotel {
 	@Override
 	public List<Service> getAllServicesSortByPrice() {
 		try {
-			return serviceService.getAllServices(EnumServiceSort.PRICE);
+			return serviceService.getServices(EnumServiceSort.PRICE);
 		} catch (Exception e) {
 			logger.error(e);
 			return null;
@@ -236,118 +229,82 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public boolean addClient(String name) {
+	public void addClient(Client client) {
+		clientService.add(client);
+	}
+
+	@Override
+	public void addRoom(Room room) {
 		try {
-			return clientService.add(new Client(name));
+			roomService.add(room);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
-
 	}
 
 	@Override
-	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price) {
+	public void addService(int code, String name, int price) {
 		try {
-			return roomService.addRoom(number, capacity, star, status, price);
+			serviceService.addService(new Service(code, name, price));
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
+
 	}
 
 	@Override
-	public boolean addService(int code, String name, int price) {
+	public void addOrder(Order order) {
 		try {
-			return serviceService.addService(code, name, price);
+			orderService.add(order);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
-
 	}
 
 	@Override
-	public boolean addOrder(Order order) {
+	public void addOrderService(Order order, Service service) {
 		try {
-			return orderService.add(order);
+			orderService.addOrderService(order, service);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate) {
+	public void freeRoom(int orderId) {
 		try {
-			return orderService.addOrder(num, clientId, roomId, startDate, finishDate);
-		} catch (SQLException e) {
-			logger.error(e);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish) {
-		try {
-			return orderService.orderRoom(orderNum, roomId, clientId, dateStart, dateFinish);
-		} catch (SQLException e) {
-			logger.error(e);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean addOrderService(int orderId, int serviceId) {
-		try {
-			return orderService.addOrderService(orderId, serviceId);
+			orderService.freeRoom(orderId);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean freeRoom(int orderId) {
-		try {
-			return orderService.freeRoom(orderId);
-		} catch (Exception e) {
-			logger.error(e);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus) {
+	public void changeRoomStatus(int roomId, RoomStatus roomStatus) {
 		try {
 			if (HotelProperty.getInstance().isAbleChangeRoomStatus()) {
-				return roomService.changeRoomStatus(roomId, roomStatus);
-			} else {
-				return false;
+				roomService.changeRoomStatus(roomId, roomStatus);
 			}
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean changeRoomPrice(int roomId, int newPrice) {
+	public void changeRoomPrice(int roomId, int newPrice) {
 		try {
-			return roomService.changeRoomPrice(roomId, newPrice);
+			roomService.changeRoomPrice(roomId, newPrice);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
 	}
 
 	@Override
-	public boolean changeServicePrice(int serviceId, int price) {
+	public void changeServicePrice(int serviceId, int price) {
 		try {
-			return serviceService.changeServicePrice(serviceId, price);
+			serviceService.changeServicePrice(serviceId, price);
 		} catch (Exception e) {
 			logger.error(e);
-			return false;
 		}
 	}
 
@@ -362,13 +319,13 @@ public class Hotel implements IHotel {
 	}
 
 	@Override
-	public Order cloneOrder(int orderId) {
+	public Order cloneOrder(Order order) {
 		try {
-			return orderService.cloneOrder(orderId);
+			return orderService.cloneOrder(order);
 		} catch (CloneNotSupportedException e) {
 			logger.error(e);
 			return null;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
@@ -387,7 +344,7 @@ public class Hotel implements IHotel {
 	public Client getClientById(int clientId) {
 		try {
 			return clientService.getClientById(clientId);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			logger.error(e);
 			return null;
 		}
@@ -548,7 +505,7 @@ public class Hotel implements IHotel {
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			logger.error(e);
 			return false;
 		}
@@ -565,7 +522,7 @@ public class Hotel implements IHotel {
 		} catch (IOException e) {
 			logger.error(e);
 			return false;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			logger.error(e);
 			return false;
 		}
@@ -573,7 +530,11 @@ public class Hotel implements IHotel {
 
 	@Override
 	public void close() {
-		connectorService.CloseConnection();
+		try {
+			connectorService.CloseConnection();
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 
 }

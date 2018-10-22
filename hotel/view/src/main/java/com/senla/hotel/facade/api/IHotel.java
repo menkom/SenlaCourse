@@ -3,7 +3,6 @@ package com.senla.hotel.facade.api;
 import java.util.Date;
 import java.util.List;
 
-import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
@@ -12,96 +11,92 @@ import com.senla.hotel.model.Service;
 
 public interface IHotel {
 
-	public List<Room> getAllRoomsSortByPrice();
+	List<Room> getAllRoomsSortByPrice();
 
-	public List<Room> getAllRoomsSortByCapacity();
+	List<Room> getAllRoomsSortByCapacity();
 
-	public List<Room> getAllRoomsSortByStar();
+	List<Room> getAllRoomsSortByStar();
 
-	public List<Room> getFreeRoomsSortByPrice();
+	List<Room> getFreeRoomsSortByPrice();
 
-	public List<Room> getFreeRoomsSortByCapacity();
+	List<Room> getFreeRoomsSortByCapacity();
 
-	public List<Room> getFreeRoomsSortByStar();
+	List<Room> getFreeRoomsSortByStar();
 
-	public List<Room> getFreeRoomsByDateSortByPrice(Date date);
+	List<Room> getFreeRoomsByDateSortByPrice(Date date);
 
-	public List<Room> getFreeRoomsByDateSortByCapacity(Date date);
+	List<Room> getFreeRoomsByDateSortByCapacity(Date date);
 
-	public List<Room> getFreeRoomsByDateSortByStar(Date date);
+	List<Room> getFreeRoomsByDateSortByStar(Date date);
 
-	public Integer getNumberOfFreeRooms();
+	Long getNumberOfFreeRooms();
 
-	public Integer getNumberOfClients();
+	Integer getNumberOfClients();
 
-	public List<Order> getAllOrders();
+	List<Order> getAllOrders();
 
-	public List<Order> getActiveOrdersSortByName();
+	List<Order> getActiveOrdersSortByName();
 
-	public List<Order> getActiveOrdersSortByFinishDate();
+	List<Order> getActiveOrdersSortByFinishDate();
 
-	public Integer getOrderPrice(int orderId);
+	Integer getOrderPrice(Order order);
 
-	public List<Order> getLastOrdersByRoom(int roomId);
+	List<Order> getLastOrdersByRoom(Room room);
 
-	public List<Service> getOrderServices(int orderId);
+	List<Service> getOrderServices(Order order);
 
-	public List<Service> getAllServicesSortByPrice();
+	List<Service> getAllServicesSortByPrice();
 
-	public boolean addClient(String name);
+	void addClient(Client client);
 
-	public boolean addRoom(int number, int capacity, RoomStar star, RoomStatus status, int price);
+	void addRoom(Room room);
 
-	public boolean addService(int code, String name, int price);
+	void addService(int code, String name, int price);
 
-	public boolean addOrder(Order order);
+	void addOrder(Order order);
 
-	public boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate);
+	void addOrderService(Order order, Service service);
 
-	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish);
+	void freeRoom(int orderId);
 
-	public boolean addOrderService(int orderId, int serviceId);
+	void changeRoomStatus(int roomId, RoomStatus roomStatus);
 
-	public boolean freeRoom(int orderId);
+	void changeRoomPrice(int roomId, int newPrice);
 
-	public boolean changeRoomStatus(int roomId, RoomStatus roomStatus);
+	void changeServicePrice(int ServiceId, int price);
 
-	public boolean changeRoomPrice(int roomId, int newPrice);
+	List<Client> getAllClients();
 
-	public boolean changeServicePrice(int ServiceId, int price);
+	Order cloneOrder(Order order);
 
-	public List<Client> getAllClients();
+	Order getOrderById(int orderId);
 
-	public Order cloneOrder(int orderId);
-
-	public Order getOrderById(int orderId);
-
-	public Client getClientById(int clientId);
+	Client getClientById(int clientId);
 
 	Room getRoomById(int roomId);
 
 	Service getServiceById(int serviceId);
 
-	public boolean exportClientCSV(int id, String fileName);
+	boolean exportClientCSV(int id, String fileName);
 
-	public boolean exportOrderCSV(int orderId, String fileName);
+	boolean exportOrderCSV(int orderId, String fileName);
 
-	public boolean exportRoomCSV(int roomId, String fileName);
+	boolean exportRoomCSV(int roomId, String fileName);
 
-	public boolean exportServiceCSV(int serviceId, String fileName);
+	boolean exportServiceCSV(int serviceId, String fileName);
 
-	public boolean importClientsCSV(String fileName);
+	boolean importClientsCSV(String fileName);
 
-	public boolean importOrdersCSV(String fileName);
+	boolean importOrdersCSV(String fileName);
 
-	public boolean importRoomsCSV(String fileName);
+	boolean importRoomsCSV(String fileName);
 
-	public boolean importServicesCSV(String fileName);
+	boolean importServicesCSV(String fileName);
 
-	public boolean exportCsv();
+	boolean exportCsv();
 
-	public boolean importCsv();
-	
-	public void close();
+	boolean importCsv();
+
+	void close();
 
 }
