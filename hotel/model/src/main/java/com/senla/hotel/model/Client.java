@@ -7,11 +7,12 @@ import com.senla.base.BaseObject;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "client", schema = "hotel", uniqueConstraints = @UniqueConstraint(columnNames = "client_id"))
+@Table(name = "client", uniqueConstraints = @UniqueConstraint(columnNames = "client_id"))
 @CsvEntity(filename = "client.csv")
 public class Client extends BaseObject {
 
 	@Id
+	@PrimaryKeyJoinColumn
 	@Column(name = "client_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 0)
@@ -31,8 +32,6 @@ public class Client extends BaseObject {
 		this.name = name;
 	}
 
-	@Basic
-	@Column(name = "client_name", nullable = false, length = 50)
 	public String getName() {
 		return name;
 	}

@@ -9,11 +9,12 @@ import com.senla.hotel.enums.RoomStatus;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "room", schema = "hotel", uniqueConstraints = @UniqueConstraint(columnNames = "room_id"))
+@Table(name = "room", uniqueConstraints = @UniqueConstraint(columnNames = "room_id"))
 @CsvEntity(filename = "room.csv")
 public class Room extends BaseObject {
 
 	@Id
+	@PrimaryKeyJoinColumn
 	@Column(name = "room_id", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 0)
