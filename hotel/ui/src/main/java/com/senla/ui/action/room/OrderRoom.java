@@ -8,9 +8,12 @@ import java.util.InputMismatchException;
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.model.Client;
+import com.senla.hotel.model.Order;
+import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
-import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
+import com.senla.ui.util.Input;
 
 public class OrderRoom implements IAction {
 
@@ -22,8 +25,6 @@ public class OrderRoom implements IAction {
 	private static final String ERROR_ROOM_NUM_OR_CLIENT = "Room or Client not found.";
 	private static final String ERROR_WRONG_INPUT = "Wrong input data.";
 	private static final String ERROR_WRONG_DATE = "Wrong date format.";
-	private static final String ERROR_ORDERING = "Error ordering room.";
-	private static final String ROOM_ORDERED = "Room %s ordered by %s.";
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(OrderRoom.class);
@@ -39,8 +40,11 @@ public class OrderRoom implements IAction {
 			orderNum = Input.inputInteger();
 			DisplayOperator.printMessage(ENTER_CLIENT_ID);
 			clientId = Input.inputInteger();
+			Client client = Hotel.getInstance().getClientById(clientId);
 			DisplayOperator.printMessage(ENTER_ROOM_ID);
 			roomId = Input.inputInteger();
+			Room room = Hotel.getInstance().getRoomById(roomId);
+
 			DisplayOperator.printMessage(ENTER_DATE_START);
 			String dateStartInString = Input.inputString();
 			DisplayOperator.printMessage(ENTER_DATE_FINISH);
@@ -57,13 +61,9 @@ public class OrderRoom implements IAction {
 				dateFinish = formatter.parse(dateFinishInString);
 			}
 
-			Boolean result = Hotel.getInstance().orderRoom(orderNum, clientId, roomId, dateStart, dateFinish);
+			Order order = new Order(orderNum, client, room, dateStart, dateFinish);
 
-			if (result) {
-				DisplayOperator.printMessage(String.format(ROOM_ORDERED, roomId, clientId));
-			} else {
-				DisplayOperator.printMessage(ERROR_ORDERING);
-			}
+			Hotel.getInstance().addOrder(order);
 
 		} catch (InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_WRONG_INPUT);

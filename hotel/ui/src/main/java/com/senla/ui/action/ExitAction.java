@@ -1,7 +1,5 @@
 package com.senla.ui.action;
 
-import com.senla.di.DependencyInjection;
-import com.senla.hotel.facade.api.IHotel;
 import com.senla.ui.base.IAction;
 import com.senla.ui.base.MenuController;
 import com.senla.ui.util.DisplayOperator;
@@ -12,8 +10,6 @@ public class ExitAction implements IAction {
 	public void execute() {
 		MenuController.setInProgress(false);
 		DisplayOperator.printMessage("Thank you for using application \"Hotel\". Bye!");
-		IHotel hotel = DependencyInjection.getInstance().getInterfacePair(IHotel.class);
-		hotel.close();
 	}
 
 }

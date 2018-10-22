@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Service;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
@@ -29,7 +30,8 @@ public class ShowOrderServices implements IAction {
 		try {
 			orderId = Input.inputInteger();
 
-			List<Service> services = Hotel.getInstance().getOrderServices(orderId);
+			Order order = Hotel.getInstance().getOrderById(orderId);
+			List<Service> services = Hotel.getInstance().getOrderServices(order);
 
 			if (services == null) {
 				DisplayOperator.printMessage(ERROR_SERVICES_SEARCH);

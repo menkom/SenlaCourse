@@ -7,10 +7,11 @@ import org.apache.log4j.Logger;
 import com.senla.hotel.enums.RoomStar;
 import com.senla.hotel.enums.RoomStatus;
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.ui.exception.WrongPropertyRange;
-import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
+import com.senla.ui.util.Input;
 
 public class AddRoom implements IAction {
 
@@ -19,8 +20,6 @@ public class AddRoom implements IAction {
 	private static final String ENTER_ROOM_STAR = "Enter number of stars (from 1 to 5): ";
 	private static final String ENTER_ROOM_STATUS = "Enter room status (1-AVAILABLE,2-OCCUPIED,3-SERVICED): ";
 	private static final String ENTER_ROOM_PRICE = "Enter room price: ";
-	private static final String ORDER_ADDED = "Order #%s added successfully.";
-	private static final String ERROR_CREATING_ORDER = "Error creating order.";
 	private static final String ERROR_FIELDS_RANGE = "Entered data is out of specified range.";
 	private static final String ERROR_FIELDS_TYPE = "Input correct fields type.";
 
@@ -51,12 +50,8 @@ public class AddRoom implements IAction {
 				throw new WrongPropertyRange(price);
 			}
 
-			Boolean result = Hotel.getInstance().addRoom(roomNum, capacity, star, status, price);
-			if (result) {
-				DisplayOperator.printMessage(String.format(ORDER_ADDED, roomNum));
-			} else {
-				DisplayOperator.printMessage(ERROR_CREATING_ORDER);
-			}
+			Hotel.getInstance().addRoom(new Room(roomNum, capacity, star, status, price));
+
 		} catch (InputMismatchException | NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);
 			logger.error(e);

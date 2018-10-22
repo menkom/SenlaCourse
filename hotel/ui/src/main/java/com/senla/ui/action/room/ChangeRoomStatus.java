@@ -13,8 +13,6 @@ import com.senla.ui.util.DisplayOperator;
 public class ChangeRoomStatus implements IAction {
 	private static final String ENTER_ROOM_ID = "Enter room Id: ";
 	private static final String ENTER_ROOM_STATUS = "Enter room new status (1-AVAILABLE,2-OCCUPIED,3-SERVICED): ";
-	private static final String ROOM_STATUS_CHANGED = "Room with Id %s status changed to %s.";
-	private static final String ERROR_CHANGING_STATUS = "Error changing room status.";
 	private static final String ERROR_FIELDS_TYPE = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ChangeRoomStatus.class);
@@ -28,12 +26,7 @@ public class ChangeRoomStatus implements IAction {
 			DisplayOperator.printMessage(ENTER_ROOM_STATUS);
 			RoomStatus status = RoomStatus.values()[Input.inputInteger() - 1];
 
-			Boolean result = Hotel.getInstance().changeRoomStatus(roomId, status);
-			if (result) {
-				DisplayOperator.printMessage(String.format(ROOM_STATUS_CHANGED, roomId, status));
-			} else {
-				DisplayOperator.printMessage(ERROR_CHANGING_STATUS);
-			}
+			Hotel.getInstance().changeRoomStatus(roomId, status);
 
 		} catch (InputMismatchException | NumberFormatException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);

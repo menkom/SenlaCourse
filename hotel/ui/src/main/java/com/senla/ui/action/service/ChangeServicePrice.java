@@ -14,8 +14,6 @@ public class ChangeServicePrice implements IAction {
 
 	private static final String ENTER_SERVICE_ID = "Enter service Id: ";
 	private static final String ENTER_SERVICE_NEW_PRICE = "Enter service new price: ";
-	private static final String PRICE_CHANGED = "Service with Id %s price changed to %s successfully.";
-	private static final String ERROR_CHANGING_PRICE = "Error changing price.";
 	private static final String ERROR_FIELDS_TYPE = "Input correct fields type.";
 
 	private static final Logger logger = Logger.getLogger(ChangeServicePrice.class);
@@ -34,12 +32,7 @@ public class ChangeServicePrice implements IAction {
 				throw new WrongPropertyRange(price);
 			}
 
-			Boolean result = Hotel.getInstance().changeServicePrice(serviceId, price);
-			if (result) {
-				DisplayOperator.printMessage(String.format(PRICE_CHANGED, serviceId, price));
-			} else {
-				DisplayOperator.printMessage(ERROR_CHANGING_PRICE);
-			}
+			Hotel.getInstance().changeServicePrice(serviceId, price);
 
 		} catch (NumberFormatException | InputMismatchException e) {
 			DisplayOperator.printMessage(ERROR_FIELDS_TYPE);

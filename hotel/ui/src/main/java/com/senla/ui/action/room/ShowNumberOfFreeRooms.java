@@ -12,7 +12,7 @@ public class ShowNumberOfFreeRooms implements IAction {
 	@Override
 	public void execute() {
 
-		Integer freeRooms = Hotel.getInstance().getNumberOfFreeRooms();
+		Long freeRooms = Hotel.getInstance().getNumberOfFreeRooms();
 		if (freeRooms == null) {
 			DisplayOperator.printMessage(ERROR_ROOMS_COUNTING);
 		} else {

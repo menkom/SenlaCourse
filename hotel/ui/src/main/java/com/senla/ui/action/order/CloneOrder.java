@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Order;
 import com.senla.ui.base.IAction;
-import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
+import com.senla.ui.util.Input;
 
 public class CloneOrder implements IAction {
 	private static final String ENTER_ORDER_ID = "Enter order id: ";
@@ -21,7 +21,6 @@ public class CloneOrder implements IAction {
 	private static final String ERROR_IN_FIELDS = "Input correct fields type.";
 	private static final String WANT_CHANGE = "Do you want to change anything?[yes or no]";
 	private static final String WANT_SAVE = "Do you want to save?[yes or no]";
-	private static final String ORDER_SAVED = "Order saved and recieved id #%s.";
 
 	private static final String ENTER_CLIENT_ID = "Enter client Id: ";
 	private static final String ENTER_ROOM_ID = "Enter room Id: ";
@@ -29,7 +28,6 @@ public class CloneOrder implements IAction {
 	private static final String ENTER_DATE_FINISH = "Enter finish date (format dd/MM/yyyy): ";
 	private static final String ERROR_ROOM_NUM_OR_CLIENT = "Room or Client not found.";
 	private static final String ERROR_WRONG_DATE = "Wrong date format.";
-	private static final String ERROR_SAVING = "Error saving order.";
 
 	private static final String LEAVE_EMPTY_NO_CHANGE = "Leave field empty if it need no changes.";
 	private static final Logger logger = Logger.getLogger(CloneOrder.class);
@@ -41,7 +39,9 @@ public class CloneOrder implements IAction {
 		try {
 			orderId = Input.inputInteger();
 
-			Order clone = Hotel.getInstance().cloneOrder(orderId);
+			Order order = Hotel.getInstance().getOrderById(orderId);
+
+			Order clone = Hotel.getInstance().cloneOrder(order);
 
 			if (clone == null) {
 				DisplayOperator.printMessage(ERROR_CLONING);
@@ -93,11 +93,7 @@ public class CloneOrder implements IAction {
 
 				String save = Input.inputString();
 				if (save.equalsIgnoreCase("y") || save.equalsIgnoreCase("yes")) {
-					if (Hotel.getInstance().addOrder(clone)) {
-						DisplayOperator.printMessage(String.format(ORDER_SAVED, clone.getId()));
-					} else {
-						DisplayOperator.printMessage(ERROR_SAVING);
-					}
+					Hotel.getInstance().addOrder(clone);
 				}
 			}
 

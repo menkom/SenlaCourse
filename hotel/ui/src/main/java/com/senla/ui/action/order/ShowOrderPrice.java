@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
+import com.senla.hotel.model.Order;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
@@ -27,7 +28,9 @@ public class ShowOrderPrice implements IAction {
 		try {
 			orderId = Input.inputInteger();
 
-			Integer orderPrice = Hotel.getInstance().getOrderPrice(orderId);
+			Order order = Hotel.getInstance().getOrderById(orderId);
+
+			Integer orderPrice = Hotel.getInstance().getOrderPrice(order);
 
 			if (orderPrice == null) {
 				DisplayOperator.printMessage(ERROR_PRICE_CALC);

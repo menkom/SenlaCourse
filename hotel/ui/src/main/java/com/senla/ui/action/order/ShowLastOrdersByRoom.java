@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.senla.hotel.facade.Hotel;
 import com.senla.hotel.model.Order;
+import com.senla.hotel.model.Room;
 import com.senla.ui.base.IAction;
 import com.senla.ui.util.Input;
 import com.senla.ui.util.DisplayOperator;
@@ -29,7 +30,8 @@ public class ShowLastOrdersByRoom implements IAction {
 		try {
 			roomId = Input.inputInteger();
 
-			List<Order> orders = Hotel.getInstance().getLastOrdersByRoom(roomId);
+			Room room = Hotel.getInstance().getRoomById(roomId);
+			List<Order> orders = Hotel.getInstance().getLastOrdersByRoom(room);
 
 			if (orders == null) {
 				DisplayOperator.printMessage(ORDER_SEARCH_FAILED);
