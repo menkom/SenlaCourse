@@ -15,11 +15,10 @@
 		<property name="hibernate.show_sql">true</property>
 		<property name="format_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
-		<property name="hbm2ddl.auto">create</property>
-
 		<mapping class="com.senla.hotel.model.Client" />
 		<mapping class="com.senla.hotel.model.Order" />
 		<mapping class="com.senla.hotel.model.Room" />
 		<mapping class="com.senla.hotel.model.Service" />
+		<mapping class="com.senla.hotel.model.ServiceOrderJoin" />
 	</session-factory>
 </hibernate-configuration>
