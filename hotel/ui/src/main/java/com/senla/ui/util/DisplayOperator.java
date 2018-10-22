@@ -55,10 +55,12 @@ public class DisplayOperator {
 	public static void printRooms(List<Room> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		printMessage("id    Number Capacity Star   Status    Price");
-		for (Room room : array) {
-			if (room != null) {
-				printMessage(room.getId() + " --- " + room.getNumber() + "-------" + room.getCapacity() + "------"
-						+ room.getStar() + "----" + room.getStatus() + "---" + room.getPrice());
+		if (array != null) {
+			for (Room room : array) {
+				if (room != null) {
+					printMessage(room.getId() + " --- " + room.getNumber() + "-------" + room.getCapacity() + "------"
+							+ room.getStar() + "----" + room.getStatus() + "---" + room.getPrice());
+				}
 			}
 		}
 	}
@@ -90,10 +92,12 @@ public class DisplayOperator {
 	public static void printServices(List<Service> array) {
 		DisplayOperator.printMessage(DisplayOperator.SEPARATOR_LINE);
 		printMessage("id --- Code --- Name  --------  Price");
-		for (Service service : array) {
-			if (service != null) {
-				printMessage(service.getId() + " ---- " + service.getCode() + "-------" + service.getName() + "------"
-						+ service.getPrice());
+		if (array != null) {
+			for (Service service : array) {
+				if (service != null) {
+					printMessage(service.getId() + " ---- " + service.getCode() + "-------" + service.getName()
+							+ "------" + service.getPrice());
+				}
 			}
 		}
 	}
