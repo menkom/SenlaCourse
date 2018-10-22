@@ -24,7 +24,7 @@ public class ConnectorService implements IConnectorService {
 
 	@Override
 	public void CloseConnection() {
-		dbConnector.closeConnection();
+		dbConnector.closeSessionFactory();
 	}
 
 }

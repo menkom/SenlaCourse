@@ -1,22 +1,18 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
-import com.senla.hotel.dao.api.IClientDao;
 import com.senla.hotel.dao.api.IOrderDao;
-import com.senla.hotel.dao.api.IRoomDao;
 import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.enums.RoomStatus;
-import com.senla.hotel.model.Client;
 import com.senla.hotel.model.Order;
 import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
@@ -25,23 +21,19 @@ import com.senla.util.ExportCSV;
 
 public class OrderService implements IOrderService {
 
-	private static final Logger logger = Logger.getLogger(OrderService.class);
+	private final static Logger logger = Logger.getLogger(OrderService.class);
 
 	private static IOrderService orderService;
 
 	private DbConnector dbConnector;
 
 	private IOrderDao<Order> orderDao;
-	private IRoomDao<Room> roomDao;
-	private IClientDao<Client> clientDao;
 
 	@SuppressWarnings("unchecked")
 	private OrderService() throws ClassNotFoundException {
 		super();
 		dbConnector = DbConnector.getInstance();
 		this.orderDao = DependencyInjection.getInstance().getInterfacePair(IOrderDao.class);
-		this.roomDao = DependencyInjection.getInstance().getInterfacePair(IRoomDao.class);
-		this.clientDao = DependencyInjection.getInstance().getInterfacePair(IClientDao.class);
 	}
 
 	public static IOrderService getInstance() {
@@ -52,210 +44,443 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public boolean add(Order order) throws SQLException {
-		return orderDao.add(dbConnector.getConnection(), order);
-	}
-
-	@Override
-	public boolean addAll(List<Order> orders) throws SQLException {
+	public void add(Order order) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			
+			orderDao.add(session, order);
 		
-		boolean result = false;
-		Connection connection = dbConnector.getConnection();
-		connection.setAutoCommit(false);
-		try {
-			result = orderDao.addAll(connection, orders);
-			connection.setAutoCommit(true);
-		} catch (SQLException e) {
-			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
-			throw e;
-		}
-		return result;
-	}
-
-	@Override
-	public boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate) throws SQLException {
-		Client client = ClientService.getInstance().getClientById(clientId);
-		Room room = RoomService.getInstance().getRoomById(roomId);
-
-		Order order = new Order(num, client, room, startDate, finishDate);
-		return orderDao.add(dbConnector.getConnection(), order);
-	}
-
-	@Override
-	public boolean update(Order order) throws SQLException {
-		return orderDao.update(dbConnector.getConnection(), order);
-	}
-
-	@Override
-	public List<Order> getOrders() throws SQLException {
-		return orderDao.getAll(dbConnector.getConnection(), "");
-	}
-
-	@Override
-	public Order getOrderById(int id) throws SQLException {
-		return orderDao.getById(dbConnector.getConnection(), id);
-	}
-
-	@Override
-	public boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish)
-			throws SQLException {
-		boolean result = false;
-
-		Connection connection = dbConnector.getConnection();
-		try {
-			connection.setAutoCommit(false);
-			Room room = roomDao.getById(connection, roomId);
-			Client client = clientDao.getById(connection, clientId);
-			Order order = new Order(orderNum, client, room, dateStart, dateFinish);
-			result = orderDao.add(connection, order);
-			if (order.getStartDate().equals(new Date())) {
-				order.getRoom().setStatus(RoomStatus.OCCUPIED);
-				roomDao.update(connection, order.getRoom());
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
 			}
-			connection.setAutoCommit(true);
-		} catch (SQLException e) {
 			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
 			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
 		}
-
-		return result;
 	}
 
 	@Override
-	public boolean freeRoom(int orderId) throws SQLException {
-		boolean result = false;
-		Connection connection = dbConnector.getConnection();
+	public void addAll(List<Order> orders) {
+		Session session = null;
 		try {
-			connection.setAutoCommit(false);
-			Order order = orderDao.getById(connection, orderId);
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			orderDao.addAll(session, orders);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public void update(Order order) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			orderDao.update(session, order);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public List<Order> getOrders() {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Order> orders = orderDao.getAll(session, "");
+
+			session.getTransaction().commit();
+			return orders;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public Order getOrderById(int id) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			Order result = orderDao.getById(session, id);
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public void freeRoom(int orderId) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			Order order = orderDao.getById(session, orderId);
 
 			if (order != null) {
 				order.setFinishDate(new Date());
 				order.getRoom().setStatus(RoomStatus.AVAILABLE);
-				result = orderDao.update(connection, order);
+				orderDao.update(session, order);
 			}
-			connection.setAutoCommit(true);
-		} catch (SQLException e) {
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
 			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
 			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
 		}
-
-		return result;
 	}
 
 	@Override
-	public boolean addOrderService(int orderId, int serviceId) throws SQLException {
-		Service service = ServiceService.getInstance().getServiceById(serviceId);
-		return orderDao.addOrderService(dbConnector.getConnection(), orderId, service);
+	public void addOrderService(Order order, Service service) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			orderDao.addOrderService(session, order, service);
+
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
-	public Integer getOrderPrice(int orderId) throws SQLException {
-		Order order = orderDao.getById(dbConnector.getConnection(), orderId);
-		Integer result = null;
-		if (order != null) {
-			if (order.getFinishDate() == null) {
-				result = 0;
-			} else {
-				Date d1 = order.getStartDate();
-				Date d2 = order.getFinishDate();
+	public Integer getOrderPrice(Order order) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
 
-				int daysBetween = (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+			Integer result = null;
+			if (order != null) {
+				if (order.getFinishDate() == null) {
+					result = 0;
+				} else {
+					Date d1 = order.getStartDate();
+					Date d2 = order.getFinishDate();
 
-				result = daysBetween * order.getRoom().getPrice();
+					int daysBetween = (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
 
-				for (Service service : order.getServices()) {
-					result += service.getPrice();
+					result = daysBetween * order.getRoom().getPrice();
+
+					for (Service service : order.getServices()) {
+						result += service.getPrice();
+					}
 				}
 			}
-		}
-		return result;
-	}
+			session.getTransaction().commit();
 
-	@Override
-	public List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException {
-		return orderDao.getActiveOrders(dbConnector.getConnection(), orderSort);
-	}
-
-	@Override
-	public List<Order> getOrdersByRoom(int roomId) throws SQLException {
-		return orderDao.getOrdersByRoom(dbConnector.getConnection(), roomId);
-	}
-
-	@Override
-	public List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException {
-		return orderDao.getLastOrdersByRoom(dbConnector.getConnection(), roomId, maxOrders, orderSort);
-	}
-
-	@Override
-	public List<Service> getOrderServices(int orderId, EnumServiceSort serviceSort) throws SQLException {
-		return orderDao.getServices(dbConnector.getConnection(), orderId, serviceSort.getTableField());
-	}
-
-	@Override
-	public Order cloneOrder(int orderId) throws CloneNotSupportedException, SQLException {
-		Connection connection = dbConnector.getConnection();
-		Order orderToClone = orderDao.getById(connection, orderId);
-		if (orderToClone == null) {
-			return null;
-		} else {
-			Order result = orderToClone.clone();
-			orderDao.add(connection, result);
 			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
 		}
+
 	}
 
 	@Override
-	public boolean exportOrderCSV(int orderId, String fileName) throws IOException, SQLException {
-		Order order = orderDao.getById(dbConnector.getConnection(), orderId);
-		if (order == null) {
-			return false;
-		} else {
-			return ExportCSV.saveCSV(order.toString(), fileName);
-		}
-	}
-
-	@Override
-	public boolean importOrdersCSV(String file) throws IOException, SQLException {
-		boolean result = false;
-		Connection connection = dbConnector.getConnection();
+	public List<Order> getActiveOrders(EnumOrderSort orderSort) {
+		Session session = null;
 		try {
-			connection.setAutoCommit(false);
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Order> orders = orderDao.getActiveOrders(session, orderSort);
+
+			session.getTransaction().commit();
+			return orders;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public List<Order> getOrdersByRoom(Room room) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Order> orders = orderDao.getOrdersByRoom(session, room);
+
+			session.getTransaction().commit();
+			return orders;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public List<Order> getLastOrdersByRoom(Room room, int maxOrders, EnumOrderSort orderSort) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Order> orders = orderDao.getLastOrdersByRoom(session, room, maxOrders, orderSort);
+
+			session.getTransaction().commit();
+			return orders;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public List<Service> getOrderServices(Order order, EnumServiceSort serviceSort) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Service> orders = orderDao.getServices(session, order, serviceSort.getTableField());
+
+			session.getTransaction().commit();
+			return orders;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public Order cloneOrder(Order order) throws CloneNotSupportedException {
+		Session session = null;
+		Order result = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			if (order != null) {
+				result = order.clone();
+				orderDao.add(session, result);
+			}
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public boolean exportOrderCSV(int orderId, String fileName) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			Order order = orderDao.getById(session, orderId);
+			if (order != null) {
+				result = ExportCSV.saveCSV(order.toString(), fileName);
+			}
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public boolean importOrdersCSV(String file) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
 			List<Order> orders = ExportCSV.getOrdersFromCSV(file);
 			for (Order order : orders) {
-				if (orderDao.getById(connection, order.getId()) != null) {
-					result = orderDao.update(connection, order);
+				if (orderDao.getById(session, order.getId()) != null) {
+					orderDao.update(session, order);
 				} else {
-					result = orderDao.add(connection, order);
-				}
-				if (!result) {
-					break;
+					orderDao.add(session, order);
 				}
 			}
-			connection.setAutoCommit(true);
-		} catch (IOException | SQLException e) {
+
+			session.getTransaction().commit();
+			result = true;
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
 			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
 			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
 		}
-		return result;
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) throws IOException, SQLException {
-		return orderDao.exportCsv(dbConnector.getConnection(), csvFilePath);
+	public boolean exportCsv(String csvFilePath) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			result = orderDao.exportCsv(session, csvFilePath);
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) throws IOException, SQLException {
-		return orderDao.importCsv(dbConnector.getConnection(), csvFilePath);
+	public boolean importCsv(String csvFilePath) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			result = orderDao.importCsv(session, csvFilePath);
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 
 }

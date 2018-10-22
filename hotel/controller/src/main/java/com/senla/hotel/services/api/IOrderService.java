@@ -1,53 +1,48 @@
 package com.senla.hotel.services.api;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.enums.EnumServiceSort;
 import com.senla.hotel.model.Order;
+import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 
 public interface IOrderService {
 
-	boolean add(Order order) throws SQLException;
+	void add(Order order);
 
-	boolean addAll(List<Order> orders) throws SQLException;
+	void addAll(List<Order> orders);
 
-	boolean addOrder(int num, int clientId, int roomId, Date startDate, Date finishDate) throws SQLException;
+	void update(Order order);
 
-	boolean update(Order order) throws SQLException;
+	public List<Order> getOrders();
 
-	public List<Order> getOrders() throws SQLException;
+	Order getOrderById(int id);
 
-	Order getOrderById(int id) throws SQLException;
+	void freeRoom(int orderId);
 
-	boolean orderRoom(int orderNum, int roomId, int clientId, Date dateStart, Date dateFinish) throws SQLException;
+	void addOrderService(Order order, Service service);
 
-	boolean freeRoom(int orderId) throws SQLException;
+	Integer getOrderPrice(Order order);
 
-	boolean addOrderService(int orderId, int serviceId) throws SQLException;
+	List<Order> getActiveOrders(EnumOrderSort orderSort);
 
-	Integer getOrderPrice(int orderNum) throws SQLException;
+	List<Order> getOrdersByRoom(Room room);
 
-	List<Order> getActiveOrders(EnumOrderSort orderSort) throws SQLException;
+	List<Order> getLastOrdersByRoom(Room room, int maxOrders, EnumOrderSort orderSort);
 
-	List<Order> getOrdersByRoom(int roomId) throws SQLException;
+	List<Service> getOrderServices(Order order, EnumServiceSort serviceSort);
 
-	List<Order> getLastOrdersByRoom(int roomId, int maxOrders, EnumOrderSort orderSort) throws SQLException;
+	Order cloneOrder(Order order) throws CloneNotSupportedException;
 
-	List<Service> getOrderServices(int orderNum, EnumServiceSort serviceSort) throws SQLException;
+	boolean exportOrderCSV(int orderId, String fileName) throws IOException;
 
-	Order cloneOrder(int orderId) throws CloneNotSupportedException, SQLException;
+	boolean importOrdersCSV(String file) throws IOException;
 
-	boolean exportOrderCSV(int orderId, String fileName) throws IOException, SQLException;
+	boolean exportCsv(String csvFilePath) throws IOException;
 
-	boolean importOrdersCSV(String file) throws IOException, SQLException;
-
-	boolean exportCsv(String csvFilePath) throws IOException, SQLException;
-
-	boolean importCsv(String csvFilePath) throws IOException, SQLException;
+	boolean importCsv(String csvFilePath) throws IOException;
 
 }

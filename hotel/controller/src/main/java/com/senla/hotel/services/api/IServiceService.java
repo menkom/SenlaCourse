@@ -1,7 +1,6 @@
 package com.senla.hotel.services.api;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.senla.hotel.enums.EnumServiceSort;
@@ -9,28 +8,26 @@ import com.senla.hotel.model.Service;
 
 public interface IServiceService {
 
-	boolean add(Service service) throws SQLException;
+	void add(Service service);
 
-	boolean addAll(List<Service> services) throws SQLException;
+	void addAll(List<Service> services);
 
-	boolean addService(int code, String name, int price) throws SQLException;
+	void addService(Service service);
 
-	boolean update(Service service) throws SQLException;
+	void update(Service service);
 
-	public List<Service> getServices() throws SQLException;
+	List<Service> getServices(EnumServiceSort serviceSort);
 
-	List<Service> getAllServices(EnumServiceSort serviceSort) throws SQLException;
+	Service getServiceById(int id);
 
-	Service getServiceById(int id) throws SQLException;
+	void changeServicePrice(int serviceId, int price);
 
-	boolean changeServicePrice(int serviceId, int price) throws SQLException;
+	boolean exportServiceCSV(int serviceId, String fileName) throws IOException;
 
-	boolean exportServiceCSV(int serviceId, String fileName) throws IOException, SQLException;
+	boolean importServicesCSV(String file) throws IOException;
 
-	boolean importServicesCSV(String file) throws IOException, SQLException;
+	boolean exportCsv(String csvFilePath) throws IOException;
 
-	boolean exportCsv(String csvFilePath) throws IOException, SQLException;
-
-	boolean importCsv(String csvFilePath) throws IOException, SQLException;
+	boolean importCsv(String csvFilePath) throws IOException;
 
 }

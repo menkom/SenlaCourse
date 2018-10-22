@@ -1,24 +1,24 @@
 package com.senla.hotel.dao.api;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
+
+import org.hibernate.Session;
 
 import com.senla.hotel.enums.EnumOrderSort;
 import com.senla.hotel.model.Order;
+import com.senla.hotel.model.Room;
 import com.senla.hotel.model.Service;
 
 public interface IOrderDao<T extends Order> extends IGenericDao<T> {
 
-	List<Service> getServices(Connection connection, int orderId, String sortColumn) throws SQLException;
+	List<Service> getServices(Session session, Order order, String sortColumn);
 
-	boolean addOrderService(Connection connection, int orderId, Service service) throws SQLException;
+	void addOrderService(Session session, Order order, Service service);
 
-	List<Order> getActiveOrders(Connection connection, EnumOrderSort orderSort) throws SQLException;
+	List<Order> getActiveOrders(Session session, EnumOrderSort orderSort);
 
-	List<Order> getOrdersByRoom(Connection connection, int roomId) throws SQLException;
+	List<Order> getOrdersByRoom(Session session, Room room);
 
-	List<Order> getLastOrdersByRoom(Connection connection, int roomId, int maxOrders, EnumOrderSort orderSort)
-			throws SQLException;
+	List<Order> getLastOrdersByRoom(Session session, Room room, int maxOrders, EnumOrderSort orderSort);
 
 }

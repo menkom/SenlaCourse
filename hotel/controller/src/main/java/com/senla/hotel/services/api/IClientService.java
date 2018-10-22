@@ -1,31 +1,30 @@
 package com.senla.hotel.services.api;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import com.senla.hotel.model.Client;
 
 public interface IClientService {
 
-	boolean add(Client client) throws SQLException;
+	void add(Client client);
 
-	boolean addAll(List<Client> clients) throws SQLException;
+	void addAll(List<Client> clients);
 
-	boolean update(Client client) throws SQLException;
+	void update(Client client);
 
-	List<Client> getClients() throws SQLException;
+	List<Client> getClients();
 
-	Client getClientById(int id) throws SQLException;
+	Client getClientById(int id);
 
-	int getNumberOfClients() throws SQLException;
+	int getNumberOfClients();
 
-	boolean exportClientCSV(int id, String fileName) throws IOException, SQLException;
+	boolean exportClientCSV(int id, String fileName) throws IOException;
 
-	boolean importClientsCSV(String file) throws IOException, SQLException;
+	boolean importClientsCSV(String file) throws IOException;
 
-	boolean exportCsv(String csvFilePath) throws IOException, SQLException;
+	boolean exportCsv(String csvFilePath) throws IOException;
 
-	boolean importCsv(String csvFilePath) throws IOException, SQLException;
+	boolean importCsv(String csvFilePath) throws IOException;
 
 }

@@ -1,11 +1,10 @@
 package com.senla.hotel.services;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import com.senla.dao.dbconnector.DbConnector;
 import com.senla.di.DependencyInjection;
@@ -16,7 +15,7 @@ import com.senla.util.ExportCSV;
 
 public class ClientService implements IClientService {
 
-	private static final Logger logger = Logger.getLogger(ClientService.class);
+	private final static Logger logger = Logger.getLogger(ClientService.class);
 
 	private static IClientService clientService;
 	private DbConnector dbConnector;
@@ -37,82 +36,244 @@ public class ClientService implements IClientService {
 	}
 
 	@Override
-	public boolean add(Client client) throws SQLException {
-		return clientDao.add(dbConnector.getConnection(), client);
-	}
-
-	@Override
-	public boolean addAll(List<Client> clients) throws SQLException {
-		boolean result = false;
-		Connection connection = dbConnector.getConnection();
-		connection.setAutoCommit(false);
+	public void add(Client client) {
+		Session session = null;
 		try {
-			result = clientDao.addAll(connection, clients);
-			connection.setAutoCommit(true);
-		} catch (SQLException e) {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			clientDao.add(session, client);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
 			logger.error(e);
-			connection.rollback();
-			connection.setAutoCommit(true);
 			throw e;
-		}
-		return result;
-	}
-
-	@Override
-	public boolean update(Client client) throws SQLException {
-		return clientDao.update(dbConnector.getConnection(), client);
-	}
-
-	@Override
-	public List<Client> getClients() throws SQLException {
-		return clientDao.getAll(dbConnector.getConnection(), "");
-	}
-
-	@Override
-	public Client getClientById(int id) throws SQLException {
-		return clientDao.getById(dbConnector.getConnection(), id);
-	}
-
-	@Override
-	public int getNumberOfClients() throws SQLException {
-		return clientDao.getNumberOfClients(dbConnector.getConnection());
-	}
-
-	@Override
-	public boolean exportClientCSV(int id, String fileName) throws IOException, SQLException {
-		Client client = clientDao.getById(dbConnector.getConnection(), id);
-		if (client == null) {
-			return false;
-		} else {
-			return ExportCSV.saveCSV(client.toString(), fileName);
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
 		}
 	}
 
 	@Override
-	public boolean importClientsCSV(String file) throws IOException, SQLException {
+	public void addAll(List<Client> clients) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			clientDao.addAll(session, clients);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public void update(Client client) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			clientDao.update(session, client);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public List<Client> getClients() {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			List<Client> clients = clientDao.getAll(session, "");
+			session.getTransaction().commit();
+			return clients;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public Client getClientById(int id) {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			Client client = clientDao.getById(session, id);
+			session.getTransaction().commit();
+			return client;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public int getNumberOfClients() {
+		Session session = null;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+			int result = clientDao.getNumberOfClients(session);
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public boolean exportClientCSV(int id, String fileName) throws IOException {
+		Session session = null;
 		boolean result = false;
-		List<Client> clients = ExportCSV.getClientsFromCSV(file);
-		for (Client client : clients) {
-			if (clientDao.getById(dbConnector.getConnection(), client.getId()) != null) {
-				result = clientDao.update(dbConnector.getConnection(), client);
-			} else {
-				result = clientDao.add(dbConnector.getConnection(), client);
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			Client client = clientDao.getById(session, id);
+			if (client != null) {
+				result = ExportCSV.saveCSV(client.toString(), fileName);
 			}
-			if (!result) {
-				break;
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
 			}
 		}
-		return result;
 	}
 
 	@Override
-	public boolean exportCsv(String csvFilePath) throws IOException, SQLException {
-		return clientDao.exportCsv(dbConnector.getConnection(), csvFilePath);
+	public boolean importClientsCSV(String file) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			List<Client> clients = ExportCSV.getClientsFromCSV(file);
+			for (Client client : clients) {
+				if (clientDao.getById(session, client.getId()) != null) {
+					clientDao.update(session, client);
+				} else {
+					clientDao.add(session, client);
+				}
+			}
+
+			session.getTransaction().commit();
+			result = true;
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
-	public boolean importCsv(String csvFilePath) throws IOException, SQLException {
-		return clientDao.importCsv(dbConnector.getConnection(), csvFilePath);
+	public boolean exportCsv(String csvFilePath) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			result = clientDao.exportCsv(session, csvFilePath);
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
+	}
+
+	@Override
+	public boolean importCsv(String csvFilePath) throws IOException {
+		Session session = null;
+		boolean result = false;
+		try {
+			session = dbConnector.getSession();
+			session.beginTransaction();
+
+			result = clientDao.importCsv(session, csvFilePath);
+
+			session.getTransaction().commit();
+			return result;
+		} catch (Exception e) {
+			if (session != null) {
+				session.getTransaction().rollback();
+			}
+			logger.error(e);
+			throw e;
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				session.close();
+			}
+		}
 	}
 
 }

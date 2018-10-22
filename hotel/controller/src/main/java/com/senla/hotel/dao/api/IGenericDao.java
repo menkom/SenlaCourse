@@ -1,30 +1,26 @@
 package com.senla.hotel.dao.api;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+import org.hibernate.Session;
 import com.senla.base.BaseObject;
 
 public interface IGenericDao<T extends BaseObject> {
 
-	boolean add(Connection connection, T entity) throws SQLException;
+	void add(Session session, T entity);
 
-	boolean update(Connection connection, T entity) throws SQLException;
+	void update(Session session, T entity);
 
-	List<T> getAll(Connection connection, String sortColumn) throws SQLException;
+	List<T> getAll(Session session, String sortColumn);
 
-	boolean addAll(Connection connection, List<T> list) throws SQLException;
+	void addAll(Session session, List<T> list);
 
-	T getById(Connection connection, int id) throws SQLException;
+	T getById(Session session, int id);
 
-	boolean delete(Connection connection, int id) throws SQLException;
+	void delete(Session session, T entity);
 
-	T parseResultSet(ResultSet resultSet) throws SQLException;
+	boolean exportCsv(Session session, String csvFilePath) throws IOException;
 
-	boolean exportCsv(Connection connection, String csvFilePath) throws IOException, SQLException;
-
-	boolean importCsv(Connection connection, String csvFilePath) throws IOException, SQLException;
+	boolean importCsv(Session session, String csvFilePath) throws IOException;
 
 }
