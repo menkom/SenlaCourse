@@ -1,7 +1,7 @@
 package com.senla.hotel.enums;
 
 public enum EnumRoomSort {
-	ID("room_id"), CAPACITY("room_capacity"), STAR("room_roomstar"), PRICE("room_price");
+	ID("id"), CAPACITY("capacity"), STAR("roomStar"), PRICE("price");
 	private String tableField;
 
 	EnumRoomSort(String tableField) {
