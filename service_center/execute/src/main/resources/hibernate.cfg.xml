@@ -14,10 +14,17 @@
 		<property name="hibernate.show_sql">true</property>
 		<property name="format_sql">true</property>
 		<!-- Drop and re-create the database schema on startup -->
-		<mapping class="com.senla.hotel.model.Client" />
-		<mapping class="com.senla.hotel.model.Order" />
-		<mapping class="com.senla.hotel.model.Room" />
-		<mapping class="com.senla.hotel.model.Service" />
-		<mapping class="com.senla.hotel.model.ServiceOrderJoin" />
+		<mapping class="model.Customer" />
+		<mapping class="model.Manufacturer" />
+		<mapping class="model.OrderJob" />
+		<mapping class="model.Part" />
+		<mapping class="model.PartCategory" />
+		<mapping class="model.Product" />
+		<mapping class="model.ServiceOrder" />
+		<mapping class="model.ServiceOrderJob" />
+		<mapping class="model.ServiceOrderPart" />
+		<mapping class="model.User" />
+		<mapping class="model.UserLoginHistory" />
+		<mapping class="model.Warehouse" />
 	</session-factory>
 </hibernate-configuration>
