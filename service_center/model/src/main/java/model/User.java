@@ -26,15 +26,15 @@ public class User extends BaseObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(table = "id")
+	@Column(name = "id")
 	private Integer id;
 
 	@Basic
-	@Column(table = "username")
+	@Column(name = "username")
 	private String username;
 
 	@Basic
-	@Column(table = "password")
+	@Column(name = "password")
 	private String password;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

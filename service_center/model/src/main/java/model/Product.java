@@ -23,11 +23,11 @@ public class Product extends BaseObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(table = "id")
+	@Column(name = "id")
 	private Integer id;
 
 	@Basic
-	@Column(table = "code", nullable = false, unique = true)
+	@Column(name = "code", nullable = false, unique = true)
 	private String code;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class Product extends BaseObject {
 	private Manufacturer manufacturer;
 
 	@Basic
-	@Column(table = "name")
+	@Column(name = "name")
 	private String name;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

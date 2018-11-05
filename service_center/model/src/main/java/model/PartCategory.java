@@ -27,7 +27,7 @@ public class PartCategory extends BaseObject {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	@OneToMany(mappedBy = "part_category", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "partCategory", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Part> parts;
 
 	@Override

@@ -29,7 +29,7 @@ public class ServiceOrder extends BaseObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(table = "id")
+	@Column(name = "id")
 	private Integer id;
 
 	@Enumerated(EnumType.ORDINAL)
@@ -42,7 +42,7 @@ public class ServiceOrder extends BaseObject {
 
 	@Basic
 	@Temporal(TemporalType.DATE)
-	@Column(table = "date_order")
+	@Column(name = "date_order")
 	private Date dateOrder;
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -50,7 +50,7 @@ public class ServiceOrder extends BaseObject {
 	private Product product;
 
 	@Basic
-	@Column(table = "check_serial")
+	@Column(name = "check_serial")
 	private Boolean checkSerial;
 
 	@Basic
@@ -75,7 +75,7 @@ public class ServiceOrder extends BaseObject {
 
 	@Basic
 	@Temporal(TemporalType.DATE)
-	@Column(table = "date_expected")
+	@Column(name = "date_expected")
 	private Date dateExpected;
 
 	@Basic
@@ -92,18 +92,18 @@ public class ServiceOrder extends BaseObject {
 
 	@Basic
 	@Temporal(TemporalType.DATE)
-	@Column(table = "date_finish")
+	@Column(name = "date_finish")
 	private Date dateFinish;
 
 	@Basic
 	@Temporal(TemporalType.DATE)
-	@Column(table = "date_warranty")
+	@Column(name = "date_warranty")
 	private Date dateWarranty;
 
-	@OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ServiceOrderJob> jobs;
 
-	@OneToMany(mappedBy = "service_order", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "serviceOrder", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ServiceOrderPart> parts;
 
 	@Override

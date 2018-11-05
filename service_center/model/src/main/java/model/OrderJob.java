@@ -35,7 +35,7 @@ public class OrderJob extends BaseObject {
 	@Column(name = "price", nullable = false)
 	private Double Price;
 
-	@OneToMany(mappedBy = "order_job", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "orderJob", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ServiceOrderJob> serviceOrderJobs;
 
 	@Override

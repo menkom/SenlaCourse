@@ -24,7 +24,7 @@ public class UserLoginHistory extends BaseObject {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(table = "id")
+	@Column(name = "id")
 	private Integer id;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -33,7 +33,7 @@ public class UserLoginHistory extends BaseObject {
 
 	@Basic
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(table = "login_time")
+	@Column(name = "login_time")
 	private Date loginTime;
 
 	@Override
