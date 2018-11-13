@@ -1,7 +1,1 @@
-/.metadata/
-/.recommenders/
-/files/
-/hotel_lib/
-/test_jar/
-*.jar
-/.settings/
+/target/
