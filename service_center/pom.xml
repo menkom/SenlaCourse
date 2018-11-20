@@ -10,7 +10,7 @@
     <modules>
         <module>model</module>
         <module>db</module>
-        <module>web</module>
+        <module>webapp</module>
     </modules>
     <packaging>pom</packaging>
 

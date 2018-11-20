@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>sc-jsf</artifactId>
+    <artifactId>webapp</artifactId>
     <packaging>war</packaging>
 
     <name>Service Center on JSF</name>
@@ -40,30 +40,11 @@
             <version>5.2.RC1</version>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.primefaces.themes</groupId>-->
-        <!--<artifactId>all-themes</artifactId>-->
-        <!--<version>1.0.10</version>-->
-        <!--</dependency>-->
-
         <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>javax.faces</artifactId>
         <version>2.2.10</version>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>org.glassfish</groupId>-->
-        <!--<artifactId>javax.faces</artifactId>-->
-        <!--<version>2.3.3.102</version>-->
-        <!--</dependency>-->
-
-        <!--<dependency>-->
-        <!--<groupId>javax.enterprise</groupId>-->
-        <!--<artifactId>cdi-api</artifactId>-->
-        <!--<version>1.2</version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework</groupId>
