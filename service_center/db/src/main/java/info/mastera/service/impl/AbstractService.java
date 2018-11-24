@@ -38,16 +38,19 @@ public abstract class AbstractService<T extends BaseObject> implements IGenericS
 
     @Override
     public T getById(int id) {
+        logger.info("Abstract.getById; id=" + id + "; this = " + this.getClass());
         return getDao().getById(id);
     }
 
     @Override
     public List<T> getAll() {
+        logger.info("Abstract.getAll; this = " + this.getClass());
         return getDao().getAll();
     }
 
     @Override
     public Long count() {
+        logger.info("Abstract.count(); this = " + this.getClass());
         return getDao().count();
     }
 
