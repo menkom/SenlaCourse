@@ -43,12 +43,12 @@ public class TestExecuter {
         customers.forEach(TestExecuter::printCustomer);
 
 
-        System.out.println("Job is done");
+        logger.info("Job is done");
     }
 
     private static void printCustomer(Customer customer) {
         if (customer != null) {
-            System.out.println(customer.getId() + "  |  " + customer.getCustomerName() + "  |  " + customer.getTelephone());
+            logger.info(customer.getId() + "  |  " + customer.getCustomerName() + "  |  " + customer.getTelephone());
         }
     }
 
