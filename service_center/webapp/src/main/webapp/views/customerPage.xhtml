@@ -13,24 +13,27 @@
 
 <h:body>
 
-    <h:form>
+    <h:form id="form">
         <p:panel>
-            <p:panelGrid columns="2" id="customerPanel">
+            <div align="center">
+                <p:panelGrid columns="2" id="customerPanel">
 
-                <p:outputLabel for="customerName" value="Customer Name: "/>
-                <p:inputText id="customerName" value="#{customerBean.customerName}"/>
+                    <p:outputLabel for="customerName" value="Customer Name: "/>
+                    <p:inputText id="customerName" value="#{customerBean.customerName}"/>
 
-                <p:outputLabel for="customerPhone" value="Contact Phone: "/>
-                <p:inputText id="customerPhone" value="#{customerBean.customerPhone}"/>
+                    <p:outputLabel for="customerPhone" value="Contact Phone: "/>
+                    <p:inputText id="customerPhone" value="#{customerBean.customerPhone}"/>
 
 
-                <p:button id="buttonIndexPage" value="first page" outcome="indexPage"/>
+                    <p:button id="buttonIndexPage" value="first page" outcome="indexPage"/>
 
-                <h:commandButton id="createCustomer" value="create" action="#{customerBean.create()}"/>
-            </p:panelGrid>
+                    <p:commandButton id="createCustomer" value="create" action="#{customerBean.create()}"/>
+                </p:panelGrid>
+            </div>
         </p:panel>
 
-        <p:dataTable value="#{customerBean.getAll()}" var="c">
+        <p:dataTable id="customers" value="#{customerBean.getAll()}" var="c" rowKey="#{c.id}"
+                     selection="#{customerBean.selectedCustomer}" selectionMode="single">
 
             <p:column headerText="Customer ID">
                 <h:outputText value="#{c.id}"/>
@@ -45,6 +48,10 @@
             </p:column>
 
         </p:dataTable>
+
+        <p:contextMenu for="customers">
+            <p:menuitem value="Delete" update="customers" icon="pi pi-times" action="#{customerBean.deleteCustomer}"/>
+        </p:contextMenu>
     </h:form>
 
 </h:body>

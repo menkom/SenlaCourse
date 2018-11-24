@@ -23,6 +23,8 @@ public class CustomerBean {
     private String customerName;
     private String customerPhone;
 
+    private Customer selectedCustomer;
+
     public String getCustomerName() {
         return customerName;
     }
@@ -37,6 +39,14 @@ public class CustomerBean {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public Customer getselectedCustomer() {
+        return selectedCustomer;
+    }
+
+    public void setselectedCustomer(Customer selectedCustomer) {
+        this.selectedCustomer = selectedCustomer;
     }
 
     public void create() {
@@ -55,6 +65,11 @@ public class CustomerBean {
     public List<Customer> getAll() {
         logger.info("Abstract.getAll; " + this.getClass());
         return customerService.getAll();
+    }
+
+    public void deleteCustomer() {
+        customerService.delete(selectedCustomer);
+        selectedCustomer = null;
     }
 
 }
