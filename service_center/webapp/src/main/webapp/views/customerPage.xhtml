@@ -6,26 +6,46 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <h:body>
-        <h:form>
-            <p:panel>
-                <p:panelGrid columns="2" id="customerPanel">
-                    <p:outputLabel for="customerName" value="Customer Name: "/>
-                    <p:inputText id="customerName" value="customer name"/>
 
-                    <p:outputLabel for="customerPhone" value="Contact Phone: "/>
-                    <p:inputText id="customerPhone" value="phone number"/>
+<h:head>
+    <title>Customer Page</title>
+</h:head>
 
-                    <p:button id="createCustomer" value="Register Customer" >
+<h:body>
 
-                    </p:button>
-                </p:panelGrid>
+    <h:form>
+        <p:panel>
+            <p:panelGrid columns="2" id="customerPanel">
+
+                <p:outputLabel for="customerName" value="Customer Name: "/>
+                <p:inputText id="customerName" value="#{customerBean.customerName}"/>
+
+                <p:outputLabel for="customerPhone" value="Contact Phone: "/>
+                <p:inputText id="customerPhone" value="#{customerBean.customerPhone}"/>
+
 
                 <p:button id="buttonIndexPage" value="first page" outcome="indexPage"/>
-            </p:panel>
-        </h:form>
 
-    </h:body>
-</f:view>
+                <h:commandButton id="createCustomer" value="create" action="#{customerBean.create()}"/>
+            </p:panelGrid>
+        </p:panel>
+
+        <p:dataTable value="#{customerBean.getAll()}" var="c">
+
+            <p:column headerText="Customer ID">
+                <h:outputText value="#{c.id}"/>
+            </p:column>
+
+            <p:column headerText="Name">
+                <h:outputText value="#{c.customerName}"/>
+            </p:column>
+
+            <p:column headerText="Telephone">
+                <h:outputText value="#{c.telephone}"/>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+</h:body>
 </html>
