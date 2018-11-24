@@ -1,21 +1,14 @@
 package info.mastera;
 
-import info.mastera.service.ICustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import java.io.Serializable;
 
 
 @ManagedBean
 @SessionScoped
-public class CustomerController implements Serializable {
-
-    @Autowired
-    private ICustomerService customerService;
+public class CustomerController{
 
     private String inputText;
 
@@ -37,9 +30,5 @@ public class CustomerController implements Serializable {
         message.setSeverity(FacesMessage.SEVERITY_INFO); //как выглядит окошко с сообщением
 
         FacesContext.getCurrentInstance().addMessage(null, message);
-
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,
-//                "Значение", String.valueOf(customerService.count())));
-
     }
 }
