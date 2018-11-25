@@ -14,9 +14,9 @@
 <h:body>
 
     <h:form id="form">
-        <p:panel>
+        <p:panel id="customerPanel">
             <div align="center">
-                <p:panelGrid columns="2" id="customerPanel">
+                <p:panelGrid columns="2" id="customerPanelGrid">
 
                     <p:outputLabel for="customerName" value="Customer Name: "/>
                     <p:inputText id="customerName" value="#{customerBean.customerName}"/>
@@ -27,7 +27,8 @@
 
                     <p:button id="buttonIndexPage" value="first page" outcome="indexPage"/>
 
-                    <p:commandButton id="createCustomer" value="create" action="#{customerBean.create()}"/>
+                    <p:commandButton id="createCustomer" value="create" icon="pi pi-save"
+                                     action="#{customerBean.create()}" update="customers,customerName,customerPhone"/>
                 </p:panelGrid>
             </div>
         </p:panel>
