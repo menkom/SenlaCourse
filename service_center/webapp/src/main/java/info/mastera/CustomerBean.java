@@ -3,21 +3,19 @@ package info.mastera;
 import info.mastera.model.Customer;
 import info.mastera.service.ICustomerService;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
-@Component
-@ManagedBean
-@SessionScoped
+@Named
+@Scope("session")
 public class CustomerBean {
 
     private static final Logger logger = Logger.getLogger(CustomerBean.class);
 
-    @Autowired
+    @Inject
     private ICustomerService customerService;
 
     private String customerName;

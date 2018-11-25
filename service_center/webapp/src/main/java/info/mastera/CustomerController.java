@@ -1,14 +1,15 @@
 package info.mastera;
 
+import org.springframework.context.annotation.Scope;
+
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 
-@ManagedBean
-@SessionScoped
-public class CustomerController{
+@Named
+@Scope("session")
+public class CustomerController {
 
     private String inputText;
 
