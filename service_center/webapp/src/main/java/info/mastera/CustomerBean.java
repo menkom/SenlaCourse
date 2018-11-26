@@ -1,27 +1,27 @@
 package info.mastera;
 
 import info.mastera.model.Customer;
+import info.mastera.model.base.BaseObject;
 import info.mastera.service.ICustomerService;
+import info.mastera.service.IGenericService;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.List;
 
 @Named
 @Scope("session")
-public class CustomerBean {
+public class CustomerBean extends GenericBean<Customer> {
 
     private static final Logger logger = Logger.getLogger(CustomerBean.class);
 
     @Inject
-    private ICustomerService customerService;
+    private ICustomerService<Customer> customerService;
 
+    private Integer customerId;
     private String customerName;
     private String customerPhone;
-
-    private Customer selectedCustomer;
 
     public String getCustomerName() {
         return customerName;
@@ -39,35 +39,32 @@ public class CustomerBean {
         this.customerPhone = customerPhone;
     }
 
-    public Customer getselectedCustomer() {
-        return selectedCustomer;
+    public Integer getCustomerId() {
+        return customerId;
     }
 
-    public void setselectedCustomer(Customer selectedCustomer) {
-        this.selectedCustomer = selectedCustomer;
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
     }
 
+    @Override
     public void create() {
         Customer customer = new Customer();
         customer.setCustomerName(customerName);
         customer.setTelephone(customerPhone);
-        customerService.create(customer);
+        getService().create(customer);
         clearForm();
     }
 
-    private void clearForm() {
+    protected void clearForm() {
+        setCustomerId(null);
         setCustomerName("");
         setCustomerPhone("");
     }
 
-    public List<Customer> getAll() {
-        logger.info("Abstract.getAll; " + this.getClass());
-        return customerService.getAll();
-    }
-
-    public void deleteCustomer() {
-        customerService.delete(selectedCustomer);
-        selectedCustomer = null;
+    @Override
+    protected IGenericService<Customer> getService() {
+        return customerService;
     }
 
 }
