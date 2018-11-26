@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 import info.mastera.model.Customer;
 
 @Component
-public interface ICustomerService extends IGenericService<Customer> {
+public interface ICustomerService<T extends Customer> extends IGenericService<T> {
 
 }

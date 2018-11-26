@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class CustomerService extends AbstractService<Customer> implements ICustomerService {
+public class CustomerService extends AbstractService<Customer> implements ICustomerService<Customer> {
 
     @Autowired
     private ICustomerDao<Customer> customerDao;
