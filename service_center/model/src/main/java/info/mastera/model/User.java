@@ -30,7 +30,7 @@ public class User extends BaseObject {
 	private String password;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_id", nullable = false)
+	@JoinColumn(name = "customer_id", nullable = true)
 	private Customer customer;
 
 	@Enumerated(EnumType.STRING)
