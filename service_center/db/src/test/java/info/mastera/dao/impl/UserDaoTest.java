@@ -4,6 +4,8 @@ import info.mastera.config.HibernateConfig;
 import info.mastera.model.Customer;
 import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
+import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +33,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void create() {
+    public void testCreate() {
         User user = new User();
         user.setUsername("Jane Doe");
         user.setPassword("123456");
@@ -56,8 +58,38 @@ public class UserDaoTest {
 
     }
 
+    @Test(expected = PropertyValueException.class)
+    public void testCreateEmptyUser() {
+        User user = new User();
+        userDao.create(user);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateEmptyUsername() {
+        User user = new User();
+        user.setPassword("123456");
+        user.setUserType(UserType.CUSTOMER);
+        userDao.create(user);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateEmptyPassword() {
+        User user = new User();
+        user.setUsername("user");
+        user.setUserType(UserType.CUSTOMER);
+        userDao.create(user);
+    }
+
+    @Test(expected = PropertyValueException.class)
+    public void testCreateEmptyUserType() {
+        User user = new User();
+        user.setUsername("user");
+        user.setPassword("123456");
+        userDao.create(user);
+    }
+
     @Test
-    public void getById() {
+    public void testGetById() {
         User user = userDao.getById(6);
         Assert.assertEquals("user", user.getUsername());
         Assert.assertEquals("7pas", user.getPassword());
@@ -66,7 +98,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void update() {
+    public void testUpdate() {
         User user = userDao.getById(6);
         Assert.assertNotNull(user);
         user.setUsername("-name-");
@@ -86,7 +118,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void delete() {
+    public void testDelete() {
         long count = userDao.count();
         List<User> users = userDao.getAll();
         User user = users.get(users.size() - 1);
@@ -96,7 +128,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void getAll() {
+    public void testGetAll() {
         User user = new User();
         user.setUsername("-name-");
         user.setPassword("-tel-");
@@ -117,7 +149,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void count() {
+    public void testCount() {
         List<User> users = userDao.getAll();
         Assert.assertEquals(5L, userDao.count().longValue());
         Assert.assertEquals(5, users.size());
