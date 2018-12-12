@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <h:body>
-        <h:link value="Customers" outcome="/views/customerList"/>
-        <br/>
-        <h:link value="Customers Creation page" outcome="/views/customerPage"/>
-        <br/>
-        <p:link value="Users" outcome="/views/userPageList"/>
-        <br/>
-        <p:link value="Users creation page" outcome="/views/userPageCreate"/>
-        <br/>
-        <h:link value="SecondPage" outcome="/views/secondPage"/>
-        <br/>
-        <h:link value="Login Failed" outcome="/views/loginFailed"/>
-        <br/>
-        <h:link value="Login Success" outcome="/views/loginSuccess"/>
-        <br/>
-        <h:link value="Log out"  onclick="#{userBean.logout()}" />
-        <br/>
-    </h:body>
-</f:view>
+<h:head>
+    <title>List of operations</title>
+</h:head>
+<h:body>
+    <h:form>
+        <p:panel align="center">
+
+            <h:link value="Customers" outcome="/views/customerList"/>
+            <br/>
+            <h:link value="Customers Creation page" outcome="/views/customerPage"/>
+            <br/>
+            <p:link value="Users" outcome="/views/userPageList"/>
+            <br/>
+            <p:link value="Users creation page" outcome="/views/userPageCreate"/>
+            <br/>
+            <h:link value="SecondPage" outcome="/views/secondPage"/>
+            <br/>
+            <h:link value="Login Failed" outcome="/views/loginFailed"/>
+            <br/>
+            <h:link value="Login Success" outcome="/views/loginSuccess"/>
+            <br/>
+            <h:commandLink value="Log out" action="#{userBean.logout()}"/>
+        </p:panel>
+    </h:form>
+</h:body>
 </html>

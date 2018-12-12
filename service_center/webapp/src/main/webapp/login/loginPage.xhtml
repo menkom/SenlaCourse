@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<style>
+    .outer {
+        text-align: center;
+        vertical-align: middle;
+        width: 50%;
+        background-color: #fff;
+    }
+
+    .userTable {
+        width: 95%;
+        margin: auto;
+        border-collapse: collapse;
+        border-spacing: 0;
+        padding: 0 0 0 270px;
+        border-color: #393939;
+    }
+
+    .userTable tbody {
+        border: 1px solid #393939;
+        background: lightgrey;
+    }
+
+    .userTable td {
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        padding: 10px 5px;
+        overflow: hidden;
+        word-break: normal;
+        border: 1px solid #393939;
+        color: #333;
+        background-color: #fff;
+    }
+
+
+</style>
+
+<h:head>
+    <title>Login page</title>
+</h:head>
+<h:body>
+    <h:form>
+        <div align="center">
+            <div class="outer">
+                <p:panel header="Login">
+                    <div align="center">
+                        <h:panelGrid columns="2" id="loginGrid" cellpadding="5">
+
+                            <p:outputLabel for="user" value="User: "/>
+                            <p:inputText id="user" value="#{userBean.user.username}" required="true"/>
+
+                            <h:outputLabel for="password" value="Password: "/>
+                            <p:password id="password" value="#{userBean.user.password}" required="true"/>
+
+                        </h:panelGrid>
+                        <p:commandButton value="Login" action="#{userBean.login()}"/>
+
+                        <h:panelGrid columns="2" id="linksGrid" cellpadding="5">
+                            <h:link value="List of customers" outcome="/views/customerList"/>
+
+                            <p:link value="customer page" outcome="/views/customerPage"/>
+                        </h:panelGrid>
+                    </div>
+                </p:panel>
+
+                <p:panel>
+
+                    <p> Default users</p>
+                    <br/>
+                    <br/>
+                    <table class="userTable">
+                        <tr>
+                            <th>Login</th>
+                            <th>Password</th>
+                            <th>User type</th>
+                        </tr>
+                        <tr>
+                            <td>admin</td>
+                            <td>admin</td>
+                            <td>ADMIN</td>
+                        </tr>
+                        <tr>
+                            <td>receiver</td>
+                            <td>receiver</td>
+                            <td>RECEIVER</td>
+                        </tr>
+                        <tr>
+                            <td>engineer</td>
+                            <td>engineer</td>
+                            <td>ENGINEER</td>
+                        </tr>
+                        <tr>
+                            <td>customer</td>
+                            <td>customer</td>
+                            <td>CUSTOMER</td>
+                        </tr>
+                    </table>
+
+                </p:panel>
+
+            </div>
+        </div>
+    </h:form>
+</h:body>
+
+</html>

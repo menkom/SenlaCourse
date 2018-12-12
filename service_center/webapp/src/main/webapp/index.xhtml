@@ -10,35 +10,50 @@
         width: 50%;
         background-color: #fff;
     }
+    .technologies{
+        text-align: left;
+    }
 </style>
 
 <h:head>
-    <title>Login page</title>
+    <title>Service Center(Senla)</title>
 </h:head>
 <h:body>
     <h:form>
         <div align="center">
-        <div class="outer">
-                <p:panel header="Login">
-                    <div align="center">
-                        <h:panelGrid columns="2" id="loginGrid" cellpadding="5">
+            <div class="outer">
 
-                            <p:outputLabel for="user" value="User: "/>
-                            <p:inputText id="user" value="#{userBean.user.username}"/>
+                <h1>Service Center (<a href="https://mastera.info">https://mastera.info</a>)</h1>
 
-                            <h:outputLabel for="password" value="Password: "/>
-                            <p:inputText id="password" value="#{userBean.user.password}"/>
+                <p:button value="Login Page" outcome="/login/loginPage.xhtml?faces-redirect=true"/>
 
-                        </h:panelGrid>
-                        <p:commandButton value="Login" action="#{userBean.login}"/>
+                <h2>Online organization of repair service center</h2>
 
-                        <h:panelGrid columns="2" id="linksGrid" cellpadding="5">
-                            <h:link value="List of customers" outcome="views/customerList"/>
+                <h3>This is final project of <b>Menko Mikhail</b> on Senla training.</h3>
 
-                            <p:link value="customer page" outcome="views/customerPage"/>
-                        </h:panelGrid>
+                <p>There is rights separation.</p>
+                <p>At the moment there are four user types (Customer, Engineer, Receiver, Admin)</p>
+                <p>They all will have different operation option to use in program.
+                    And of course Admin is Master.</p>
+                <div align="center">
+                    <div class="outer">
+                        <p>Used technologies:</p>
+
+                        <ul class="technologies">
+                            <li>JSF 2</li>
+                            <li>JSR 330</li>
+                            <li>JUnit 4</li>
+                            <li>JWT (JJWT)</li>
+                            <li>Hibernate 5</li>
+                            <li>Log4j</li>
+                            <li>MySQL</li>
+                            <li>Primefaces</li>
+                            <li>Tomcat 9</li>
+                            <li>Spring MVC</li>
+                        </ul>
                     </div>
-                </p:panel>
+                </div>
+
             </div>
         </div>
     </h:form>

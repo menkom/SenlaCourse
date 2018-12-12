@@ -44,7 +44,7 @@ public class JwtFilter implements Filter {
             // Redirecting to login page
             //TODO Inform user about mistake
             logger.info("Unauthorized user.");
-            ((HttpServletResponse) servletResponse).sendRedirect("/index.xhtml?faces-redirect=true");
+            ((HttpServletResponse) servletResponse).sendRedirect("/login/loginPage.xhtml?faces-redirect=true");
         }
     }
 
