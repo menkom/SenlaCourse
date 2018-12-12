@@ -1,4 +1,4 @@
-package info.mastera;
+package info.mastera.beans;
 
 import info.mastera.model.Customer;
 import info.mastera.service.ICustomerService;
@@ -51,6 +51,11 @@ public class CustomerBean extends GenericBean<Customer> {
 
     protected void clearForm() {
         customer = new Customer();
+    }
+
+    public void editSelect() {
+        logger.info("Selected Item:" + getSelectedItem());
+        logger.info("Item:" + getCustomer());
     }
 
     @Override

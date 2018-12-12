@@ -1,4 +1,4 @@
-package info.mastera;
+package info.mastera.beans;
 
 import org.springframework.context.annotation.Scope;
 
@@ -28,7 +28,7 @@ public class CustomerController {
 
     public void showMessage() {
         FacesMessage message = new FacesMessage("Заголовок", "Частичное обновление страницы");
-        message.setSeverity(FacesMessage.SEVERITY_INFO); //как выглядит окошко с сообщением
+        message.setSeverity(FacesMessage.SEVERITY_INFO); //так выглядит окошко с сообщением
 
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
