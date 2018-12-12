@@ -6,16 +6,21 @@ import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
 import info.mastera.service.ICustomerService;
 import info.mastera.service.IUserService;
+import info.mastera.util.IJwtService;
+import info.mastera.util.exceptions.AuthenticationException;
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class TestExecuter {
 
     private static final Logger logger = Logger.getLogger(TestExecuter.class);
 
-    private static void testCustomer(AnnotationConfigApplicationContext context) {
+    private static void testCustomer(ApplicationContext context) {
 
         ICustomerService<Customer> customerService = context.getBean(ICustomerService.class);
 
@@ -48,26 +53,27 @@ public class TestExecuter {
         logger.info("Customer operations passed.");
     }
 
-    private static void testUser(AnnotationConfigApplicationContext context) {
+    private static void testUser(ApplicationContext context) {
 
-        IUserService<User> service = context.getBean(IUserService.class);
+        IUserService<User> userService = context.getBean(IUserService.class);
+
+        ICustomerService<Customer> customerService = context.getBean(ICustomerService.class);
 
         User user = new User();
         user.setUsername("user");
         user.setPassword("7pas");
         user.setUserType(UserType.CUSTOMER);
 
-        ICustomerService<Customer> customerService = context.getBean(ICustomerService.class);
 
         user.setCustomer(customerService.getById(7));
 
-        print(service.create(user));
+//        print(service.create(user));
 
-        List<User> all = service.getAll();
+        List<User> all = userService.getAll();
 
         logger.info("users: " + user);
 
-        print(service.getById(3));
+        print(userService.getById(3));
 
 //        all.forEach(x -> {
 //            x.setUsername(x.getUsername() + x.getId());
@@ -81,15 +87,29 @@ public class TestExecuter {
 //        }
         all.forEach(TestExecuter::print);
 
-
         logger.info("User operations passed.");
     }
 
+    private static void testJwt(ApplicationContext context) {
+        IJwtService jwtService = context.getBean(IJwtService.class);
+        String token = jwtService.createToken("user", "7pas");
+        logger.info("Token:" + token);
+
+        UserType userType = null;
+        try {
+            userType = jwtService.getUserGrant(token);
+            logger.info("userType:" + userType);
+        } catch (AuthenticationException e) {
+            logger.error(e);
+        }
+    }
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 
-        testUser(context);
+//        testCustomer();
+//        testUser(context);
+        testJwt(context);
 
         logger.info("Job is done");
     }
