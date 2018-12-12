@@ -5,6 +5,7 @@ import info.mastera.model.enums.UserType;
 import info.mastera.util.IJwtService;
 import info.mastera.util.exceptions.AuthenticationException;
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -27,7 +28,7 @@ public class JwtOperator {
         String token = (String) session.getAttribute(JWT_TOKEN_ATTRIBUTE);
         logger.info("Token from session:" + token);
         UserType result = UserType.CUSTOMER;
-        if ((token != null) && (!token.isEmpty())) {
+        if (!StringUtils.isEmpty(token)) {
             try {
                 result = jwtService.getUserGrant(token);
             } catch (AuthenticationException e) {
@@ -62,7 +63,7 @@ public class JwtOperator {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
 
-        String token = jwtService.createToken(user.getUsername(), user.getPassword());
+        String token = jwtService.createToken(user.getId(), user.getUserType());
 
         session.setAttribute(JWT_TOKEN_ATTRIBUTE, token);
         logger.info("Token saved to session:" + token);
@@ -71,11 +72,25 @@ public class JwtOperator {
     public void logout(FacesContext context) {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
-
-
         session.removeAttribute(JWT_TOKEN_ATTRIBUTE);
         logger.info("Token removed from session.");
+    }
 
+    public boolean isAutorized(){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+        String token = (String) session.getAttribute(JWT_TOKEN_ATTRIBUTE);
+
+        boolean result = false;
+        if (!StringUtils.isEmpty(token)) {
+            try {
+                jwtService.getUserGrant(token);
+                result = true;
+            } catch (AuthenticationException e) {
+                logger.error(e);
+            }
+        }
+        return result;
     }
 
 }
