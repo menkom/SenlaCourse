@@ -1,6 +1,7 @@
 package info.mastera.dao.impl;
 
 import info.mastera.config.HibernateConfig;
+import info.mastera.config.TestDataBaseConfig;
 import info.mastera.model.Customer;
 import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = HibernateConfig.class)
+@ContextConfiguration(classes = TestDataBaseConfig.class)
 @Transactional
 public class UserDaoTest {
 
@@ -154,4 +155,14 @@ public class UserDaoTest {
         Assert.assertEquals(5L, userDao.count().longValue());
         Assert.assertEquals(5, users.size());
     }
+
+    @Test
+    public void testGetByUsername() {
+        User user = userDao.getByUsername("user");
+        Assert.assertNotNull(user);
+        Assert.assertEquals(6, user.getId().intValue());
+        Assert.assertEquals("7pas", user.getPassword());
+        Assert.assertEquals(UserType.CUSTOMER, user.getUserType());
+    }
+
 }
