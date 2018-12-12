@@ -7,8 +7,6 @@
     <!--Основанная на Java Server Faces поддержка синтаксиса
     унифицированного языка выражений (EL) (Expression Language) позволяет
      ссылаться на свойства и методы внешних бинов.-->
-    <!-- <h:outputText value="#{sessionBean.userName}" /> -->
-
 
     <application>
         <el-resolver>
