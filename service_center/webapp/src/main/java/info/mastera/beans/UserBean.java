@@ -61,24 +61,28 @@ public class UserBean extends GenericBean<User> {
 
     public String login() {
         if (userService.isCorrectLogin(user.getUsername(), user.getPassword())) {
-            logger.info("views/loginSuccess?faces-redirect=true");
-            jwtOperator.setAuthentication(FacesContext.getCurrentInstance(), user);
+            User tempUser = userService.getByUsername(user.getUsername());
+            logger.info("/views/loginSuccess?faces-redirect=true");
+
+            jwtOperator.setAuthentication(FacesContext.getCurrentInstance(), tempUser);
             clearForm();
             //TODO Clear form after logging
             //TODO Create logout
-            return "views/mainPage?faces-redirect=true";
+            return "/views/mainPage?faces-redirect=true";
         } else {
             //TODO Correct redirect or correct user informing
-            logger.info("!!loginFailed?faces-redirect=true!!");
-            return "views/loginFailed?faces-redirect=true";
+            logger.info("!!/login/loginFailed?faces-redirect=true!!");
+            return "/login/loginFailed?faces-redirect=true";
         }
     }
 
     public String logout() {
-//TODO Add check is it really log in
-
-        jwtOperator.logout(FacesContext.getCurrentInstance());
-        return "index?faces-redirect=true";
+        if (isAuthorized()) {
+            jwtOperator.logout(FacesContext.getCurrentInstance());
+            return "/index?faces-redirect=true";
+        } else {
+            return "";
+        }
     }
 
 }

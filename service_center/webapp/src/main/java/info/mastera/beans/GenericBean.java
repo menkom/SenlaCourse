@@ -65,6 +65,10 @@ public abstract class GenericBean<T extends BaseObject> {
         selectedItem = null;
     }
 
+    protected boolean isAuthorized() {
+        return jwtOperator.isAutorized();
+    }
+
     protected UserType getAuthentication() {
         return jwtOperator.getAuthentication(FacesContext.getCurrentInstance());
     }
