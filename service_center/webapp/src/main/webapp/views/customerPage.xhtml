@@ -16,13 +16,13 @@
                 <p:panelGrid columns="2" id="customerPanelGrid">
 
                     <p:outputLabel for="customerId" value="Customer Id: "/>
-                    <p:inputText id="customerId" value="#{customerBean.customerId}" disabled="true"/>
+                    <p:inputText id="customerId" value="#{customerBean.customer.id}" disabled="true"/>
 
                     <p:outputLabel for="customerName" value="Customer Name: "/>
-                    <p:inputText id="customerName" value="#{customerBean.customerName}"/>
+                    <p:inputText id="customerName" value="#{customerBean.customer.customerName}"/>
 
                     <p:outputLabel for="customerPhone" value="Contact Phone: "/>
-                    <p:inputText id="customerPhone" value="#{customerBean.customerPhone}"/>
+                    <p:inputText id="customerPhone" value="#{customerBean.customer.telephone}"/>
 
 
                     <p:button id="buttonIndexPage" value="first page" icon="ui-icon-home" outcome="indexPage"

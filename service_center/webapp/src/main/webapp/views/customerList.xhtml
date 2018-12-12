@@ -13,16 +13,24 @@
         height: 35px
     }
 </style>
+
+<script type="text/javascript">
+    function clearModal() {
+        $('#customerDetailsName').clean();
+        $('#customerDetailsPhone').clean();
+    }
+</script>
 <h:body>
     <f:view>
-        <h:form>
+        <h:form id="mainForm">
             <p:growl id="growl" life="2000"/>
 
             <p:dataTable id="customers" value="#{customerBean.getAll()}" var="c" rowKey="#{c.id}"
-                         selection="#{customerBean.selectedItem}" selectionMode="single">
+                         selection="#{customerBean.selectedItem}" selectionMode="single" reflow="true">
+                <p:ajax event="rowSelect"/>
+
                 <f:facet name="header">
                     Customer list
-
                     <p:commandButton id="toggler" type="button" value="Columns" style="float:right"
                                      icon="ui-icon-circle-plus"/>
                     <p:columnToggler datasource="customers" trigger="toggler"/>
@@ -42,15 +50,17 @@
             </p:dataTable>
 
             <p:contextMenu for="customers">
-                <p:menuitem value="Edit" update="customerDetail" oncomplete="PF('customerDialog').show()"/>
+                <p:menuitem value="Edit modal" update="customerDetail" onclick="PF('customerDialog').show()"/>
+                <p:menuitem value="Edit" oncomplete="PF('customerDialog').show()"/>
                 <p:menuitem value="Delete" update="customers,growl" action="#{customerBean.delete}"/>
             </p:contextMenu>
 
 
-            <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" resizable="false">
+            <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" resizable="false"
+                      focus="btnCancel" appendToBody="false">
+                <p:ajax event="close" update="growl" listener="#{customerBean.clearSelected}"/>
                 <p:outputPanel id="customerDetail" style="text-align:center;">
                     <p:panelGrid columns="2" rendered="#{not empty customerBean.selectedItem}">
-
                         <h:outputLabel for="customerDetailsId" value="Id:"/>
                         <p:inputText id="customerDetailsId" value="#{customerBean.selectedItem.id}"
                                      disabled="true"/>
@@ -62,7 +72,11 @@
                         <p:inputText id="customerDetailsPhone" value="#{customerBean.selectedItem.telephone}"/>
 
                         <f:facet name="footer">
-                            <p:commandButton value="Save" action="#{customerBean.update()}" update="customers"/>
+                            <p:commandButton id="btnCancel" value="Cancel" action="#{customerBean.clearSelected}"
+                                             onclick="customerDialog.hide(); return false;"/>
+                            <p:commandButton id="btnSave" value="Save" action="#{customerBean.update()}"
+                                             onclick="customerDialog.hide()"
+                                             update="customers"/>
                         </f:facet>
 
                     </p:panelGrid>
