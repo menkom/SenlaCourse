@@ -4,6 +4,12 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
+    <!--Основанная на Java Server Faces поддержка синтаксиса
+    унифицированного языка выражений (EL) (Expression Language) позволяет
+     ссылаться на свойства и методы внешних бинов.-->
+    <!-- <h:outputText value="#{sessionBean.userName}" /> -->
+
+
     <application>
         <el-resolver>
             org.springframework.web.jsf.el.SpringBeanFacesELResolver
@@ -14,18 +20,8 @@
         <from-view-id>*</from-view-id>
 
         <navigation-case>
-            <from-outcome>nextPage</from-outcome>
-            <to-view-id>/views/secondPage.xhtml</to-view-id>
-        </navigation-case>
-
-        <navigation-case>
             <from-outcome>indexPage</from-outcome>
             <to-view-id>/index.xhtml</to-view-id>
-        </navigation-case>
-
-        <navigation-case>
-            <from-outcome>customerPage</from-outcome>
-            <to-view-id>/views/customerPage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
