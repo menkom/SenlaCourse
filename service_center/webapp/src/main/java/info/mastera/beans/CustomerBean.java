@@ -1,12 +1,13 @@
 package info.mastera;
 
 import info.mastera.model.Customer;
-import info.mastera.model.base.BaseObject;
 import info.mastera.service.ICustomerService;
 import info.mastera.service.IGenericService;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,47 +20,37 @@ public class CustomerBean extends GenericBean<Customer> {
     @Inject
     private ICustomerService<Customer> customerService;
 
-    private Integer customerId;
-    private String customerName;
-    private String customerPhone;
+    private Customer customer;
 
-    public String getCustomerName() {
-        return customerName;
+    @PostConstruct
+    private void init() {
+        customer = new Customer();
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    @PreDestroy
+    public void preDestroy() {
+        customer = null;
     }
 
-    public String getCustomerPhone() {
-        return customerPhone;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
-    public Integer getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Integer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
     public void create() {
         Customer customer = new Customer();
-        customer.setCustomerName(customerName);
-        customer.setTelephone(customerPhone);
+        customer.setCustomerName(this.customer.getCustomerName());
+        customer.setTelephone(this.customer.getTelephone());
         getService().create(customer);
         clearForm();
     }
 
     protected void clearForm() {
-        setCustomerId(null);
-        setCustomerName("");
-        setCustomerPhone("");
+        customer = new Customer();
     }
 
     @Override
