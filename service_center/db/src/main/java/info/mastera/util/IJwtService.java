@@ -4,7 +4,7 @@ import info.mastera.model.enums.UserType;
 import info.mastera.util.exceptions.AuthenticationException;
 
 public interface IJwtService {
-    String createToken(String username, String password);
+    String createToken(Integer userId, UserType userType);
 
     UserType getUserGrant(String token) throws AuthenticationException;
 }

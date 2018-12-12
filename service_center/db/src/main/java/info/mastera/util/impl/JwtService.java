@@ -1,14 +1,11 @@
 package info.mastera.util.impl;
 
-import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
-import info.mastera.service.IUserService;
 import info.mastera.util.IJwtService;
 import info.mastera.util.exceptions.AuthenticationException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.TextCodec;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,19 +21,16 @@ import java.util.Date;
 @Component
 public class JwtService implements IJwtService {
 
-    @Autowired
-    private IUserService<User> userService;
-
     private static final Logger logger = Logger.getLogger(JwtService.class);
 
     private static final String TOKEN_INVALID = "Invalid token";
     private static final String TOKEN_CORRUPTED = "Token corrupted";
     private static final String TOKEN_IS_NOT_EXPIRED = "Token is not expired.";
     private static final String TOKEN_IS_EXPIRED = "Token is expired.";
-    private static final String CLAIM_USERID = "uid";
-    private static final String CLAIM_USERNAME = "uname";
-    private static final String CLAIM_USERTYPE = "utype";
     private static final String TOKEN_IS_NULL = "Token is null";
+
+    private static final String CLAIM_USERID = "uid";
+    private static final String CLAIM_USERTYPE = "utype";
 
     private static final SignatureAlgorithm algorithm = SignatureAlgorithm.HS256;
     private static final String issuer = "info.mastera";
@@ -73,37 +67,28 @@ public class JwtService implements IJwtService {
     /**
      * Generates token for granted user and password
      *
-     * @param username - username of a user from list registered
-     * @param password - corresponding password
+     * @param userId - userId just in case. there is no real use for this param.
+     *                 just additional param for security
+     * @param userType - usertype for different program levels
      * @return String active token for current user
      */
     @Override
-    public String createToken(String username, String password) {
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password))
+    public String createToken(Integer userId, UserType userType) {
+        if (userId == null || userType == null)
             return "";
-        User user = userService.getByUsername(username);
-//TODO Do we need to check user name and password before generating token or we do this before "createToken"
-//TODO In this case in token there is need to save password (password no need in any way). Username and Id - question.
-// TODO Probably - only usertype needed. Maybe UserId can be as well - it doesn't give any login information
-        if ((user != null) && (password.equals(user.getPassword()))) {
-
-            Date now = new Date();
-            logger.info("Token is issued to \"" +
-                    username + "\" from " + formatter.format(now) +
-                    " to " + formatter.format(getExpirationPeriod(now)));
-            return Jwts.builder()
-                    .setIssuer(issuer)
-                    .setExpiration(getExpirationPeriod(now))
-                    .setIssuedAt(now)
-                    .claim(CLAIM_USERID, user.getId())
-                    .claim(CLAIM_USERNAME, user.getUsername())
-                    .claim(CLAIM_USERTYPE, user.getUserType())
-                    .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-                    .signWith(algorithm, encodedKey)
-                    .compact();
-        } else {
-            return "";
-        }
+        Date now = new Date();
+        logger.info("Token is issued to \"" +
+                userId + "\" from " + formatter.format(now) +
+                " to " + formatter.format(getExpirationPeriod(now)));
+        return Jwts.builder()
+                .setIssuer(issuer)
+                .setExpiration(getExpirationPeriod(now))
+                .setIssuedAt(now)
+                .claim(CLAIM_USERID, userId)
+                .claim(CLAIM_USERTYPE, userType)
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .signWith(algorithm, encodedKey)
+                .compact();
     }
 
     /**
@@ -157,7 +142,8 @@ public class JwtService implements IJwtService {
 
     /**
      * Check all possible elementary combination in case of date manipulations
-      * @param issuedAt Issued Date extracted from claims
+     *
+     * @param issuedAt  Issued Date extracted from claims
      * @param expiredAt Expired Date extracted from claims
      * @return returns have then been changed or they are correct
      */
