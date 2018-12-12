@@ -1,6 +1,6 @@
 package info.mastera.dao.impl;
 
-import info.mastera.config.HibernateConfig;
+import info.mastera.config.TestDataBaseConfig;
 import info.mastera.model.Customer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = HibernateConfig.class)
+@ContextConfiguration(classes = TestDataBaseConfig.class)
 @Transactional
 public class CustomerDaoTest {
 
