@@ -1,14 +1,22 @@
-package info.mastera;
+package info.mastera.beans;
 
 import info.mastera.model.base.BaseObject;
+import info.mastera.model.enums.UserType;
 import info.mastera.service.IGenericService;
+import info.mastera.utils.JwtOperator;
 import org.apache.log4j.Logger;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
+@Named
 public abstract class GenericBean<T extends BaseObject> {
+
+    @Inject
+    protected JwtOperator jwtOperator;
 
     private static final Logger logger = Logger.getLogger(GenericBean.class);
 
@@ -20,6 +28,7 @@ public abstract class GenericBean<T extends BaseObject> {
 
     public void setSelectedItem(T selectedItem) {
         this.selectedItem = selectedItem;
+        logger.info("#GenericBean_SetSelectedItem:" + selectedItem);
     }
 
     public abstract void create();
@@ -49,6 +58,15 @@ public abstract class GenericBean<T extends BaseObject> {
     private void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public void clearSelected() {
+        logger.info("GenericBean.clearSelected()");
+        selectedItem = null;
+    }
+
+    protected UserType getAuthentication() {
+        return jwtOperator.getAuthentication(FacesContext.getCurrentInstance());
     }
 
 }
