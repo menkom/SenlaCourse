@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScans(value = { @ComponentScan("info.mastera") })
+@ComponentScan(basePackages = "info.mastera")
 public class HibernateConfig {
 
 	@Bean
@@ -47,7 +47,7 @@ public class HibernateConfig {
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
 
-		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		properties.put("hibernate.show_sql", "true");
 
 		return properties;
