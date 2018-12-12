@@ -2,6 +2,7 @@ package info.mastera.util.impl;
 
 import info.mastera.config.TestDataBaseConfig;
 import info.mastera.dao.IUserDao;
+import info.mastera.model.enums.UserType;
 import info.mastera.util.IJwtService;
 import info.mastera.util.exceptions.AuthenticationException;
 import org.junit.Assert;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestDataBaseConfig.class)
@@ -24,41 +26,27 @@ public class JwtServiceTest {
     IJwtService jwtService;
 
     @Test
-    public void testEmptyUser() {
-        String token = jwtService.createToken("", "AnyPass");
+    public void testNullUser() {
+        String token = jwtService.createToken(null, UserType.ADMIN);
         Assert.assertEquals("", token);
     }
 
-    public void testEmptyPassword() {
-        String token = jwtService.createToken("AnyName", "");
-        Assert.assertEquals("", token);
-    }
-
-    @Test
-    public void testWrongUser() {
-        String token = jwtService.createToken("wrongUser", "somePass");
-        Assert.assertEquals("", token);
-    }
-
-    @Test
-    public void testWrongPassword() {
-        String token = jwtService.createToken("user", "somePass");
+    public void testEmptyUserType() {
+        String token = jwtService.createToken(1, null);
         Assert.assertEquals("", token);
     }
 
     @Test
     public void testTokenGeneration() throws AuthenticationException {
-        String token = jwtService.createToken("user", "7pas");
-        Assert.assertNotNull(token);
-        Assert.assertTrue(!token.isEmpty());
-        Assert.assertTrue(token.length() > 0);
+        String token = jwtService.createToken(1, UserType.RECEIVER);
+        Assert.assertTrue(!StringUtils.isEmpty(token));
         jwtService.getUserGrant(token);
     }
 
     @Test(expected = AuthenticationException.class)
     public void testCorruptedToken() throws AuthenticationException {
-        StringBuilder token = new StringBuilder(jwtService.createToken("user", "7pas"));
-        Assert.assertNotNull(token);
+        StringBuilder token = new StringBuilder(jwtService.createToken(1, UserType.ENGINEER));
+        Assert.assertTrue(!StringUtils.isEmpty(token));
         token.setCharAt(1, '1');
         token.setCharAt(2, '2');
 

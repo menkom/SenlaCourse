@@ -92,7 +92,7 @@ public class TestExecuter {
 
     private static void testJwt(ApplicationContext context) {
         IJwtService jwtService = context.getBean(IJwtService.class);
-        String token = jwtService.createToken("user", "7pas");
+        String token = jwtService.createToken(1, UserType.ENGINEER);
         logger.info("Token:" + token);
 
         UserType userType = null;
