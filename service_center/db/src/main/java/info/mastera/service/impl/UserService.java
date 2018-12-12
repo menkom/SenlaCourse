@@ -3,7 +3,6 @@ package info.mastera.service.impl;
 import info.mastera.dao.IGenericDao;
 import info.mastera.dao.IUserDao;
 import info.mastera.model.User;
-import info.mastera.model.base.BaseObject;
 import info.mastera.service.IUserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +26,17 @@ public class UserService extends AbstractService<User> implements IUserService<U
     public UserService() {
         super();
         logger.info("UserService created.");
+    }
+
+    @Override
+    public User getByUsername(String userName) {
+        User result = userDao.getByUsername(userName);
+        logger.info("Looking for user :" + userName + ". Found: " + result);
+        return result;
+    }
+
+    @Override
+    public boolean isCorrectLogin(String userName, String password) {
+        return userDao.isCorrectLogin(userName, password);
     }
 }
