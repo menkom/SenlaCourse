@@ -5,25 +5,44 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 @MappedSuperclass
-public abstract class BaseObject {
+public abstract class BaseObject implements Serializable {
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    private static final long serialVersionUID = -9131179498317687352L;
 
-	public Integer getId() {
-		return id;
-	}
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	@Override
-	public String toString() {
-		return "id=" + getId() + "; ";
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "id=" + getId() + "; ";
+    }
+
+    @Override
+    public int hashCode() {
+        return (getId() != null)
+                ? (getClass().getSimpleName().hashCode() + getId().hashCode())
+                : super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return (other != null && getId() != null
+                && other.getClass().isAssignableFrom(getClass())
+                && getClass().isAssignableFrom(other.getClass()))
+                ? getId().equals(((BaseObject) other).getId())
+                : (other == this);
+    }
 }
