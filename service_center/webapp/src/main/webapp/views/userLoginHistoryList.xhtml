@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>[SC]User Login History</title>
+</h:head>
+<style type="text/css">
+    .ui-datatable-header {
+        height: 35px
+    }
+</style>
+<h:body>
+    <f:view>
+        <h:form id="mainForm">
+
+            <p:dataTable id="userLoginHistories" value="#{userLoginHistoryBean.getAll()}" var="userHistory"
+                         rowKey="#{userHistory.id}"
+                         selection="#{userLoginHistoryBean.selectedItem}" selectionMode="single" reflow="true">
+                <p:ajax event="rowSelect"/>
+
+                <f:facet name="header">
+                    User Login History List
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right"
+                                     icon="ui-icon-circle-plus"/>
+                    <p:columnToggler datasource="userLoginHistories" trigger="toggler"/>
+                </f:facet>
+                <p:column headerText="History ID">
+                    <h:outputText value="#{userHistory.id}"/>
+                </p:column>
+
+                <p:column headerText="User:id">
+                    <h:outputText value="#{userHistory.user.id}"/>
+                </p:column>
+
+                <!--<p:column headerText="User:name">-->
+                    <!--<h:outputText value="#{userHistory.user.username}"/>-->
+                <!--</p:column>-->
+
+                <p:column headerText="Time">
+                    <h:outputText value="#{userHistory.loginTime}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+    </f:view>
+</h:body>
+</html>
