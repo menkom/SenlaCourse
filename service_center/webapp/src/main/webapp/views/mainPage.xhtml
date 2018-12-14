@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <title>List of operations</title>
+    <title>[SC]List of operations</title>
 </h:head>
 <h:body>
     <h:form>
@@ -17,15 +17,13 @@
             <br/>
             <p:link value="Users" outcome="/views/userPageList"/>
             <br/>
-            <p:link value="Users creation page" outcome="/views/userPageCreate"/>
+            <p:link value="Users creation page" outcome="/views/userPage"/>
             <br/>
             <h:link value="SecondPage" outcome="/views/secondPage"/>
             <br/>
             <h:link value="Login Failed" outcome="/views/loginFailed"/>
             <br/>
-            <h:link value="Login Success" outcome="/views/loginSuccess"/>
-            <br/>
-            <h:commandLink value="Log out" action="#{userBean.logout()}"/>
+            <h:commandLink value="Log out" action="#{loginPageBean.logout()}"/>
         </p:panel>
     </h:form>
 </h:body>

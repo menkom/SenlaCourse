@@ -52,13 +52,13 @@
                         <h:panelGrid columns="2" id="loginGrid" cellpadding="5">
 
                             <p:outputLabel for="user" value="User: "/>
-                            <p:inputText id="user" value="#{userBean.user.username}" required="true"/>
+                            <p:inputText id="user" value="#{loginPageBean.username}" required="true"/>
 
                             <h:outputLabel for="password" value="Password: "/>
-                            <p:password id="password" value="#{userBean.user.password}" required="true"/>
+                            <p:password id="password" value="#{loginPageBean.password}" required="true"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="Login" action="#{userBean.login()}"/>
+                        <p:commandButton value="Login" action="#{loginPageBean.login()}"/>
 
                         <h:panelGrid columns="2" id="linksGrid" cellpadding="5">
                             <h:link value="List of customers" outcome="/views/customerList"/>

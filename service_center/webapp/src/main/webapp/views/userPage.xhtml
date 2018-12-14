@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>[SC] User page {edit}</title>
+</h:head>
+<script type="text/javascript">
+    function clearForm() {
+        $('#userName').clean();
+        $('#userPassword').clean();
+        $('#userType').clean();
+    }
+</script>
+<h:body>
+    <f:view>
+        <h:form id="form">
+            <p:panel id="userPanel">
+                <div align="center">
+                    <p:panelGrid columns="2" id="userPanelGrid">
+
+                        <p:outputLabel for="userId" value="user Id: "/>
+                        <p:inputText id="userId" value="#{userBean.userId}" disabled="true"/>
+
+                        <p:outputLabel for="userName" value="User Name: "/>
+                        <p:inputText id="userName" value="#{userBean.username}"/>
+
+                        <p:outputLabel for="userPassword" value="Password: "/>
+                        <p:inputText id="userPassword" value="#{userBean.password}"/>
+
+                        <p:outputLabel for="userType" value="User Type: "/>
+                        <p:selectOneMenu id="userType" value="#{userBean.userType}" required="true">
+                            <f:selectItem itemLabel="Select usertype" itemValue=""/>
+                            <f:selectItems value="#{userTypeBean.userTypes}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="userCustomer" value="Customer: "/>
+                        <p:selectOneMenu id="userCustomer"
+                                         filter="true"
+                                         filterMatchMode="startsWith"
+                                         value="#{userBean.customer}"
+                                         converter="#{customerConverter}"
+                                         var="c">
+                            <f:selectItem itemLabel="Select customer" itemValue=""/>
+                            <f:selectItems value="#{customerListBean.getAll()}"
+                                           var="cust"
+                                           itemLabel="#{cust.customerName}"
+                                           itemValue="#{cust}"
+                            />
+                            <p:column style="width:10%">
+                                <h:outputText value="#{c.id}"/>
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{c.customerName}"/>
+                            </p:column>
+
+                        </p:selectOneMenu>
+
+                        <!--
+                        <p:selectOneMenu id="console" value="#{cdiBean.newProduct}" style="width:125px">
+                <f:selectItem itemLabel="Select One" itemValue=""/>
+                <f:selectItems itemLabel="#{onem.name}" itemValue="#{onem.name}"
+                               var="onem" value="#{cdiBean.listOfProducts}"/>
+            </p:selectOneMenu>
+
+
+                        <p:dataTable
+                        id="customers"
+                        value="#{customerListBean.getAll()}"
+                        var="c" rowKey="#{c.id}"-->
+                        <!--selection="#{customerListBean.selectedItem}" selectionMode="single" reflow="true">-->
+                        <!--<p:column headerText="Customer ID">-->
+                        <!--<h:outputText value="#{c.id}"/>-->
+                        <!--</p:column>-->
+
+                        <!--<p:button id="buttonIndexPage" value="first page" icon="ui-icon-home"-->
+                        <!--outcome="/views/mainPage?faces-redirect=true"-->
+                        <!--style="margin-right:20px;"/>-->
+
+                        <f:facet name="footer">
+                                <p:commandButton id="createCustomer" value="create" icon="ui-icon-trash"
+                                                 action="#{userBean.create()}"
+                                                 update="userName,userType,userPassword,userCustomer"
+                                                 style="margin-right:20px;"/>
+                        </f:facet>
+                    </p:panelGrid>
+                </div>
+            </p:panel>
+
+        </h:form>
+    </f:view>
+</h:body>
+</html>
