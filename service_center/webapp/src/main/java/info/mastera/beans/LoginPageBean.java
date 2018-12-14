@@ -47,15 +47,15 @@ public class LoginPageBean extends BaseBean {
     public String login() {
         if (userService.isCorrectLogin(username, password)) {
             User tempUser = userService.getByUsername(username);
-            logger.info("/views/loginSuccess?faces-redirect=true");
             setAuthentication(tempUser);
             addMessage(String.format(USER_AUTHORIZED, username));
             clearForm();
+            logger.info("redirecting to mainPage");
             return "/views/mainPage?faces-redirect=true";
         } else {
             //TODO Correct redirect or correct user informing
             addMessage(WRONG_USERNAME_OR_PASSWORD);
-            logger.info("!!/login/loginFailed?faces-redirect=true!!");
+            logger.info("redirecting to error login page");
             return "/login/loginFailed?faces-redirect=true";
         }
     }
