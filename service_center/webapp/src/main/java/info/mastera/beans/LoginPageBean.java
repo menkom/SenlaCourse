@@ -1,0 +1,63 @@
+package info.mastera.beans;
+
+import info.mastera.model.User;
+import info.mastera.service.IUserService;
+import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+@Scope("session")
+public class LoginPageBean extends BaseBean {
+
+    private static final String USER_AUTHORIZED = "User \"%s\" authorized";
+    private static final String WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
+
+    @Inject
+    private IUserService<User> userService;
+
+    private static final Logger logger = Logger.getLogger(LoginPageBean.class);
+
+    private String username;
+    private String password;
+
+    private void clearForm() {
+        username = "";
+        password = "";
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String login() {
+        if (userService.isCorrectLogin(username, password)) {
+            User tempUser = userService.getByUsername(username);
+            logger.info("/views/loginSuccess?faces-redirect=true");
+            setAuthentication(tempUser);
+            addMessage(String.format(USER_AUTHORIZED, username));
+            clearForm();
+            return "/views/mainPage?faces-redirect=true";
+        } else {
+            //TODO Correct redirect or correct user informing
+            addMessage(WRONG_USERNAME_OR_PASSWORD);
+            logger.info("!!/login/loginFailed?faces-redirect=true!!");
+            return "/login/loginFailed?faces-redirect=true";
+        }
+    }
+
+}

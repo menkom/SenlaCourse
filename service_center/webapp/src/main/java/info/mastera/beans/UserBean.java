@@ -1,88 +1,84 @@
 package info.mastera.beans;
 
+import info.mastera.model.Customer;
 import info.mastera.model.User;
-import info.mastera.service.IGenericService;
+import info.mastera.model.enums.UserType;
 import info.mastera.service.IUserService;
-import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
 @Scope("session")
-public class UserBean extends GenericBean<User> {
+public class UserBean extends BaseBean {
 
     @Inject
     private IUserService<User> userService;
 
-    private static final Logger logger = Logger.getLogger(UserBean.class);
+    private Integer userId;
+    private String username;
+    private String password;
+    private UserType userType;
 
-    private User user;
+    private Customer customer;
 
-    @PostConstruct
-    private void init() {
-        user = new User();
+    public Customer getCustomer() {
+        return customer;
     }
 
-    @Override
-    protected void clearForm() {
-        user = new User();
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    @Override
-    protected IGenericService<User> getService() {
-        return userService;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public User getUser() {
-        return user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public UserType getUserType() {
+        return userType;
     }
 
-    @PreDestroy
-    public void preDestroy() {
-        user = null;
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
+    public String getUsername() {
+        return username;
+    }
 
-    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void create() {
         User user = new User();
-        getService().create(user);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setUserType(userType);
+        user.setCustomer(customer);
+        userService.create(user);
         clearForm();
     }
 
-    public String login() {
-        if (userService.isCorrectLogin(user.getUsername(), user.getPassword())) {
-            User tempUser = userService.getByUsername(user.getUsername());
-            logger.info("/views/loginSuccess?faces-redirect=true");
-
-            jwtOperator.setAuthentication(FacesContext.getCurrentInstance(), tempUser);
-            clearForm();
-            //TODO Clear form after logging
-            //TODO Create logout
-            return "/views/mainPage?faces-redirect=true";
-        } else {
-            //TODO Correct redirect or correct user informing
-            logger.info("!!/login/loginFailed?faces-redirect=true!!");
-            return "/login/loginFailed?faces-redirect=true";
-        }
-    }
-
-    public String logout() {
-        if (isAuthorized()) {
-            jwtOperator.logout(FacesContext.getCurrentInstance());
-            return "/index?faces-redirect=true";
-        } else {
-            return "";
-        }
+    protected void clearForm() {
+        userId = null;
+        username = "";
+        password = "";
+        userType = null;
+        customer = null;
     }
 
 }
