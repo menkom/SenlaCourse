@@ -48,9 +48,10 @@
                 <p:column headerText="Customer:id">
                     <h:outputText value="#{item.customer.id}"/>
                 </p:column>
-                <!--<p:column headerText="Customer:name">-->
-                    <!--<h:outputText value="#{item.getCustomer().customerName}"/>-->
-                <!--</p:column>-->
+
+                <p:column headerText="Customer:name">
+                    <h:outputText value="#{item.getCustomer().customerName}"/>
+                </p:column>
             </p:dataTable>
 
             <p:contextMenu for="users">

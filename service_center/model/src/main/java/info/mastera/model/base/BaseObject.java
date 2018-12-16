@@ -39,10 +39,10 @@ public abstract class BaseObject implements Serializable {
 
     @Override
     public boolean equals(Object other) {
-        return (other != null && getId() != null
-                && other.getClass().isAssignableFrom(getClass())
-                && getClass().isAssignableFrom(other.getClass()))
-                ? getId().equals(((BaseObject) other).getId())
-                : (other == this);
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        if (getId() == null) return false;
+
+        return getId().equals(((BaseObject) other).getId());
     }
 }

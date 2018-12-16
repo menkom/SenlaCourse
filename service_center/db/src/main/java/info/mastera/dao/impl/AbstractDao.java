@@ -2,8 +2,10 @@ package info.mastera.dao.impl;
 
 import info.mastera.dao.IGenericDao;
 import info.mastera.model.base.BaseObject;
+import info.mastera.model.base.BaseObject_;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,7 +35,15 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
 
     @Override
     public T getById(int id) {
-        return (T) getSession().find(getTClass(), id);
+        Session session = getSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(getTClass());
+        Root<T> root = query.from(getTClass());
+        fetchLazyObjects(root);
+        query.select(root).where(builder.equal(root.get(BaseObject_.id), id));
+        TypedQuery<T> typedQuery = session.createQuery(query);
+        T result = ((Query<T>) typedQuery).uniqueResult();
+        return result;
     }
 
     @Override
@@ -52,6 +62,7 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(getTClass());
         Root<T> root = query.from(getTClass());
+        fetchLazyObjects(root);
         query.select(root);
         TypedQuery<T> result = session.createQuery(query);
         return result.getResultList();
@@ -68,5 +79,7 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
         return result.getSingleResult();
     }
 
+    @Override
+    public abstract void fetchLazyObjects(Root<T> root);
 
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 
 @Repository
@@ -25,6 +26,7 @@ public class UserDao extends AbstractDao<User> implements IUserDao<User> {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         Root<User> root = query.from(User.class);
+        fetchLazyObjects(root);
         query.select(root).where(builder.equal(root.get(User_.username), userName));
         TypedQuery<User> result = session.createQuery(query);
         User user = ((Query<User>) result).uniqueResult();
@@ -43,6 +45,11 @@ public class UserDao extends AbstractDao<User> implements IUserDao<User> {
         TypedQuery<User> result = session.createQuery(query);
         User user = ((Query<User>) result).uniqueResult();
         return user != null;
+    }
+
+    @Override
+    public void fetchLazyObjects(Root<User> root) {
+        root.fetch(User_.customer, JoinType.LEFT);
     }
 
 }

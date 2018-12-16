@@ -1,15 +1,16 @@
 package info.mastera.dao;
 
-import java.util.List;
-
 import info.mastera.model.base.BaseObject;
+
+import javax.persistence.criteria.Root;
+import java.util.List;
 
 public interface IGenericDao<T extends BaseObject> {
 
     /**
      * Create
      *
-     * @param entity
+     * @param entity Save object to DB
      * @return T
      */
     T create(T entity);
@@ -17,7 +18,7 @@ public interface IGenericDao<T extends BaseObject> {
     /**
      * Read
      *
-     * @param id
+     * @param id Get T object with id
      * @return T
      */
     T getById(int id);
@@ -25,21 +26,21 @@ public interface IGenericDao<T extends BaseObject> {
     /**
      * Update
      *
-     * @param entity
+     * @param entity Entity to update
      */
     void update(T entity);
 
     /**
      * Delete
      *
-     * @param entity
+     * @param entity Entity to delete
      */
     void delete(T entity);
 
     /**
      * getAll
      *
-     * @return List<T>
+     * @return List<T> all T objects
      */
     List<T> getAll();
 
@@ -49,5 +50,12 @@ public interface IGenericDao<T extends BaseObject> {
      * @return Long
      */
     Long count();
+
+    /**
+     * Fetch necessary object for lazy initialization
+     *
+     * @param root Root
+     */
+    void fetchLazyObjects(Root<T> root);
 
 }
