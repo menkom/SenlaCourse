@@ -91,29 +91,29 @@ public class UserDaoTest {
 
     @Test
     public void testGetById() {
-        User user = userDao.getById(6);
-        Assert.assertEquals("user", user.getUsername());
-        Assert.assertEquals("7pas", user.getPassword());
+        User user = userDao.getById(1);
+        Assert.assertEquals("admin", user.getUsername());
+        Assert.assertEquals("admin", user.getPassword());
         Assert.assertNull(user.getCustomer());
-        Assert.assertEquals(UserType.CUSTOMER, user.getUserType());
+        Assert.assertEquals(UserType.ADMIN, user.getUserType());
     }
 
     @Test
     public void testUpdate() {
-        User user = userDao.getById(6);
+        User user = userDao.getById(5);
         Assert.assertNotNull(user);
-        user.setUsername("-name-");
-        user.setPassword("-tel-");
-        Customer customer = customerDao.getById(2);
+        user.setUsername("eng5");
+        user.setPassword("engineer");
+        Customer customer = customerDao.getById(5);
         Assert.assertNotNull(customer);
         user.setCustomer(customer);
         user.setUserType(UserType.RECEIVER);
         userDao.update(user);
 
 
-        user = userDao.getById(6);
-        Assert.assertEquals("-name-", user.getUsername());
-        Assert.assertEquals("-tel-", user.getPassword());
+        user = userDao.getById(5);
+        Assert.assertEquals("eng5", user.getUsername());
+        Assert.assertEquals("engineer", user.getPassword());
         Assert.assertEquals(UserType.RECEIVER, user.getUserType());
         Assert.assertEquals(customer.getId(), user.getCustomer().getId());
     }
@@ -140,7 +140,7 @@ public class UserDaoTest {
         userDao.create(user);
 
         List<User> users = userDao.getAll();
-        Assert.assertEquals(6, users.size());
+        Assert.assertEquals(18, users.size());
         User newUser = users.get(users.size() - 1);
 
         Assert.assertEquals("-name-", newUser.getUsername());
@@ -152,17 +152,17 @@ public class UserDaoTest {
     @Test
     public void testCount() {
         List<User> users = userDao.getAll();
-        Assert.assertEquals(5L, userDao.count().longValue());
-        Assert.assertEquals(5, users.size());
+        Assert.assertEquals(17L, userDao.count().longValue());
+        Assert.assertEquals(17, users.size());
     }
 
     @Test
     public void testGetByUsername() {
-        User user = userDao.getByUsername("user");
+        User user = userDao.getByUsername("admin");
         Assert.assertNotNull(user);
-        Assert.assertEquals(6, user.getId().intValue());
-        Assert.assertEquals("7pas", user.getPassword());
-        Assert.assertEquals(UserType.CUSTOMER, user.getUserType());
+        Assert.assertEquals(1, user.getId().intValue());
+        Assert.assertEquals("admin", user.getPassword());
+        Assert.assertEquals(UserType.ADMIN, user.getUserType());
     }
 
 }

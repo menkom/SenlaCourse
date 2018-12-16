@@ -49,16 +49,20 @@
             <div class="outer">
                 <p:panel header="Login">
                     <div align="center">
-                        <h:panelGrid columns="2" id="loginGrid" cellpadding="5">
+                        <h:panelGrid columns="3" id="loginGrid" cellpadding="5">
 
                             <p:outputLabel for="user" value="User: "/>
                             <p:inputText id="user" value="#{loginPageBean.username}" required="true"/>
+                            <p:message for="user" id="message_for_user"/>
 
-                            <h:outputLabel for="password" value="Password: "/>
-                            <p:password id="password" value="#{loginPageBean.password}" required="true"/>
+                            <p:outputLabel for="password" value="Password: "/>
+                            <p:password id="password" value="#{loginPageBean.password}"
+                                        required="true"
+                                        requiredMessage="You need to enter password."/>
+                            <p:message for="password"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="Login" action="#{loginPageBean.login()}"/>
+                        <p:commandButton value="Login" action="#{loginPageBean.login}"/>
 
                         <h:panelGrid columns="2" id="linksGrid" cellpadding="5">
                             <h:link value="List of customers" outcome="/views/customerList"/>

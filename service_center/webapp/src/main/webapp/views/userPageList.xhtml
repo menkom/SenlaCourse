@@ -55,6 +55,7 @@
             </p:dataTable>
 
             <p:contextMenu for="users">
+                <p:menuitem value="Edit" update="users,growl" action="userPage"/>
                 <p:menuitem value="Delete" update="users,growl" action="#{userListBean.delete}"/>
             </p:contextMenu>
 

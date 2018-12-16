@@ -78,7 +78,7 @@ public class CustomerDaoTest {
         customerDao.create(customer);
 
         List<Customer> customers = customerDao.getAll();
-        Assert.assertEquals(9, customers.size());
+        Assert.assertEquals(11, customers.size());
         Customer newCustomer = customers.get(customers.size() - 1);
 
         Assert.assertEquals("Doe Jane", newCustomer.getCustomerName());
@@ -88,7 +88,7 @@ public class CustomerDaoTest {
     @Test
     public void testCount() {
         List<Customer> customers = customerDao.getAll();
-        Assert.assertEquals(8L, customerDao.count().longValue());
-        Assert.assertEquals(8, customers.size());
+        Assert.assertEquals(10L, customerDao.count().longValue());
+        Assert.assertEquals(10, customers.size());
     }
 }
