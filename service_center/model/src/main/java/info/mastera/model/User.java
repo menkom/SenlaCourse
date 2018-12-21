@@ -95,4 +95,22 @@ public class User extends BaseObject {
         this.userLoginHistories = userLoginHistories;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        User user = (User) other;
+        return super.equals(other)
+                && isEqual(username, user.getUsername())
+                && isEqual(password, user.getPassword())
+                && isEqual(customer, user.getCustomer())
+                && isEqual(userType, user.getUserType());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objHash(super.hashCode(), username);
+        result = objHash(result, password);
+        result = objHash(result, customer);
+        return objHash(result, userType);
+    }
+
 }

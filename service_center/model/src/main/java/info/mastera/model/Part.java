@@ -1,18 +1,9 @@
 package info.mastera.model;
 
-import java.util.List;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import info.mastera.model.base.BaseObject;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "part", schema = "service_center")
@@ -63,6 +54,22 @@ public class Part extends BaseObject {
 
     public void setWarehouses(List<Warehouse> warehouses) {
         this.warehouses = warehouses;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        Part part = (Part) other;
+        return super.equals(other)
+                && isEqual(name, part.getName())
+                && isEqual(product, part.getProduct())
+                && isEqual(partCategory, part.getPartCategory());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objHash(super.hashCode(), name);
+        result = objHash(result, product);
+        return objHash(result, partCategory);
     }
 
 }

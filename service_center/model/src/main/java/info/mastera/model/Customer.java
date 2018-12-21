@@ -1,15 +1,9 @@
 package info.mastera.model;
 
-import java.util.List;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import info.mastera.model.base.BaseObject;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "customer", schema = "service_center")
@@ -63,8 +57,22 @@ public class Customer extends BaseObject {
 
     @Override
     public String toString() {
-        return super.toString()
+        return "id=" + getId() + "; "
                 + "name=" + getCustomerName() + "; "
                 + "phone=" + getTelephone() + "; ";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        Customer customer = (Customer) other;
+        return super.equals(other)
+                && isEqual(customerName, customer.getCustomerName())
+                && isEqual(telephone, customer.getTelephone());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objHash(super.hashCode(), customerName);
+        return objHash(result, telephone);
     }
 }

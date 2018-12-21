@@ -1,15 +1,8 @@
 package info.mastera.model;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import info.mastera.model.base.BaseObject;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "service_order_job", schema = "service_center")
@@ -61,6 +54,24 @@ public class ServiceOrderJob extends BaseObject {
 
     public void setServiceOrder(ServiceOrder serviceOrder) {
         this.serviceOrder = serviceOrder;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        ServiceOrderJob serviceOrderJob = (ServiceOrderJob) other;
+        return super.equals(other)
+                && isEqual(finalPrice, serviceOrderJob.getFinalPrice())
+                && isEqual(orderJob, serviceOrderJob.getOrderJob())
+                && isEqual(user, serviceOrderJob.getUser())
+                && isEqual(serviceOrder, serviceOrderJob.getServiceOrder());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objHash(super.hashCode(), finalPrice);
+        result = objHash(result, orderJob);
+        result = objHash(result, user);
+        return objHash(result, serviceOrder);
     }
 
 }

@@ -1,16 +1,14 @@
 package info.mastera.model.base;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
 public abstract class BaseObject implements Serializable {
 
     private static final long serialVersionUID = -9131179498317687352L;
+
+    private final int prime = 31;
 
     @Id
     @Column(name = "id")
@@ -32,17 +30,27 @@ public abstract class BaseObject implements Serializable {
 
     @Override
     public int hashCode() {
-        return (getId() != null)
-                ? (getClass().getSimpleName().hashCode() + getId().hashCode())
-                : super.hashCode();
+        return objHash(1,id);
+    }
+
+    protected int objHash(int hash, Object obj) {
+        return prime * hash + ((obj == null) ? 0 : obj.hashCode());
     }
 
     @Override
     public boolean equals(Object other) {
-        if (this == other) return true;
-        if (other == null || getClass() != other.getClass()) return false;
-        if (getId() == null) return false;
-
-        return getId().equals(((BaseObject) other).getId());
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        BaseObject baseObject = (BaseObject) other;
+        return isEqual(id, baseObject.getId());
     }
+
+    protected boolean isEqual(Object obj1, Object obj2) {
+        return (obj1 != null && obj1.equals(obj2));
+    }
+
 }

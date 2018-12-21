@@ -18,75 +18,95 @@ import info.mastera.model.base.BaseObject;
 @Table(name = "warehouse", schema = "service_center")
 public class Warehouse extends BaseObject {
 
-	@Basic
-	@Column(name = "code", nullable = false, unique = true)
-	private String code;
+    @Basic
+    @Column(name = "code", nullable = false, unique = true)
+    private String code;
 
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-	@JoinColumn(name = "part_id", nullable = false)
-	private Part part;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "part_id", nullable = false)
+    private Part part;
 
-	@Basic
-	@Column(name = "count", nullable = false)
-	private Double count;
+    @Basic
+    @Column(name = "count", nullable = false)
+    private Double count;
 
-	@Basic
-	@Column(name = "price_per_one", nullable = false)
-	private Double pricePerOne;
+    @Basic
+    @Column(name = "price_per_one", nullable = false)
+    private Double pricePerOne;
 
-	@Basic
-	@Column(name = "descr", nullable = false)
-	private String descr;
+    @Basic
+    @Column(name = "descr", nullable = false)
+    private String descr;
 
-	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.MERGE, orphanRemoval = true)
-	private List<ServiceOrderPart> serviceOrderParts;
+    @OneToMany(mappedBy = "warehouse", cascade = CascadeType.MERGE, orphanRemoval = true)
+    private List<ServiceOrderPart> serviceOrderParts;
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public Part getPart() {
-		return part;
-	}
+    public Part getPart() {
+        return part;
+    }
 
-	public void setPart(Part part) {
-		this.part = part;
-	}
+    public void setPart(Part part) {
+        this.part = part;
+    }
 
-	public Double getCount() {
-		return count;
-	}
+    public Double getCount() {
+        return count;
+    }
 
-	public void setCount(Double count) {
-		this.count = count;
-	}
+    public void setCount(Double count) {
+        this.count = count;
+    }
 
-	public Double getPricePerOne() {
-		return pricePerOne;
-	}
+    public Double getPricePerOne() {
+        return pricePerOne;
+    }
 
-	public void setPricePerOne(Double pricePerOne) {
-		this.pricePerOne = pricePerOne;
-	}
+    public void setPricePerOne(Double pricePerOne) {
+        this.pricePerOne = pricePerOne;
+    }
 
-	public String getDescr() {
-		return descr;
-	}
+    public String getDescr() {
+        return descr;
+    }
 
-	public void setDescr(String descr) {
-		this.descr = descr;
-	}
+    public void setDescr(String descr) {
+        this.descr = descr;
+    }
 
-	public List<ServiceOrderPart> getServiceOrderParts() {
-		return serviceOrderParts;
-	}
+    public List<ServiceOrderPart> getServiceOrderParts() {
+        return serviceOrderParts;
+    }
 
-	public void setServiceOrderParts(List<ServiceOrderPart> serviceOrderParts) {
-		this.serviceOrderParts = serviceOrderParts;
-	}
+    public void setServiceOrderParts(List<ServiceOrderPart> serviceOrderParts) {
+        this.serviceOrderParts = serviceOrderParts;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        Warehouse warehouse = (Warehouse) other;
+        return super.equals(other)
+                && isEqual(count, warehouse.getCount())
+                && isEqual(pricePerOne, warehouse.getPricePerOne())
+                && isEqual(code, warehouse.getCode())
+                && isEqual(descr, warehouse.getDescr())
+                && isEqual(part, warehouse.getPart());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = objHash(super.hashCode(), count);
+        result = objHash(result, pricePerOne);
+        result = objHash(result, code);
+        result = objHash(result, descr);
+        return objHash(result, part);
+    }
 
 }
