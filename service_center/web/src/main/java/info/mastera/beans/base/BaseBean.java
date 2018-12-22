@@ -39,7 +39,7 @@ public abstract class BaseBean implements Serializable {
     public String logout() {
         if (isAuthorized()) {
             jwtOperator.logout(FacesContext.getCurrentInstance());
-            return "/index?faces-redirect=true";
+            return "/login/loginPage?faces-redirect=true";
         } else {
             return "";
         }
