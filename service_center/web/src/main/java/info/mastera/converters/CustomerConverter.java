@@ -16,14 +16,13 @@ import javax.inject.Named;
 
 @Named
 @Scope("session")
-//@FacesConverter(value = "customerConverter")
 public class CustomerConverter implements Converter {
 
     private static final String NO_OBJECT_CUSTOMER_FOUND = "No object Customer found for value: ";
-    private static final String ERROR_NOT_A_VALID_ID = "%s is not a valid id";
+    private static final String ERROR_NOT_A_VALID_ID = " is not a valid id";
 
     @Inject
-    private ICustomerService<Customer> customerService;
+    private ICustomerService customerService;
 
     @Override
     public Customer getAsObject(FacesContext context, UIComponent component, String value) {
@@ -49,7 +48,7 @@ public class CustomerConverter implements Converter {
             Integer id = ((BaseObject) value).getId();
             return (id != null) ? id.toString() : null;
         } else {
-            throw new ConverterException(new FacesMessage(String.format(ERROR_NOT_A_VALID_ID, value)));
+            throw new ConverterException(new FacesMessage(value + ERROR_NOT_A_VALID_ID));
         }
     }
 }
