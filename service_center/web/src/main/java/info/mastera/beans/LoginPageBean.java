@@ -51,8 +51,8 @@ public class LoginPageBean extends BaseBean {
     }
 
     public String login() {
-        if (userService.isCorrectLogin(username, password)) {
-            User tempUser = userService.getByUsername(username);
+        User tempUser = userService.getByUsername(username);
+        if (tempUser != null && tempUser.getPassword().equals(password)) {
             setAuthentication(tempUser);
             addMessage(String.format(USER_AUTHORIZED, username));
             saveLogin(tempUser);

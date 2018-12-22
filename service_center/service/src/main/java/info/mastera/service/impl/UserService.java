@@ -56,9 +56,4 @@ public class UserService implements IUserService {
         return result;
     }
 
-    @Override
-    public boolean isCorrectLogin(String userName, String password) {
-        return userDao.isCorrectLogin(userName, password);
-    }
-
 }

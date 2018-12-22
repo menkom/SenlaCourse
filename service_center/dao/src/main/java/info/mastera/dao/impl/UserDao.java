@@ -34,20 +34,6 @@ public class UserDao extends AbstractDao<User> implements IUserDao<User> {
     }
 
     @Override
-    public boolean isCorrectLogin(String userName, String password) {
-        Session session = getSession();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<User> query = builder.createQuery(User.class);
-        Root<User> root = query.from(User.class);
-        query.select(root)
-                .where(builder.equal(root.get(User_.username), userName),
-                        builder.equal(root.get(User_.password), password));
-        TypedQuery<User> result = session.createQuery(query);
-        User user = ((Query<User>) result).uniqueResult();
-        return user != null;
-    }
-
-    @Override
     public void fetchLazyObjects(Root<User> root) {
         root.fetch(User_.customer, JoinType.LEFT);
     }

@@ -20,6 +20,4 @@ public interface IUserService {
 
     User getByUsername(String userName);
 
-    boolean isCorrectLogin(String userName, String password);
-
 }
