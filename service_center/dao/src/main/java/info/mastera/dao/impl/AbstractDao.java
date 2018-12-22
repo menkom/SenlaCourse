@@ -3,6 +3,7 @@ package info.mastera.dao.impl;
 import info.mastera.dao.IGenericDao;
 import info.mastera.model.base.BaseObject;
 import info.mastera.model.base.BaseObject_;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -17,6 +18,10 @@ import java.util.List;
 
 @Repository
 public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T> {
+
+    private static final Logger logger = Logger.getLogger(AbstractDao.class);
+    private static final String OBJECT_UPDATED = "Object with id=%s was successfully updated.";
+    private static final String OBJECT_DELETED = "Object with id=%s was successfully deleted.";
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -49,11 +54,13 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
     @Override
     public void update(T entity) {
         getSession().update(entity);
+        logger.info(String.format(OBJECT_UPDATED, entity.getId()));
     }
 
     @Override
     public void delete(T entity) {
         getSession().delete(entity);
+        logger.info(String.format(OBJECT_DELETED, entity.getId()));
     }
 
     @Override
