@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>[SC]Customers List</title>
+</h:head>
+<style type="text/css">
+    .ui-datatable-header {
+        height: 35px
+    }
+</style>
+
+<script type="text/javascript">
+    function clearModal() {
+        $('#customerDetailsName').clean();
+        $('#customerDetailsPhone').clean();
+    }
+</script>
+<h:body>
+    <f:view>
+        <h:form id="mainForm">
+            <p:growl id="growl" life="2000"/>
+
+            <p:dataTable id="customers" value="#{customerListBean.getAll()}" var="c" rowKey="#{c.id}"
+                         selection="#{customerListBean.selectedItem}" selectionMode="single" reflow="true">
+                <p:ajax event="rowSelect" listener="#{customerBean.onRowSelect}"/>
+
+                <f:facet name="header">
+                    Customer list
+                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right"
+                                     icon="ui-icon-circle-plus"/>
+                    <p:columnToggler datasource="customers" trigger="toggler"/>
+                </f:facet>
+                <p:column headerText="Customer ID">
+                    <h:outputText value="#{c.id}"/>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{c.customerName}"/>
+                </p:column>
+
+                <p:column headerText="Telephone">
+                    <h:outputText value="#{c.telephone}"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:contextMenu for="customers">
+                <p:menuitem value="Create" action="#{customerBean.loadToCreate()}"/>
+                <p:menuitem value="Edit" action="#{customerBean.load()}">
+                    <f:setPropertyActionListener target="#{customerBean.customerId}"
+                                                 value="#{customerListBean.selectedItem.id}"/>
+                </p:menuitem>
+                <p:menuitem value="Edit modal" update="customerDetail" onclick="PF('customerDialog').show()"/>
+
+                <p:menuitem value="Delete" update="customers,growl" action="#{customerListBean.delete}"/>
+            </p:contextMenu>
+
+            <p:dialog header="Customer Details" widgetVar="customerDialog" modal="true" resizable="false"
+                      focus="btnCancel" appendToBody="false">
+                <p:ajax event="close" update="growl" listener="#{customerListBean.clearSelected}"/>
+                <p:outputPanel id="customerDetail" style="text-align:center;">
+                    <p:panelGrid columns="2" rendered="#{not empty customerListBean.selectedItem}">
+                        <h:outputLabel for="customerDetailsId" value="Id:"/>
+                        <p:inputText id="customerDetailsId" value="#{customerListBean.selectedItem.id}"
+                                     disabled="true"/>
+
+                        <h:outputLabel for="customerDetailsName" value="Name"/>
+                        <p:inputText id="customerDetailsName" value="#{customerListBean.selectedItem.customerName}"/>
+
+                        <h:outputText for="customerDetailsPhone" value="Phone:"/>
+                        <p:inputText id="customerDetailsPhone" value="#{customerListBean.selectedItem.telephone}"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton id="btnCancel" value="Cancel" action="#{customerListBean.clearSelected}"
+                                             onclick="customerDialog.hide(); return false;"/>
+                            <p:commandButton id="btnSave" value="Save" action="#{customerListBean.update()}"
+                                             onclick="customerDialog.hide()"
+                                             update="customers"/>
+                        </f:facet>
+
+                    </p:panelGrid>
+                </p:outputPanel>
+            </p:dialog>
+        </h:form>
+    </f:view>
+</h:body>
+</html>
