@@ -21,10 +21,6 @@ public class UserRightsFilter implements Filter {
 
     private JwtOperator jwtOperator;
 
-    private String getFilterPath(String path) {
-        return path.substring(0, path.lastIndexOf('/') + 1) + "*";
-    }
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
@@ -34,8 +30,7 @@ public class UserRightsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         String path = ((HttpServletRequest) servletRequest).getServletPath();
-        if (UserRightsManager.checkRights(getFilterPath(path),
-                jwtOperator.getAuthentication(servletRequest))) {
+        if (UserRightsManager.checkRights(path, jwtOperator.getAuthentication(servletRequest))) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             ((HttpServletResponse) servletResponse).sendRedirect("/views/mainPage.xhtml");

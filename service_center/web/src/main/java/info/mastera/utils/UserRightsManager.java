@@ -63,8 +63,12 @@ public class UserRightsManager {
         return result;
     }
 
+    private static String getFilterPath(String path) {
+        return path.substring(0, path.lastIndexOf('/') + 1) + "*";
+    }
+
     public static boolean checkRights(String path, UserType userType) {
-        Set<UserType> userRights = userRightsMap.get(path);
+        Set<UserType> userRights = userRightsMap.get(getFilterPath(path));
         if (userRights != null) {
             return userRights.contains(userType);
 
