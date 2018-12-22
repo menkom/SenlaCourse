@@ -1,6 +1,6 @@
 package info.mastera.dao.impl;
 
-import info.mastera.config.TestDataBaseConfig;
+import info.mastera.config.TestConfig;
 import info.mastera.model.Customer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestDataBaseConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 @Transactional
 public class CustomerDaoTest {
 
@@ -78,7 +78,7 @@ public class CustomerDaoTest {
         customerDao.create(customer);
 
         List<Customer> customers = customerDao.getAll();
-        Assert.assertEquals(11, customers.size());
+        Assert.assertEquals(12, customers.size());
         Customer newCustomer = customers.get(customers.size() - 1);
 
         Assert.assertEquals("Doe Jane", newCustomer.getCustomerName());
@@ -88,7 +88,7 @@ public class CustomerDaoTest {
     @Test
     public void testCount() {
         List<Customer> customers = customerDao.getAll();
-        Assert.assertEquals(10L, customerDao.count().longValue());
-        Assert.assertEquals(10, customers.size());
+        Assert.assertEquals(11L, customerDao.count().longValue());
+        Assert.assertEquals(11, customers.size());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = "info.mastera")
-public class TestDataBaseConfig {
+public class TestConfig {
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
