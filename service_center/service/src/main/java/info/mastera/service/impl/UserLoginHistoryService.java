@@ -6,16 +6,45 @@ import info.mastera.model.UserLoginHistory;
 import info.mastera.service.IUserLoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
-public class UserLoginHistoryService extends AbstractService<UserLoginHistory>
-        implements IUserLoginHistoryService<UserLoginHistory> {
+@Transactional
+public class UserLoginHistoryService implements IUserLoginHistoryService {
 
     @Autowired
-    IUserLoginHistoryDao userLoginHistoryDao;
+    IUserLoginHistoryDao<UserLoginHistory> userLoginHistoryDao;
 
     @Override
-    protected IGenericDao<UserLoginHistory> getDao() {
-        return userLoginHistoryDao;
+    public UserLoginHistory create(UserLoginHistory entity) {
+        return userLoginHistoryDao.create(entity);
     }
+
+    @Override
+    public void delete(UserLoginHistory entity) {
+        userLoginHistoryDao.delete(entity);
+    }
+
+    @Override
+    public void update(UserLoginHistory entity) {
+        userLoginHistoryDao.update(entity);
+    }
+
+    @Override
+    public UserLoginHistory getById(int id) {
+        return userLoginHistoryDao.getById(id);
+    }
+
+    @Override
+    public List<UserLoginHistory> getAll() {
+        return userLoginHistoryDao.getAll();
+    }
+
+    @Override
+    public Long count() {
+        return userLoginHistoryDao.count();
+    }
+
 }

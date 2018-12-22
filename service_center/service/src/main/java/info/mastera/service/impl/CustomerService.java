@@ -8,22 +8,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
-public class CustomerService extends AbstractService<Customer> implements ICustomerService<Customer> {
+public class CustomerService implements ICustomerService {
 
     @Autowired
     private ICustomerDao<Customer> customerDao;
 
-    private static final Logger logger = Logger.getLogger(CustomerService.class);
+    @Override
+    public Customer create(Customer entity) {
+        return customerDao.create(entity);
+    }
 
     @Override
-    protected ICustomerDao<Customer> getDao() {
-        return customerDao;
+    public void delete(Customer entity) {
+        customerDao.delete(entity);
     }
 
-    public CustomerService() {
-        super();
-        logger.info("CustomerService created.");
+    @Override
+    public void update(Customer entity) {
+        customerDao.update(entity);
     }
+
+    @Override
+    public Customer getById(int id) {
+        return customerDao.getById(id);
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        return customerDao.getAll();
+    }
+
+    @Override
+    public Long count() {
+        return customerDao.count();
+    }
+
 }

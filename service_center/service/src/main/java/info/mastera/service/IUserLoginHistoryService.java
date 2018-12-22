@@ -2,5 +2,20 @@ package info.mastera.service;
 
 import info.mastera.model.UserLoginHistory;
 
-public interface IUserLoginHistoryService<T extends UserLoginHistory> extends IGenericService<T> {
+import java.util.List;
+
+public interface IUserLoginHistoryService{
+
+    UserLoginHistory create(UserLoginHistory entity);
+
+    void delete(UserLoginHistory entity);
+
+    void update(UserLoginHistory entity);
+
+    UserLoginHistory getById(int id);
+
+    List<UserLoginHistory> getAll();
+
+    Long count();
+
 }

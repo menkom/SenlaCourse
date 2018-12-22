@@ -1,6 +1,5 @@
 package info.mastera.service.impl;
 
-import info.mastera.dao.IGenericDao;
 import info.mastera.dao.IUserDao;
 import info.mastera.model.User;
 import info.mastera.service.IUserService;
@@ -9,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
-public class UserService extends AbstractService<User> implements IUserService<User> {
+public class UserService implements IUserService {
 
     @Autowired
     private IUserDao<User> userDao;
@@ -19,13 +20,33 @@ public class UserService extends AbstractService<User> implements IUserService<U
     private static final Logger logger = Logger.getLogger(UserService.class);
 
     @Override
-    protected IGenericDao<User> getDao() {
-        return userDao;
+    public User create(User entity) {
+        return userDao.create(entity);
     }
 
-    public UserService() {
-        super();
-        logger.info("UserService created.");
+    @Override
+    public void delete(User entity) {
+        userDao.delete(entity);
+    }
+
+    @Override
+    public void update(User entity) {
+        userDao.update(entity);
+    }
+
+    @Override
+    public User getById(int id) {
+        return userDao.getById(id);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
+
+    @Override
+    public Long count() {
+        return userDao.count();
     }
 
     @Override
@@ -39,4 +60,5 @@ public class UserService extends AbstractService<User> implements IUserService<U
     public boolean isCorrectLogin(String userName, String password) {
         return userDao.isCorrectLogin(userName, password);
     }
+
 }
