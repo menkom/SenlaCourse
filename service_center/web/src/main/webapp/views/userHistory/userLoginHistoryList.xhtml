@@ -17,9 +17,9 @@
     <f:view>
         <h:form id="mainForm">
 
-            <p:dataTable id="userLoginHistories" value="#{userLoginHistoryBean.getAll()}" var="userHistory"
+            <p:dataTable id="userLoginHistories" value="#{userLoginHistoryListBean.getAll()}" var="userHistory"
                          rowKey="#{userHistory.id}"
-                         selection="#{userLoginHistoryBean.selectedItem}" selectionMode="single" reflow="true">
+                         selection="#{userLoginHistoryListBean.selectedItem}" selectionMode="single" reflow="true">
                 <p:ajax event="rowSelect"/>
 
                 <f:facet name="header">
