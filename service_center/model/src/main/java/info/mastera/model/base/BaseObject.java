@@ -8,7 +8,7 @@ public abstract class BaseObject implements Serializable {
 
     private static final long serialVersionUID = -9131179498317687352L;
 
-    private final int prime = 31;
+    private static final int prime = 31;
 
     @Id
     @Column(name = "id")
