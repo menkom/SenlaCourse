@@ -19,7 +19,7 @@ public class CustomerBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(CustomerBean.class);
 
     @Inject
-    private ICustomerService<Customer> customerService;
+    private ICustomerService customerService;
 
     private Integer customerId;
     private String customerName;

@@ -15,7 +15,7 @@ import javax.inject.Named;
 public class UserBean extends BaseBean {
 
     @Inject
-    private IUserService<User> userService;
+    private IUserService userService;
 
     private Integer userId;
     private String username;

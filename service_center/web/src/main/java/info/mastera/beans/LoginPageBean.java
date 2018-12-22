@@ -20,9 +20,9 @@ public class LoginPageBean extends BaseBean {
     private static final String WRONG_USERNAME_OR_PASSWORD = "Wrong username or password.";
 
     @Inject
-    private IUserService<User> userService;
+    private IUserService userService;
     @Inject
-    private IUserLoginHistoryService<UserLoginHistory> userLoginHistoryService;
+    private IUserLoginHistoryService userLoginHistoryService;
 
     private static final Logger logger = Logger.getLogger(LoginPageBean.class);
 

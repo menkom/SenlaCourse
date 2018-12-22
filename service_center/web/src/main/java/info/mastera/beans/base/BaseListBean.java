@@ -1,7 +1,6 @@
 package info.mastera.beans.base;
 
 import info.mastera.model.base.BaseObject;
-import info.mastera.service.IGenericService;
 import org.apache.log4j.Logger;
 
 import javax.inject.Named;
@@ -14,34 +13,21 @@ public abstract class BaseListBean<T extends BaseObject> extends BaseBean {
 
     private T selectedItem;
 
+    protected static final String MESSAGE_ITEM_DELETED = "Item with id=%s deleted.";
+
     public T getSelectedItem() {
         return selectedItem;
     }
 
     public void setSelectedItem(T selectedItem) {
         this.selectedItem = selectedItem;
-        logger.info("#BaseListBean_SetSelectedItem:" + selectedItem);
     }
 
-    public List<T> getAll() {
-        logger.info("BaseListBean_getAll; " + this.getClass());
-        return getService().getAll();
-    }
+    public abstract List<T> getAll();
 
-    protected abstract IGenericService<T> getService();
+    public abstract void delete();
 
-    public void delete() {
-        getService().delete(selectedItem);
-        if (selectedItem != null) {
-            addMessage("Item with id=" + selectedItem.getId() + " deleted.");
-        }
-        selectedItem = null;
-    }
-
-    public void update() {
-        getService().update(selectedItem);
-        selectedItem = null;
-    }
+    public abstract void update() ;
 
     public void clearSelected() {
         logger.info("BaseListBean_clearSelected()");
