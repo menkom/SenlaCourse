@@ -17,7 +17,7 @@
 
 <f:view>
     <h:body>
-        <h:form>
+        <h:form id="mainForm">
             <ui:insert name="header">
                 <ui:include src="/views/template/menuTemplate.xhtml"/>
             </ui:insert>
@@ -28,13 +28,17 @@
                 <ui:include src="/views/user/template/dataTableTemplate.xhtml"/>
             </ui:insert>
 
-            <p:contextMenu for="users">
-                <p:menuitem value="Create" action="#{userBean.loadToCreate}"/>
-                <p:menuitem value="Edit" action="#{userBean.load}">
-                    <f:setPropertyActionListener target="#{userBean.userId}" value="#{userListBean.selectedItem.id}"/>
-                </p:menuitem>
-                <p:menuitem value="Delete" action="#{userListBean.delete}"/>
-            </p:contextMenu>
+            <ui:insert name="contextMenu">
+                <ui:include src="/views/user/template/contextMenuList.xhtml"/>
+            </ui:insert>
+
+            <ui:insert name="updateDialog">
+                <ui:include src="/views/user/template/userUpdateTemplate.xhtml"/>
+            </ui:insert>
+
+            <ui:insert name="createDialog">
+                <ui:include src="/views/user/template/userCreateTemplate.xhtml"/>
+            </ui:insert>
 
         </h:form>
     </h:body>

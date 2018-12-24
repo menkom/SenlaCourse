@@ -20,7 +20,7 @@
                 <p:commandButton update=":mainForm:userUpdateDetail"
                                  oncomplete="PF('userUpdateDialog').show()"
                                  icon="ui-icon-search" title="View">
-                    <f:setPropertyActionListener value="#{c}" target="#{userListBean.selectedItem}"/>
+                    <f:setPropertyActionListener value="#{item}" target="#{userListBean.selectedItem}"/>
                 </p:commandButton>
             </p:column>
 

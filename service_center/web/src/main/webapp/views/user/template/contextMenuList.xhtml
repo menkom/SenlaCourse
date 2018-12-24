@@ -8,9 +8,9 @@
       xmlns:p="http://primefaces.org/ui">
 <f:view>
     <ui:composition>
-        <p:contextMenu for=":mainForm:customers">
+        <p:contextMenu for=":mainForm:users">
             <p:menuitem value="Create" onclick="PF('createUserDialog').show()"/>
-            <p:menuitem value="Delete" update="customers,growl" action="#{userListBean.delete}"/>
+            <p:menuitem value="Delete" update="users,growl" action="#{userListBean.delete}"/>
         </p:contextMenu>
     </ui:composition>
 </f:view>

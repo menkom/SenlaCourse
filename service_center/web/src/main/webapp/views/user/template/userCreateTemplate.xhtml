@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+        <p:dialog header="User Details" widgetVar="createUserDialog" modal="true" resizable="false">
+            <p:outputPanel id="createUserDetail" style="text-align:center;"
+                           rendered="#{not empty userListBean.selectedItem}">
+                <p:panelGrid columns="2">
+                    <h:outputLabel for="userCreateDetailsName" value="Name"/>
+                    <p:inputText id="userCreateDetailsName"
+                                 value="#{userBean.username}"/>
+
+                    <h:outputText for="userCreateDetailsPassword" value="Password:"/>
+                    <p:inputText id="userCreateDetailsPassword" value="#{userBean.password}"/>
+
+                    <p:outputLabel for="userCreateDetailUserType" value="User Type: "/>
+                    <p:selectOneMenu id="userCreateDetailUserType" value="#{userBean.userType}" required="true">
+                        <f:selectItem itemLabel="Select usertype" itemValue=""/>
+                        <f:selectItems value="#{userTypeBean.userTypes}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="userCreateDetailCustomer" value="Customer: "/>
+                    <p:selectOneMenu id="userCreateDetailCustomer"
+                                     filter="true"
+                                     filterMatchMode="startsWith"
+                                     value="#{userBean.customer}"
+                                     converter="#{customerConverter}"
+                                     var="c">
+                        <f:selectItem itemLabel="Select customer" itemValue=""/>
+                        <f:selectItems value="#{customerListBean.getAll()}"
+                                       var="cust"
+                                       itemLabel="#{cust.customerName}"
+                                       itemValue="#{cust}"
+                        />
+                        <p:column style="width:10%">
+                            <h:outputText value="#{c.id}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{c.customerName}"/>
+                        </p:column>
+                    </p:selectOneMenu>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnUserCreateCancel" value="Cancel"
+                                         onclick="createUserDialog.hide(); return false;"/>
+                        <p:commandButton id="btnUserCreate" value="Create" action="#{userBean.create()}"
+                                         onclick="createUserDialog.hide()"
+                                         update="users"/>
+                    </f:facet>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+    </ui:composition>
+</f:view>
+</html>
