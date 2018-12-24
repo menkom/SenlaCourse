@@ -1,10 +1,9 @@
-package info.mastera.beans.userlognhistory;
+package info.mastera.beans.userloginhistory;
 
 import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.UserLoginHistory;
 import info.mastera.service.IUserLoginHistoryService;
 
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

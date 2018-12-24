@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+        <p:dialog header="Order Job Details" widgetVar="createOrderJobDialog" modal="true" resizable="false">
+            <p:outputPanel id="createOrderJobDetail" style="text-align:center;">
+                <p:panelGrid columns="2">
+                    <h:outputLabel for="orderJobCreateDetailCode" value="Code"/>
+                    <p:inputText id="orderJobCreateDetailCode"
+                                 value="#{orderJobBean.code}"/>
+
+                    <h:outputLabel for="orderJobCreateDetailName" value="Name"/>
+                    <p:inputText id="orderJobCreateDetailName"
+                                 value="#{orderJobBean.name}"/>
+
+                    <h:outputLabel for="orderJobCreateDetailPrice" value="Price"/>
+                    <p:inputText id="orderJobCreateDetailPrice"
+                                 value="#{orderJobBean.price}"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnCreateCancel" value="Cancel"
+                                         onclick="createOrderJobDialog.hide(); return false;"/>
+                        <p:commandButton id="btnOrderJobCreate" value="Create" action="#{orderJobBean.create()}"
+                                         onclick="createOrderJobDialog.hide()"
+                                         update="orderJobs"/>
+                    </f:facet>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+    </ui:composition>
+</f:view>
+</html>

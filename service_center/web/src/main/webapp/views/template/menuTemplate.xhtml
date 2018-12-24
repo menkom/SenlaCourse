@@ -22,11 +22,17 @@
             <p:menuitem value="Users" outcome="/views/user/userPageList">
                 <f:param name="i" value="1"/>
             </p:menuitem>
-            <p:menuitem value="User Logins History" outcome="/views/userHistory/userLoginHistoryList">
+            <p:menuitem value="Manufacturers" outcome="/views/manufacturer/manufacturerPageList">
                 <f:param name="i" value="2"/>
             </p:menuitem>
-            <p:menuitem value="Log out" action="#{loginPageBean.logout()}">
+            <p:menuitem value="Order Jobs" outcome="/views/orderJob/orderJobPageList">
                 <f:param name="i" value="3"/>
+            </p:menuitem>
+            <p:menuitem value="User Logins History" outcome="/views/userHistory/userLoginHistoryList">
+                <f:param name="i" value="4"/>
+            </p:menuitem>
+            <p:menuitem value="Log out" action="#{loginPageBean.logout()}">
+                <f:param name="i" value="5"/>
             </p:menuitem>
         </p:tabMenu>
     </ui:composition>

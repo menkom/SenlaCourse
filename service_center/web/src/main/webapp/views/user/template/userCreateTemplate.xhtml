@@ -9,8 +9,7 @@
 <f:view>
     <ui:composition>
         <p:dialog header="User Details" widgetVar="createUserDialog" modal="true" resizable="false">
-            <p:outputPanel id="createUserDetail" style="text-align:center;"
-                           rendered="#{not empty userListBean.selectedItem}">
+            <p:outputPanel id="createUserDetail" style="text-align:center;">
                 <p:panelGrid columns="2">
                     <h:outputLabel for="userCreateDetailsName" value="Name"/>
                     <p:inputText id="userCreateDetailsName"

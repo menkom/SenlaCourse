@@ -17,10 +17,8 @@ public class CustomerListBean extends BaseListBean<Customer> {
     @Inject
     private ICustomerService customerService;
 
-
     @Override
     public List<Customer> getAll() {
-        //TODO Use Lazy method instead
         return customerService.getAll();
     }
 
