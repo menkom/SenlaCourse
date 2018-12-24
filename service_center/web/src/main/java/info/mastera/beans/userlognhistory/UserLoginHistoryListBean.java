@@ -5,12 +5,13 @@ import info.mastera.model.UserLoginHistory;
 import info.mastera.service.IUserLoginHistoryService;
 
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class UserLoginHistoryListBean extends BaseListBean<UserLoginHistory> {
 
     @Inject
@@ -18,8 +19,7 @@ public class UserLoginHistoryListBean extends BaseListBean<UserLoginHistory> {
 
     @Override
     public List<UserLoginHistory> getAll() {
-        //TODO Use Lazy method instead
-        return userLoginHistoryService.getAll();
+        return userLoginHistoryService.getAllAndUser();
     }
 
     @Override

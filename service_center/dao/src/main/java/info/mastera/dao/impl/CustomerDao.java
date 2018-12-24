@@ -14,9 +14,4 @@ public class CustomerDao extends AbstractDao<Customer> implements ICustomerDao<C
         return Customer.class;
     }
 
-    @Override
-    public void fetchLazyObjects(Root<Customer> root) {
-
-    }
-
 }

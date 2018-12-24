@@ -45,6 +45,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> getAllAndCustomer() {
+        return userDao.getAllAndCustomer();
+    }
+
+    @Override
     public Long count() {
         return userDao.count();
     }

@@ -5,12 +5,13 @@ import info.mastera.model.Customer;
 import info.mastera.service.ICustomerService;
 import org.springframework.context.annotation.Scope;
 
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
 @Named
-@Scope("session")
+@ViewScoped
 public class CustomerListBean extends BaseListBean<Customer> {
 
     @Inject

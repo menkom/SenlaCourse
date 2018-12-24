@@ -6,12 +6,12 @@ import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
 import info.mastera.service.IUserService;
 
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class UserBean extends BaseBean {
 
     @Inject

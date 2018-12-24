@@ -16,6 +16,8 @@ public interface IUserService {
 
     List<User> getAll();
 
+    List<User> getAllAndCustomer();
+
     Long count();
 
     User getByUsername(String userName);

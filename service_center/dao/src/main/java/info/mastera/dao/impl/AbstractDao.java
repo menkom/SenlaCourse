@@ -44,7 +44,6 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(getTClass());
         Root<T> root = query.from(getTClass());
-        fetchLazyObjects(root);
         query.select(root).where(builder.equal(root.get(BaseObject_.id), id));
         TypedQuery<T> typedQuery = session.createQuery(query);
         T result = ((Query<T>) typedQuery).uniqueResult();
@@ -69,7 +68,6 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(getTClass());
         Root<T> root = query.from(getTClass());
-        fetchLazyObjects(root);
         query.select(root);
         TypedQuery<T> result = session.createQuery(query);
         return result.getResultList();
@@ -85,8 +83,5 @@ public abstract class AbstractDao<T extends BaseObject> implements IGenericDao<T
         TypedQuery<Long> result = session.createQuery(query);
         return result.getSingleResult();
     }
-
-    @Override
-    public abstract void fetchLazyObjects(Root<T> root);
 
 }

@@ -7,13 +7,14 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.SelectEvent;
 
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.IOException;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class CustomerBean extends BaseBean {
 
     private static final Logger logger = Logger.getLogger(CustomerBean.class);

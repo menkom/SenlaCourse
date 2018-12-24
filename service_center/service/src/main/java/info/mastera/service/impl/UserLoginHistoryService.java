@@ -43,6 +43,11 @@ public class UserLoginHistoryService implements IUserLoginHistoryService {
     }
 
     @Override
+    public List<UserLoginHistory> getAllAndUser() {
+        return userLoginHistoryDao.getAllAndUser();
+    }
+
+    @Override
     public Long count() {
         return userLoginHistoryDao.count();
     }

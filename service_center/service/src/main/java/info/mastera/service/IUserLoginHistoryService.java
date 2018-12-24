@@ -16,6 +16,8 @@ public interface IUserLoginHistoryService{
 
     List<UserLoginHistory> getAll();
 
+    List<UserLoginHistory> getAllAndUser();
+
     Long count();
 
 }

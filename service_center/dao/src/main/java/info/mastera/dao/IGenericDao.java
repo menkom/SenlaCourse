@@ -51,11 +51,4 @@ public interface IGenericDao<T extends BaseObject> {
      */
     Long count();
 
-    /**
-     * Fetch necessary object for lazy initialization
-     *
-     * @param root Root
-     */
-    void fetchLazyObjects(Root<T> root);
-
 }
