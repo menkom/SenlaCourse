@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+
+        <p:dataTable id="customers" value="#{customerListBean.getAll()}" var="c"
+                     rowKey="#{c.id}" selection="#{customerListBean.selectedItem}" selectionMode="single">
+            <f:facet name="header">
+                Customer list
+            </f:facet>
+            <p:column style="width:35px;text-align: center">
+                <p:commandButton update=":mainForm:customerUpdateDetail"
+                                 oncomplete="PF('customerUpdateDialog').show()"
+                                 icon="ui-icon-search" title="View">
+                    <f:setPropertyActionListener value="#{c}" target="#{customerListBean.selectedItem}"/>
+                </p:commandButton>
+            </p:column>
+
+            <p:column headerText="Customer ID">
+                <h:outputText value="#{c.id}"/>
+            </p:column>
+
+            <p:column headerText="Name">
+                <h:outputText value="#{c.customerName}"/>
+            </p:column>
+
+            <p:column headerText="Telephone">
+                <h:outputText value="#{c.telephone}"/>
+            </p:column>
+        </p:dataTable>
+
+    </ui:composition>
+</f:view>
+</html>

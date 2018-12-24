@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+
+    <p:dialog header="Customer Details" widgetVar="customerUpdateDialog" modal="true" resizable="false">
+        <p:outputPanel id="customerUpdateDetail" style="text-align:center;"
+                       rendered="#{not empty customerListBean.selectedItem}">
+            <p:panelGrid columns="2">
+                <h:outputLabel for="customerUpdateDetailsName" value="Name"/>
+                <p:inputText id="customerUpdateDetailsName"
+                             value="#{customerListBean.selectedItem.customerName}"/>
+
+                <h:outputText for="customerUpdateDetailsPhone" value="Phone:"/>
+                <p:inputText id="customerUpdateDetailsPhone" value="#{customerListBean.selectedItem.telephone}"/>
+
+                <f:facet name="footer">
+                    <p:commandButton id="btnUpdateCancel" value="Cancel"
+                                     onclick="customerUpdateDialog.hide(); return false;"/>
+                    <p:commandButton id="btnSave" value="Save" action="#{customerListBean.update()}"
+                                     onclick="customerUpdateDialog.hide()"
+                                     update="customers"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+    </ui:composition>
+
+</f:view>
+</html>

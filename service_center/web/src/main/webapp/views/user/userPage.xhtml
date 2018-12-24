@@ -7,22 +7,17 @@
 <h:head>
     <title>[SC] User page {edit}</title>
 </h:head>
-<script type="text/javascript">
-    function clearForm() {
-        $('#userName').clean();
-        $('#userPassword').clean();
-        $('#userType').clean();
+<style type="text/css">
+    .ui-datatable-header {
+        height: 30px
     }
-</script>
+</style>
 <h:body>
     <f:view>
         <h:form id="form">
             <p:panel id="userPanel">
                 <div align="center">
                     <p:panelGrid columns="2" id="userPanelGrid">
-
-                        <p:outputLabel for="userId" value="user Id: "/>
-                        <p:inputText id="userId" value="#{userBean.userId}" disabled="true"/>
 
                         <p:outputLabel for="userName" value="User Name: "/>
                         <p:inputText id="userName" value="#{userBean.username}"/>

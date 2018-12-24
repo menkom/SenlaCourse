@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+
+        <p:dataTable id="users" value="#{userListBean.getAll()}" var="item"
+                     rowKey="#{item.id}"
+                     selection="#{userListBean.selectedItem}" selectionMode="single">
+            <f:facet name="header">
+                Program users list
+            </f:facet>
+
+            <p:column style="width:35px;text-align: center">
+                <p:commandButton update=":mainForm:userUpdateDetail"
+                                 oncomplete="PF('userUpdateDialog').show()"
+                                 icon="ui-icon-search" title="View">
+                    <f:setPropertyActionListener value="#{c}" target="#{userListBean.selectedItem}"/>
+                </p:commandButton>
+            </p:column>
+
+
+            <p:column headerText="User ID">
+                <h:outputText value="#{item.id}"/>
+            </p:column>
+
+            <p:column headerText="Username">
+                <h:outputText value="#{item.username}"/>
+            </p:column>
+
+            <p:column headerText="Password">
+                <h:outputText value="#{item.password}"/>
+            </p:column>
+
+            <p:column headerText="Usertype">
+                <h:outputText value="#{item.userType}"/>
+            </p:column>
+
+            <p:column headerText="Customer:id">
+                <h:outputText value="#{item.customer.id}"/>
+            </p:column>
+
+            <p:column headerText="Customer:name">
+                <h:outputText value="#{item.getCustomer().customerName}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:composition>
+</f:view>
+</html>

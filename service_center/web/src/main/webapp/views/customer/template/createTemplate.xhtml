@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<f:view>
+    <ui:composition>
+        <p:dialog header="Customer Details" widgetVar="createCustomerDialog" modal="true" resizable="false">
+            <p:outputPanel id="createCustomerDetail" style="text-align:center;"
+                           rendered="#{not empty customerListBean.selectedItem}">
+                <p:panelGrid columns="2">
+                    <h:outputLabel for="customerDetailsName" value="Name"/>
+                    <p:inputText id="customerDetailsName"
+                                 value="#{customerBean.customerName}"/>
+
+                    <h:outputText for="customerDetailsPhone" value="Phone:"/>
+                    <p:inputText id="customerDetailsPhone" value="#{customerBean.telephone}"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton id="btnCreateCancel" value="Cancel"
+                                         onclick="createCustomerDialog.hide(); return false;"/>
+                        <p:commandButton id="btnCustomerCreate" value="Create" action="#{customerBean.create()}"
+                                         onclick="createCustomerDialog.hide()"
+                                         update="customers"/>
+                    </f:facet>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+    </ui:composition>
+</f:view>
+</html>

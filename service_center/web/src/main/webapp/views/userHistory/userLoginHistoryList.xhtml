@@ -4,18 +4,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
     <title>[SC]User Login History</title>
 </h:head>
 <style type="text/css">
     .ui-datatable-header {
-        height: 35px
+        height: 30px
     }
+
 </style>
-<h:body>
-    <f:view>
+<f:view>
+    <h:body>
         <h:form id="mainForm">
+            <ui:insert name="header">
+                <ui:include src="/views/template/menuTemplate.xhtml"/>
+            </ui:insert>
 
             <p:dataTable id="userLoginHistories" value="#{userLoginHistoryListBean.getAll()}" var="userHistory"
                          rowKey="#{userHistory.id}"
@@ -24,7 +29,7 @@
 
                 <f:facet name="header">
                     User Login History List
-                    <p:commandButton id="toggler" type="button" value="Columns" style="float:right"
+                    <p:commandButton id="toggler" type="button" style="float:right"
                                      icon="ui-icon-circle-plus"/>
                     <p:columnToggler datasource="userLoginHistories" trigger="toggler"/>
                 </f:facet>
@@ -47,6 +52,6 @@
             </p:dataTable>
 
         </h:form>
-    </f:view>
-</h:body>
+    </h:body>
+</f:view>
 </html>
