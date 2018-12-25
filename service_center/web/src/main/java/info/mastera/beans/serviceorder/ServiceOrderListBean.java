@@ -31,9 +31,4 @@ public class ServiceOrderListBean  extends BaseListBean<ServiceOrder> {
         clearSelected();
     }
 
-    @Override
-    public void update() {
-        serviceOrderService.update(getSelectedItem());
-    }
-
 }

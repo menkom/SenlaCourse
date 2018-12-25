@@ -31,9 +31,4 @@ public class WarehouseListBean  extends BaseListBean<Warehouse> {
         clearSelected();
     }
 
-    @Override
-    public void update() {
-        warehouseService.update(getSelectedItem());
-    }
-
 }

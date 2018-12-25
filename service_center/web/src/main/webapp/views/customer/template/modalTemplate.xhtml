@@ -20,12 +20,12 @@
                 <f:facet name="footer">
                     <p:commandButton id="btnCancel" value="Cancel"
                                      onclick="modalDialog.hide(); return false;"/>
-                    <p:commandButton id="btnCustomerCreate" value="Create" action="#{customerBean.create()}"
+                    <p:commandButton id="btnCreate" value="Create" action="#{customerBean.create()}"
                                      onclick="modalDialog.hide()"
-                                     update="customers" rendered="#{empty customerBean.customerId}"/>
+                                     update="customers" rendered="#{empty customerBean.id}"/>
                     <p:commandButton id="btnSave" value="Save" action="#{customerBean.update()}"
                                      onclick="modalDialog.hide()"
-                                     update="customers" rendered="#{not empty customerBean.customerId}"/>
+                                     update="customers" rendered="#{not empty customerBean.id}"/>
                 </f:facet>
             </p:panelGrid>
         </p:outputPanel>

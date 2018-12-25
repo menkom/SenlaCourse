@@ -27,8 +27,6 @@ public abstract class BaseListBean<T extends BaseObject> extends BaseBean {
 
     public abstract void delete();
 
-    public abstract void update() ;
-
     public void clearSelected() {
         logger.info("BaseListBean_clearSelected()");
         selectedItem = null;

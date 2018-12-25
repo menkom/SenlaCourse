@@ -2,18 +2,15 @@ package info.mastera.beans.orderjob;
 
 import info.mastera.beans.base.BaseBean;
 import info.mastera.model.OrderJob;
-import info.mastera.service.IManufacturerService;
 import info.mastera.service.IOrderJobService;
 
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class OrderJobBean extends BaseBean {
-
-    private static final String URL_PAGE = "/views/orderJob/orderJobPageList.xhtml?i=3";
 
     @Inject
     private IOrderJobService orderJobService;
@@ -46,25 +43,45 @@ public class OrderJobBean extends BaseBean {
         this.price = price;
     }
 
-    public String cancel() {
-        clearForm();
-        return URL_PAGE;
+    private void setFields(OrderJob orderJob) {
+        if (orderJob != null) {
+            clearForm();
+            setId(orderJob.getId());
+            code = orderJob.getCode();
+            name = orderJob.getName();
+            price = orderJob.getPrice();
+        }
     }
 
-    private void clearForm() {
+    public void update() {
+        OrderJob orderJob = new OrderJob();
+        orderJob.setId(getId());
+        orderJob.setCode(code);
+        orderJob.setName(name);
+        orderJob.setPrice(price);
+        orderJobService.update(orderJob);
+    }
+
+    public void load() {
+        if (getId() != null) {
+            OrderJob orderJob = orderJobService.getById(getId());
+            setFields(orderJob);
+        }
+    }
+
+    public void clearForm() {
+        setId(null);
         name = null;
         code = null;
         price = 0;
     }
 
-    public String create() {
+    public void create() {
         OrderJob orderJob = new OrderJob();
         orderJob.setCode(this.code);
         orderJob.setName(this.name);
         orderJob.setPrice(this.price);
         orderJobService.create(orderJob);
-        clearForm();
-        return URL_PAGE;
     }
 
 }

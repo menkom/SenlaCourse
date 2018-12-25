@@ -6,49 +6,46 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <ui:composition>
+<ui:composition>
+    <p:dataTable id="users" value="#{userListBean.getAll()}" var="item"
+                 rowKey="#{item.id}" selection="#{userListBean.selectedItem}" selectionMode="single">
+        <f:facet name="header">
+            Users list
+        </f:facet>
+        <p:column style="width:35px;text-align: center">
+            <p:commandButton update=":mainForm:userDetail"
+                             action="#{userBean.load()}"
+                             oncomplete="PF('modalDialog').show()"
+                             icon="ui-icon-pencil" title="Edit">
+                <f:setPropertyActionListener value="#{item.id}" target="#{userBean.id}"/>
+            </p:commandButton>
+        </p:column>
 
-        <p:dataTable id="users" value="#{userListBean.getAll()}" var="item"
-                     rowKey="#{item.id}"
-                     selection="#{userListBean.selectedItem}" selectionMode="single">
-            <f:facet name="header">
-                Program users list
-            </f:facet>
+        <p:column headerText="User ID">
+            <h:outputText value="#{item.id}"/>
+        </p:column>
 
-            <p:column style="width:35px;text-align: center">
-                <p:commandButton update=":mainForm:userUpdateDetail"
-                                 oncomplete="PF('userUpdateDialog').show()"
-                                 icon="ui-icon-search" title="View">
-                    <f:setPropertyActionListener value="#{item}" target="#{userListBean.selectedItem}"/>
-                </p:commandButton>
-            </p:column>
+        <p:column headerText="Username">
+            <h:outputText value="#{item.username}"/>
+        </p:column>
+
+        <p:column headerText="Password">
+            <h:outputText value="#{item.password}"/>
+        </p:column>
+
+        <p:column headerText="Usertype">
+            <h:outputText value="#{item.userType}"/>
+        </p:column>
+
+        <p:column headerText="Customer:id">
+            <h:outputText value="#{item.customer.id}"/>
+        </p:column>
+
+        <p:column headerText="Customer:name">
+            <h:outputText value="#{item.getCustomer().customerName}"/>
+        </p:column>
+    </p:dataTable>
+</ui:composition>
 
 
-            <p:column headerText="User ID">
-                <h:outputText value="#{item.id}"/>
-            </p:column>
-
-            <p:column headerText="Username">
-                <h:outputText value="#{item.username}"/>
-            </p:column>
-
-            <p:column headerText="Password">
-                <h:outputText value="#{item.password}"/>
-            </p:column>
-
-            <p:column headerText="Usertype">
-                <h:outputText value="#{item.userType}"/>
-            </p:column>
-
-            <p:column headerText="Customer:id">
-                <h:outputText value="#{item.customer.id}"/>
-            </p:column>
-
-            <p:column headerText="Customer:name">
-                <h:outputText value="#{item.getCustomer().customerName}"/>
-            </p:column>
-        </p:dataTable>
-    </ui:composition>
-</f:view>
 </html>
