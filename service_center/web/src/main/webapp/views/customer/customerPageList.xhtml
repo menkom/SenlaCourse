@@ -14,32 +14,31 @@
         height: 30px
     }
 </style>
-<f:view>
-    <h:body>
-        <h:form id="mainForm">
-            <ui:insert name="header">
-                <ui:include src="/views/template/menuTemplate.xhtml"/>
-            </ui:insert>
 
-            <p:growl id="growl" life="2000"/>
+<h:body>
+    <h:form id="mainForm">
+        <ui:insert name="header">
+            <ui:include src="/views/template/menuTemplate.xhtml"/>
+        </ui:insert>
 
-            <ui:insert name="dataTable">
-                <ui:include src="/views/customer/template/dataTableTemplate.xhtml"/>
-            </ui:insert>
+        <p:growl id="growl" life="2000"/>
 
-            <ui:insert name="contextMenu">
-                <ui:include src="/views/customer/template/contextMenuList.xhtml"/>
-            </ui:insert>
+        <ui:insert name="dataTable">
+            <ui:include src="/views/customer/template/dataTableTemplate.xhtml"/>
+        </ui:insert>
 
-            <ui:insert name="updateDialog">
-                <ui:include src="/views/customer/template/updateTemplate.xhtml"/>
-            </ui:insert>
+        <ui:insert name="contextMenu">
+            <ui:include src="/views/customer/template/contextMenuList.xhtml"/>
+        </ui:insert>
 
-            <ui:insert name="createDialog">
-                <ui:include src="/views/customer/template/createTemplate.xhtml"/>
-            </ui:insert>
+        <ui:insert name="updateDialog">
+            <ui:include src="/views/customer/template/updateTemplate.xhtml"/>
+        </ui:insert>
 
-        </h:form>
-    </h:body>
-</f:view>
+        <ui:insert name="createDialog">
+            <ui:include src="/views/customer/template/createTemplate.xhtml"/>
+        </ui:insert>
+
+    </h:form>
+</h:body>
 </html>

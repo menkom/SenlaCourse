@@ -6,28 +6,26 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <ui:composition>
-        <p:dialog header="Customer Details" widgetVar="createCustomerDialog" modal="true" resizable="false">
-            <p:outputPanel id="createCustomerDetail" style="text-align:center;">
-                <p:panelGrid columns="2">
-                    <h:outputLabel for="customerDetailsName" value="Name"/>
-                    <p:inputText id="customerDetailsName"
-                                 value="#{customerBean.customerName}"/>
+<ui:composition>
+    <p:dialog header="Customer Details" widgetVar="createCustomerDialog" modal="true" resizable="false">
+        <p:outputPanel id="createCustomerDetail" style="text-align:center;">
+            <p:panelGrid columns="2">
+                <h:outputLabel for="customerDetailsName" value="Name"/>
+                <p:inputText id="customerDetailsName"
+                             value="#{customerBean.customerName}"/>
 
-                    <h:outputText for="customerDetailsPhone" value="Phone:"/>
-                    <p:inputText id="customerDetailsPhone" value="#{customerBean.telephone}"/>
+                <h:outputText for="customerDetailsPhone" value="Phone:"/>
+                <p:inputText id="customerDetailsPhone" value="#{customerBean.telephone}"/>
 
-                    <f:facet name="footer">
-                        <p:commandButton id="btnCreateCancel" value="Cancel"
-                                         onclick="createCustomerDialog.hide(); return false;"/>
-                        <p:commandButton id="btnCustomerCreate" value="Create" action="#{customerBean.create()}"
-                                         onclick="createCustomerDialog.hide()"
-                                         update="customers"/>
-                    </f:facet>
-                </p:panelGrid>
-            </p:outputPanel>
-        </p:dialog>
-    </ui:composition>
-</f:view>
+                <f:facet name="footer">
+                    <p:commandButton id="btnCreateCancel" value="Cancel"
+                                     onclick="createCustomerDialog.hide(); return false;"/>
+                    <p:commandButton id="btnCustomerCreate" value="Create" action="#{customerBean.create()}"
+                                     onclick="createCustomerDialog.hide()"
+                                     update="customers"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+</ui:composition>
 </html>

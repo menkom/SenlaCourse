@@ -9,29 +9,30 @@
 <f:view>
     <ui:composition>
 
-        <p:dataTable id="customers" value="#{customerListBean.getAll()}" var="c"
-                     rowKey="#{c.id}" selection="#{customerListBean.selectedItem}" selectionMode="single">
+        <p:dataTable id="customers" value="#{customerListBean.getAll()}" var="item"
+                     rowKey="#{item.id}" selection="#{customerListBean.selectedItem}" selectionMode="single">
             <f:facet name="header">
                 Customer list
             </f:facet>
             <p:column style="width:35px;text-align: center">
                 <p:commandButton update=":mainForm:customerUpdateDetail"
-                                 oncomplete="PF('customerUpdateDialog').show()"
-                                 icon="ui-icon-search" title="View">
-                    <f:setPropertyActionListener value="#{c}" target="#{customerListBean.selectedItem}"/>
+                                 action="#{customerBean.load()}"
+                                 onclick="PF('customerUpdateDialog').show()"
+                                 icon="ui-icon-pencil" title="View">
+                    <f:setPropertyActionListener value="#{item.id}" target="#{customerBean.customerId}"/>
                 </p:commandButton>
             </p:column>
 
             <p:column headerText="Customer ID">
-                <h:outputText value="#{c.id}"/>
+                <h:outputText value="#{item.id}"/>
             </p:column>
 
             <p:column headerText="Name">
-                <h:outputText value="#{c.customerName}"/>
+                <h:outputText value="#{item.customerName}"/>
             </p:column>
 
             <p:column headerText="Telephone">
-                <h:outputText value="#{c.telephone}"/>
+                <h:outputText value="#{item.telephone}"/>
             </p:column>
         </p:dataTable>
 

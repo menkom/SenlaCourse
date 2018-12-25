@@ -14,10 +14,8 @@ import javax.inject.Named;
 import java.io.IOException;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class CustomerBean extends BaseBean {
-
-    private static final String URL_PAGE = "/views/customer/customerPageList";
 
     @Inject
     private ICustomerService customerService;
@@ -52,24 +50,45 @@ public class CustomerBean extends BaseBean {
 
 //TODO 1. after that go to previous page. 2.If it is RequestScope then clearForm is not necessary
 
-    public String cancel() {
+    public void cancel() {
         clearForm();
-        return URL_PAGE;
     }
 
-    private void clearForm() {
+    private void setFields(Customer customer) {
+        if (customer != null) {
+            clearForm();
+            customerId = customer.getId();
+            customerName = customer.getCustomerName();
+            telephone = customer.getTelephone();
+        }
+    }
+
+    public void clearForm() {
         customerId = null;
         customerName = null;
         telephone = null;
     }
 
-    public String create() {
+    public void load() {
+        if (customerId != null) {
+            Customer customer = customerService.getById(customerId);
+            setFields(customer);
+        }
+    }
+    public void create() {
         Customer customer = new Customer();
         customer.setCustomerName(customerName);
         customer.setTelephone(telephone);
         customerService.create(customer);
         clearForm();
-        return URL_PAGE;
+    }
+
+    public void update() {
+        Customer customer = new Customer();
+        customer.setId(customerId);
+        customer.setCustomerName(customerName);
+        customer.setTelephone(telephone);
+        customerService.update(customer);
     }
 
 }
