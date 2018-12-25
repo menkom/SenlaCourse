@@ -31,9 +31,4 @@ public class CustomerListBean extends BaseListBean<Customer> {
         clearSelected();
     }
 
-    @Override
-    public void update() {
-        customerService.update(getSelectedItem());
-    }
-
 }

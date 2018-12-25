@@ -6,25 +6,27 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <ui:composition>
-        <p:dialog header="Manufacturer Details" widgetVar="createManufacturerDialog" modal="true" resizable="false">
-            <p:outputPanel id="createManufacturerDetail" style="text-align:center;">
-                <p:panelGrid columns="2">
-                    <h:outputLabel for="manufacturerDetailName" value="Name"/>
-                    <p:inputText id="manufacturerDetailName"
-                                 value="#{manufacturerBean.name}"/>
+<ui:composition>
+    <p:dialog header="Manufacturer Details" widgetVar="modalDialog" modal="true" resizable="false">
+        <p:outputPanel id="manufacturerDetail" style="text-align:center;">
+            <p:panelGrid columns="2">
 
-                    <f:facet name="footer">
-                        <p:commandButton id="btnCreateCancel" value="Cancel"
-                                         onclick="createManufacturerDialog.hide(); return false;"/>
-                        <p:commandButton id="btnManufacturerCreate" value="Create" action="#{manufacturerBean.create()}"
-                                         onclick="createManufacturerDialog.hide()"
-                                         update="manufacturers"/>
-                    </f:facet>
-                </p:panelGrid>
-            </p:outputPanel>
-        </p:dialog>
-    </ui:composition>
-</f:view>
+                <h:outputLabel for="manufacturerDetailName" value="Name"/>
+                <p:inputText id="manufacturerDetailName"
+                             value="#{manufacturerBean.name}"/>
+
+                <f:facet name="footer">
+                    <p:commandButton id="btnCancel" value="Cancel"
+                                     onclick="modalDialog.hide(); return false;"/>
+                    <p:commandButton id="btnCreate" value="Create" action="#{manufacturerBean.create()}"
+                                     onclick="modalDialog.hide()"
+                                     update="manufacturers" rendered="#{empty manufacturerBean.id}"/>
+                    <p:commandButton id="btnSave" value="Save" action="#{manufacturerBean.update()}"
+                                     onclick="modalDialog.hide()"
+                                     update="manufacturers" rendered="#{not empty manufacturerBean.id}"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+</ui:composition>
 </html>

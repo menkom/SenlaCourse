@@ -6,33 +6,36 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <ui:composition>
-        <p:dialog header="Order Job Details" widgetVar="createOrderJobDialog" modal="true" resizable="false">
-            <p:outputPanel id="createOrderJobDetail" style="text-align:center;">
-                <p:panelGrid columns="2">
-                    <h:outputLabel for="orderJobCreateDetailCode" value="Code"/>
-                    <p:inputText id="orderJobCreateDetailCode"
-                                 value="#{orderJobBean.code}"/>
+<ui:composition>
+    <p:dialog header="Order Job Details" widgetVar="modalDialog" modal="true" resizable="false">
+        <p:outputPanel id="orderJobDetail" style="text-align:center;">
+            <p:panelGrid columns="2">
 
-                    <h:outputLabel for="orderJobCreateDetailName" value="Name"/>
-                    <p:inputText id="orderJobCreateDetailName"
-                                 value="#{orderJobBean.name}"/>
+                <h:outputLabel for="orderJobDetailCode" value="Code"/>
+                <p:inputText id="orderJobDetailCode"
+                             value="#{orderJobBean.code}"/>
 
-                    <h:outputLabel for="orderJobCreateDetailPrice" value="Price"/>
-                    <p:inputText id="orderJobCreateDetailPrice"
-                                 value="#{orderJobBean.price}"/>
+                <h:outputLabel for="orderJobDetailName" value="Name"/>
+                <p:inputText id="orderJobDetailName"
+                             value="#{orderJobBean.name}"/>
 
-                    <f:facet name="footer">
-                        <p:commandButton id="btnCreateCancel" value="Cancel"
-                                         onclick="createOrderJobDialog.hide(); return false;"/>
-                        <p:commandButton id="btnOrderJobCreate" value="Create" action="#{orderJobBean.create()}"
-                                         onclick="createOrderJobDialog.hide()"
-                                         update="orderJobs"/>
-                    </f:facet>
-                </p:panelGrid>
-            </p:outputPanel>
-        </p:dialog>
-    </ui:composition>
-</f:view>
+                <h:outputLabel for="orderJobDetailPrice" value="Price"/>
+                <p:inputText id="orderJobDetailPrice"
+                             value="#{orderJobBean.price}"/>
+
+                <f:facet name="footer">
+                    <p:commandButton id="btnCancel" value="Cancel"
+                                     onclick="modalDialog.hide(); return false;"/>
+                    <p:commandButton id="btnCreate" value="Create" action="#{orderJobBean.create()}"
+                                     onclick="modalDialog.hide()"
+                                     update="orderJobs" rendered="#{empty orderJobBean.id}"/>
+                    <p:commandButton id="btnSave" value="Save" action="#{orderJobBean.update()}"
+                                     onclick="modalDialog.hide()"
+                                     update="orderJobs" rendered="#{not empty orderJobBean.id}"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+
+</ui:composition>
 </html>

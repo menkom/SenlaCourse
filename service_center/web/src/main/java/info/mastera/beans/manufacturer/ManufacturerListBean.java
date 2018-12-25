@@ -30,8 +30,4 @@ public class ManufacturerListBean extends BaseListBean<Manufacturer> {
         clearSelected();
     }
 
-    @Override
-    public void update() {
-        manufacturerService.update(getSelectedItem());
-    }
 }

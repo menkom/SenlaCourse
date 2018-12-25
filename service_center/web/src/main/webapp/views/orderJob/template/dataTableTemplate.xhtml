@@ -6,39 +6,37 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<f:view>
-    <ui:composition>
+<ui:composition>
+    <p:dataTable id="orderJobs" value="#{orderJobListBean.getAll()}" var="item"
+                 rowKey="#{item.id}" selection="#{orderJobListBean.selectedItem}" selectionMode="single">
+        <f:facet name="header">
+            Order Jobs list
+        </f:facet>
+        <p:column style="width:35px;text-align: center">
+            <p:commandButton update=":mainForm:orderJobDetail"
+                             action="#{orderJobBean.load()}"
+                             onclick="PF('modalDialog').show()"
+                             icon="ui-icon-pencil" title="Edit">
+                <f:setPropertyActionListener value="#{item.id}" target="#{orderJobBean.id}"/>
+            </p:commandButton>
+        </p:column>
 
-        <p:dataTable id="orderJobs" value="#{orderJobListBean.getAll()}" var="item"
-                     rowKey="#{item.id}" selection="#{orderJobListBean.selectedItem}" selectionMode="single">
-            <f:facet name="header">
-                Order Jobs list
-            </f:facet>
-            <p:column style="width:35px;text-align: center">
-                <p:commandButton update=":mainForm:orderJobUpdateDetail"
-                                 oncomplete="PF('orderJobUpdateDialog').show()"
-                                 icon="ui-icon-search" title="View">
-                    <f:setPropertyActionListener value="#{item}" target="#{orderJobListBean.selectedItem}"/>
-                </p:commandButton>
-            </p:column>
+        <p:column headerText="ID">
+            <h:outputText value="#{item.id}"/>
+        </p:column>
 
-            <p:column headerText="ID">
-                <h:outputText value="#{item.id}"/>
-            </p:column>
+        <p:column headerText="Name">
+            <h:outputText value="#{item.code}"/>
+        </p:column>
 
-            <p:column headerText="Name">
-                <h:outputText value="#{item.code}"/>
-            </p:column>
+        <p:column headerText="Name">
+            <h:outputText value="#{item.name}"/>
+        </p:column>
 
-            <p:column headerText="Name">
-                <h:outputText value="#{item.name}"/>
-            </p:column>
+        <p:column headerText="Name">
+            <h:outputText value="#{item.price}"/>
+        </p:column>
+    </p:dataTable>
 
-            <p:column headerText="Name">
-                <h:outputText value="#{item.price}"/>
-            </p:column>
-        </p:dataTable>
-
-    </ui:composition>
-</f:view>
+</ui:composition>
 </html>
