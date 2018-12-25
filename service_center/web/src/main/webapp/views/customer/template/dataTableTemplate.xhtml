@@ -15,9 +15,9 @@
                 Customer list
             </f:facet>
             <p:column style="width:35px;text-align: center">
-                <p:commandButton update=":mainForm:customerUpdateDetail"
+                <p:commandButton update=":mainForm:customerDetail"
                                  action="#{customerBean.load()}"
-                                 onclick="PF('customerUpdateDialog').show()"
+                                 onclick="PF('modalDialog').show()"
                                  icon="ui-icon-pencil" title="View">
                     <f:setPropertyActionListener value="#{item.id}" target="#{customerBean.customerId}"/>
                 </p:commandButton>
