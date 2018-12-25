@@ -3,10 +3,10 @@ package info.mastera.converters;
 import info.mastera.model.Customer;
 import info.mastera.model.base.BaseObject;
 import info.mastera.service.ICustomerService;
-import org.springframework.context.annotation.Scope;
 import org.springframework.util.StringUtils;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@Scope("session")
+@RequestScoped
 public class CustomerConverter implements Converter {
 
     private static final String NO_OBJECT_CUSTOMER_FOUND = "No object Customer found for value: ";
