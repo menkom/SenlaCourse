@@ -32,4 +32,9 @@ public class ProductListBean  extends BaseListBean<Product> {
         clearSelected();
     }
 
+    @Override
+    public void update() {
+        productService.update(getSelectedItem());
+    }
+
 }

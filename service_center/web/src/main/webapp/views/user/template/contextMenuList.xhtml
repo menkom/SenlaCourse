@@ -6,12 +6,12 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<ui:composition>
-    <p:contextMenu for=":mainForm:users">
-        <p:menuitem value="Create" update=":mainForm:userDetail"
-                    action="#{userBean.clearForm()}"
-                    onclick="PF('modalDialog').show()"/>
-        <p:menuitem value="Delete" update="users,growl" action="#{userListBean.delete()}"/>
-    </p:contextMenu>
-</ui:composition>
+<f:view>
+    <ui:composition>
+        <p:contextMenu for=":mainForm:users">
+            <p:menuitem value="Create" onclick="PF('createUserDialog').show()"/>
+            <p:menuitem value="Delete" update="users,growl" action="#{userListBean.delete}"/>
+        </p:contextMenu>
+    </ui:composition>
+</f:view>
 </html>

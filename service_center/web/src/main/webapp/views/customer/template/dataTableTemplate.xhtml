@@ -19,7 +19,7 @@
                                  action="#{customerBean.load()}"
                                  onclick="PF('modalDialog').show()"
                                  icon="ui-icon-pencil" title="View">
-                    <f:setPropertyActionListener value="#{item.id}" target="#{customerBean.id}"/>
+                    <f:setPropertyActionListener value="#{item.id}" target="#{customerBean.customerId}"/>
                 </p:commandButton>
             </p:column>
 

@@ -15,11 +15,10 @@
                 Manufacturer list
             </f:facet>
             <p:column style="width:35px;text-align: center">
-                <p:commandButton update=":mainForm:manufacturerDetail"
-                                 action="#{manufacturerBean.load()}"
-                                 onclick="PF('modalDialog').show()"
-                                 icon="ui-icon-pencil" title="Edit">
-                    <f:setPropertyActionListener value="#{item.id}" target="#{manufacturerBean.id}"/>
+                <p:commandButton update=":mainForm:manufacturerUpdateDetail"
+                                 oncomplete="PF('manufacturerUpdateDialog').show()"
+                                 icon="ui-icon-search" title="View">
+                    <f:setPropertyActionListener value="#{item}" target="#{manufacturerListBean.selectedItem}"/>
                 </p:commandButton>
             </p:column>
 

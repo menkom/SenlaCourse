@@ -30,4 +30,9 @@ public class UserLoginHistoryListBean extends BaseListBean<UserLoginHistory> {
         clearSelected();
     }
 
+    @Override
+    public void update() {
+        userLoginHistoryService.update(getSelectedItem());
+    }
+
 }

@@ -31,4 +31,9 @@ public class ServiceOrderPartListBean  extends BaseListBean<ServiceOrderPart> {
         clearSelected();
     }
 
+    @Override
+    public void update() {
+        serviceOrderPartService.update(getSelectedItem());
+    }
+
 }

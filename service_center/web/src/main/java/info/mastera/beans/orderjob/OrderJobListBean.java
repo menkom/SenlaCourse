@@ -30,4 +30,9 @@ public class OrderJobListBean extends BaseListBean<OrderJob> {
         clearSelected();
     }
 
+    @Override
+    public void update() {
+        orderJobService.update(getSelectedItem());
+    }
+
 }

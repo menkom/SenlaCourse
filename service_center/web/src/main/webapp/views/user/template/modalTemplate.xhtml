@@ -6,68 +6,56 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-<ui:composition>
-    <p:dialog header="User Details" widgetVar="modalDialog" modal="true" resizable="false">
-        <p:outputPanel id="userDetail" style="text-align:center;">
-            <p:panelGrid columns="2">
+<f:view>
+    <ui:composition>
+        <p:dialog header="User Details" widgetVar="createUserDialog" modal="true" resizable="false">
+            <p:outputPanel id="createUserDetail" style="text-align:center;">
+                <p:panelGrid columns="2">
+                    <h:outputLabel for="userCreateDetailsName" value="Name"/>
+                    <p:inputText id="userCreateDetailsName"
+                                 value="#{userBean.username}"/>
 
-                <h:outputLabel for="userDetailName" value="Name"/>
-                <p:inputText id="userDetailName"
-                             value="#{userBean.username}"/>
+                    <h:outputText for="userCreateDetailsPassword" value="Password:"/>
+                    <p:inputText id="userCreateDetailsPassword" value="#{userBean.password}"/>
 
-                <h:outputText for="userDetailPassword" value="Password:"/>
-                <p:inputText id="userDetailPassword" value="#{userBean.password}"/>
+                    <p:outputLabel for="userCreateDetailUserType" value="User Type: "/>
+                    <p:selectOneMenu id="userCreateDetailUserType" value="#{userBean.userType}" required="true">
+                        <f:selectItem itemLabel="Select usertype" itemValue=""/>
+                        <f:selectItems value="#{userTypeBean.userTypes}"/>
+                    </p:selectOneMenu>
 
+                    <p:outputLabel for="userCreateDetailCustomer" value="Customer: "/>
+                    <p:selectOneMenu id="userCreateDetailCustomer"
+                                     filter="true"
+                                     filterMatchMode="startsWith"
+                                     value="#{userBean.customer}"
+                                     converter="#{customerConverter}"
+                                     var="c">
+                        <f:selectItem itemLabel="Select customer" itemValue=""/>
+                        <f:selectItems value="#{customerListBean.getAll()}"
+                                       var="cust"
+                                       itemLabel="#{cust.customerName}"
+                                       itemValue="#{cust}"
+                        />
+                        <p:column style="width:10%">
+                            <h:outputText value="#{c.id}"/>
+                        </p:column>
 
-                <p:importEnum type="info.mastera.model.enums.UserType"
-                              var="UserTypes" allSuffix="ALL_USER_TYPES"/>
+                        <p:column>
+                            <h:outputText value="#{c.customerName}"/>
+                        </p:column>
+                    </p:selectOneMenu>
 
-                <p:outputLabel for="userDetailUserType" value="User Type: "/>
-                <p:selectOneMenu id="userDetailUserType"
-                                 value="#{userBean.userType}"
-                                 required="true"
-                                 noSelectionOption="false">
-                    <f:selectItems value="#{UserTypes.ALL_USER_TYPES}"/>
-                </p:selectOneMenu>
-
-                <p:outputLabel for="userDetailCustomer" value="Customer: "/>
-                <p:selectOneMenu id="userDetailCustomer"
-                                 filter="true"
-                                 filterMatchMode="startsWith"
-                                 value="#{userBean.customer}"
-                                 converter="#{customerConverter}"
-                                 var="c">
-
-                    <f:selectItem itemLabel="Select customer" noSelectionOption="true"/>
-                    <f:selectItems value="#{customerListBean.getAll()}"
-                                   var="cust"
-                                   itemLabel="#{cust.customerName}"
-                                   itemValue="#{cust}"
-                    />
-                    <p:column style="width:10%">
-                        <h:outputText value="#{c.id}"/>
-                    </p:column>
-
-                    <p:column>
-                        <h:outputText value="#{c.customerName}"/>
-                    </p:column>
-                </p:selectOneMenu>
-
-
-                <f:facet name="footer">
-                    <p:commandButton id="btnCancel" value="Cancel"
-                                     onclick="modalDialog.hide(); return false;"/>
-                    <p:commandButton id="btnCreate" value="Create"
-                                     action="#{userBean.create()}"
-                                     onclick="modalDialog.hide()"
-                                     update="users" rendered="#{empty userBean.id}"/>
-                    <p:commandButton id="btnSave" value="Save"
-                                     action="#{userBean.update()}"
-                                     onclick="modalDialog.hide()"
-                                     update="users" rendered="#{not empty userBean.id}"/>
-                </f:facet>
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-</ui:composition>
+                    <f:facet name="footer">
+                        <p:commandButton id="btnUserCreateCancel" value="Cancel"
+                                         onclick="createUserDialog.hide(); return false;"/>
+                        <p:commandButton id="btnUserCreate" value="Create" action="#{userBean.create()}"
+                                         onclick="createUserDialog.hide()"
+                                         update="users"/>
+                    </f:facet>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+    </ui:composition>
+</f:view>
 </html>

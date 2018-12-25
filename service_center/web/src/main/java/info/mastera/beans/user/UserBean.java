@@ -17,6 +17,7 @@ public class UserBean extends BaseBean {
     @Inject
     private IUserService userService;
 
+    private Integer userId;
     private String username;
     private String password;
     private UserType userType;
@@ -28,6 +29,14 @@ public class UserBean extends BaseBean {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public UserType getUserType() {
@@ -54,34 +63,44 @@ public class UserBean extends BaseBean {
         this.password = password;
     }
 
-    public void create() {
+    public String create() {
+//TODO We need to hide "create" button when we have ID
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setUserType(userType);
         user.setCustomer(customer);
         userService.create(user);
+        clearForm();
+        return "/views/user/userPageList.xhtml";
     }
 
-    public void clearForm() {
-        setId(null);
-        username = null;
-        password = null;
+    private void clearForm() {
+        userId = null;
+        username = "";
+        password = "";
         userType = null;
         customer = null;
     }
 
-    public void load() {
-        if (getId() != null) {
-            User user = userService.getByIdWithCustomer(getId());
+    public String load() {
+        if (userId != null) {
+            User user = userService.getById(userId);
             setFields(user);
         }
+        return "/views/user/userPage.xhtml";
     }
+
+    public String loadToCreate() {
+        clearForm();
+        return "/views/user/userPage.xhtml";
+    }
+
 
     private void setFields(User user) {
         if (user != null) {
             clearForm();
-            setId(user.getId());
+            userId = user.getId();
             username = user.getUsername();
             password = user.getPassword();
             userType = user.getUserType();
@@ -89,15 +108,23 @@ public class UserBean extends BaseBean {
         }
     }
 
-    public void update() {
+    public String update() {
         User user = new User();
-        user.setId(getId());
+        user.setId(userId);
         user.setUsername(username);
         user.setPassword(password);
         user.setUserType(userType);
         user.setCustomer(customer);
         userService.update(user);
+        clearForm();
+//TODO 1. after that go to previous page. 2.If it is RequestScope then clearForm is not necessary
+        return "/views/user/userPageList.xhtml";
 //TODO Point to updated object. Make it select
+    }
+
+    public String cancel() {
+        clearForm();
+        return "/views/user/userPageList.xhtml";
     }
 
 }

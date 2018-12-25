@@ -15,26 +15,32 @@
     }
 </style>
 
-<h:body>
-    <h:form id="mainForm">
-        <ui:insert name="header">
-            <ui:include src="/views/template/menuTemplate.xhtml"/>
-        </ui:insert>
+<f:view>
+    <h:body>
+        <h:form id="mainForm">
+            <ui:insert name="header">
+                <ui:include src="/views/template/menuTemplate.xhtml"/>
+            </ui:insert>
 
-        <p:growl id="growl" life="2000"/>
+            <p:growl id="growl" life="2000"/>
 
-        <ui:insert name="dataTable">
-            <ui:include src="/views/user/template/dataTableTemplate.xhtml"/>
-        </ui:insert>
+            <ui:insert name="dataTable">
+                <ui:include src="/views/user/template/dataTableTemplate.xhtml"/>
+            </ui:insert>
 
-        <ui:insert name="contextMenu">
-            <ui:include src="/views/user/template/contextMenuList.xhtml"/>
-        </ui:insert>
+            <ui:insert name="contextMenu">
+                <ui:include src="/views/user/template/contextMenuList.xhtml"/>
+            </ui:insert>
 
-        <ui:insert name="updateDialog">
-            <ui:include src="/views/user/template/modalTemplate.xhtml"/>
-        </ui:insert>
+            <ui:insert name="updateDialog">
+                <ui:include src="/views/user/template/userUpdateTemplate.xhtml"/>
+            </ui:insert>
 
-    </h:form>
-</h:body>
+            <ui:insert name="createDialog">
+                <ui:include src="/views/user/template/userCreateTemplate.xhtml"/>
+            </ui:insert>
+
+        </h:form>
+    </h:body>
+</f:view>
 </html>

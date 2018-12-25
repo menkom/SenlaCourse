@@ -17,7 +17,7 @@ public abstract class BaseBean implements Serializable {
     @Inject
     private JwtOperator jwtOperator;
 
-    private Integer id;
+    private static final Logger logger = Logger.getLogger(BaseBean.class);
 
     protected void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -34,14 +34,6 @@ public abstract class BaseBean implements Serializable {
 
     protected void setAuthentication(User user) {
         jwtOperator.setAuthentication(FacesContext.getCurrentInstance(), user);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String logout() {

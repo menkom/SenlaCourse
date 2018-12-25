@@ -4,13 +4,15 @@ import info.mastera.beans.base.BaseBean;
 import info.mastera.model.Manufacturer;
 import info.mastera.service.IManufacturerService;
 
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class ManufacturerBean extends BaseBean {
+
+    private static final String URL_PAGE = "/views/manufacturer/manufacturerPageList.xhtml";
 
     @Inject
     private IManufacturerService manufacturerService;
@@ -25,37 +27,21 @@ public class ManufacturerBean extends BaseBean {
         this.name = name;
     }
 
-    private void setFields(Manufacturer manufacturer) {
-        if (manufacturer != null) {
-            clearForm();
-            setId(manufacturer.getId());
-            name = manufacturer.getName();
-        }
+    public String cancel() {
+        clearForm();
+        return URL_PAGE;
     }
 
-    public void clearForm() {
-        setId(null);
+    private void clearForm() {
         name = null;
     }
 
-    public void create() {
+    public String create() {
         Manufacturer manufacturer = new Manufacturer();
         manufacturer.setName(this.name);
         manufacturerService.create(manufacturer);
-    }
-
-    public void update() {
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(getId());
-        manufacturer.setName(name);
-        manufacturerService.update(manufacturer);
-    }
-
-    public void load() {
-        if (getId() != null) {
-            Manufacturer manufacturer = manufacturerService.getById(getId());
-            setFields(manufacturer);
-        }
+        clearForm();
+        return URL_PAGE;
     }
 
 }

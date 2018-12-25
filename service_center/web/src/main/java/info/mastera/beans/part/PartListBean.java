@@ -31,4 +31,10 @@ public class PartListBean extends BaseListBean<Part> {
         clearSelected();
     }
 
+    @Override
+    public void update() {
+        partService.update(getSelectedItem());
+    }
+
+
 }
