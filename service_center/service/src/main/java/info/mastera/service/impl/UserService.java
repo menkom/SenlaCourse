@@ -40,6 +40,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public User getByIdWithCustomer(int id) {
+        return userDao.getByIdWithCustomer(id);
+    }
+
+    @Override
     public List<User> getAll() {
         return userDao.getAll();
     }

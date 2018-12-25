@@ -8,6 +8,8 @@ public interface IUserDao<T extends User> extends IGenericDao<T> {
 
     User getByUsername(String userName);
 
+    User getByIdWithCustomer(Integer id);
+
     List<T> getAllAndCustomer();
 
 }

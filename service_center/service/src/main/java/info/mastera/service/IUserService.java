@@ -14,6 +14,8 @@ public interface IUserService {
 
     User getById(int id);
 
+    User getByIdWithCustomer(int id);
+
     List<User> getAll();
 
     List<User> getAllAndCustomer();
