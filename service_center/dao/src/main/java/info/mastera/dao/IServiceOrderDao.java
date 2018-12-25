@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface IServiceOrderDao<T extends ServiceOrder> extends IGenericDao<T> {
 
-    List<ServiceOrder> getAllAndProductAndCustomer();
+    List<ServiceOrder> getAllWithProductAndCustomer();
 
-    ServiceOrder getByIdAndPartsAndJobs(int id);
+    ServiceOrder getByIdWithPartsAndJobs(int id);
 
 }

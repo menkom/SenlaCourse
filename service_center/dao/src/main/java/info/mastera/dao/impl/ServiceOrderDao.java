@@ -23,7 +23,7 @@ public class ServiceOrderDao extends AbstractDao<ServiceOrder> implements IServi
     }
 
     @Override
-    public List<ServiceOrder> getAllAndProductAndCustomer() {
+    public List<ServiceOrder> getAllWithProductAndCustomer() {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<ServiceOrder> query = builder.createQuery(getTClass());
@@ -36,7 +36,7 @@ public class ServiceOrderDao extends AbstractDao<ServiceOrder> implements IServi
     }
 
     @Override
-    public ServiceOrder getByIdAndPartsAndJobs(int id) {
+    public ServiceOrder getByIdWithPartsAndJobs(int id) {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<ServiceOrder> query = builder.createQuery(getTClass());
