@@ -1,4 +1,4 @@
-package info.mastera.beans.partcategory;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;

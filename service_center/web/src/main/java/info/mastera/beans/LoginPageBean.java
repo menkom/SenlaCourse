@@ -8,12 +8,16 @@ import info.mastera.service.IUserService;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.util.Date;
 
 @Named
-@Scope("session")
+@RequestScoped
 public class LoginPageBean extends BaseBean {
 
     private static final String USER_AUTHORIZED = "User \"%s\" authorized";
@@ -50,20 +54,24 @@ public class LoginPageBean extends BaseBean {
         this.password = password;
     }
 
-    public String login() {
+    public void login() {
         User tempUser = userService.getByUsername(username);
+        FacesContext context = FacesContext.getCurrentInstance();
         if (tempUser != null && tempUser.getPassword().equals(password)) {
             setAuthentication(tempUser);
             addMessage(String.format(USER_AUTHORIZED, username));
             saveLogin(tempUser);
             clearForm();
             logger.info("redirecting to mainPage");
-            return "/views/mainPage?faces-redirect=true";
+            try {
+                context.getExternalContext().redirect("/views/mainPage.xhtml");
+            } catch (IOException e) {
+                logger.error(e);
+            }
         } else {
             //TODO Correct redirect or correct user informing
             addMessage(WRONG_USERNAME_OR_PASSWORD);
             logger.info("redirecting to error login page");
-            return "/login/loginFailed?faces-redirect=true";
         }
     }
 

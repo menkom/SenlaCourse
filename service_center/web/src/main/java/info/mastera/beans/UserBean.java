@@ -1,4 +1,4 @@
-package info.mastera.beans.user;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;
@@ -7,13 +7,14 @@ import info.mastera.model.User;
 import info.mastera.model.enums.UserType;
 import info.mastera.service.IUserService;
 
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
 
 @Named
-@ViewScoped
+@RequestScoped
 public class UserBean extends BaseListBean<User> {
 
     @Inject

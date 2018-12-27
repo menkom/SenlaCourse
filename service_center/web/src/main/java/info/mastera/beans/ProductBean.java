@@ -1,4 +1,4 @@
-package info.mastera.beans.product;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;
@@ -101,6 +101,5 @@ public class ProductBean extends BaseListBean<Product> {
         product.setManufacturer(this.manufacturer);
         productService.create(product);
     }
-
 
 }

@@ -9,10 +9,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 
 @Named
 public abstract class BaseBean implements Serializable {
+
+    private static final Logger logger = Logger.getLogger(BaseBean.class);
+
+    private static final String MESSAGE_ALREADY_LOGOUT = "You are already logout.";
 
     @Inject
     private JwtOperator jwtOperator;
@@ -44,12 +49,17 @@ public abstract class BaseBean implements Serializable {
         this.id = id;
     }
 
-    public String logout() {
+    public void logout() {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (isAuthorized()) {
-            jwtOperator.logout(FacesContext.getCurrentInstance());
-            return "/login/loginPage?faces-redirect=true";
+            jwtOperator.logout(context);
+            try {
+                context.getExternalContext().redirect("/login/loginPage.xhtml");
+            } catch (IOException e) {
+                logger.error(e);
+            }
         } else {
-            return "";
+            addMessage(MESSAGE_ALREADY_LOGOUT);
         }
     }
 

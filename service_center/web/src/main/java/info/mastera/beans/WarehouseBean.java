@@ -1,4 +1,4 @@
-package info.mastera.beans.warehouse;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.Part;

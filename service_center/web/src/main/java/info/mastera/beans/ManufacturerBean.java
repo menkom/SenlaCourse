@@ -1,4 +1,4 @@
-package info.mastera.beans.manufacturer;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;

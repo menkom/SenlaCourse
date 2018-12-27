@@ -1,4 +1,4 @@
-package info.mastera.beans.userloginhistory;
+package info.mastera.beans;
 
 import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.UserLoginHistory;
