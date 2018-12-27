@@ -8,6 +8,6 @@ public interface IServiceOrderDao<T extends ServiceOrder> extends IGenericDao<T>
 
     List<ServiceOrder> getAllWithProductAndCustomer();
 
-    ServiceOrder getByIdWithPartsAndJobs(int id);
+    ServiceOrder getByIdWithProductAndCutomer(int id);
 
 }

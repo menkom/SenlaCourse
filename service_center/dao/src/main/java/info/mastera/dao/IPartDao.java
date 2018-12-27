@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface IPartDao<T extends Part> extends IGenericDao<T> {
 
-    List<Part> getAllAndPartCategoryAndProduct();
+    List<Part> getAllWithPartCategoryAndProduct();
+
+    Part getByIdWithPartCategoryProduct(int id);
 
 }
 

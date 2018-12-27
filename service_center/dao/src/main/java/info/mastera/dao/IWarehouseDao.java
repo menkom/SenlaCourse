@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IWarehouseDao<T extends Warehouse> extends IGenericDao<T> {
 
-    List<Warehouse> getAllAndPart();
+    List<Warehouse> getAllWithPart();
+
+    Warehouse getByIdWithPart(int id);
 
 }

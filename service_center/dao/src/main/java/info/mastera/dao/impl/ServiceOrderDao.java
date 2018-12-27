@@ -36,14 +36,14 @@ public class ServiceOrderDao extends AbstractDao<ServiceOrder> implements IServi
     }
 
     @Override
-    public ServiceOrder getByIdWithPartsAndJobs(int id) {
+    public ServiceOrder getByIdWithProductAndCutomer(int id) {
         Session session = getSession();
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<ServiceOrder> query = builder.createQuery(getTClass());
         Root<ServiceOrder> root = query.from(getTClass());
         query.select(root).where(builder.equal(root.get(ServiceOrder_.id), id));
-//        root.fetch(ServiceOrder_.product, JoinType.LEFT);
-        //TODO fetch??? or something else
+        root.fetch(ServiceOrder_.product, JoinType.LEFT);
+        root.fetch(ServiceOrder_.customer, JoinType.LEFT);
         TypedQuery<ServiceOrder> typedQuery = session.createQuery(query);
         ServiceOrder result = ((Query<ServiceOrder>) typedQuery).uniqueResult();
         return result;

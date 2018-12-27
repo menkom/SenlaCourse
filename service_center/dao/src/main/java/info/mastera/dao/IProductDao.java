@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IProductDao<T extends Product> extends IGenericDao<T> {
 
-    List<Product> getAllAndManufacturer();
+    Product getByIdWithManufacturer(int id);
+
+    List<Product> getAllWithManufacturer();
 
 }
