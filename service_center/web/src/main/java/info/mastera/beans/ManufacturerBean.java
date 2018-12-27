@@ -1,16 +1,18 @@
 package info.mastera.beans.manufacturer;
 
 import info.mastera.beans.base.BaseBean;
+import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.Manufacturer;
 import info.mastera.service.IManufacturerService;
 
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @Named
 @RequestScoped
-public class ManufacturerBean extends BaseBean {
+public class ManufacturerBean extends BaseListBean<Manufacturer> {
 
     @Inject
     private IManufacturerService manufacturerService;
@@ -23,6 +25,20 @@ public class ManufacturerBean extends BaseBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public List<Manufacturer> getAll() {
+        return manufacturerService.getAll();
+    }
+
+    @Override
+    public void delete() {
+        manufacturerService.delete(getSelectedItem());
+        if (getSelectedItem() != null) {
+            addMessage(String.format(MESSAGE_ITEM_DELETED, getSelectedItem().getId()));
+        }
+        clearSelected();
     }
 
     private void setFields(Manufacturer manufacturer) {

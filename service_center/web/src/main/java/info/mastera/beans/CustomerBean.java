@@ -1,16 +1,18 @@
 package info.mastera.beans.customer;
 
 import info.mastera.beans.base.BaseBean;
+import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.Customer;
 import info.mastera.service.ICustomerService;
 
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @Named
 @RequestScoped
-public class CustomerBean extends BaseBean {
+public class CustomerBean extends BaseListBean<Customer> {
 
     @Inject
     private ICustomerService customerService;
@@ -32,6 +34,20 @@ public class CustomerBean extends BaseBean {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        return customerService.getAll();
+    }
+
+    @Override
+    public void delete() {
+        customerService.delete(getSelectedItem());
+        if (getSelectedItem() != null) {
+            addMessage(String.format(MESSAGE_ITEM_DELETED, getSelectedItem().getId()));
+        }
+        clearSelected();
     }
 
     private void setFields(Customer customer) {

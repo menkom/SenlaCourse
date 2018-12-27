@@ -1,8 +1,11 @@
 package info.mastera.beans.serviceorderpart;
 
+import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;
 import info.mastera.model.ServiceOrderPart;
+import info.mastera.service.IManufacturerService;
 import info.mastera.service.IServiceOrderPartService;
+import info.mastera.service.IServiceOrderService;
 
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -11,7 +14,7 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class ServiceOrderPartListBean  extends BaseListBean<ServiceOrderPart> {
+public class ServiceOrderPartBean extends BaseListBean<ServiceOrderPart> {
 
 
     @Inject
@@ -30,5 +33,6 @@ public class ServiceOrderPartListBean  extends BaseListBean<ServiceOrderPart> {
         }
         clearSelected();
     }
+
 
 }

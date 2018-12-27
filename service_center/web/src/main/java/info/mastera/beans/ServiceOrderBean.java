@@ -1,10 +1,10 @@
-package info.mastera.beans.product;
+package info.mastera.beans.serviceorder;
 
+import info.mastera.beans.base.BaseBean;
 import info.mastera.beans.base.BaseListBean;
-import info.mastera.model.Product;
-import info.mastera.service.ICustomerService;
+import info.mastera.model.ServiceOrder;
 import info.mastera.service.IManufacturerService;
-import info.mastera.service.IProductService;
+import info.mastera.service.IServiceOrderService;
 
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
@@ -13,19 +13,19 @@ import java.util.List;
 
 @Named
 @ViewScoped
-public class ProductListBean  extends BaseListBean<Product> {
+public class ServiceOrderBean extends BaseListBean<ServiceOrder> {
 
     @Inject
-    private IProductService productService;
+    private IServiceOrderService serviceOrderService;
 
     @Override
-    public List<Product> getAll() {
-        return productService.getAll();
+    public List<ServiceOrder> getAll() {
+        return serviceOrderService.getAll();
     }
 
     @Override
     public void delete() {
-        productService.delete(getSelectedItem());
+        serviceOrderService.delete(getSelectedItem());
         if (getSelectedItem() != null) {
             addMessage(String.format(MESSAGE_ITEM_DELETED, getSelectedItem().getId()));
         }
