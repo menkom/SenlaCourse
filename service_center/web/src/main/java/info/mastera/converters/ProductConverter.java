@@ -1,8 +1,10 @@
 package info.mastera.converters;
 
 import info.mastera.model.Customer;
+import info.mastera.model.Product;
 import info.mastera.model.base.BaseObject;
 import info.mastera.service.ICustomerService;
+import info.mastera.service.IProductService;
 import org.springframework.util.StringUtils;
 
 import javax.faces.application.FacesMessage;
@@ -16,15 +18,14 @@ import javax.inject.Named;
 
 @Named
 @RequestScoped
-public class CustomerConverter extends GenericConverter<Customer> {
+public class ProductConverter extends GenericConverter<Product> {
 
     @Inject
-    private ICustomerService customerService;
-
+    private IProductService productService;
 
     @Override
-    protected Customer getById(Integer id) {
-        return customerService.getById(id);
+    protected Product getById(Integer id) {
+        return productService.getById(id);
     }
 
 }
