@@ -44,7 +44,10 @@
     <title>Login page</title>
 </h:head>
 <h:body>
-    <h:form>
+    <h:form id="mainForm">
+
+        <p:growl id="growl"/>
+
         <div align="center">
             <div class="outer">
                 <p:panel header="Login">
@@ -62,7 +65,7 @@
                             <p:message for="password"/>
 
                         </h:panelGrid>
-                        <p:commandButton value="Login" action="#{loginPageBean.login}"/>
+                        <p:commandButton value="Login" action="#{loginPageBean.login()}" update="growl"/>
 
                     </div>
                 </p:panel>
