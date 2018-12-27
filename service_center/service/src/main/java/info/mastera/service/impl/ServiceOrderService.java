@@ -46,4 +46,14 @@ public class ServiceOrderService implements IServiceOrderService {
         return serviceOrderDao.count();
     }
 
+    @Override
+    public List<ServiceOrder> getAllWithProductAndCustomer() {
+        return serviceOrderDao.getAllWithProductAndCustomer();
+    }
+
+    @Override
+    public ServiceOrder getByIdWithProductAndCutomer(int id) {
+        return serviceOrderDao.getByIdWithProductAndCutomer(id);
+    }
+
 }

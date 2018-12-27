@@ -18,4 +18,8 @@ public interface IProductService {
 
     Long count();
 
+    Product getByIdWithManufacturer(int id);
+
+    List<Product> getAllWithManufacturer();
+
 }

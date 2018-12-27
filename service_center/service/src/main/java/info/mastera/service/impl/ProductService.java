@@ -46,4 +46,14 @@ public class ProductService implements IProductService {
         return productDao.count();
     }
 
+    @Override
+    public Product getByIdWithManufacturer(int id) {
+        return productDao.getByIdWithManufacturer(id);
+    }
+
+    @Override
+    public List<Product> getAllWithManufacturer() {
+        return productDao.getAllWithManufacturer();
+    }
+
 }

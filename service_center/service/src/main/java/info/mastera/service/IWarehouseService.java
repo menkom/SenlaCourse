@@ -18,4 +18,8 @@ public interface IWarehouseService {
 
     Long count();
 
+    List<Warehouse> getAllWithPart();
+
+    Warehouse getByIdWithPart(int id);
+
 }

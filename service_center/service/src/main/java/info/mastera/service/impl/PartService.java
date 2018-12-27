@@ -46,4 +46,14 @@ public class PartService implements IPartService {
         return partDao.count();
     }
 
+    @Override
+    public List<Part> getAllWithPartCategoryAndProduct() {
+        return partDao.getAllWithPartCategoryAndProduct();
+    }
+
+    @Override
+    public Part getByIdWithPartCategoryAndProduct(int id) {
+        return partDao.getByIdWithPartCategoryProduct(id);
+    }
+
 }

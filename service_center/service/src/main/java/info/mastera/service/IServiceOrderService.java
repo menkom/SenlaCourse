@@ -18,4 +18,8 @@ public interface IServiceOrderService {
 
     Long count();
 
+    List<ServiceOrder> getAllWithProductAndCustomer();
+
+    ServiceOrder getByIdWithProductAndCutomer(int id);
+
 }

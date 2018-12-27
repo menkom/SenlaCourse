@@ -46,4 +46,14 @@ public class WarehouseService implements IWarehouseService {
         return warehouseDao.count();
     }
 
+    @Override
+    public List<Warehouse> getAllWithPart() {
+        return warehouseDao.getAllWithPart();
+    }
+
+    @Override
+    public Warehouse getByIdWithPart(int id) {
+        return warehouseDao.getByIdWithPart(id);
+    }
+
 }

@@ -17,5 +17,8 @@ public interface IPartService {
 
     Long count();
 
+    List<Part> getAllWithPartCategoryAndProduct();
+
+    Part getByIdWithPartCategoryAndProduct(int id);
 
 }
