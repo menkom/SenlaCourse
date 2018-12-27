@@ -7,15 +7,15 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
-    <p:dataTable id="users" value="#{userListBean.getAll()}" var="item"
-                 rowKey="#{item.id}" selection="#{userListBean.selectedItem}" selectionMode="single">
+    <p:dataTable id="users" value="#{userBean.getAll()}" var="item"
+                 rowKey="#{item.id}" selection="#{userBean.selectedItem}" selectionMode="single">
         <f:facet name="header">
             Users list
         </f:facet>
         <p:column style="width:35px;text-align: center">
             <p:commandButton update=":mainForm:userDetail"
                              action="#{userBean.load()}"
-                             oncomplete="PF('modalDialog').show()"
+                             oncomplete="PF('modalUserDialog').show()"
                              icon="ui-icon-pencil" title="Edit">
                 <f:setPropertyActionListener value="#{item.id}" target="#{userBean.id}"/>
             </p:commandButton>

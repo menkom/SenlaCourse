@@ -9,8 +9,8 @@
 <f:view>
     <ui:composition>
 
-        <p:dataTable id="manufacturers" value="#{manufacturerListBean.getAll()}" var="item"
-                     rowKey="#{item.id}" selection="#{manufacturerListBean.selectedItem}" selectionMode="single">
+        <p:dataTable id="manufacturers" value="#{manufacturerBean.getAll()}" var="item"
+                     rowKey="#{item.id}" selection="#{manufacturerBean.selectedItem}" selectionMode="single">
             <f:facet name="header">
                 Manufacturer list
             </f:facet>

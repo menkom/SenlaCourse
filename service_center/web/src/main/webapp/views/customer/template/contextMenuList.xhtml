@@ -7,8 +7,8 @@
 <ui:composition>
     <p:contextMenu for=":mainForm:customers">
         <p:menuitem value="Create" update=":mainForm:customerDetail" action="#{customerBean.clearForm()}"
-                    onclick="PF('modalDialog').show()"/>
-        <p:menuitem value="Delete" update="customers,growl" action="#{customerListBean.delete}"/>
+                    onclick="PF('modalCustomerDialog').show()"/>
+        <p:menuitem value="Delete" update="customers,growl" action="#{customerBean.delete}"/>
     </p:contextMenu>
 </ui:composition>
 </html>

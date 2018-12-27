@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+
+    <p:dialog header="Part Details" widgetVar="modalDialog" modal="true" resizable="false">
+        <p:outputPanel id="partDetail" style="text-align:center;">
+            <p:panelGrid columns="2">
+
+                <p:outputLabel for="partDetailPartCategory" value="Part category: "/>
+                <p:selectOneMenu id="partDetailPartCategory"
+                                 filter="true"
+                                 filterMatchMode="startsWith"
+                                 value="#{partBean.partCategory}"
+                                 converter="#{partCategoryConverter}"
+                                 var="p">
+
+                    <f:selectItem itemLabel="Select part category" noSelectionOption="true"/>
+                    <f:selectItems value="#{partCategoryBean.getAll()}"
+                                   var="partCategory"
+                                   itemLabel="#{partCategory.name}"
+                                   itemValue="#{partCategory}"/>
+                    <p:column style="width:10%">
+                        <h:outputText value="#{p.id}"/>
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{p.name}"/>
+                    </p:column>
+                </p:selectOneMenu>
+
+
+                <p:outputLabel for="partDetailProduct" value="Product: "/>
+                <p:selectOneMenu id="partDetailProduct"
+                                 filter="true"
+                                 filterMatchMode="startsWith"
+                                 value="#{partBean.product}"
+                                 converter="#{productConverter}"
+                                 var="p">
+
+                    <f:selectItem itemLabel="Select product" noSelectionOption="true"/>
+                    <f:selectItems value="#{productBean.getAll()}"
+                                   var="product"
+                                   itemLabel="#{product.name}"
+                                   itemValue="#{product}"/>
+                    <p:column style="width:10%">
+                        <h:outputText value="#{p.id}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{p.name}"/>
+                    </p:column>
+                </p:selectOneMenu>
+
+
+                <h:outputLabel for="partDetailName" value="Name"/>
+                <p:inputText id="partDetailName"
+                             value="#{partBean.name}"/>
+
+                <f:facet name="footer">
+                    <p:commandButton id="btnCancel" value="Cancel"
+                                     onclick="modalDialog.hide(); return false;"/>
+                    <p:commandButton id="btnCreate" value="Create" action="#{partBean.create()}"
+                                     onclick="modalDialog.hide()"
+                                     update="parts" rendered="#{empty partBean.id}"/>
+                    <p:commandButton id="btnSave" value="Save" action="#{partBean.update()}"
+                                     onclick="modalDialog.hide()"
+                                     update="parts" rendered="#{not empty partBean.id}"/>
+                </f:facet>
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+
+
+</ui:composition>
+</html>

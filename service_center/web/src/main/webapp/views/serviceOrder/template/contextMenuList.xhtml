@@ -7,11 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
-    <p:contextMenu for=":mainForm:manufacturers">
-        <p:menuitem value="Create" update=":mainForm:manufacturerDetail"
-                    action="#{manufacturerBean.clearForm()}"
-                    onclick="PF('modalDialog').show()"/>
-        <p:menuitem value="Delete" update="manufacturers,growl" action="#{manufacturerBean.delete}"/>
+    <p:contextMenu for=":mainForm:serviceOrders">
+        <p:menuitem value="Create" update=":mainForm:serviceOrderDetail"
+                    action="#{serviceOrderBean.clearForm()}"
+                    onclick="PF('modalServiceOrderDialog').show()"/>
+        <p:menuitem value="Delete" update="serviceOrders,growl" action="#{serviceOrderBean.delete()}"/>
     </p:contextMenu>
 </ui:composition>
 </html>

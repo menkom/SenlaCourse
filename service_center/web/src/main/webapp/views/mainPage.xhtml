@@ -8,13 +8,16 @@
 <h:head>
     <title>[SC]List of operations</title>
 </h:head>
-<h:body>
+<style type="text/css">
+    .li {
+        height: 35px
+    }
+</style><h:body>
     <h:form>
-        <p:panel align="center">
-            <ui:insert name="header">
-                <ui:include src="/views/template/menuTemplate.xhtml"/>
-            </ui:insert>
-        </p:panel>
+        <ui:insert name="header">
+            <ui:include src="/views/template/menuTemplate.xhtml"/>
+        </ui:insert>
+        <p:growl id="growl"/>
     </h:form>
 </h:body>
 </html>

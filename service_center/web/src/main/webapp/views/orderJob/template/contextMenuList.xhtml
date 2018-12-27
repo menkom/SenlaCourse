@@ -11,7 +11,7 @@
         <p:menuitem value="Create" update=":mainForm:orderJobDetail"
                     action="#{orderJobBean.clearForm()}"
                     onclick="PF('modalDialog').show()"/>
-        <p:menuitem value="Delete" update="orderJobs,growl" action="#{orderJobListBean.delete()}"/>
+        <p:menuitem value="Delete" update="orderJobs,growl" action="#{orderJobBean.delete()}"/>
     </p:contextMenu>
 </ui:composition>
 </html>

@@ -8,16 +8,15 @@
       xmlns:p="http://primefaces.org/ui">
 <f:view>
     <ui:composition>
-
-        <p:dataTable id="customers" value="#{customerListBean.getAll()}" var="item"
-                     rowKey="#{item.id}" selection="#{customerListBean.selectedItem}" selectionMode="single">
+        <p:dataTable id="customers" value="#{customerBean.getAll()}" var="item"
+                     rowKey="#{item.id}" selection="#{customerBean.selectedItem}" selectionMode="single">
             <f:facet name="header">
                 Customer list
             </f:facet>
             <p:column style="width:35px;text-align: center">
                 <p:commandButton update=":mainForm:customerDetail"
                                  action="#{customerBean.load()}"
-                                 onclick="PF('modalDialog').show()"
+                                 onclick="PF('modalCustomerDialog').show()"
                                  icon="ui-icon-pencil" title="View">
                     <f:setPropertyActionListener value="#{item.id}" target="#{customerBean.id}"/>
                 </p:commandButton>

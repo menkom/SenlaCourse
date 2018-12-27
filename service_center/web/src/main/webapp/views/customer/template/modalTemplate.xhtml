@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
-    <p:dialog header="Customer Details" widgetVar="modalDialog" modal="true" resizable="false">
+    <p:dialog header="Customer Details" widgetVar="modalCustomerDialog" modal="true" resizable="false">
         <p:outputPanel id="customerDetail" style="text-align:center;">
             <p:panelGrid columns="2">
                 <h:outputLabel for="customerDetailName" value="Name"/>
@@ -18,14 +18,14 @@
                 <p:inputText id="customerDetailPhone" value="#{customerBean.telephone}"/>
 
                 <f:facet name="footer">
-                    <p:commandButton id="btnCancel" value="Cancel"
-                                     onclick="modalDialog.hide(); return false;"/>
-                    <p:commandButton id="btnCreate" value="Create" action="#{customerBean.create()}"
-                                     onclick="modalDialog.hide()"
-                                     update="customers" rendered="#{empty customerBean.id}"/>
-                    <p:commandButton id="btnSave" value="Save" action="#{customerBean.update()}"
-                                     onclick="modalDialog.hide()"
-                                     update="customers" rendered="#{not empty customerBean.id}"/>
+                    <p:commandButton id="btnCustomerCancel" value="Cancel"
+                                     onclick="PF('modalCustomerDialog').hide();$('#form').trigger('reset');"/>
+                    <p:commandButton id="btnCustomerCreate" value="Create" action="#{customerBean.create()}"
+                                     onclick="PF('modalCustomerDialog').hide()"
+                                     rendered="#{empty customerBean.id}"/>
+                    <p:commandButton id="btnCustomerSave" value="Save" action="#{customerBean.update()}"
+                                     onclick="PF('modalCustomerDialog').hide()"
+                                     rendered="#{not empty customerBean.id}"/>
                 </f:facet>
             </p:panelGrid>
         </p:outputPanel>

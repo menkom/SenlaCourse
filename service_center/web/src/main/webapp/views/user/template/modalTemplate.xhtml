@@ -7,29 +7,29 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition>
-    <p:dialog header="User Details" widgetVar="modalDialog" modal="true" resizable="false">
+    <p:dialog header="User Details" widgetVar="modalUserDialog" modal="true" resizable="false">
         <p:outputPanel id="userDetail" style="text-align:center;">
-            <p:panelGrid columns="2">
+            <p:panelGrid columns="3">
 
                 <h:outputLabel for="userDetailName" value="Name"/>
                 <p:inputText id="userDetailName"
                              value="#{userBean.username}"/>
-
+<p/>
                 <h:outputText for="userDetailPassword" value="Password:"/>
                 <p:inputText id="userDetailPassword" value="#{userBean.password}"/>
-
+<p/>
 
                 <p:importEnum type="info.mastera.model.enums.UserType"
-                              var="UserTypes" allSuffix="ALL_USER_TYPES"/>
+                              var="RepairStatuses" allSuffix="ALL_USER_TYPES"/>
 
                 <p:outputLabel for="userDetailUserType" value="User Type: "/>
                 <p:selectOneMenu id="userDetailUserType"
                                  value="#{userBean.userType}"
                                  required="true"
                                  noSelectionOption="false">
-                    <f:selectItems value="#{UserTypes.ALL_USER_TYPES}"/>
+                    <f:selectItems value="#{RepairStatuses.ALL_USER_TYPES}"/>
                 </p:selectOneMenu>
-
+<p/>
                 <p:outputLabel for="userDetailCustomer" value="Customer: "/>
                 <p:selectOneMenu id="userDetailCustomer"
                                  filter="true"
@@ -37,9 +37,8 @@
                                  value="#{userBean.customer}"
                                  converter="#{customerConverter}"
                                  var="c">
-
                     <f:selectItem itemLabel="Select customer" noSelectionOption="true"/>
-                    <f:selectItems value="#{customerListBean.getAll()}"
+                    <f:selectItems value="#{customerBean.getAll()}"
                                    var="cust"
                                    itemLabel="#{cust.customerName}"
                                    itemValue="#{cust}"
@@ -47,23 +46,27 @@
                     <p:column style="width:10%">
                         <h:outputText value="#{c.id}"/>
                     </p:column>
-
                     <p:column>
                         <h:outputText value="#{c.customerName}"/>
                     </p:column>
                 </p:selectOneMenu>
 
+                <p:commandButton icon="ui-icon-circle-plus"
+                                 update=":mainForm:customerDetail"
+                                 action="#{customerBean.clearForm()}"
+                                 onclick="PF('modalCustomerDialog').show()"/>
+
 
                 <f:facet name="footer">
-                    <p:commandButton id="btnCancel" value="Cancel"
-                                     onclick="modalDialog.hide(); return false;"/>
-                    <p:commandButton id="btnCreate" value="Create"
+                    <p:commandButton id="btnUserCancel" value="Cancel"
+                                     onclick="PF('modalUserDialog').hide(); return false;"/>
+                    <p:commandButton id="btnUserCreate" value="Create"
                                      action="#{userBean.create()}"
-                                     onclick="modalDialog.hide()"
+                                     onclick="PF('modalUserDialog').hide()"
                                      update="users" rendered="#{empty userBean.id}"/>
-                    <p:commandButton id="btnSave" value="Save"
+                    <p:commandButton id="btnUserSave" value="Save"
                                      action="#{userBean.update()}"
-                                     onclick="modalDialog.hide()"
+                                     onclick="PF('modalUserDialog').hide()"
                                      update="users" rendered="#{not empty userBean.id}"/>
                 </f:facet>
             </p:panelGrid>
