@@ -5,6 +5,7 @@ import info.mastera.model.enums.UserType;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * User - user with login and password to use this program
@@ -96,21 +97,21 @@ public class User extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        User user = (User) other;
-        return super.equals(other)
-                && isEqual(username, user.getUsername())
-                && isEqual(password, user.getPassword())
-                && isEqual(customer, user.getCustomer())
-                && isEqual(userType, user.getUserType());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof User)) || (!super.equals(o))) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(getUsername(), user.getUsername()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                getUserType() == user.getUserType();
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), username);
-        result = objHash(result, password);
-        result = objHash(result, customer);
-        return objHash(result, userType);
+        return Objects.hash(super.hashCode(), getUsername(), getPassword(), getUserType());
     }
-
 }

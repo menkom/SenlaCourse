@@ -1,6 +1,7 @@
 package info.mastera.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -77,19 +78,21 @@ public class Product extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        Product product = (Product) other;
-        return super.equals(other)
-                && isEqual(name, product.getName())
-                && isEqual(code, product.getCode())
-                && isEqual(manufacturer, product.getManufacturer());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof Product)) || (!super.equals(o))) {
+            return false;
+        }
+        Product product = (Product) o;
+        return Objects.equals(getCode(), product.getCode()) &&
+                Objects.equals(getName(), product.getName());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), code);
-        result = objHash(result, name);
-        return objHash(result, manufacturer);
+        return Objects.hash(super.hashCode(), getCode(), getName());
     }
 
 }

@@ -4,6 +4,7 @@ import info.mastera.model.base.BaseObject;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_login_history", schema = "service_center")
@@ -35,17 +36,20 @@ public class UserLoginHistory extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        UserLoginHistory userLoginHistory = (UserLoginHistory) other;
-        return super.equals(other)
-                && isEqual(loginTime, userLoginHistory.getLoginTime())
-                && isEqual(user, userLoginHistory.getUser());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof UserLoginHistory)) || (!super.equals(o))) {
+            return false;
+        }
+        UserLoginHistory that = (UserLoginHistory) o;
+        return Objects.equals(getLoginTime(), that.getLoginTime());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), loginTime);
-        return objHash(result, user);
+        return Objects.hash(super.hashCode(), getLoginTime());
     }
 
 }

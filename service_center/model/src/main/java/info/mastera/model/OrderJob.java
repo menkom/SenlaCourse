@@ -1,6 +1,7 @@
 package info.mastera.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -63,19 +64,22 @@ public class OrderJob extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        OrderJob orderJob = (OrderJob) other;
-        return super.equals(other)
-                && isEqual(price, orderJob.getPrice())
-                && isEqual(code, orderJob.getCode())
-                && isEqual(name, orderJob.getName());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof OrderJob)) || (!super.equals(o))) {
+            return false;
+        }
+        OrderJob orderJob = (OrderJob) o;
+        return Objects.equals(getCode(), orderJob.getCode()) &&
+                Objects.equals(getName(), orderJob.getName()) &&
+                Objects.equals(getPrice(), orderJob.getPrice());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), code);
-        result = objHash(result, name);
-        return objHash(result, price);
+        return Objects.hash(super.hashCode(), getCode(), getName(), getPrice());
     }
 
 }

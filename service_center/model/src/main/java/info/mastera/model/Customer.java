@@ -4,6 +4,7 @@ import info.mastera.model.base.BaseObject;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer", schema = "service_center")
@@ -63,16 +64,21 @@ public class Customer extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        Customer customer = (Customer) other;
-        return super.equals(other)
-                && isEqual(customerName, customer.getCustomerName())
-                && isEqual(telephone, customer.getTelephone());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof Customer)) || (!super.equals(o))) {
+            return false;
+        }
+        Customer customer = (Customer) o;
+        return Objects.equals(getCustomerName(), customer.getCustomerName()) &&
+                Objects.equals(getTelephone(), customer.getTelephone());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), customerName);
-        return objHash(result, telephone);
+        return Objects.hash(super.hashCode(), getCustomerName(), getTelephone());
     }
+
 }

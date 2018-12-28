@@ -2,13 +2,12 @@ package info.mastera.model.base;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @MappedSuperclass
 public abstract class BaseObject implements Serializable {
 
     private static final long serialVersionUID = -9131179498317687352L;
-
-    private static final int prime = 31;
 
     @Id
     @Column(name = "id")
@@ -30,27 +29,19 @@ public abstract class BaseObject implements Serializable {
 
     @Override
     public int hashCode() {
-        return objHash(1,id);
-    }
-
-    protected int objHash(int hash, Object obj) {
-        return prime * hash + ((obj == null) ? 0 : obj.hashCode());
+        return Objects.hash(getId());
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (this == other) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (other == null || getClass() != other.getClass()) {
+        if (!(o instanceof BaseObject)) {
             return false;
         }
-        BaseObject baseObject = (BaseObject) other;
-        return isEqual(id, baseObject.getId());
-    }
-
-    protected boolean isEqual(Object obj1, Object obj2) {
-        return (obj1 != null && obj1.equals(obj2));
+        BaseObject that = (BaseObject) o;
+        return Objects.equals(getId(), that.getId());
     }
 
 }

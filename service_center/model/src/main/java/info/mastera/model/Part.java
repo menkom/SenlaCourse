@@ -4,6 +4,7 @@ import info.mastera.model.base.BaseObject;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "part", schema = "service_center")
@@ -57,19 +58,20 @@ public class Part extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        Part part = (Part) other;
-        return super.equals(other)
-                && isEqual(name, part.getName())
-                && isEqual(product, part.getProduct())
-                && isEqual(partCategory, part.getPartCategory());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof Part)) || (!super.equals(o))) {
+            return false;
+        }
+        Part part = (Part) o;
+        return Objects.equals(getName(), part.getName());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), name);
-        result = objHash(result, product);
-        return objHash(result, partCategory);
+        return Objects.hash(super.hashCode(), getName());
     }
 
 }

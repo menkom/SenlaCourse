@@ -6,6 +6,7 @@ import info.mastera.model.enums.RepairStatus;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "service_order", schema = "service_center")
@@ -230,49 +231,37 @@ public class ServiceOrder extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        ServiceOrder serviceOrder = (ServiceOrder) other;
-        return super.equals(other)
-                && isEqual(repairStatus, serviceOrder.getRepairStatus())
-                && isEqual(checkSerial, serviceOrder.getCheckSerial())
-
-                && isEqual(expectedCost, serviceOrder.getExpectedCost())
-                && isEqual(prepaid, serviceOrder.getPrepaid())
-                && isEqual(finalPrice, serviceOrder.getFinalPrice())
-
-                && isEqual(dateExpected, serviceOrder.getDateExpected())
-                && isEqual(dateFinish, serviceOrder.getDateFinish())
-                && isEqual(dateWarranty, serviceOrder.getDateWarranty())
-                && isEqual(dateOrder, serviceOrder.getDateOrder())
-
-                && isEqual(code, serviceOrder.getCode())
-                && isEqual(serial, serviceOrder.getSerial())
-                && isEqual(clientFault, serviceOrder.getClientFault())
-                && isEqual(comment, serviceOrder.getComment())
-                && isEqual(engineerDescr, serviceOrder.getEngineerDescr())
-
-                && isEqual(customer, serviceOrder.getCustomer())
-                && isEqual(product, serviceOrder.getProduct());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof ServiceOrder)) || (!super.equals(o))) {
+            return false;
+        }
+        ServiceOrder that = (ServiceOrder) o;
+        return getRepairStatus() == that.getRepairStatus() &&
+                Objects.equals(getCode(), that.getCode()) &&
+                Objects.equals(getDateOrder(), that.getDateOrder()) &&
+                Objects.equals(getCheckSerial(), that.getCheckSerial()) &&
+                Objects.equals(getSerial(), that.getSerial()) &&
+                Objects.equals(getClientFault(), that.getClientFault()) &&
+                Objects.equals(getComment(), that.getComment()) &&
+                Objects.equals(getEngineerDescr(), that.getEngineerDescr()) &&
+                Objects.equals(getDateExpected(), that.getDateExpected()) &&
+                Objects.equals(getExpectedCost(), that.getExpectedCost()) &&
+                Objects.equals(getPrepaid(), that.getPrepaid()) &&
+                Objects.equals(getFinalPrice(), that.getFinalPrice()) &&
+                Objects.equals(getDateFinish(), that.getDateFinish()) &&
+                Objects.equals(getDateWarranty(), that.getDateWarranty());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), repairStatus);
-        result = objHash(result, checkSerial);
-        result = objHash(result, expectedCost);
-        result = objHash(result, prepaid);
-        result = objHash(result, finalPrice);
-        result = objHash(result, dateExpected);
-        result = objHash(result, dateFinish);
-        result = objHash(result, dateWarranty);
-        result = objHash(result, dateOrder);
-        result = objHash(result, code);
-        result = objHash(result, serial);
-        result = objHash(result, clientFault);
-        result = objHash(result, comment);
-        result = objHash(result, engineerDescr);
-        result = objHash(result, customer);
-        return objHash(result, product);
+        return Objects.hash(super.hashCode(), getRepairStatus(), getCode(),
+                getDateOrder(), getCheckSerial(), getSerial(), getClientFault(),
+                getComment(), getEngineerDescr(), getDateExpected(), getExpectedCost(),
+                getPrepaid(), getFinalPrice(), getDateFinish(), getDateWarranty());
     }
 
 }
+

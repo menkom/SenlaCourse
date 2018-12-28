@@ -3,6 +3,7 @@ package info.mastera.model;
 import info.mastera.model.base.BaseObject;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "service_order_job", schema = "service_center")
@@ -57,21 +58,19 @@ public class ServiceOrderJob extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        ServiceOrderJob serviceOrderJob = (ServiceOrderJob) other;
-        return super.equals(other)
-                && isEqual(finalPrice, serviceOrderJob.getFinalPrice())
-                && isEqual(orderJob, serviceOrderJob.getOrderJob())
-                && isEqual(user, serviceOrderJob.getUser())
-                && isEqual(serviceOrder, serviceOrderJob.getServiceOrder());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof ServiceOrderJob)) || (!super.equals(o))) {
+            return false;
+        }
+        ServiceOrderJob that = (ServiceOrderJob) o;
+        return Objects.equals(getFinalPrice(), that.getFinalPrice());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), finalPrice);
-        result = objHash(result, orderJob);
-        result = objHash(result, user);
-        return objHash(result, serviceOrder);
+        return Objects.hash(super.hashCode(), getFinalPrice());
     }
-
 }

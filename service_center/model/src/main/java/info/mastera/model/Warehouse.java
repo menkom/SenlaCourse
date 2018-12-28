@@ -1,6 +1,7 @@
 package info.mastera.model;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -90,23 +91,23 @@ public class Warehouse extends BaseObject {
     }
 
     @Override
-    public boolean equals(Object other) {
-        Warehouse warehouse = (Warehouse) other;
-        return super.equals(other)
-                && isEqual(count, warehouse.getCount())
-                && isEqual(pricePerOne, warehouse.getPricePerOne())
-                && isEqual(code, warehouse.getCode())
-                && isEqual(descr, warehouse.getDescr())
-                && isEqual(part, warehouse.getPart());
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if ((!(o instanceof Warehouse)) || (!super.equals(o))) {
+            return false;
+        }
+        Warehouse warehouse = (Warehouse) o;
+        return Objects.equals(getCode(), warehouse.getCode()) &&
+                Objects.equals(getCount(), warehouse.getCount()) &&
+                Objects.equals(getPricePerOne(), warehouse.getPricePerOne()) &&
+                Objects.equals(getDescr(), warehouse.getDescr());
     }
 
     @Override
     public int hashCode() {
-        int result = objHash(super.hashCode(), count);
-        result = objHash(result, pricePerOne);
-        result = objHash(result, code);
-        result = objHash(result, descr);
-        return objHash(result, part);
+        return Objects.hash(super.hashCode(), getCode(), getCount(), getPricePerOne(), getDescr());
     }
 
 }
